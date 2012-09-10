@@ -11,7 +11,7 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @docType package
 #' @useDynLib fdasrvf
-#' @import foreach doMC mvtnorm matrixcalc numDeriv
+#' @import foreach mvtnorm matrixcalc numDeriv
 #' @aliases fdasrvf fdasrvf-package
 NULL
 #' Simulated two Gaussian Dataset

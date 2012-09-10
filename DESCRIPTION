@@ -9,7 +9,6 @@ Description: A library for functional data analysis using the square root
 Depends:
     R (>= 2.11.0),
     foreach,
-    doMC,
     mvtnorm,
     matrixcalc,
     numDeriv
