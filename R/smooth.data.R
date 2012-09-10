@@ -11,6 +11,7 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @export
 #' @examples
+#' data("simu_data")
 #' fo = smooth.data(f,25)
 smooth.data <- function(f,sparam){
 	M = nrow(f)

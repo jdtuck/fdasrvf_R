@@ -25,8 +25,8 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @export
 #' @examples
+#' data("simu_data")
 #' out = time_warping(f,time)
-#' out = time_warping(f,time,showplot=F,parallel=T,cores=2)
 time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 	smooth_data = FALSE, sparam = 25, 
 	parallel = FALSE,cores=8){

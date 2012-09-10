@@ -17,17 +17,19 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @export
 #' @examples
-#' out = gauss_model(fn,t,qn,gam,n = 10,sort_samples = F)
-gauss_model <- function(fn,t,qn,gam,n = 1,sort_samples = F){
+#' data("simu_data")
+#' out = time_warping(f,time)
+#' out1 = gauss_model(out$fn,time,out$qn,out$gam,n = 10)
+gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
 	# Parameters
 	no = 3
 	eps = .Machine$double.eps
-	binsize = mean(diff(t))
-	M = length(t)
+	binsize = mean(diff(time))
+	M = length(time)
 	
 	# compute mean and covariance in q-domain
 	mq_new = rowMeans(qn)
-	m_new = sign(fn[round(length(t)/2),])*sqrt(abs(fn[round(length(t)/2),]))  # scaled version
+	m_new = sign(fn[round(length(time)/2),])*sqrt(abs(fn[round(length(time)/2),]))  # scaled version
 	mqn = c(mq_new,mean(m_new))
 	C = cov(t(rbind(qn,m_new)))
 	
@@ -38,7 +40,7 @@ gauss_model <- function(fn,t,qn,gam,n = 1,sort_samples = F){
 	# compute the correspondence to the original function domain
 	fs = matrix(0,M,n)
 	for (k in 1:n){
-		fs[,k] = cumtrapzmid(t,q_s[1:(end-1),k]*abs(q_s[1:(end-1),k]),sign(q_s[end,k])*(q_s[end,k]^2))
+		fs[,k] = cumtrapzmid(time,q_s[1:(end-1),k]*abs(q_s[1:(end-1),k]),sign(q_s[end,k])*(q_s[end,k]^2))
 	}
 	
 	# random warping generation
@@ -51,7 +53,7 @@ gauss_model <- function(fn,t,qn,gam,n = 1,sort_samples = F){
 	
 	# sort functions and warpings
 	if (sort_samples == T){
-		mx = apply(x_s,2, max)
+		mx = apply(fs,2, max)
 		out_sort = sort(mx,index.return=TRUE)
 		seq1 = out_sort$ix
 

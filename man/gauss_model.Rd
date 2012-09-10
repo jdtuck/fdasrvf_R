@@ -2,7 +2,8 @@
 \alias{gauss_model}
 \title{Gaussian model of functional data}
 \usage{
-  gauss_model(fn, t, qn, gam, n = 1, sort_samples = F)
+  gauss_model(fn, time, qn, gam, n = 1,
+    sort_samples = FALSE)
 }
 \arguments{
   \item{fn}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} aligned
@@ -30,7 +31,9 @@
   srvfs
 }
 \examples{
-out = gauss_model(fn,t,qn,gam,n = 10,sort_samples = F)
+data("simu_data")
+out = time_warping(f,time)
+out1 = gauss_model(out$fn,time,out$qn,out$gam,n = 10)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,

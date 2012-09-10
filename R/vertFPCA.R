@@ -3,11 +3,11 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param f matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions with \eqn{N} samples
+#' @param fn matrix (\eqn{M} x \eqn{N}) of \eqn{M} aligned functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param qn matrix (\eqn{M} x \eqn{N}) of \eqn{M} of aligned srvfs
 #' @param no number of prinicpal components to extract
-#' @param show_plot show plots of prinipal directions (default = T)
+#' @param showplot show plots of prinipal directions (default = T)
 #' @return Returns a list containing \item{q_pca}{srvf principal directions}
 #' \item{f_pca}{f principal directions}
 #' \item{latent}{latent values}
@@ -19,7 +19,9 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @export
 #' @examples
-#' out = vertFPCA(fn,time,qn,no = 3)
+#' data("simu_data")
+#' out = time_warping(f,time)
+#' vfpca = vertFPCA(out$fn,time,out$qn,no = 3)
 vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
 	# Parameters
 	coef = -2:2

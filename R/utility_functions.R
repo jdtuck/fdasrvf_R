@@ -330,18 +330,6 @@ svd2 <- function (x, nu = min(n, p), nv = min(n, p), LINPACK = FALSE)
 	svd.x
 }
 
-cbcolorscale <- function(n){
-	require(ggplot2)
-	colors = c("#56B4E9","#E69F00", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")
-	if (n <= length(colors)){
-		cbgColourPalette <- scale_colour_manual(values=colors[1:n])
-	}else{
-		colors2 = rep(colors,round(n/length(colors)))
-		cbgColourPalette <- scale_colour_manual(values=sample(colors2))
-	}
-	return(cbgColourPalette)
-}
-
 cumtrapzmid <- function(x,y,c){
 	a = length(x)
 	mid = round(a/2)

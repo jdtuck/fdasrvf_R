@@ -7,7 +7,7 @@
 #' calculated using \code{\link{SqrtMean}}
 #' @param mu mean of warping functions
 #' @param no number of prinicpal components to extract
-#' @param show_plot show plots of prinipal directions (default = T)
+#' @param showplot show plots of prinipal directions (default = T)
 #' @return Returns a list containing \item{gam_pca}{warping functions principal directions}
 #' \item{psi_pca}{srvf principal directions}
 #' \item{latent}{latent values}
@@ -18,7 +18,10 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @export
 #' @examples
-#' out = horizFPCA(vec,mu,no = 3)
+#' data("simu_data")
+#' gam = time_warping(f,time)$gam
+#' out = SqrtMean(gam)
+#' hfpca = horizFPCA(out$vec,out$mu,no = 3)
 horizFPCA <- function(vec,mu,no,showplot = TRUE){
 	# Parameters
 	tau = 1:5 # -2, -1, 0, 1, 2 std from the mean

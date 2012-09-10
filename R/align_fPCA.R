@@ -31,13 +31,12 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @export
 #' @examples
+#' data("simu_data")
 #' out = align_fPCA(f,time)
-#' out = align_fPCA(f,time,num_comp = 4, showplot=F,parallel=T,cores=2)
 align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE, sparam = 25, 
 											 parallel = FALSE,cores=8){
 	library(numDeriv)
 	library(foreach)
-	source("utility_functions.R")
 	if (parallel){
 		library(doMC)
 		registerDoMC(cores=cores)

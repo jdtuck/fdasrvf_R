@@ -12,7 +12,7 @@
 
   \item{no}{number of prinicpal components to extract}
 
-  \item{show_plot}{show plots of prinipal directions
+  \item{showplot}{show plots of prinipal directions
   (default = T)}
 }
 \value{
@@ -26,7 +26,10 @@
   component analysis on aligned data
 }
 \examples{
-out = horizFPCA(vec,mu,no = 3)
+data("simu_data")
+gam = time_warping(f,time)$gam
+out = SqrtMean(gam)
+hfpca = horizFPCA(out$vec,out$mu,no = 3)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,

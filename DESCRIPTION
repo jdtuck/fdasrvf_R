@@ -7,7 +7,12 @@ Title: Elastic Functional Data Analysis
 Description: A library for functional data analysis using the square root
     velocity framework
 Depends:
-    R (>= 2.11.0)
+    R (>= 2.11.0),
+    foreach,
+    doMC,
+    mvtnorm,
+    matrixcalc,
+    numDeriv
 Collate:
     'fdasrvf-package.r'
     'time_warping.R'
@@ -20,5 +25,4 @@ Collate:
     'smooth.data.R'
     'utility_functions.R'
     'vertFPCA.R'
-    'simu_data.R'
-    'toy_data.R'
+    'f_to_srvf.R'

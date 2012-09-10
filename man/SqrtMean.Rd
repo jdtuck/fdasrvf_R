@@ -18,6 +18,8 @@
   with corresponding shooting vectors
 }
 \examples{
+data("simu_data")
+gam = time_warping(f,time)$gam
 out = SqrtMean(gam)
 }
 \references{

@@ -13,10 +13,11 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @export
 #' @examples
-#' gam = optimum.reparam(Q1,T1,Q2,T2)
+#' data("simu_data")
+#' q = f_to_srvf(f,time)
+#' gam = optimum.reparam(q[,1],time,q[,2],time)
 optimum.reparam <- function(Q1,T1,Q2,T2){
 	n = length(time)
-	dyn.load(paste("DynamicProgrammingQ2",.Platform$dynlib.ext,sep=""))
 	output <-.C("DynamicProgrammingQ2",Q1=as.double(Q1/pvecnorm(Q1,2)),
 							T1=as.double(T1),Q2=as.double(Q2/pvecnorm(Q2,2)),T2=as.double(T2),
 							m1=as.integer(1),n1=as.integer(n),n2=as.integer(n),tv1=as.double(T1),

@@ -17,6 +17,7 @@
   This function smooths functions using standard box filter
 }
 \examples{
+data("simu_data")
 fo = smooth.data(f,25)
 }
 \references{

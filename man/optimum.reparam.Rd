@@ -21,7 +21,9 @@
   Programming
 }
 \examples{
-gam = optimum.reparam(Q1,T1,Q2,T2)
+data("simu_data")
+q = f_to_srvf(f,time)
+gam = optimum.reparam(q[,1],time,q[,2],time)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,

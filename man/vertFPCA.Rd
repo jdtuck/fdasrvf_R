@@ -5,8 +5,8 @@
   vertFPCA(fn, time, qn, no, showplot = TRUE)
 }
 \arguments{
-  \item{f}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions
-  with \eqn{N} samples}
+  \item{fn}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} aligned
+  functions with \eqn{N} samples}
 
   \item{time}{vector of size \eqn{N} describing the sample
   points}
@@ -16,7 +16,7 @@
 
   \item{no}{number of prinicpal components to extract}
 
-  \item{show_plot}{show plots of prinipal directions
+  \item{showplot}{show plots of prinipal directions
   (default = T)}
 }
 \value{
@@ -30,7 +30,9 @@
   component analysis on aligned data
 }
 \examples{
-out = vertFPCA(fn,time,qn,no = 3)
+data("simu_data")
+out = time_warping(f,time)
+vfpca = vertFPCA(out$fn,time,out$qn,no = 3)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,

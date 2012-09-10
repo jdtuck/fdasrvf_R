@@ -40,8 +40,8 @@
   elastic square-root velocity (srvf) framework.
 }
 \examples{
+data("simu_data")
 out = time_warping(f,time)
-out = time_warping(f,time,showplot=F,parallel=T,cores=2)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,

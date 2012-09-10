@@ -45,8 +45,8 @@
   extracting pincipal components.
 }
 \examples{
+data("simu_data")
 out = align_fPCA(f,time)
-out = align_fPCA(f,time,num_comp = 4, showplot=F,parallel=T,cores=2)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,
