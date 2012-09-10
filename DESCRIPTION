@@ -13,6 +13,9 @@ Depends:
     mvtnorm,
     matrixcalc,
     numDeriv
+Suggests:
+    doMC,
+    doSNOW
 Collate:
     'fdasrvf-package.r'
     'time_warping.R'

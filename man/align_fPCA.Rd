@@ -25,10 +25,11 @@
   (default = 25)}
 
   \item{parallel}{enable parallel mode using
-  \code{\link{foreach}} and \code{\link{doMC}} pacakge}
+  \code{\link{foreach}} and \code{\link{doMC}} pacakge if
+  on windows or \code{doSNOW} if on windows}
 
   \item{cores}{set number of cores to use with
-  \code{\link{doMC}} (default = 8)}
+  \code{\link{doMC}} or \code{doSNOW}(default = 2)}
 }
 \value{
   Returns a list containing \item{f0}{original functions}

@@ -4,7 +4,7 @@
 \usage{
   time_warping(f, time, lambda = 0, showplot = TRUE,
     smooth_data = FALSE, sparam = 25, parallel = FALSE,
-    cores = 8)
+    cores = 2)
 }
 \arguments{
   \item{f}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions
@@ -24,10 +24,11 @@
   (default = 25)}
 
   \item{parallel}{enable parallel mode using
-  \code{\link{foreach}} and \code{\link{doMC}} pacakge}
+  \code{\link{foreach}} and \code{\link{doMC}} pacakge if
+  on windows or \code{doSNOW} if on windows}
 
   \item{cores}{set number of cores to use with
-  \code{\link{doMC}} (default = 8)}
+  \code{\link{doMC}} or \code{doSNOW}(default = 2)}
 }
 \value{
   Returns a list containing \item{f0}{original functions}

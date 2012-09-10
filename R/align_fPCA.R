@@ -10,8 +10,10 @@
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using \code{\link{foreach}} and 
-#'   \code{\link{doMC}} pacakge 
-#' @param cores set number of cores to use with \code{\link{doMC}} (default = 8)
+#'   \code{\link{doMC}} pacakge if on windows or \code{doSNOW} if on 
+#'   windows
+#' @param cores set number of cores to use with \code{\link{doMC}} or
+#' \code{doSNOW}(default = 2)
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{fn}{aligned functions}
 #' \item{qn}{aligned srvfs}
@@ -38,8 +40,13 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 	library(numDeriv)
 	library(foreach)
 	if (parallel){
-		library(doMC)
-		registerDoMC(cores=cores)
+		if(.Platform$OS.type == "unix") {
+			library(doMC)
+			registerDoMC(cores=cores)
+		} else {
+			library(doSNOW)
+			registerDoSNOW(makeCluster(cores, type = "SOCK"))
+		}
 	} else
 	{
 		registerDoSEQ()
