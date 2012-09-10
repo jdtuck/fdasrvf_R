@@ -26,13 +26,13 @@
 #' \item{coef}{coefficients}
 #' \item{U}{eigenvectors}
 #' @keywords srvf alignment, pca
-#' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
-#'  May 2011. Registration of functional data using fisher-rao metric, 
-#'  arXiv:1103.3817v2 [math.ST].
+#' @references Tucker, J. D., Wu, W., Srivastava, A.,
+#'  May 2012. Generative Models for Function Data using Phase and Amplitude Separation, 
+#'  submitted to Computational Statistics and Data Analysis.
 #' @export
 #' @examples
 #' data("simu_data")
-#' out = align_fPCA(f,time)
+#' out = align_fPCA(simu_data$f,simu_data$time)
 align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE, sparam = 25, 
 											 parallel = FALSE,cores=8){
 	library(numDeriv)

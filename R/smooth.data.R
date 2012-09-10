@@ -12,7 +12,7 @@
 #' @export
 #' @examples
 #' data("simu_data")
-#' fo = smooth.data(f,25)
+#' fo = smooth.data(simu_data$f,25)
 smooth.data <- function(f,sparam){
 	M = nrow(f)
 	N = ncol(f)

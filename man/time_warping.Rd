@@ -41,7 +41,7 @@
 }
 \examples{
 data("simu_data")
-out = time_warping(f,time)
+out = time_warping(simu_data$f,simu_data$time)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,

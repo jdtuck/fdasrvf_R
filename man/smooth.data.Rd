@@ -18,7 +18,7 @@
 }
 \examples{
 data("simu_data")
-fo = smooth.data(f,25)
+fo = smooth.data(simu_data$f,25)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,

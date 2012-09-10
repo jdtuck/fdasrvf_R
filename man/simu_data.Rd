@@ -2,7 +2,7 @@
 \name{simu_data}
 \alias{simu_data}
 \title{Simulated two Gaussian Dataset}
-\format{A matrix with 101 rows and 21 columns}
+\format{A list which contains f and time}
 \description{
   A functional dataset where the individual functions are
   given by: \eqn{y_i(t) = z_{i,1} e^{-(t-1.5)^2/2} +

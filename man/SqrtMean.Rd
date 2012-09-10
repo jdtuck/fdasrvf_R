@@ -19,7 +19,7 @@
 }
 \examples{
 data("simu_data")
-gam = time_warping(f,time)$gam
+gam = time_warping(simu_data$f,simu_data$time)$gam
 out = SqrtMean(gam)
 }
 \references{

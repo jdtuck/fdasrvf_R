@@ -12,14 +12,14 @@
 #' @return Returns a list containing \item{fs}{random aligned samples}
 #' \item{gams}{random warping function samples}
 #' @keywords pca
-#' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
-#'  May 2011. Registration of functional data using fisher-rao metric, 
-#'  arXiv:1103.3817v2 [math.ST].
+#' @references Tucker, J. D., Wu, W., Srivastava, A.,
+#'  May 2012. Generative Models for Function Data using Phase and Amplitude Separation, 
+#'  submitted to Computational Statistics and Data Analysis.
 #' @export
 #' @examples
 #' data("simu_data")
-#' out = time_warping(f,time)
-#' out1 = gauss_model(out$fn,time,out$qn,out$gam,n = 10)
+#' out = time_warping(simu_data$f,simu_data$time)
+#' out1 = gauss_model(out$fn,simu_data$time,out$qn,out$gam,n = 10)
 gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
 	# Parameters
 	no = 3

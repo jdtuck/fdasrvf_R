@@ -12,7 +12,7 @@
 #' @export
 #' @examples
 #' data("simu_data")
-#' q = f_to_srvf(f,time)
+#' q = f_to_srvf(simu_data$f,simu_data$time)
 f_to_srvf <- function(f,time){
 	binsize = mean(diff(time))
 	eps = .Machine$double.eps

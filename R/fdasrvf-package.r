@@ -10,6 +10,7 @@
 #'  May 2011. Registration of functional data using fisher-rao metric, 
 #'  arXiv:1103.3817v2 [math.ST].
 #' @docType package
+#' @useDynLib fdasrvf
 #' @import foreach doMC mvtnorm matrixcalc numDeriv
 #' @aliases fdasrvf fdasrvf-package
 NULL
@@ -28,7 +29,7 @@ NULL
 #' @keywords datasets
 #' @name simu_data
 #' @usage data("simu_data")
-#' @format A matrix with 101 rows and 21 columns
+#' @format A list which contains f and time
 NULL
 #' Distrubted Gaussian Peak Dataset
 #' 
@@ -42,5 +43,5 @@ NULL
 #' @keywords datasets
 #' @name toy_data
 #' @usage data("toy_data")
-#' @format A matrix with 101 rows and 21 columns
+#' @format A list which contains f and time
 NULL

@@ -27,14 +27,15 @@
 }
 \examples{
 data("simu_data")
-gam = time_warping(f,time)$gam
+gam = time_warping(simu_data$f,simu_data$time)$gam
 out = SqrtMean(gam)
 hfpca = horizFPCA(out$vec,out$mu,no = 3)
 }
 \references{
-  Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,
-  J. S., May 2011. Registration of functional data using
-  fisher-rao metric, arXiv:1103.3817v2 [math.ST].
+  Tucker, J. D., Wu, W., Srivastava, A., May 2012.
+  Generative Models for Function Data using Phase and
+  Amplitude Separation, submitted to Computational
+  Statistics and Data Analysis.
 }
 \keyword{alignment}
 \keyword{srvf}
