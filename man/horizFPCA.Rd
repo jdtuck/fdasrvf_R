@@ -5,8 +5,8 @@
   horizFPCA(vec, mu, no, showplot = TRUE)
 }
 \arguments{
-  \item{vec}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} shooting
-  vectors calculated using \code{\link{SqrtMean}}}
+  \item{vec}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} of
+  shooting vectors calculated using \code{\link{SqrtMean}}}
 
   \item{mu}{mean of warping functions}
 

@@ -18,13 +18,13 @@
 #' \item{q0}{original srvfs}
 #' \item{mqn}{srvf mean}
 #' \item{gam}{warping functions}
-#' \item{vfpca}{list containing principal components 
+#' \item{Dx}{cost function}
+#' \item{vfpca}{list containing} 
 #' \item{q_pca}{srvf principal directions}
 #' \item{f_pca}{f principal directions}
 #' \item{latent}{latent values}
 #' \item{coef}{coefficients}
-#' \item{U}{eigenvectors}}
-#' \item{Dx}{cost function}
+#' \item{U}{eigenvectors}
 #' @keywords srvf alignment, pca
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric, 

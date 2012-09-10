@@ -8,8 +8,8 @@
   given by: \eqn{y_i(t) = z_{i,1} e^{-(t-1.5)^2/2} +
   z_{i,2}e^{-(t+1.5)^2/2}}, \eqn{t \in [-3, 3],
   ~i=1,2,\dots, 21}, where \eqn{z_{i,1}} and \eqn{z_{i,2}}
-  are {\it i.i.d.} normal with mean one and standard
-  deviation 0.25.  Each of these functions is then warped
+  are \emph{i.i.d.} normal with mean one and standard
+  deviation 0.25. Each of these functions is then warped
   according to: \eqn{\gamma_i(t) = 6({e^{a_i(t+3)/6} -1
   \over e^{a_i} - 1}) - 3} if \eqn{a_i \neq 0}, otherwise
   \eqn{\gamma_i = \gamma_{id}} (\eqn{gamma_{id}(t) = t}) is

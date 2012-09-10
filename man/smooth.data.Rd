@@ -6,7 +6,7 @@
 }
 \arguments{
   \item{f}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions
-  with \eqn{N} samples}}
+  with \eqn{N} samples}
 
   \item{sparam}{number of times to run box filter}
 }

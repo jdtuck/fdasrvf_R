@@ -19,8 +19,8 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @export
 #' @examples
-#' out = vertFPCA(ffn,t,qn,no = 3)
-vertFPCA <- function(fn,t,qn,no,showplot = TRUE){
+#' out = vertFPCA(fn,time,qn,no = 3)
+vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
 	# Parameters
 	coef = -2:2
 	NP = 1:no  # number of principal components
@@ -28,9 +28,9 @@ vertFPCA <- function(fn,t,qn,no,showplot = TRUE){
 
 	# FPCA
 	mq_new = rowMeans(qn)
-	m_new = sign(fn[round(length(t)/2),])*sqrt(abs(fn[round(length(t)/2),]))  # scaled version
+	m_new = sign(fn[round(length(time)/2),])*sqrt(abs(fn[round(length(time)/2),]))  # scaled version
 	mqn = c(mq_new,mean(m_new))
-  K = cov_samp(t(rbind(qn,m_new))) 
+  K = cov_samp(t(rbind(qn,m_new))) #out$sigma
 
 	out = svd(K)
 	s = out$d
@@ -49,7 +49,9 @@ vertFPCA <- function(fn,t,qn,no,showplot = TRUE){
 	f_pca = array(0,dim=c((length(mq_new)),Nstd,no))
 	for (k in NP){
 		for (i in 1:Nstd){
-			f_pca[,i,k] = cumtrapzmid(t,q_pca[1:(dim(q_pca)[1]-1),i,k]*abs(q_pca[1:(dim(q_pca)[1]-1),i,k]),sign(q_pca[dim(q_pca)[1],i,k])*(q_pca[dim(q_pca)[1],i,k]^2))
+			f_pca[,i,k] = cumtrapzmid(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*
+				abs(q_pca[1:(dim(q_pca)[1]-1),i,k]),sign(q_pca[dim(q_pca)[1],i,k])*
+				(q_pca[dim(q_pca)[1],i,k]^2))
 		}
 	}
 	N2 = dim(qn)[2]
@@ -70,17 +72,17 @@ vertFPCA <- function(fn,t,qn,no,showplot = TRUE){
   if (showplot){
     layout(matrix(c(1,2,3,4,5,6), 2, 3, byrow = TRUE))
     dims = dim(q_pca)
-  	matplot(t,q_pca[1:(dims[1]-1),,1],type="l")
+  	matplot(time,q_pca[1:(dims[1]-1),,1],type="l")
     title(main="q domain: PD 1")
-    matplot(t,q_pca[1:(dims[1]-1),,2],type="l")
+    matplot(time,q_pca[1:(dims[1]-1),,2],type="l")
     title(main="q domain: PD 2")
-    matplot(t,q_pca[1:(dims[1]-1),,3],type="l")
+    matplot(time,q_pca[1:(dims[1]-1),,3],type="l")
     title(main="q domain: PD 3")
-    matplot(t,f_pca[,,1],type="l")
+    matplot(time,f_pca[,,1],type="l")
     title(main="f domain: PD 1")
-    matplot(t,f_pca[,,2],type="l")
+    matplot(time,f_pca[,,2],type="l")
     title(main="f domain: PD 2")
-    matplot(t,f_pca[,,3],type="l")
+    matplot(time,f_pca[,,3],type="l")
 		title(main="f domain: PD 3")
     layout(1)
     cumm_coef = 100*cumsum(s)/sum(s)

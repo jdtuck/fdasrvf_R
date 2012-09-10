@@ -3,7 +3,7 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param vec matrix (\eqn{M} x \eqn{N}) of \eqn{M} shooting vectors 
+#' @param vec matrix (\eqn{M} x \eqn{N}) of \eqn{M} of shooting vectors 
 #' calculated using \code{\link{SqrtMean}}
 #' @param mu mean of warping functions
 #' @param no number of prinicpal components to extract

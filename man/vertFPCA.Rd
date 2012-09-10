@@ -2,7 +2,7 @@
 \alias{vertFPCA}
 \title{Vertical Functional Principal Component Analysis}
 \usage{
-  vertFPCA(fn, t, qn, no, showplot = TRUE)
+  vertFPCA(fn, time, qn, no, showplot = TRUE)
 }
 \arguments{
   \item{f}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions
@@ -30,7 +30,7 @@
   component analysis on aligned data
 }
 \examples{
-out = vertFPCA(ffn,t,qn,no = 3)
+out = vertFPCA(fn,time,qn,no = 3)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,

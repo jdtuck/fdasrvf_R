@@ -2,7 +2,7 @@
 #'
 #' This function smooths functions using standard box filter
 #'
-#' @param f matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions with \eqn{N} samples} 
+#' @param f matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions with \eqn{N} samples 
 #' @param sparam number of times to run box filter
 #' @return fo smoothed functions
 #' @keywords srvf alignment, pca

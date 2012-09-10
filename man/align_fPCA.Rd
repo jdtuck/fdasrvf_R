@@ -34,12 +34,11 @@
   Returns a list containing \item{f0}{original functions}
   \item{fn}{aligned functions} \item{qn}{aligned srvfs}
   \item{q0}{original srvfs} \item{mqn}{srvf mean}
-  \item{gam}{warping functions} \item{vfpca}{list
-  containing principal components \item{q_pca}{srvf
-  principal directions} \item{f_pca}{f principal
-  directions} \item{latent}{latent values}
-  \item{coef}{coefficients} \item{U}{eigenvectors}}
-  \item{Dx}{cost function}
+  \item{gam}{warping functions} \item{Dx}{cost function}
+  \item{vfpca}{list containing} \item{q_pca}{srvf principal
+  directions} \item{f_pca}{f principal directions}
+  \item{latent}{latent values} \item{coef}{coefficients}
+  \item{U}{eigenvectors}
 }
 \description{
   This function aligns a collection of functions while
