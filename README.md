@@ -8,10 +8,16 @@ analysis
 
 Installation
 ------------------------------------------------------------------------------
-1. Download zip or tar.gz of package
+v1.0 is on [CRAN](http://cran.r-project.org/web/packages/fdasrvf/index.html) 
+and can be installed as 
+> `install.packages("fdasrvf")`
+
+
+For a more up to date, but may not be stable version from git repository
+1. Download zip or tar.gz of package or clone repository
 2. Install into R (> 2.11.1)
 
-> install.packages("fdasrvf.tar.gz", repos = NULL)
+> `install.packages("fdasrvf.tar.gz", repos = NULL)`
 
 ------------------------------------------------------------------------------
 
@@ -24,3 +30,4 @@ Registration of functional data using fisher-rao metric, arXiv:1103.3817v2
 Tucker, J. D., Wu, W., Srivastava, A., May 2012. Generative Models for 
 Function Data using Phase and Amplitude Separation, submitted to Computational 
 Statistics and Data Analysis.
+------------------------------------------------------------------------------
