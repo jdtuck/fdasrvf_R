@@ -14,6 +14,7 @@ and can be installed as
 
 
 For a more up to date, but may not be stable version from git repository
+
 1. Download zip or tar.gz of package or clone repository
 2. Install into R (> 2.11.1)
 
