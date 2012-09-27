@@ -90,7 +90,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 	alpha_i = matrix(0,num_comp,N)
 	for (ii in 1:num_comp){
 		for (jj in 1:N){
-			alpha_i[ii,jj] = simpson_s(time,qhat_cent[,jj]*U[,ii])
+			alpha_i[ii,jj] = simpson(time,qhat_cent[,jj]*U[,ii])
 		}
 	}
 	
@@ -99,7 +99,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 		mq = mq/pvecnorm(mq,2)
 		for (ii in 1:N){
 			if (sum(tmp[,ii]) != 0)
-			tmp[,ii] = tmp[,ii]/pvecnorm(tmp[,ii],2)
+				tmp[,ii] = tmp[,ii]/pvecnorm(tmp[,ii],2)
 		}
 	}
 	qhat = matrix(mq,M,N) + tmp
@@ -151,7 +151,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 		alpha_i = matrix(0,num_comp,N)
 		for (ii in 1:num_comp){
 			for (jj in 1:N){
-				alpha_i[ii,jj] = simpson_s(time,qhat_cent[,jj]*U[,ii])
+				alpha_i[ii,jj] = simpson(time,qhat_cent[,jj]*U[,ii])
 			}
 		}
 		

@@ -21,6 +21,9 @@
 #' \item{fmean}{function mean}
 #' \item{mqn}{srvf mean}
 #' \item{gam}{warping functions}
+#' \item{orig.var}{Original Variance of Functions}
+#' \item{amp.var}{Amplitude Variance}
+#' \item{phase.var}{Phase Variance}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric, 
@@ -30,8 +33,8 @@
 #' data("simu_data")
 #' out = time_warping(simu_data$f,simu_data$time)
 time_warping <- function(f, time, lambda = 0, showplot = TRUE,
-	smooth_data = FALSE, sparam = 25, 
-	parallel = FALSE,cores=2){
+												 smooth_data = FALSE, sparam = 25, 
+												 parallel = FALSE,cores=2){
 	library(numDeriv)
 	library(foreach)
 	if (parallel){
@@ -54,10 +57,10 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 	M = nrow(f)
 	N = ncol(f)
 	f0 = f
-  
-  if (smooth_data){
-  	f = smooth.data(f,sparam)
-  }
+	
+	if (smooth_data){
+		f = smooth.data(f,sparam)
+	}
 	
 	if (showplot){
 		matplot(time,f,type="l")
@@ -74,9 +77,9 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 	min_ind = which.min(dqq)
 	mq = q[,min_ind]
 	mf = f[,min_ind]
-
+	
 	gam<-foreach(k = 1:N, .combine=cbind) %dopar% {
-	    gam_tmp = optimum.reparam(mq,time,q[,k],time)
+		gam_tmp = optimum.reparam(mq,time,q[,k],time)
 	}
 	
 	gam = t(gam)
@@ -128,19 +131,19 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 		f_temp = unlist(outfor[4,]);
 		dim(f_temp)=c(M,N)
 		q[,,r+1] = q_temp
-    f[,,r+1] = f_temp
+		f[,,r+1] = f_temp
 		tmp = (1-sqrt(gam_dev))^2
 		ds_tmp  = sum(simpson(time,(matrix(mq[,r],M,N)-q[,,r+1])^2)) + 
 			lambda*sum(simpson(time, t(tmp)))
-    if (is.complex(ds_tmp)){
-      ds[r+1] = abs(ds_tmp)
-    }
-  	else{
-    	ds[r+1] = ds_tmp
-  	}
+		if (is.complex(ds_tmp)){
+			ds[r+1] = abs(ds_tmp)
+		}
+		else{
+			ds[r+1] = ds_tmp
+		}
 		
 		# Minimization Step
-	  # compute the mean of the matched function
+		# compute the mean of the matched function
 		mq[,r+1] = rowMeans(q[,,r+1])
 		
 		qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
@@ -191,6 +194,17 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 	fmean = mean(f0[1,])+cumtrapz(time,mqn*abs(mqn));
 	gam = t(gam)
 	
+	fgam = matrix(0,M,N)
+	for (ii in 1:N){
+		fgam[,ii] = approx(time,fmean,xout=(time[length(time)]-time[1])*gam[,ii] + 
+			time[1])$y
+	}
+	var_fgam = apply(fgam,1,var)
+	
+	orig.var = trapz(time,std_f0^2)
+	amp.var = trapz(time,std_fn^2)
+	phase.var = trapz(time,var_fgam)
+	
 	if (showplot){
 		matplot((0:(M-1))/(M-1),gam,type="l",main="Warping functions",xlab="Time")
 		
@@ -199,21 +213,22 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 		
 		matplot(time,cbind(mean_f0,mean_f0+std_f0,mean_f0-std_f0),type="l",lty=1,
 						col=c("blue","red","green"), 
-			ylab="",main=bquote(paste("Original Data: ", Mean %+-% STD)))
+						ylab="",main=bquote(paste("Original Data: ", Mean %+-% STD)))
 		legend('topright',inset=0.01,legend=c('Mean','Mean + STD', 'Mean - STD'),
 					 col=c('blue','red','green'),lty=1)
-			
+		
 		matplot(time,cbind(mean_fn,mean_fn+std_fn,mean_fn-std_fn),type="l",lty=1,
 						col=c("blue","red","green"), 
-			ylab="",main=bquote(paste("Warped Data: ",lambda == .(lambda),": ",
-																Mean %+-% STD)))
+						ylab="",main=bquote(paste("Warped Data: ",lambda == .(lambda),": ",
+																			Mean %+-% STD)))
 		legend('topright',inset=0.01,legend=c('Mean','Mean + STD', 'Mean - STD'),
 					 col=c('blue','red','green'),lty=1)
 		
 		plot(time,fmean,type="l",col="green",main=bquote(paste(f[mean]," ", 
-			lambda == .(lambda))))
+																													 lambda == .(lambda))))
 	}
-  
-	return(list(f0=f[,,1],fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,gam=gam))
-  
+	
+	return(list(f0=f[,,1],fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,gam=gam,
+							orig.var=orig.var,amp.var=amp.var,phase.var=phase.var))
+	
 }

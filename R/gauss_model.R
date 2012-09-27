@@ -35,7 +35,7 @@ gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
 	
 	q_s = rmvnorm(n,mean=mqn,sigma=C,method="svd")	
 	q_s = t(q_s)
-  end = dim(q_s)[1]
+	end = dim(q_s)[1]
 	
 	# compute the correspondence to the original function domain
 	fs = matrix(0,M,n)
@@ -56,7 +56,7 @@ gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
 		mx = apply(fs,2, max)
 		out_sort = sort(mx,index.return=TRUE)
 		seq1 = out_sort$ix
-
+		
 		# compute the psi-function
 		fy = gradient(t(rgam),binsize)
 		psi = fy/sqrt(abs(fy)+eps)
@@ -64,8 +64,8 @@ gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
 		ip = rep(0,n)
 		len = rep(0,n)
 		for (i in 1:n){
-		    ip[i] = rep(1,M)%*%psi[i,]/M;
-		    len[i] = acos(rep(1,M)%*%psi[i,]/M)
+			ip[i] = rep(1,M)%*%psi[i,]/M;
+			len[i] = acos(rep(1,M)%*%psi[i,]/M)
 		}
 		out_sort = sort(len,index.return=TRUE)
 		seq2 = out_sort$ix
@@ -75,11 +75,11 @@ gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
 		for (k in 1:n){
 			tmp = approx((0:(M-1))/(M-1),fs[,seq1[k]],xout = gams[,seq2[k]])
 			ft[,k] = tmp$y
-      while (is.na(ft[,k])){
-        rgam2 = randomGamma(gam,1)
-        tmp = approx((0:(M-1))/(M-1),fs[,seq1[k]],xout = invertGamma(rgam2))
-        ft[,k] = tmp$y
-      }
+			while (is.na(ft[,k])){
+				rgam2 = randomGamma(gam,1)
+				tmp = approx((0:(M-1))/(M-1),fs[,seq1[k]],xout = invertGamma(rgam2))
+				ft[,k] = tmp$y
+			}
 		}
 	}else
 	{
@@ -89,13 +89,13 @@ gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
 			tmp = approx((0:(M-1))/(M-1),fs[,k],xout = gams[,k])
 			ft[,k] = tmp$y
 			while (is.na(ft[,k])[1]){
-			  rgam2 = randomGamma(gam,1)
-			  tmp = approx((0:(M-1))/(M-1),fs[,k],xout = invertGamma(rgam2))
-			  ft[,k] = tmp$y
+				rgam2 = randomGamma(gam,1)
+				tmp = approx((0:(M-1))/(M-1),fs[,k],xout = invertGamma(rgam2))
+				ft[,k] = tmp$y
 			}
 		}
 	}
-	    	
+	
 	samples = list(fs = fs, gams = rgam, ft = ft)
 	
 	return(samples)

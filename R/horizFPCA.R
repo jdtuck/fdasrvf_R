@@ -26,10 +26,10 @@ horizFPCA <- function(vec,mu,no,showplot = TRUE){
 	# Parameters
 	tau = 1:5 # -2, -1, 0, 1, 2 std from the mean
 	no_pca = 1:no
-
+	
 	# TFPCA
-  K = cov_samp(t(vec)) #out$sigma
-  
+	K = cov_samp(t(vec)) #out$sigma
+	
 	out = svd(K)
 	s = out$d
 	U = out$u
@@ -55,23 +55,23 @@ horizFPCA <- function(vec,mu,no,showplot = TRUE){
 		}
 	}
 	
-  hfpca = list()
-  hfpca$gam_pca = gam_pca
-  hfpca$psi_pca = psi_pca
-  hfpca$latent = s
-  hfpca$U = U
-  
-  if (showplot){
-    layout(matrix(c(1,2,3), 1, 3, byrow = TRUE))
-    matplot(seq(0,1,len=TT),t(gam_pca[,,1]),type="l")
-    title(main="PD 1")
-    matplot(seq(0,1,len=TT),t(gam_pca[,,2]),type="l")
-    title(main="PD 2")
-    matplot(seq(0,1,len=TT),t(gam_pca[,,3]),type="l")
+	hfpca = list()
+	hfpca$gam_pca = gam_pca
+	hfpca$psi_pca = psi_pca
+	hfpca$latent = s
+	hfpca$U = U
+	
+	if (showplot){
+		layout(matrix(c(1,2,3), 1, 3, byrow = TRUE))
+		matplot(seq(0,1,len=TT),t(gam_pca[,,1]),type="l")
+		title(main="PD 1")
+		matplot(seq(0,1,len=TT),t(gam_pca[,,2]),type="l")
+		title(main="PD 2")
+		matplot(seq(0,1,len=TT),t(gam_pca[,,3]),type="l")
 		title(main="PD 3")
-    layout(1)
-    cumm_coef = 100*cumsum(s)/sum(s)
-    plot(cumm_coef,type="l",col="blue",main="Coefficient Cumulative Percentage", ylab = "Percentage")
+		layout(1)
+		cumm_coef = 100*cumsum(s)/sum(s)
+		plot(cumm_coef,type="l",col="blue",main="Coefficient Cumulative Percentage", ylab = "Percentage")
 	}
 	return(hfpca)
 }

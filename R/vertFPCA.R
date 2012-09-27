@@ -27,18 +27,18 @@ vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
 	coef = -2:2
 	NP = 1:no  # number of principal components
 	Nstd = length(coef)
-
+	
 	# FPCA
 	mq_new = rowMeans(qn)
 	m_new = sign(fn[round(length(time)/2),])*sqrt(abs(fn[round(length(time)/2),]))  # scaled version
 	mqn = c(mq_new,mean(m_new))
-  K = cov_samp(t(rbind(qn,m_new))) #out$sigma
-
+	K = cov_samp(t(rbind(qn,m_new))) #out$sigma
+	
 	out = svd(K)
 	s = out$d
 	stdS = sqrt(s)
 	U = out$u
-
+	
 	# compute the PCA in the q domain
 	q_pca = array(0,dim=c((length(mq_new)+1),Nstd,no))
 	for (k in NP){
@@ -64,32 +64,32 @@ vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
 		}
 	}
 	
-  vfpca = list()
-  vfpca$q_pca = q_pca
-  vfpca$f_pca = f_pca
-  vfpca$latent = s
-  vfpca$coef = c
-  vfpca$U = U
-    
-  if (showplot){
-    layout(matrix(c(1,2,3,4,5,6), 2, 3, byrow = TRUE))
-    dims = dim(q_pca)
-  	matplot(time,q_pca[1:(dims[1]-1),,1],type="l")
-    title(main="q domain: PD 1")
-    matplot(time,q_pca[1:(dims[1]-1),,2],type="l")
-    title(main="q domain: PD 2")
-    matplot(time,q_pca[1:(dims[1]-1),,3],type="l")
-    title(main="q domain: PD 3")
-    matplot(time,f_pca[,,1],type="l")
-    title(main="f domain: PD 1")
-    matplot(time,f_pca[,,2],type="l")
-    title(main="f domain: PD 2")
-    matplot(time,f_pca[,,3],type="l")
+	vfpca = list()
+	vfpca$q_pca = q_pca
+	vfpca$f_pca = f_pca
+	vfpca$latent = s
+	vfpca$coef = c
+	vfpca$U = U
+	
+	if (showplot){
+		layout(matrix(c(1,2,3,4,5,6), 2, 3, byrow = TRUE))
+		dims = dim(q_pca)
+		matplot(time,q_pca[1:(dims[1]-1),,1],type="l")
+		title(main="q domain: PD 1")
+		matplot(time,q_pca[1:(dims[1]-1),,2],type="l")
+		title(main="q domain: PD 2")
+		matplot(time,q_pca[1:(dims[1]-1),,3],type="l")
+		title(main="q domain: PD 3")
+		matplot(time,f_pca[,,1],type="l")
+		title(main="f domain: PD 1")
+		matplot(time,f_pca[,,2],type="l")
+		title(main="f domain: PD 2")
+		matplot(time,f_pca[,,3],type="l")
 		title(main="f domain: PD 3")
-    layout(1)
-    cumm_coef = 100*cumsum(s)/sum(s)
-    plot(cumm_coef,type="l",col="blue",main="Coefficient Cumulative Percentage", ylab = "Percentage")
+		layout(1)
+		cumm_coef = 100*cumsum(s)/sum(s)
+		plot(cumm_coef,type="l",col="blue",main="Coefficient Cumulative Percentage", ylab = "Percentage")
 	}
-  
+	
 	return(vfpca)
 }
