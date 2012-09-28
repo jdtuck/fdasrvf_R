@@ -35,6 +35,9 @@
   \item{fn}{aligned functions} \item{qn}{aligned srvfs}
   \item{q0}{original srvfs} \item{fmean}{function mean}
   \item{mqn}{srvf mean} \item{gam}{warping functions}
+  \item{orig.var}{Original Variance of Functions}
+  \item{amp.var}{Amplitude Variance} \item{phase.var}{Phase
+  Variance}
 }
 \description{
   This function aligns a collection of functions using the

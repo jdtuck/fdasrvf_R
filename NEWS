@@ -1,6 +1,10 @@
-fdasrv 1.0
+fdasrv 1.1
 --------------
 
 NEW FEATURES
+* Updated so the parallel functions are windows compatible and windows binary 
+can be compiled, now suggests doSNOW or doMC
+* Added variance calculation to time_warping function
 
+v1.0
 * Initial Version of Package
