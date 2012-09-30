@@ -2,13 +2,11 @@
 \alias{horizFPCA}
 \title{Horizontal Functional Principal Component Analysis}
 \usage{
-  horizFPCA(vec, mu, no, showplot = TRUE)
+  horizFPCA(gam, no, showplot = TRUE)
 }
 \arguments{
-  \item{vec}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} of
-  shooting vectors calculated using \code{\link{SqrtMean}}}
-
-  \item{mu}{mean of warping functions}
+  \item{gam}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} of
+  warping functions}
 
   \item{no}{number of prinicpal components to extract}
 

@@ -3,9 +3,7 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param vec matrix (\eqn{M} x \eqn{N}) of \eqn{M} of shooting vectors 
-#' calculated using \code{\link{SqrtMean}}
-#' @param mu mean of warping functions
+#' @param gam matrix (\eqn{M} x \eqn{N}) of \eqn{M} of warping functions
 #' @param no number of prinicpal components to extract
 #' @param showplot show plots of prinipal directions (default = T)
 #' @return Returns a list containing \item{gam_pca}{warping functions principal directions}
@@ -22,7 +20,10 @@
 #' gam = time_warping(simu_data$f,simu_data$time)$gam
 #' out = SqrtMean(gam)
 #' hfpca = horizFPCA(out$vec,out$mu,no = 3)
-horizFPCA <- function(vec,mu,no,showplot = TRUE){
+horizFPCA <- function(gam,no,showplot = TRUE){
+	tmp = SqrtMean(gam)
+	vec = tmp$vec
+	mu = tmp$mu
 	# Parameters
 	tau = 1:5 # -2, -1, 0, 1, 2 std from the mean
 	no_pca = 1:no
