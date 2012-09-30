@@ -32,7 +32,7 @@ vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
 	mq_new = rowMeans(qn)
 	m_new = sign(fn[round(length(time)/2),])*sqrt(abs(fn[round(length(time)/2),]))  # scaled version
 	mqn = c(mq_new,mean(m_new))
-	K = cov_samp(t(rbind(qn,m_new))) #out$sigma
+	K = cov(t(rbind(qn,m_new))) #out$sigma
 	
 	out = svd(K)
 	s = out$d

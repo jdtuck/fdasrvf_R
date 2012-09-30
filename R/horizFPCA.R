@@ -10,6 +10,8 @@
 #' \item{psi_pca}{srvf principal directions}
 #' \item{latent}{latent values}
 #' \item{U}{eigenvectors}
+#' \item{vec}{shooting vectors}
+#' \item{mu}{Karcher Mean}
 #' @keywords srvf alignment
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  May 2012. Generative Models for Function Data using Phase and Amplitude Separation, 
@@ -29,7 +31,7 @@ horizFPCA <- function(gam,no,showplot = TRUE){
 	no_pca = 1:no
 	
 	# TFPCA
-	K = cov_samp(t(vec)) #out$sigma
+	K = cov(t(vec)) #out$sigma
 	
 	out = svd(K)
 	s = out$d
@@ -61,6 +63,8 @@ horizFPCA <- function(gam,no,showplot = TRUE){
 	hfpca$psi_pca = psi_pca
 	hfpca$latent = s
 	hfpca$U = U
+	hfpca$vec = vec
+	hfpca$mu = mu
 	
 	if (showplot){
 		layout(matrix(c(1,2,3), 1, 3, byrow = TRUE))

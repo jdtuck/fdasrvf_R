@@ -17,7 +17,8 @@
   Returns a list containing \item{gam_pca}{warping
   functions principal directions} \item{psi_pca}{srvf
   principal directions} \item{latent}{latent values}
-  \item{U}{eigenvectors}
+  \item{U}{eigenvectors} \item{vec}{shooting vectors}
+  \item{mu}{Karcher Mean}
 }
 \description{
   This function calculates vertical functional principal
