@@ -39,7 +39,7 @@ void dp_all_edge_weights(
   int dim, 
   double *tv1, int *idxv1, int ntv1, 
   double *tv2, int *idxv2, int ntv2, 
-  double *W );
+  double *W, double lam );
 
 /**
  * Computes cost of best path from (0,0) to all other gridpoints.
@@ -71,7 +71,7 @@ double dp_costs(
   int dim, 
   double *tv1, int *idxv1, int ntv1, 
   double *tv2, int *idxv2, int ntv2, 
-  double *E, int *P );
+  double *E, int *P, double lam );
 
 /**
  * Computes the weight of the edge from (a,c) to (b,d) in the DP grid.
@@ -96,7 +96,7 @@ double dp_costs(
   int dim,
   double a, double b, 
   double c, double d, 
-  int aidx, int cidx );
+  int aidx, int cidx, double lam );
   
 
 /**

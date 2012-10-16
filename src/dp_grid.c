@@ -11,7 +11,7 @@ void dp_all_edge_weights(
   int dim, 
   double *tv1, int *idxv1, int ntv1, 
   double *tv2, int *idxv2, int ntv2, 
-  double *W )
+  double *W, double lam )
 {
   int sr, sc;  /* source row and column */
   int tr, tc;  /* target row and column */
@@ -47,7 +47,7 @@ void dp_all_edge_weights(
         /* grid(sr,sc,tr,tc) */
         W[sr*l1+sc*l2+tr*l3+tc] = 
          dp_edge_weight( Q1, T1, nsamps1, Q2, T2, nsamps2, dim, 
-           tv1[sc], tv1[tc], tv2[sr], tv2[tr], idxv1[sc], idxv2[sr] );
+           tv1[sc], tv1[tc], tv2[sr], tv2[tr], idxv1[sc], idxv2[sr], lam );
         
         /*
         printf( "(%0.2f,%0.2f) --> (%0.2f,%0.2f) = %0.2f\n", 
@@ -65,7 +65,7 @@ double dp_costs(
   int dim, 
   double *tv1, int *idxv1, int ntv1, 
   double *tv2, int *idxv2, int ntv2, 
-  double *E, int *P )
+  double *E, int *P, double lam )
 {
   int sr, sc;  /* source row and column */
   int tr, tc;  /* target row and column */
@@ -73,14 +73,14 @@ double dp_costs(
   int i;
   
   E[0] = 0.0;
-  for ( i=1; i<ntv1; E[i++]=1e9 );
-  for ( i=1; i<ntv2; E[ntv1*i++]=1e9 );
+  for ( i=1; i<ntv1; E[i++]=1e6 );
+  for ( i=1; i<ntv2; E[ntv1*i++]=1e6 );
 
   for ( tr=1; tr<ntv2; ++tr )
   {
     for ( tc=1; tc<ntv1; ++tc )
     {
-      E[ntv1*tr + tc] = 1e9;
+      E[ntv1*tr + tc] = 1e6;
 
       for ( i=0; i<DP_NBHD_COUNT; ++i )
       {
@@ -90,7 +90,7 @@ double dp_costs(
         if ( sr < 0 || sc < 0 ) continue;
 
         w = dp_edge_weight( Q1, T1, nsamps1, Q2, T2, nsamps2, dim, 
-          tv1[sc], tv1[tc], tv2[sr], tv2[tr], idxv1[sc], idxv2[sr] );
+          tv1[sc], tv1[tc], tv2[sr], tv2[tr], idxv1[sc], idxv2[sr], lam );
 
         cand_cost = E[ntv1*sr+sc] + w;
         if ( cand_cost < E[ntv1*tr+tc] )
@@ -124,7 +124,7 @@ double dp_edge_weight(
   int dim, 
   double a, double b, 
   double c, double d,
-  int aidx, int cidx )
+  int aidx, int cidx, double lam)
 {
   double res = 0.0;
   int Q1idx, Q2idx;
@@ -180,7 +180,7 @@ double dp_edge_weight(
     {
       /* Q1 and Q2 are column-major arrays! */
       dqi = Q1[Q1idx*dim+i] - rslope * Q2[Q2idx*dim+i];
-      dq += dqi*dqi;
+      dq += dqi*dqi + lam*(1-rslope)*(1-rslope);
     }
     res += (t1next - t1) * dq;
 

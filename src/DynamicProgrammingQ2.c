@@ -4,13 +4,14 @@
 #include <R.h>
 #include "dp_grid.h"
 
-void DynamicProgrammingQ2(double *Q1, double *T1, double *Q2, double *T2, int *m1, int *n1, int *n2, double *tv1, double *tv2, int *n1v, int *n2v, double *G, double *T, int *size){
+void DynamicProgrammingQ2(double *Q1, double *T1, double *Q2, double *T2, int *m1, int *n1, int *n2, double *tv1, double *tv2, int *n1v, int *n2v, double *G, double *T, int *size, double *lam1){
   int nsamps1;
   int nsamps2;
   int *idxv1 = 0;
   int *idxv2 = 0;
   int ntv1;
   int ntv2;
+  double lam;
   int dim = 0;
   double *E = 0; /* E[ntv1*j+i] = cost of best path to (tv1[i],tv2[j]) */
   int *P = 0; /* P[ntv1*j+i] = predecessor of (tv1[i],tv2[j]) along best path */
@@ -25,6 +26,7 @@ void DynamicProgrammingQ2(double *Q1, double *T1, double *Q2, double *T2, int *m
   nsamps2 = *n2; /* = columns(T2) = columns(Q2)+1 */
   ntv1 = *n1v;
   ntv2 = *n2v;
+  lam = *lam1;
   Galloc_size = ntv1>ntv2 ? ntv1 : ntv2;
 
   idxv1=(int*)malloc(ntv1*sizeof(int));
@@ -38,7 +40,7 @@ void DynamicProgrammingQ2(double *Q1, double *T1, double *Q2, double *T2, int *m
 
   // /* Compute cost of best path from (0,0) to every other grid point */
   pres = dp_costs( Q1, T1, nsamps1, Q2, T2, nsamps2, 
-    dim, tv1, idxv1, ntv1, tv2, idxv2, ntv2, E, P );
+    dim, tv1, idxv1, ntv1, tv2, idxv2, ntv2, E, P, lam );
 
   // /* Reconstruct best path from (0,0) to (1,1) */
   *size = dp_build_gamma( P, tv1, ntv1, tv2, ntv2, G, T );

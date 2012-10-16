@@ -79,7 +79,7 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 	mf = f[,min_ind]
 	
 	gam<-foreach(k = 1:N, .combine=cbind) %dopar% {
-		gam_tmp = optimum.reparam(mq,time,q[,k],time)
+		gam_tmp = optimum.reparam(mq,time,q[,k],time,lambda)
 	}
 	
 	gam = t(gam)
@@ -113,7 +113,7 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 		
 		# Matching Step
 		outfor<-foreach(k = 1:N, .combine=cbind) %dopar% {
-			gam = optimum.reparam(mq[,r],time,q[,k,1],time)
+			gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda)
 			gam_dev = gradient(gam,1/(M-1))
 			f_temp = approx(time,f[,k,1],xout=(time[length(time)]-time[1])*gam + 
 				time[1])$y
@@ -156,7 +156,7 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 		cat("additional run when lambda = 0\n")
 		r = r+1
 		outfor<-foreach(k = 1:N, .combine=cbind) %dopar% {
-			gam = optimum.reparam(mq[,r],time,q[,k,1],time)
+			gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda)
 			gam_dev = gradient(gam,1/(M-1))
 			list(gam,gam_dev)
 		}
