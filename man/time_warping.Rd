@@ -16,7 +16,7 @@
   \item{lambda}{controls the elasticity (default = 0)}
 
   \item{method}{warp and caluclate to Karcher Mean or
-  Median (default = "mean")}
+  Median (options = "mean" or "median", default = "mean")}
 
   \item{showplot}{shows plots of functions (default = T)}
 

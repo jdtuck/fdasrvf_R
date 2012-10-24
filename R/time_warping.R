@@ -6,7 +6,8 @@
 #' @param f matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param lambda controls the elasticity (default = 0)
-#' @param method warp and caluclate to Karcher Mean or Median (default = "mean")
+#' @param method warp and caluclate to Karcher Mean or Median (options = "mean"
+#' or "median", default = "mean")
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
