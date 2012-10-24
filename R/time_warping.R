@@ -6,6 +6,7 @@
 #' @param f matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param lambda controls the elasticity (default = 0)
+#' @param method warp and caluclate to Karcher Mean or Median (default = "mean")
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
@@ -18,8 +19,8 @@
 #' \item{fn}{aligned functions}
 #' \item{qn}{aligned srvfs}
 #' \item{q0}{original srvfs}
-#' \item{fmean}{function mean}
-#' \item{mqn}{srvf mean}
+#' \item{fmean}{function mean or median}
+#' \item{mqn}{srvf mean or median}
 #' \item{gam}{warping functions}
 #' \item{orig.var}{Original Variance of Functions}
 #' \item{amp.var}{Amplitude Variance}
@@ -32,8 +33,8 @@
 #' @examples
 #' data("simu_data")
 #' out = time_warping(simu_data$f,simu_data$time)
-time_warping <- function(f, time, lambda = 0, showplot = TRUE,
-												 smooth_data = FALSE, sparam = 25, 
+time_warping <- function(f, time, lambda = 0, method = "mean",
+												 showplot = TRUE, smooth_data = FALSE, sparam = 25, 
 												 parallel = FALSE,cores=2){
 	library(numDeriv)
 	library(foreach)
@@ -49,6 +50,9 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 	{
 		registerDoSEQ()
 	}
+	method <- pmatch(method, c("mean", "median")) # 1 - mean, 2 - median
+	if (is.na(method)) 
+		stop("invalid method selection")
 	
 	cat(sprintf("lambda = %5.1f \n",lambda))
 	
@@ -90,7 +94,10 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 	mq[is.nan(mq)] <- 0
 	
 	# Compute Mean
-	cat(sprintf("Computing Karcher mean of %d functions in SRVF space...\n",N))
+	if (method == 1)
+		cat(sprintf("Computing Karcher mean of %d functions in SRVF space...\n",N))
+	if (method == 2)
+		cat(sprintf("Computing median of %d functions in SRVF space...\n",N))
 	MaxItr = 20
 	ds = rep(0,MaxItr+2)
 	ds[1] = Inf
@@ -133,53 +140,73 @@ time_warping <- function(f, time, lambda = 0, showplot = TRUE,
 		q[,,r+1] = q_temp
 		f[,,r+1] = f_temp
 		tmp = (1-sqrt(gam_dev))^2
-		ds_tmp  = sum(simpson(time,(matrix(mq[,r],M,N)-q[,,r+1])^2)) + 
-			lambda*sum(simpson(time, t(tmp)))
-		if (is.complex(ds_tmp)){
-			ds[r+1] = abs(ds_tmp)
-		}
-		else{
-			ds[r+1] = ds_tmp
+		
+		if (method == 1){ # Mean
+			ds_tmp  = sum(simpson(time,(matrix(mq[,r],M,N)-q[,,r+1])^2)) + 
+				lambda*sum(simpson(time, t(tmp)))
+			if (is.complex(ds_tmp)){
+				ds[r+1] = abs(ds_tmp)
+			}
+			else{
+				ds[r+1] = ds_tmp
+			}
+			
+			# Minimization Step
+			# compute the mean of the matched function
+			mq[,r+1] = rowMeans(q[,,r+1])
+			
+			qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
 		}
 		
-		# Minimization Step
-		# compute the mean of the matched function
-		mq[,r+1] = rowMeans(q[,,r+1])
+		if (method == 2){ # Median
+			ds_tmp = sqrt(sum(simpson(time,(matrix(mq[,r],M,N)-q[,,r+1])^2))) + 
+				lambda*sum(simpson(time, t(tmp)))
+			if (is.complex(ds_tmp)){
+				ds[r+1] = abs(ds_tmp)
+			}
+			else{
+				ds[r+1] = ds_tmp
+			}
+			
+			# Minimization Step
+			# compute the median of the matched function
+			dist_iinv = (sum(1/ds[r+1]))^(-1)
+			mq[,r+1] = (rowSums(q[,,r+1]/ds[r+1]))*dist_iinv
+			
+			qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
+		}
 		
-		qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
-		if (qun[r] < 1e-2 || r >=20){
+		if (qun[r] < 1e-2 || r >=MaxItr){
 			break
 		}
 	}
 	
-	if (lambda == 0){
-		cat("additional run when lambda = 0\n")
-		r = r+1
-		outfor<-foreach(k = 1:N, .combine=cbind) %dopar% {
-			gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda)
-			gam_dev = gradient(gam,1/(M-1))
-			list(gam,gam_dev)
-		}
-		gam = unlist(outfor[1,]);
-		dim(gam)=c(M,N)
-		gam = t(gam)
-		gam_dev = unlist(outfor[2,]);
-		dim(gam_dev)=c(M,N)
-		gam_dev = t(gam_dev)
-		
-		gamI = SqrtMeanInverse(gam)
-		gamI_dev = gradient(gamI, 1/(M-1))
-		mq[,r+1] = approx(time,mq[,r],xout=(time[length(time)]-time[1])*gamI + 
+	# One last run, centering of gam
+	r = r+1
+	outfor<-foreach(k = 1:N, .combine=cbind) %dopar% {
+		gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda)
+		gam_dev = gradient(gam,1/(M-1))
+		list(gam,gam_dev)
+	}
+	gam = unlist(outfor[1,]);
+	dim(gam)=c(M,N)
+	gam = t(gam)
+	gam_dev = unlist(outfor[2,]);
+	dim(gam_dev)=c(M,N)
+	gam_dev = t(gam_dev)
+	
+	gamI = SqrtMeanInverse(gam)
+	gamI_dev = gradient(gamI, 1/(M-1))
+	mq[,r+1] = approx(time,mq[,r],xout=(time[length(time)]-time[1])*gamI + 
+		time[1])$y*sqrt(gamI_dev)
+	
+	for (k in 1:N){
+		q[,k,r+1] = approx(time,q[,k,r],xout=(time[length(time)]-time[1])*gamI + 
 			time[1])$y*sqrt(gamI_dev)
-		
-		for (k in 1:N){
-			q[,k,r+1] = approx(time,q[,k,r],xout=(time[length(time)]-time[1])*gamI + 
-				time[1])$y*sqrt(gamI_dev)
-			f[,k,r+1] = approx(time,f[,k,r],xout=(time[length(time)]-time[1])*gamI + 
-				time[1])$y
-			gam[k,] = approx(time,gam[k,],xout=(time[length(time)]-time[1])*gamI + 
-				time[1])$y
-		}
+		f[,k,r+1] = approx(time,f[,k,r],xout=(time[length(time)]-time[1])*gamI + 
+			time[1])$y
+		gam[k,] = approx(time,gam[k,],xout=(time[length(time)]-time[1])*gamI + 
+			time[1])$y
 	}
 	
 	# Aligned data & stats

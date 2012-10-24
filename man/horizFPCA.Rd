@@ -27,8 +27,7 @@
 \examples{
 data("simu_data")
 gam = time_warping(simu_data$f,simu_data$time)$gam
-out = SqrtMean(gam)
-hfpca = horizFPCA(out$vec,out$mu,no = 3)
+hfpca = horizFPCA(gam,no = 3)
 }
 \references{
   Tucker, J. D., Wu, W., Srivastava, A., May 2012.

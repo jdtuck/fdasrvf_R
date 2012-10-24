@@ -28,3 +28,4 @@ Collate:
     'utility_functions.R'
     'vertFPCA.R'
     'f_to_srvf.R'
+    'outlier.detection.R'

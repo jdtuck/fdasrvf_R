@@ -2,9 +2,9 @@
 \alias{time_warping}
 \title{Group-wise function alignment}
 \usage{
-  time_warping(f, time, lambda = 0, showplot = TRUE,
-    smooth_data = FALSE, sparam = 25, parallel = FALSE,
-    cores = 2)
+  time_warping(f, time, lambda = 0, method = "mean",
+    showplot = TRUE, smooth_data = FALSE, sparam = 25,
+    parallel = FALSE, cores = 2)
 }
 \arguments{
   \item{f}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions
@@ -14,6 +14,9 @@
   points}
 
   \item{lambda}{controls the elasticity (default = 0)}
+
+  \item{method}{warp and caluclate to Karcher Mean or
+  Median (default = "mean")}
 
   \item{showplot}{shows plots of functions (default = T)}
 
@@ -33,11 +36,11 @@
 \value{
   Returns a list containing \item{f0}{original functions}
   \item{fn}{aligned functions} \item{qn}{aligned srvfs}
-  \item{q0}{original srvfs} \item{fmean}{function mean}
-  \item{mqn}{srvf mean} \item{gam}{warping functions}
-  \item{orig.var}{Original Variance of Functions}
-  \item{amp.var}{Amplitude Variance} \item{phase.var}{Phase
-  Variance}
+  \item{q0}{original srvfs} \item{fmean}{function mean or
+  median} \item{mqn}{srvf mean or median}
+  \item{gam}{warping functions} \item{orig.var}{Original
+  Variance of Functions} \item{amp.var}{Amplitude Variance}
+  \item{phase.var}{Phase Variance}
 }
 \description{
   This function aligns a collection of functions using the

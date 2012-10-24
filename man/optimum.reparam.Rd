@@ -2,7 +2,7 @@
 \alias{optimum.reparam}
 \title{Align two functions}
 \usage{
-  optimum.reparam(Q1, T1, Q2, T2, lambda)
+  optimum.reparam(Q1, T1, Q2, T2, lambda = 0)
 }
 \arguments{
   \item{Q1}{srvf of function 1}
@@ -13,7 +13,7 @@
 
   \item{T2}{sample points of function 2}
 
-  \item{lambda}{controls amount of warping}
+  \item{lambda}{controls amount of warping (default = 0)}
 }
 \value{
   gam warping function
