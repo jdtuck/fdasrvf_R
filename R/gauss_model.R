@@ -11,6 +11,7 @@
 #' @param sort_samples sort samples (default = F)
 #' @return Returns a list containing \item{fs}{random aligned samples}
 #' \item{gams}{random warping function samples}
+#' \item{ft}{random function samples}
 #' @keywords pca
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  May 2012. Generative Models for Function Data using Phase and Amplitude Separation, 

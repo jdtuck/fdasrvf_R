@@ -24,6 +24,7 @@
 \value{
   Returns a list containing \item{fs}{random aligned
   samples} \item{gams}{random warping function samples}
+  \item{ft}{random function samples}
 }
 \description{
   This function models the functional data using a Gaussian
