@@ -140,6 +140,27 @@ gradient <- function(f,binsize){
 	return(g)
 }
 
+gradient.spline <- function(f,binsize){
+	n = nrow(f)
+	if (is.null(n)){
+		N = 1
+		tmp.spline = smooth.spline(f)
+		f.out = tmp.spline$y
+		g = predict(tmp.spline,deriv=1)$y/binsize
+	}else{
+		N = ncol(f)
+		f.out = matrix(0,nrow(f),ncol(f))
+		g = matrix(0,nrow(f),ncol(f))
+		for (jj in 1:N){
+			tmp.spline = smooth.spline(f[,jj])
+			f.out[,jj] = tmp.spline$y
+			g[,jj] = predict(tmp.spline,deriv=1)$y/binsize
+		}
+	}
+	
+	return(list(g=g, f=f.out))
+}
+
 SqrtMeanInverse <- function(gam){
 	n = nrow(gam)
 	T1 = ncol(gam)
@@ -158,10 +179,9 @@ SqrtMeanInverse <- function(gam){
 	for (iter in 1:maxiter){
 		for (i in 1:n){
 			v = psi[i,] - mu
-# 			dot<- sum(mu*psi[i,])*dt
-# 			dot.limited<- ifelse(dot>1, 1, ifelse(dot<-1, -1, dot))
-# 			len = acos(dot.limited)
-			len = acos(sum(mu*psi[i,])*dt)
+			dot<- sum(mu*psi[i,])*dt
+			dot.limited<- ifelse(dot>1, 1, ifelse(dot<-1, -1, dot))
+			len = acos(dot.limited)
 			if (len > 0.0001){
 				vec[i,] = (len/sin(len))*(psi[i,] - cos(len)*mu)
 			}else{

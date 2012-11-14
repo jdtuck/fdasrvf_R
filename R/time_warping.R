@@ -73,8 +73,9 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 	}
 	
 	# Compute q-function of the functional data
-	fy = gradient(f,binsize)
-	q = fy/sqrt(abs(fy)+eps)
+	tmp = gradient.spline(f,binsize)
+	f = tmp$f
+	q = tmp$g/sqrt(abs(tmp$g)+eps)
 	
 	cat("\nInitializing...\n")
 	mnq = rowMeans(q)
@@ -91,7 +92,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 	gamI = SqrtMeanInverse(gam)
 	gamI_dev = gradient(gamI, 1/(M-1))
 	mf = approx(time,mf,xout=(time[length(time)]-time[1])*gamI + time[1])$y
-	mq = gradient(mf,binsize)/sqrt(abs(gradient(mf,binsize))+eps)
+	mq = f_to_srvf(mf,time)
 	mq[is.nan(mq)] <- 0
 	
 	# Compute Mean
@@ -125,7 +126,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 			gam_dev = gradient(gam,1/(M-1))
 			f_temp = approx(time,f[,k,1],xout=(time[length(time)]-time[1])*gam + 
 				time[1])$y
-			q_temp = gradient(f_temp,binsize)/sqrt(abs(gradient(f_temp,binsize))+eps)
+			q_temp = f_to_srvf(f_temp,time)
 			list(gam,gam_dev,q_temp,f_temp)
 		}
 		gam = unlist(outfor[1,]);

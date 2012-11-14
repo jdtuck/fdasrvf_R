@@ -30,7 +30,7 @@ SqrtMean <- function(gam){
 	t = 1
 	vec = matrix(0,TT-1,n)
 	lvm = rep(0,5)
-	for (iter in 1:5){
+	for (iter in 1:3){
 		for (i in 1:n){
 			v = psi[,i] - mu
 			len = acos(sum(mu*psi[,i])/TT)

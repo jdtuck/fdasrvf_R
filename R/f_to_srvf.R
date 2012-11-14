@@ -16,7 +16,7 @@
 f_to_srvf <- function(f,time){
 	binsize = mean(diff(time))
 	eps = .Machine$double.eps
-	fy = gradient(f,binsize)
-	q = fy/sqrt(abs(fy)+eps)
+	tmp = gradient.spline(f,binsize)
+	q = tmp$g/sqrt(abs(tmp$g)+eps)
 	return(q)
 }
