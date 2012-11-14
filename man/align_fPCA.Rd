@@ -25,8 +25,8 @@
   (default = 25)}
 
   \item{parallel}{enable parallel mode using
-  \code{\link{foreach}} and \code{doMC} pacakge if on
-  windows or \code{doSNOW} if on windows}
+  \code{\link{foreach}} and \code{doMC} pacakge if on linux
+  or mac or \code{doSNOW} if on windows}
 
   \item{cores}{set number of cores to use with \code{doMC}
   or \code{doSNOW}(default = 2)}

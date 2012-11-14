@@ -10,7 +10,7 @@
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using \code{\link{foreach}} and 
-#'   \code{doMC} pacakge if on windows or \code{doSNOW} if on 
+#'   \code{doMC} pacakge if on linux or mac or \code{doSNOW} if on 
 #'   windows
 #' @param cores set number of cores to use with \code{doMC} or
 #' \code{doSNOW}(default = 2)
