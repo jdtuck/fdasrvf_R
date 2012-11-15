@@ -18,9 +18,8 @@
   with corresponding shooting vectors
 }
 \examples{
-data("simu_data")
-gam = time_warping(simu_data$f,simu_data$time)$gam
-out = SqrtMean(gam)
+data("simu_warp")
+out = SqrtMean(simu_warp$gam)
 }
 \references{
   Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,

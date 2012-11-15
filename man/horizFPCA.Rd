@@ -25,9 +25,8 @@
   component analysis on aligned data
 }
 \examples{
-data("simu_data")
-gam = time_warping(simu_data$f,simu_data$time)$gam
-hfpca = horizFPCA(gam,no = 3)
+data("simu_warp")
+hfpca = horizFPCA(simu_warp$gam,no = 3)
 }
 \references{
   Tucker, J. D., Wu, W., Srivastava, A., May 2012.

@@ -33,8 +33,8 @@
 }
 \examples{
 data("simu_data")
-out = time_warping(simu_data$f,simu_data$time)
-out1 = gauss_model(out$fn,simu_data$time,out$qn,out$gam,n = 10)
+data("simu_warp")
+out1 = gauss_model(simu_warp$fn,simu_data$time,simu_warp$qn,simu_warp$gam,n = 10)
 }
 \references{
   Tucker, J. D., Wu, W., Srivastava, A., May 2012.

@@ -16,8 +16,8 @@
 #' @export
 #' @examples
 #' data("toy_data")
-#' out = time_warping(toy_data$f,toy_data$time, method = "median")
-#' q_outlier = outlier.detection(out$q0,toy_data$time,out$mqn,k=.1)
+#' data("toy_warp")
+#' q_outlier = outlier.detection(toy_warp$q0,toy_data$time,toy_warp$mqn,k=.1)
 outlier.detection <- function(q, time, mq, k = 1.5){
 	N = ncol(q)
 	ds = rep(0,N)

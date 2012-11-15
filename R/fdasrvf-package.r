@@ -45,3 +45,34 @@ NULL
 #' @usage data("toy_data")
 #' @format A list which contains f and time
 NULL
+#' Aligned Distrubted Gaussian Peak Dataset
+#' 
+#' A functional dataset where the individual functions are given by a gaussian 
+#' peak with locations along the \eqn{x}-axis. The variables are as follows: 
+#' f containing the 29 functions of 101 samples and time which describes the 
+#' sampling which as been aligned
+#' 
+#' 
+#' @docType data
+#' @keywords datasets
+#' @name toy_warp
+#' @usage data("toy_warp")
+#' @format A list which contains the outputs of the time_warping function
+NULL
+#' Aligned Simulated two Gaussian Dataset
+#' 
+#' A functional dataset where the individual functions are given by: 
+#' \eqn{y_i(t) = z_{i,1} e^{-(t-1.5)^2/2} + z_{i,2}e^{-(t+1.5)^2/2}}, \eqn{t \in [-3, 3], ~i=1,2,\dots, 21},
+#' where \eqn{z_{i,1}} and \eqn{z_{i,2}} are \emph{i.i.d.} normal with mean one and standard deviation 
+#' 0.25. Each of these functions is then warped according to: \eqn{\gamma_i(t) = 6({e^{a_i(t+3)/6} -1 \over e^{a_i} - 1}) - 3} 
+#' if  \eqn{a_i \neq 0}, otherwise \eqn{\gamma_i = \gamma_{id}} (\eqn{gamma_{id}(t) = t})
+#' is the identity warping). The variables are as follows: f containing the 
+#' 21 functions of 101 samples and time which describes the sampling which has been aligned
+#' 
+#' 
+#' @docType data
+#' @keywords datasets
+#' @name simu_warp
+#' @usage data("simu_warp")
+#' @format A list which contains the outputs of the time_warping function
+NULL

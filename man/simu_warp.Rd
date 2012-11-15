@@ -1,0 +1,21 @@
+\docType{data}
+\name{simu_warp}
+\alias{simu_warp}
+\title{Aligned Simulated two Gaussian Dataset}
+\format{A list which contains the outputs of the time_warping function}
+\description{
+  A functional dataset where the individual functions are
+  given by: \eqn{y_i(t) = z_{i,1} e^{-(t-1.5)^2/2} +
+  z_{i,2}e^{-(t+1.5)^2/2}}, \eqn{t \in [-3, 3],
+  ~i=1,2,\dots, 21}, where \eqn{z_{i,1}} and \eqn{z_{i,2}}
+  are \emph{i.i.d.} normal with mean one and standard
+  deviation 0.25. Each of these functions is then warped
+  according to: \eqn{\gamma_i(t) = 6({e^{a_i(t+3)/6} -1
+  \over e^{a_i} - 1}) - 3} if \eqn{a_i \neq 0}, otherwise
+  \eqn{\gamma_i = \gamma_{id}} (\eqn{gamma_{id}(t) = t}) is
+  the identity warping). The variables are as follows: f
+  containing the 21 functions of 101 samples and time which
+  describes the sampling which has been aligned
+}
+\keyword{datasets}
+

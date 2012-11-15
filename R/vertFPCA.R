@@ -19,9 +19,9 @@
 #'  submitted to Computational Statistics and Data Analysis.
 #' @export
 #' @examples
+#' data("simu_warp")
 #' data("simu_data")
-#' out = time_warping(simu_data$f,simu_data$time)
-#' vfpca = vertFPCA(out$fn,simu_data$time,out$qn,no = 3)
+#' vfpca = vertFPCA(simu_warp$fn,simu_data$time,simu_warp$qn,no = 3)
 vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
 	# Parameters
 	coef = -2:2

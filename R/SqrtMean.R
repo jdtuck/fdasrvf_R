@@ -13,9 +13,8 @@
 #'  arXiv:1103.3817v2 [math.ST].
 #' @export
 #' @examples
-#' data("simu_data")
-#' gam = time_warping(simu_data$f,simu_data$time)$gam
-#' out = SqrtMean(gam)
+#' data("simu_warp")
+#' out = SqrtMean(simu_warp$gam)
 SqrtMean <- function(gam){
 	TT = nrow(gam)
 	n = ncol(gam)
