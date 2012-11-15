@@ -179,9 +179,7 @@ SqrtMeanInverse <- function(gam){
 	for (iter in 1:maxiter){
 		for (i in 1:n){
 			v = psi[i,] - mu
-			dot<- sum(mu*psi[i,])*dt
-			dot.limited<- ifelse(dot>1, 1, ifelse(dot<-1, -1, dot))
-			len = acos(dot.limited)
+			len = acos(sum(mu*psi[i,])*dt)
 			if (len > 0.0001){
 				vec[i,] = (len/sin(len))*(psi[i,] - cos(len)*mu)
 			}else{
