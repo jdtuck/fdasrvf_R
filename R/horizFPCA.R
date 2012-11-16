@@ -66,11 +66,11 @@ horizFPCA <- function(gam,no,showplot = TRUE){
 	
 	if (showplot){
 		layout(matrix(c(1,2,3), 1, 3, byrow = TRUE))
-		matplot(seq(0,1,len=TT),t(gam_pca[,,1]),type="l")
+		matplot(seq(0,1,len=TT),t(gam_pca[,,1]),type="l",xlab = "t",ylab = "t")
 		title(main="PD 1")
-		matplot(seq(0,1,len=TT),t(gam_pca[,,2]),type="l")
+		matplot(seq(0,1,len=TT),t(gam_pca[,,2]),type="l",xlab = "t",ylab = "t")
 		title(main="PD 2")
-		matplot(seq(0,1,len=TT),t(gam_pca[,,3]),type="l")
+		matplot(seq(0,1,len=TT),t(gam_pca[,,3]),type="l",xlab = "t",ylab = "t")
 		title(main="PD 3")
 		layout(1)
 		cumm_coef = 100*cumsum(s)/sum(s)

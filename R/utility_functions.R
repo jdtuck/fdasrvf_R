@@ -171,29 +171,34 @@ SqrtMeanInverse <- function(gam){
 	}
 	
 	# Find direction
-	mu = psi[1,]
+	mnpsi = colMeans(psi)
+	dqq = sqrt(colSums((t(psi) - matrix(mnpsi,ncol=n,nrow=T1-1))^2))
+	min_ind = which.min(dqq)
+	mu = psi[min_ind,]
 	tt = 1
-	maxiter = 5
+	maxiter = 20
+	eps = .Machine$double.eps
 	lvm = rep(0,1,maxiter)
 	vec = matrix(0,n,T1-1)
 	for (iter in 1:maxiter){
 		for (i in 1:n){
 			v = psi[i,] - mu
-			len = acos(sum(mu*psi[i,])*dt)
+			dot<- simpson(seq(0,1,length.out=T1-1),mu*psi[i,])
+			dot.limited<- ifelse(dot>1, 1, ifelse(dot<(-1), -1, dot))
+			len = acos(dot.limited)
 			if (len > 0.0001){
 				vec[i,] = (len/sin(len))*(psi[i,] - cos(len)*mu)
 			}else{
-				vec[i,] = rep(0,1,T1-1)
+				vec[i,] = rep(0,T1-1)
 			}	
 		}
 		vm = colMeans(vec)
 		lvm[iter] = sqrt(sum(vm*vm)*dt)
-		if (lvm[iter] > 0.0001){
-			mu = cos(tt*lvm[iter])*mu + (sin(tt*lvm[iter])/lvm[iter])*vm
+		mu = cos(tt*lvm[iter])*mu + (sin(tt*lvm[iter])/lvm[iter])*vm
+		if (lvm[iter] < 1e-6 || iter >=maxiter){
+			break
 		}
-		
 	}
-	
 	gam_mu = c(0,cumsum(mu*mu))/T1
 	gam_mu = (gam_mu - min(gam_mu))/(max(gam_mu)-min(gam_mu))
 	gamI = invertGamma(gam_mu)

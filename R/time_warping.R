@@ -177,7 +177,6 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 			
 			qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
 		}
-		
 		if (qun[r] < 1e-2 || r >=MaxItr){
 			break
 		}
@@ -258,6 +257,6 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 	}
 	
 	return(list(f0=f[,,1],fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,gam=gam,
-							orig.var=orig.var,amp.var=amp.var,phase.var=phase.var))
+							orig.var=orig.var,amp.var=amp.var,phase.var=phase.var,qun=qun))
 	
 }
