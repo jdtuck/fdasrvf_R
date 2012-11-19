@@ -167,7 +167,7 @@ SqrtMeanInverse <- function(gam){
 	dt = 1/(T1-1)
 	psi = matrix(0,n,T1-1)
 	for (i in 1:n){
-		psi[i,] = sqrt(diff(gam[i,])/dt)
+		psi[i,] = sqrt(diff(gam[i,])/dt+.Machine$double.eps)
 	}
 	
 	# Find direction
@@ -208,8 +208,7 @@ SqrtMeanInverse <- function(gam){
 invertGamma <- function(gam){
 	N = length(gam)
 	x = (0:(N-1))/(N-1)
-	tmp = approx(gam,x,xout=x)
-	gamI = tmp$y
+	gamI = approx(gam,x,xout=x)$y
 	gamI[N] = 1
 	gamI = gamI/gamI[N]
 	return(gamI)
