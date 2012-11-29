@@ -9,7 +9,8 @@
   functions}
 }
 \value{
-  Returns a list containing \item{mu}{mean function}
+  Returns a list containing \item{mu}{Karcher mean psi
+  function} \item{gam_mu}{Karcher mean warping function}
   \item{psi}{srvf of warping functions} \item{vec}{shooting
   vectors}
 }

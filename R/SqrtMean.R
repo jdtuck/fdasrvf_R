@@ -4,7 +4,8 @@
 #' shooting vectors
 #'
 #' @param gam matrix (\eqn{M} x \eqn{N}) of \eqn{M} warping functions
-#' @return Returns a list containing \item{mu}{mean function}
+#' @return Returns a list containing \item{mu}{Karcher mean psi function}
+#' \item{gam_mu}{Karcher mean warping function}
 #' \item{psi}{srvf of warping functions}
 #' \item{vec}{shooting vectors}
 #' @keywords srvf alignment
@@ -59,8 +60,10 @@ SqrtMean <- function(gam){
 		tmp[1:TT-1] = psi[,i]*psi[,i]/TT
 		phi[,i] = cumsum(tmp)
 	}
+	gam_mu = gam_mu = c(0,cumsum(mu*mu))/n
+	gam_mu = (gam_mu - min(gam_mu))/(max(gam_mu)-min(gam_mu))
 	
-	out = list(mu = mu,psi = psi,vec = vec)
+	out = list(mu = mu,gam_mu = gam_mu,psi = psi,vec = vec)
 	return(out)
 	
 }
