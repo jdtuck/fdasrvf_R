@@ -29,9 +29,9 @@ data("simu_warp")
 hfpca = horizFPCA(simu_warp$gam,no = 3)
 }
 \references{
-  Tucker, J. D., Wu, W., Srivastava, A., May 2012.
+  Tucker, J. D., Wu, W., Srivastava, A., Dec 2012.
   Generative Models for Function Data using Phase and
-  Amplitude Separation, submitted to Computational
+  Amplitude Separation, accepted to Computational
   Statistics and Data Analysis.
 }
 \keyword{alignment}

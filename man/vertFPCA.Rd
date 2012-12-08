@@ -39,6 +39,11 @@ vfpca = vertFPCA(simu_warp$fn,simu_data$time,simu_warp$qn,no = 3)
   Generative Models for Function Data using Phase and
   Amplitude Separation, submitted to Computational
   Statistics and Data Analysis.
+
+  Tucker, J. D., Wu, W., Srivastava, A., Dec 2012.
+  Generative Models for Function Data using Phase and
+  Amplitude Separation, accepted to Computational
+  Statistics and Data Analysis.
 }
 \keyword{alignment}
 \keyword{srvf}

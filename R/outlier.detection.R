@@ -13,6 +13,9 @@
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric, 
 #'  arXiv:1103.3817v2 [math.ST].
+#'  @references Tucker, J. D., Wu, W., Srivastava, A.,
+#'  Dec 2012. Generative Models for Function Data using Phase and Amplitude Separation, 
+#'  accepted to Computational Statistics and Data Analysis.
 #' @export
 #' @examples
 #' data("toy_data")
