@@ -1,7 +1,7 @@
 Package: fdasrvf
 Maintainer: J. Derek Tucker <dtucker@stat.fsu.edu>
 Author: J. Derek Tucker <dtucker@stat.fsu.edu>
-Version: 1.2
+Version: 1.3
 License: GPL-3
 Title: Elastic Functional Data Analysis
 Description: A library for functional data analysis using the square root

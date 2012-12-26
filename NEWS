@@ -1,7 +1,11 @@
-fdasrv 1.2
+fdasrv 1.3
 --------------
 
 NEW FEATURES
+* Fixed numerical issues
+* Updated documentation
+
+v1.2
 * Changed SRVF calculation to use splines for derivatives 
 * Added control to the amount of warping via lambda to the time_warping function
 * Fixed documentation bugs and minor bugs in horizontal PCA calculation
