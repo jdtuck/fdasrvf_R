@@ -14,8 +14,8 @@
 #' \item{mu}{Karcher Mean}
 #' @keywords srvf alignment
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
-#'  Dec 2012. Generative Models for Function Data using Phase and Amplitude Separation, 
-#'  accepted to Computational Statistics and Data Analysis.
+#'  Generative Models for Function Data using Phase and Amplitude Separation, 
+#'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001. 
 #' @export
 #' @examples
 #' data("simu_warp")
