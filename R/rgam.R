@@ -17,30 +17,33 @@
 #' @examples
 #' gam = rgam(N=101, sigma=.01, num=35)
 rgam <- function(N, sigma, num){
-	library(mvtnorm)
-	gam = matrix(0,num,N+1)
 	
-	time = N + 1
-	mu = sqrt(rep(1,N)*time/N)
+	gam = matrix(0,num,N)
 	
+	TT = N - 1
+	time = seq(0,1,length.out=TT)
+	mu = sqrt(rep(1,N-1)*TT/(N-1))
+	omega = (2*pi)/TT
 	for (k in 1:num){
-		U = runif(N,min=0,max=3)
-		C = sigma*diag(U)
+		alpha_i = rnorm(1,sd=sigma)
+		v = alpha_i * rep(1,TT)
+		cnt = 1
+		for (l in 2:10){
+			alpha_i = rnorm(1,sd=sigma)
+			if (l %% 2 !=0){#odd
+				v = v + alpha_i*sqrt(2)*cos(cnt*omega*time)
+				cnt = cnt + 1
+			} 
+			if (l %% 2 ==0) #even
+				v = v + alpha_i*sqrt(2)*sin(cnt*omega*time)
+		}
 		
-		v = rmvnorm(1, sigma = C)
-		v = v - (mu%*%t(v))%*%mu/time;
-		vn = pvecnorm(v,2)/sqrt(time);
+		v = v - (mu%*%t(v))%*%mu/TT;
+		vn = pvecnorm(v,2)/sqrt(TT);
 		psi = cos(vn)*mu + sin(vn)*v/vn;
-		gam[k,] = c(0,cumsum(psi*psi))/time
+		gam[k,] = c(0,cumsum(psi*psi))/N
 		
-		# numerical stability
-		gam[k,] = gam[k,] + (1e-4)*(1:T)/T;
-		gam[k,] = (gam[k,] - gam[k,1])/(gam[k,time]-gam[k,1]);
 	}           
-	
-	gam2 = smooth.data(t(gam),10)
-	
-	gam = t(gam2)
 	
 	return(gam)
 }
