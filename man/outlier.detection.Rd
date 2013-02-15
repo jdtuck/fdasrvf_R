@@ -5,7 +5,7 @@
   outlier.detection(q, time, mq, k = 1.5)
 }
 \arguments{
-  \item{q}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} SRVF
+  \item{q}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} SRVF
   functions with \eqn{N} samples}
 
   \item{time}{vector of size \eqn{N} describing the sample

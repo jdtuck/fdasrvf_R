@@ -5,7 +5,7 @@
   smooth.data(f, sparam)
 }
 \arguments{
-  \item{f}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions
+  \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions
   with \eqn{N} samples}
 
   \item{sparam}{number of times to run box filter}

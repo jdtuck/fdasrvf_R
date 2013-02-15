@@ -3,7 +3,7 @@
 #' This function calculates the srvf of warping functions with corresponding 
 #' shooting vectors
 #'
-#' @param gam matrix (\eqn{M} x \eqn{N}) of \eqn{M} warping functions
+#' @param gam matrix (\eqn{N} x \eqn{M}) of \eqn{M} warping functions with \eqn{N} samples
 #' @return Returns a list containing \item{mu}{Karcher mean psi function}
 #' \item{gam_mu}{Karcher mean warping function}
 #' \item{psi}{srvf of warping functions}

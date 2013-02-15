@@ -5,8 +5,8 @@
   SqrtMean(gam)
 }
 \arguments{
-  \item{gam}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} warping
-  functions}
+  \item{gam}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} warping
+  functions with \eqn{N} samples}
 }
 \value{
   Returns a list containing \item{mu}{Karcher mean psi

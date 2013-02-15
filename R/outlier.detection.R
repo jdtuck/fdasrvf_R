@@ -3,7 +3,7 @@
 #' This function calculates outlier's using geodesic distances of the SRVFs from
 #' the median
 #'
-#' @param q matrix (\eqn{M} x \eqn{N}) of \eqn{M} SRVF functions with \eqn{N} 
+#' @param q matrix (\eqn{N} x \eqn{M}) of \eqn{M} SRVF functions with \eqn{N} 
 #' samples
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param mq median calcuated using \code{\link{time_warping}}

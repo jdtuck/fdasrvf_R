@@ -6,13 +6,13 @@
     sort_samples = FALSE)
 }
 \arguments{
-  \item{fn}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} aligned
+  \item{fn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned
   functions with \eqn{N} samples}
 
   \item{time}{vector of size \eqn{N} describing the sample
   points}
 
-  \item{qn}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} aligned
+  \item{qn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned
   srvfs}
 
   \item{gam}{warping functions}

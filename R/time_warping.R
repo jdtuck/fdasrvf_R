@@ -3,7 +3,7 @@
 #' This function aligns a collection of functions using the elastic square-root
 #' velocity (srvf) framework.
 #'
-#' @param f matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions with \eqn{N} samples
+#' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param lambda controls the elasticity (default = 0)
 #' @param method warp and caluclate to Karcher Mean or Median (options = "mean"
@@ -17,12 +17,12 @@
 #' @param cores set number of cores to use with \code{doMC} or
 #' \code{doSNOW}(default = 2)
 #' @return Returns a list containing \item{f0}{original functions}
-#' \item{fn}{aligned functions}
-#' \item{qn}{aligned srvfs}
-#' \item{q0}{original srvfs}
-#' \item{fmean}{function mean or median}
-#' \item{mqn}{srvf mean or median}
-#' \item{gam}{warping functions}
+#' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
+#' \item{qn}{aligned srvfs - similar structure to fn}
+#' \item{q0}{original srvf - similar structure to fn}
+#' \item{fmean}{function mean or median - vector of length \eqn{N}}
+#' \item{mqn}{srvf mean or median - vector of length \eqn{N}}
+#' \item{gam}{warping functions - similar structure to fn}
 #' \item{orig.var}{Original Variance of Functions}
 #' \item{amp.var}{Amplitude Variance}
 #' \item{phase.var}{Phase Variance}

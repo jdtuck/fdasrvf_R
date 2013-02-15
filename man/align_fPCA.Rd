@@ -7,7 +7,7 @@
     cores = 8)
 }
 \arguments{
-  \item{f}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} functions
+  \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions
   with \eqn{N} samples}
 
   \item{time}{vector of size \eqn{N} describing the sample
@@ -33,13 +33,16 @@
 }
 \value{
   Returns a list containing \item{f0}{original functions}
-  \item{fn}{aligned functions} \item{qn}{aligned srvfs}
-  \item{q0}{original srvfs} \item{mqn}{srvf mean}
-  \item{gam}{warping functions} \item{Dx}{cost function}
-  \item{vfpca}{list containing} \item{q_pca}{srvf principal
-  directions} \item{f_pca}{f principal directions}
-  \item{latent}{latent values} \item{coef}{coefficients}
-  \item{U}{eigenvectors}
+  \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M})
+  of \eqn{M} functions with \eqn{N} samples}
+  \item{qn}{aligned srvfs - similar structure to fn}
+  \item{q0}{original srvfs - similar structure to fn}
+  \item{mqn}{srvf mean - vecotr of length \eqn{N}}
+  \item{gam}{warping functions - vecotr of length \eqn{N}}
+  \item{Dx}{cost function} \item{vfpca}{list containing}
+  \item{q_pca}{srvf principal directions} \item{f_pca}{f
+  principal directions} \item{latent}{latent values}
+  \item{coef}{coefficients} \item{U}{eigenvectors}
 }
 \description{
   This function aligns a collection of functions while

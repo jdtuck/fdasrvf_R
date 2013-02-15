@@ -3,9 +3,9 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param fn matrix (\eqn{M} x \eqn{N}) of \eqn{M} aligned functions with \eqn{N} samples
+#' @param fn matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
-#' @param qn matrix (\eqn{M} x \eqn{N}) of \eqn{M} of aligned srvfs
+#' @param qn matrix (\eqn{N} x \eqn{M}) of \eqn{M} of aligned srvfs
 #' @param no number of prinicpal components to extract
 #' @param showplot show plots of prinipal directions (default = T)
 #' @return Returns a list containing \item{q_pca}{srvf principal directions}

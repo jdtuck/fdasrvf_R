@@ -5,13 +5,13 @@
   vertFPCA(fn, time, qn, no, showplot = TRUE)
 }
 \arguments{
-  \item{fn}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} aligned
+  \item{fn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned
   functions with \eqn{N} samples}
 
   \item{time}{vector of size \eqn{N} describing the sample
   points}
 
-  \item{qn}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} of
+  \item{qn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} of
   aligned srvfs}
 
   \item{no}{number of prinicpal components to extract}

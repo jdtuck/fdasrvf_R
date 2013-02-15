@@ -3,7 +3,7 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param gam matrix (\eqn{M} x \eqn{N}) of \eqn{M} of warping functions
+#' @param gam matrix (\eqn{N} x \eqn{N}) of \eqn{M} of warping functions with \eqn{N} time samples 
 #' @param no number of prinicpal components to extract
 #' @param showplot show plots of prinipal directions (default = T)
 #' @return Returns a list containing \item{gam_pca}{warping functions principal directions}

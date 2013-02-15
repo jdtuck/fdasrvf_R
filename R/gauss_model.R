@@ -3,9 +3,9 @@
 #' This function models the functional data using a Gaussian model extracted from
 #' the principal components of the srvfs
 #' 
-#' @param fn matrix (\eqn{M} x \eqn{N}) of \eqn{M} aligned functions with \eqn{N} samples
+#' @param fn matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
-#' @param qn matrix (\eqn{M} x \eqn{N}) of \eqn{M} aligned srvfs
+#' @param qn matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned srvfs
 #' @param gam warping functions
 #' @param n number of random samples (n = 1)
 #' @param sort_samples sort samples (default = F)

@@ -5,8 +5,8 @@
   horizFPCA(gam, no, showplot = TRUE)
 }
 \arguments{
-  \item{gam}{matrix (\eqn{M} x \eqn{N}) of \eqn{M} of
-  warping functions}
+  \item{gam}{matrix (\eqn{N} x \eqn{N}) of \eqn{M} of
+  warping functions with \eqn{N} time samples}
 
   \item{no}{number of prinicpal components to extract}
 
