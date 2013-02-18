@@ -1,7 +1,13 @@
-fdasrv 1.3
+fdasrv 1.4
 --------------
 
 NEW FEATURES
+* Fixed memory leak in Dynamic Programming algorithm
+* Updated random gamma generation to use a fourier basis on the tangent space
+* Changed over parallel support to doParallel
+* Fixed documentation error
+
+v1.3
 * Fixed numerical issues
 * Updated documentation
 

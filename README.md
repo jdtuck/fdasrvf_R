@@ -8,7 +8,7 @@ analysis
 
 Installation
 ------------------------------------------------------------------------------
-v1.3 is on [CRAN](http://cran.r-project.org/web/packages/fdasrvf/index.html) 
+v1.4 is on [CRAN](http://cran.r-project.org/web/packages/fdasrvf/index.html) 
 and can be installed as 
 > `install.packages("fdasrvf")`
 
