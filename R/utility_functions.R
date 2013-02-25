@@ -109,37 +109,6 @@ pvecnorm2 <-function(dt,x){
 	sqrt(sum(abs(x)*abs(x))*dt)
 }
 
-gradient <- function(f,binsize){
-	n = nrow(f)
-	if (is.null(n)){
-		f = as.vector(f)
-		n = length(f)
-		g = rep(0,n)
-		h = binsize*(1:n)
-		# Take forward differences on left and right edges
-		g[1] = (f[2] - f[1])/(h[2]-h[1])
-		g[n] = (f[n] - f[(n-1)])/(h[length(h)]-h[(length(h)-1)])
-		
-		# Take centered differences on interior points
-		h = h[3:n]-h[1:(n-2)]
-		g[2:(n-1)] = (f[3:n]-f[1:(n-2)])/h[1]
-	}else {
-		f = as.matrix(f)
-		p = ncol(f)
-		g = matrix(0,n,p)
-		h = binsize*(1:n)
-		# Take forward differences on left and right edges
-		g[1,] = (f[2,] - f[1,])/(h[2]-h[1])
-		g[n,] = (f[n,] - f[(n-1),])/(h[length(h)]-h[(length(h)-1)])
-		
-		# Take centered differences on interior points
-		h = h[3:n]-h[1:(n-2)]
-		g[2:(n-1),] = (f[3:n,]-f[1:(n-2),])/h[rep(1,p)]
-	}
-	
-	return(g)
-}
-
 gradient.spline <- function(f,binsize){
 	n = nrow(f)
 	if (is.null(n)){
@@ -194,10 +163,16 @@ SqrtMeanInverse <- function(gam){
 		}
 		vm = colMeans(vec)
 		lvm[iter] = sqrt(sum(vm*vm)*dt)
-		mu = cos(tt*lvm[iter])*mu + (sin(tt*lvm[iter])/lvm[iter])*vm
-		if (lvm[iter] < 1e-6 || iter >=maxiter){
+		if (sum(vm) == 0){ # we had a problem, pick id (i.e., they are all id)
+			mu = rep(1,T1-1)
 			break
+		}else{
+			mu = cos(tt*lvm[iter])*mu + (sin(tt*lvm[iter])/lvm[iter])*vm
+			if (lvm[iter] < 1e-6 || iter >=maxiter){
+				break
+			}
 		}
+		
 	}
 	gam_mu = c(0,cumsum(mu*mu))/T1
 	gam_mu = (gam_mu - min(gam_mu))/(max(gam_mu)-min(gam_mu))

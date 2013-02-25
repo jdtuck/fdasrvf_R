@@ -24,6 +24,7 @@
 #' \item{orig.var}{Original Variance of Functions}
 #' \item{amp.var}{Amplitude Variance}
 #' \item{phase.var}{Phase Variance}
+#' \item{qun}{Cost Function Value}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric, 
@@ -42,11 +43,8 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 	library(foreach)
 	if (parallel){
 		library(doParallel)
-		if(.Platform$OS.type == "unix") {
-			registerDoParallel(cores=cores)
-		} else {
-			registerDoParallel(makeCluster(cores))
-		}
+		cl = makeCluster(cores)
+		registerDoParallel(cl)
 	} else
 	{
 		registerDoSEQ()
@@ -84,7 +82,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 	mq = q[,min_ind]
 	mf = f[,min_ind]
 	
-	gam<-foreach(k = 1:N, .combine=cbind) %dopar% {
+	gam<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
 		gam_tmp = optimum.reparam(mq,time,q[,k],time,lambda)
 	}
 	
@@ -121,7 +119,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 		}
 		
 		# Matching Step
-		outfor<-foreach(k = 1:N, .combine=cbind) %dopar% {
+		outfor<-foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
 			gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda)
 			gam_dev = gradient(gam,1/(M-1))
 			f_temp = approx(time,f[,k,1],xout=(time[length(time)]-time[1])*gam + 
@@ -184,7 +182,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 	
 	# One last run, centering of gam
 	r = r+1
-	outfor<-foreach(k = 1:N, .combine=cbind) %dopar% {
+	outfor<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
 		gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda)
 		gam_dev = gradient(gam,1/(M-1))
 		list(gam,gam_dev)
@@ -255,6 +253,11 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 		plot(time,fmean,type="l",col="green",main=bquote(paste(f[mean]," ", 
 																													 lambda == .(lambda))))
 	}
+	
+	if (parallel){
+		stopCluster(cl)
+	}
+	
 	
 	return(list(f0=f[,,1],fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,gam=gam,
 							orig.var=orig.var,amp.var=amp.var,phase.var=phase.var,qun=qun))

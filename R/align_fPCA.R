@@ -39,11 +39,8 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 	library(foreach)
 	if (parallel){
 		library(doParallel)
-		if(.Platform$OS.type == "unix") {
-			registerDoParallel(cores=cores)
-		} else {
-			registerDoParallel(makeCluster(cores))
-		}
+		cl = makeCluster(cores)
+		registerDoParallel(cl)
 	} else
 	{
 		registerDoSEQ()
@@ -103,7 +100,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 	qhat = matrix(mq,M,N) + tmp
 	
 	# Matching Step
-	gam_k<-foreach(k = 1:N, .combine=cbind) %dopar% {
+	gam_k<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
 		gam0 = optimum.reparam(qhat[,k],time,q[,k],time)
 	}
 	
@@ -165,7 +162,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 		qhat = matrix(mq_c,M,N) + tmp
 		
 		# Matching Step
-		gam_k<-foreach(k = 1:N, .combine=cbind) %dopar% {
+		gam_k<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
 			gam0 = optimum.reparam(qhat[,k],time,q[,k,r],time)
 		}
 		gam[,,r] = gam_k
@@ -282,6 +279,10 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 		layout(1)
 		cumm_coef = 100*cumsum(s)/sum(s)
 		plot(cumm_coef,type="l",col="blue",main="Coefficient Cumulative Percentage", ylab = "Percentage")
+	}
+	
+	if (parallel){
+		stopCluster(cl)
 	}
 	
 	return(list(f0=f[,,1],fn=fn,qn=qn,q0=q0,mqn=mqn,gam=gamf,vfpca=vfpca,Dx=Dx))

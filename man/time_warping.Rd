@@ -43,7 +43,8 @@
   length \eqn{N}} \item{gam}{warping functions - similar
   structure to fn} \item{orig.var}{Original Variance of
   Functions} \item{amp.var}{Amplitude Variance}
-  \item{phase.var}{Phase Variance}
+  \item{phase.var}{Phase Variance} \item{qun}{Cost Function
+  Value}
 }
 \description{
   This function aligns a collection of functions using the

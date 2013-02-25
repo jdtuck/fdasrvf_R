@@ -1,7 +1,11 @@
-fdasrv 1.4
+fdasrv 1.4.1
 --------------
 
 NEW FEATURES
+* Fixed bug in doParallel for windows computers
+* Fixed numerical issues for high lambda for no warping required
+
+v1.4
 * Fixed memory leak in Dynamic Programming algorithm
 * Updated random gamma generation to use a fourier basis on the tangent space
 * Changed over parallel support to doParallel
