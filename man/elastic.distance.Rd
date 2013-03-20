@@ -1,0 +1,42 @@
+\name{elastic.distance}
+\alias{elastic.distance}
+\title{Calculates two elastic distance}
+\usage{
+  elastic.distance(f1, f2, time, lambda = 0)
+}
+\arguments{
+  \item{f1}{sample function 1}
+
+  \item{f2}{sample function 2}
+
+  \item{time}{sample points of functions}
+
+  \item{lambda}{controls amount of warping (default = 0)}
+}
+\value{
+  Returns a list containing \item{Dy}{amplitude distance}
+  \item{Dx}{phase distance}
+}
+\description{
+  This functions calculates the distances between
+  functions, \eqn{D_y} and \eqn{D_x}, where function 1 is
+  aligned to function 2
+}
+\examples{
+data("simu_data")
+distances = elastic.distance(simu_data$f[,1],simu_data$f[,2],simu_data$time)
+}
+\references{
+  Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,
+  J. S., May 2011. Registration of functional data using
+  fisher-rao metric, arXiv:1103.3817v2 [math.ST].
+
+  Tucker, J. D., Wu, W., Srivastava, A., Generative Models
+  for Function Data using Phase and Amplitude Separation,
+  Computational Statistics and Data Analysis (2012),
+  10.1016/j.csda.2012.12.001.
+}
+\keyword{alignment,}
+\keyword{distances}
+\keyword{srvf}
+
