@@ -29,3 +29,4 @@ Collate:
     'f_to_srvf.R'
     'outlier.detection.R'
     'gradient.R'
+    'elastic.distance.R'
