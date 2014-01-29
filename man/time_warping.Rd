@@ -2,9 +2,8 @@
 \alias{time_warping}
 \title{Group-wise function alignment}
 \usage{
-  time_warping(f, time, lambda = 0, method = "mean",
-    showplot = TRUE, smooth_data = FALSE, sparam = 25,
-    parallel = FALSE, cores = 2)
+time_warping(f, time, lambda = 0, method = "mean", showplot = TRUE,
+  smooth_data = FALSE, sparam = 25, parallel = FALSE, cores = 2)
 }
 \arguments{
   \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions
@@ -33,36 +32,35 @@
   \code{doParallel} (default = 2)}
 }
 \value{
-  Returns a list containing \item{f0}{original functions}
-  \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M})
-  of \eqn{M} functions with \eqn{N} samples}
-  \item{qn}{aligned srvfs - similar structure to fn}
-  \item{q0}{original srvf - similar structure to fn}
-  \item{fmean}{function mean or median - vector of length
-  \eqn{N}} \item{mqn}{srvf mean or median - vector of
-  length \eqn{N}} \item{gam}{warping functions - similar
-  structure to fn} \item{orig.var}{Original Variance of
-  Functions} \item{amp.var}{Amplitude Variance}
-  \item{phase.var}{Phase Variance} \item{qun}{Cost Function
-  Value}
+Returns a list containing \item{f0}{original functions}
+\item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of
+\eqn{M} functions with \eqn{N} samples} \item{qn}{aligned
+srvfs - similar structure to fn} \item{q0}{original srvf -
+similar structure to fn} \item{fmean}{function mean or
+median - vector of length \eqn{N}} \item{mqn}{srvf mean or
+median - vector of length \eqn{N}} \item{gam}{warping
+functions - similar structure to fn}
+\item{orig.var}{Original Variance of Functions}
+\item{amp.var}{Amplitude Variance} \item{phase.var}{Phase
+Variance} \item{qun}{Cost Function Value}
 }
 \description{
-  This function aligns a collection of functions using the
-  elastic square-root velocity (srvf) framework.
+This function aligns a collection of functions using the
+elastic square-root velocity (srvf) framework.
 }
 \examples{
 data("simu_data")
 out = time_warping(simu_data$f,simu_data$time)
 }
 \references{
-  Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,
-  J. S., May 2011. Registration of functional data using
-  fisher-rao metric, arXiv:1103.3817v2 [math.ST].
+Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J.
+S., May 2011. Registration of functional data using
+fisher-rao metric, arXiv:1103.3817v2 [math.ST].
 
-  Tucker, J. D., Wu, W., Srivastava, A., Generative Models
-  for Function Data using Phase and Amplitude Separation,
-  Computational Statistics and Data Analysis (2012),
-  10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative Models
+for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012),
+10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
 \keyword{srvf}

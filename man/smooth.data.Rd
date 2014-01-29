@@ -2,7 +2,7 @@
 \alias{smooth.data}
 \title{Smooth Functions}
 \usage{
-  smooth.data(f, sparam)
+smooth.data(f, sparam)
 }
 \arguments{
   \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions
@@ -11,24 +11,24 @@
   \item{sparam}{number of times to run box filter}
 }
 \value{
-  fo smoothed functions
+fo smoothed functions
 }
 \description{
-  This function smooths functions using standard box filter
+This function smooths functions using standard box filter
 }
 \examples{
 data("simu_data")
 fo = smooth.data(simu_data$f,25)
 }
 \references{
-  Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,
-  J. S., May 2011. Registration of functional data using
-  fisher-rao metric, arXiv:1103.3817v2 [math.ST].
+Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J.
+S., May 2011. Registration of functional data using
+fisher-rao metric, arXiv:1103.3817v2 [math.ST].
 
-  Tucker, J. D., Wu, W., Srivastava, A., Generative Models
-  for Function Data using Phase and Amplitude Separation,
-  Computational Statistics and Data Analysis (2012),
-  10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative Models
+for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012),
+10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment,}
 \keyword{pca}

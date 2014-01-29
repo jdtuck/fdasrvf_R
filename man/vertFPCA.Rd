@@ -2,7 +2,7 @@
 \alias{vertFPCA}
 \title{Vertical Functional Principal Component Analysis}
 \usage{
-  vertFPCA(fn, time, qn, no, showplot = TRUE)
+vertFPCA(fn, time, qn, no, showplot = TRUE)
 }
 \arguments{
   \item{fn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned
@@ -20,14 +20,14 @@
   (default = T)}
 }
 \value{
-  Returns a list containing \item{q_pca}{srvf principal
-  directions} \item{f_pca}{f principal directions}
-  \item{latent}{latent values} \item{coef}{coefficients}
-  \item{U}{eigenvectors}
+Returns a list containing \item{q_pca}{srvf principal
+directions} \item{f_pca}{f principal directions}
+\item{latent}{latent values} \item{coef}{coefficients}
+\item{U}{eigenvectors}
 }
 \description{
-  This function calculates vertical functional principal
-  component analysis on aligned data
+This function calculates vertical functional principal
+component analysis on aligned data
 }
 \examples{
 data("simu_warp")
@@ -35,15 +35,15 @@ data("simu_data")
 vfpca = vertFPCA(simu_warp$fn,simu_data$time,simu_warp$qn,no = 3)
 }
 \references{
-  Tucker, J. D., Wu, W., Srivastava, A., May 2012.
-  Generative Models for Function Data using Phase and
-  Amplitude Separation, submitted to Computational
-  Statistics and Data Analysis.
+Tucker, J. D., Wu, W., Srivastava, A., May 2012. Generative
+Models for Function Data using Phase and Amplitude
+Separation, submitted to Computational Statistics and Data
+Analysis.
 
-  Tucker, J. D., Wu, W., Srivastava, A., Generative Models
-  for Function Data using Phase and Amplitude Separation,
-  Computational Statistics and Data Analysis (2012),
-  10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative Models
+for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012),
+10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
 \keyword{srvf}

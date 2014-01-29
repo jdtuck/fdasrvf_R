@@ -1,7 +1,10 @@
-fdasrv 1.4.1
+fdasrv 1.4.2
 --------------
 
-NEW FEATURES
+v1.4.2
+* Fixed gradient bug
+
+v1.4.1
 * Fixed bug in doParallel for windows computers
 * Fixed numerical issues for high lambda for no warping required
 

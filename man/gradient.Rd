@@ -2,7 +2,7 @@
 \alias{gradient}
 \title{Gradient using finite diferences}
 \usage{
-  gradient(f, binsize)
+gradient(f, binsize)
 }
 \arguments{
   \item{f}{vector with \eqn{N} samples}
@@ -10,11 +10,11 @@
   \item{binsize}{scalar of time samples}
 }
 \value{
-  g vecotr with \eqn{N} samples which is the gradient of f
+g vecotr with \eqn{N} samples which is the gradient of f
 }
 \description{
-  This function takes the gradient of f using finite
-  differences
+This function takes the gradient of f using finite
+differences
 }
 \examples{
 data("simu_data")

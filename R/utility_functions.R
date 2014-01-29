@@ -109,22 +109,27 @@ pvecnorm2 <-function(dt,x){
 	sqrt(sum(abs(x)*abs(x))*dt)
 }
 
-gradient.spline <- function(f,binsize){
-	n = nrow(f)
-	if (is.null(n)){
-		N = 1
-		tmp.spline = smooth.spline(f)
-		f.out = tmp.spline$y
-		g = predict(tmp.spline,deriv=1)$y/binsize
-	}else{
-		N = ncol(f)
-		f.out = matrix(0,nrow(f),ncol(f))
-		g = matrix(0,nrow(f),ncol(f))
-		for (jj in 1:N){
-			tmp.spline = smooth.spline(f[,jj])
-			f.out[,jj] = tmp.spline$y
-			g[,jj] = predict(tmp.spline,deriv=1)$y/binsize
+gradient.spline <- function(f,binsize,smooth_data=F){
+	if (smooth_data==TRUE){
+		n = nrow(f)
+		if (is.null(n)){
+			N = 1
+			tmp.spline = smooth.spline(f)
+			f.out = tmp.spline$y
+			g = predict(tmp.spline,deriv=1)$y/binsize
+		}else{
+			N = ncol(f)
+			f.out = matrix(0,nrow(f),ncol(f))
+			g = matrix(0,nrow(f),ncol(f))
+			for (jj in 1:N){
+				tmp.spline = smooth.spline(f[,jj])
+				f.out[,jj] = tmp.spline$y
+				g[,jj] = predict(tmp.spline,deriv=1)$y/binsize
+			}
 		}
+	}else{
+		g = gradient(f,binsize)
+		f.out = f		
 	}
 	
 	return(list(g=g, f=f.out))

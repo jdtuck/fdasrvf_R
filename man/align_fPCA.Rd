@@ -2,9 +2,8 @@
 \alias{align_fPCA}
 \title{Group-wise function alignment and PCA Extractions}
 \usage{
-  align_fPCA(f, time, num_comp = 3, showplot = T,
-    smooth_data = FALSE, sparam = 25, parallel = FALSE,
-    cores = 8)
+align_fPCA(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
+  sparam = 25, parallel = FALSE, cores = 8)
 }
 \arguments{
   \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions
@@ -31,31 +30,30 @@
   \code{doParallel} (default = 2)}
 }
 \value{
-  Returns a list containing \item{f0}{original functions}
-  \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M})
-  of \eqn{M} functions with \eqn{N} samples}
-  \item{qn}{aligned srvfs - similar structure to fn}
-  \item{q0}{original srvfs - similar structure to fn}
-  \item{mqn}{srvf mean - vecotr of length \eqn{N}}
-  \item{gam}{warping functions - vecotr of length \eqn{N}}
-  \item{Dx}{cost function} \item{vfpca}{list containing}
-  \item{q_pca}{srvf principal directions} \item{f_pca}{f
-  principal directions} \item{latent}{latent values}
-  \item{coef}{coefficients} \item{U}{eigenvectors}
+Returns a list containing \item{f0}{original functions}
+\item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of
+\eqn{M} functions with \eqn{N} samples} \item{qn}{aligned
+srvfs - similar structure to fn} \item{q0}{original srvfs -
+similar structure to fn} \item{mqn}{srvf mean - vecotr of
+length \eqn{N}} \item{gam}{warping functions - vecotr of
+length \eqn{N}} \item{Dx}{cost function} \item{vfpca}{list
+containing} \item{q_pca}{srvf principal directions}
+\item{f_pca}{f principal directions} \item{latent}{latent
+values} \item{coef}{coefficients} \item{U}{eigenvectors}
 }
 \description{
-  This function aligns a collection of functions while
-  extracting pincipal components.
+This function aligns a collection of functions while
+extracting pincipal components.
 }
 \examples{
 data("simu_data")
 out = align_fPCA(simu_data$f,simu_data$time)
 }
 \references{
-  Tucker, J. D., Wu, W., Srivastava, A., Generative Models
-  for Function Data using Phase and Amplitude Separation,
-  Computational Statistics and Data Analysis (2012),
-  10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative Models
+for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012),
+10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment,}
 \keyword{pca}

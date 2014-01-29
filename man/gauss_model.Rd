@@ -2,8 +2,7 @@
 \alias{gauss_model}
 \title{Gaussian model of functional data}
 \usage{
-  gauss_model(fn, time, qn, gam, n = 1,
-    sort_samples = FALSE)
+gauss_model(fn, time, qn, gam, n = 1, sort_samples = FALSE)
 }
 \arguments{
   \item{fn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned
@@ -22,14 +21,13 @@
   \item{sort_samples}{sort samples (default = F)}
 }
 \value{
-  Returns a list containing \item{fs}{random aligned
-  samples} \item{gams}{random warping function samples}
-  \item{ft}{random function samples}
+Returns a list containing \item{fs}{random aligned samples}
+\item{gams}{random warping function samples}
+\item{ft}{random function samples}
 }
 \description{
-  This function models the functional data using a Gaussian
-  model extracted from the principal components of the
-  srvfs
+This function models the functional data using a Gaussian
+model extracted from the principal components of the srvfs
 }
 \examples{
 data("simu_data")
@@ -37,10 +35,10 @@ data("simu_warp")
 out1 = gauss_model(simu_warp$fn,simu_data$time,simu_warp$qn,simu_warp$gam,n = 10)
 }
 \references{
-  Tucker, J. D., Wu, W., Srivastava, A., Generative Models
-  for Function Data using Phase and Amplitude Separation,
-  Computational Statistics and Data Analysis (2012),
-  10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative Models
+for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012),
+10.1016/j.csda.2012.12.001.
 }
 \keyword{pca}
 

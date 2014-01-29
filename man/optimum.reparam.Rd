@@ -2,7 +2,7 @@
 \alias{optimum.reparam}
 \title{Align two functions}
 \usage{
-  optimum.reparam(Q1, T1, Q2, T2, lambda = 0)
+optimum.reparam(Q1, T1, Q2, T2, lambda = 0)
 }
 \arguments{
   \item{Q1}{srvf of function 1}
@@ -16,11 +16,11 @@
   \item{lambda}{controls amount of warping (default = 0)}
 }
 \value{
-  gam warping function
+gam warping function
 }
 \description{
-  This function aligns two srvf functions using Dynamic
-  Programming
+This function aligns two srvf functions using Dynamic
+Programming
 }
 \examples{
 data("simu_data")
@@ -28,14 +28,14 @@ q = f_to_srvf(simu_data$f,simu_data$time)
 gam = optimum.reparam(q[,1],simu_data$time,q[,2],simu_data$time)
 }
 \references{
-  Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,
-  J. S., May 2011. Registration of functional data using
-  fisher-rao metric, arXiv:1103.3817v2 [math.ST].
+Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J.
+S., May 2011. Registration of functional data using
+fisher-rao metric, arXiv:1103.3817v2 [math.ST].
 
-  Tucker, J. D., Wu, W., Srivastava, A., Generative Models
-  for Function Data using Phase and Amplitude Separation,
-  Computational Statistics and Data Analysis (2012),
-  10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative Models
+for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012),
+10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment,}
 \keyword{pca}

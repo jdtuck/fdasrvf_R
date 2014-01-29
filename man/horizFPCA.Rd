@@ -2,7 +2,7 @@
 \alias{horizFPCA}
 \title{Horizontal Functional Principal Component Analysis}
 \usage{
-  horizFPCA(gam, no, showplot = TRUE)
+horizFPCA(gam, no, showplot = TRUE)
 }
 \arguments{
   \item{gam}{matrix (\eqn{N} x \eqn{N}) of \eqn{M} of
@@ -14,25 +14,25 @@
   (default = T)}
 }
 \value{
-  Returns a list containing \item{gam_pca}{warping
-  functions principal directions} \item{psi_pca}{srvf
-  principal directions} \item{latent}{latent values}
-  \item{U}{eigenvectors} \item{vec}{shooting vectors}
-  \item{mu}{Karcher Mean}
+Returns a list containing \item{gam_pca}{warping functions
+principal directions} \item{psi_pca}{srvf principal
+directions} \item{latent}{latent values}
+\item{U}{eigenvectors} \item{vec}{shooting vectors}
+\item{mu}{Karcher Mean}
 }
 \description{
-  This function calculates vertical functional principal
-  component analysis on aligned data
+This function calculates vertical functional principal
+component analysis on aligned data
 }
 \examples{
 data("simu_warp")
 hfpca = horizFPCA(simu_warp$gam,no = 3)
 }
 \references{
-  Tucker, J. D., Wu, W., Srivastava, A., Generative Models
-  for Function Data using Phase and Amplitude Separation,
-  Computational Statistics and Data Analysis (2012),
-  10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative Models
+for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012),
+10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
 \keyword{srvf}

@@ -2,7 +2,7 @@
 \alias{outlier.detection}
 \title{Outlier Detection}
 \usage{
-  outlier.detection(q, time, mq, k = 1.5)
+outlier.detection(q, time, mq, k = 1.5)
 }
 \arguments{
   \item{q}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} SRVF
@@ -17,11 +17,11 @@
   \item{k}{cutoff threshold (default = 1.5)}
 }
 \value{
-  \item{q_outlier}{outlier functions}
+\item{q_outlier}{outlier functions}
 }
 \description{
-  This function calculates outlier's using geodesic
-  distances of the SRVFs from the median
+This function calculates outlier's using geodesic distances
+of the SRVFs from the median
 }
 \examples{
 data("toy_data")
@@ -29,14 +29,14 @@ data("toy_warp")
 q_outlier = outlier.detection(toy_warp$q0,toy_data$time,toy_warp$mqn,k=.1)
 }
 \references{
-  Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron,
-  J. S., May 2011. Registration of functional data using
-  fisher-rao metric, arXiv:1103.3817v2 [math.ST].
+Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J.
+S., May 2011. Registration of functional data using
+fisher-rao metric, arXiv:1103.3817v2 [math.ST].
 
-  Tucker, J. D., Wu, W., Srivastava, A., Generative Models
-  for Function Data using Phase and Amplitude Separation,
-  Computational Statistics and Data Analysis (2012),
-  10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative Models
+for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012),
+10.1016/j.csda.2012.12.001.
 }
 \keyword{detection}
 \keyword{outlier}
