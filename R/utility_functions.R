@@ -42,7 +42,6 @@ simpson <- function(x,y){
 			
 			out = sum(a0[seq(1,length(a0),2)]*y[seq(1,M-2,2)] + a1[seq(1,length(a1),2)]*y[seq(2,M-1,2)]+a2[seq(1,length(a2),2)]*y[seq(3,M,2)])
 			if (M %% 2 == 0){
-				require("matrixcalc")
 				A = vandermonde.matrix(x[(length(x)-2):length(x)],3)
 				C = solve(A[,3:1],y[(length(y)-2):length(y)])
 				out = out + C[1]*(x[length(x)]^3-x[(length(x)-1)]^3)/3 + C[2]*(x[length(x)]^2-x[(length(x)-1)]^2)/2 + C[3]*dx[length(dx)]
@@ -65,7 +64,6 @@ simpson <- function(x,y){
 			a1 = alpha*(dx1+dx2)^2/dx2
 			a2 = alpha*dx1/dx2*(2*dx2-dx1)
 			for (i in 1:N){
-				require("matrixcalc")
 				out[i] = sum(a0[seq(1,length(a0),2)]*y[seq(1,M-2,2),i] + a1[seq(1,length(a1),2)]*y[seq(2,M-1,2),i]+a2[seq(1,length(a2),2)]*y[seq(3,M,2),i])
 				if (M %% 2 == 0){
 					A = vandermonde.matrix(x[(length(x)-2):length(x)],3)
@@ -89,7 +87,6 @@ cumtraps <- function(x,y){
 	a1 = alpha*(dx1+dx2)^2/dx2
 	a2 = alpha*dx1/dx2*(2*dx2-dx1)
 	
-	require("matrixcalc")
 	A = vandermonde.matrix(x[1:3],3)
 	C = solve(A[,3:1],y[1:3])
 	z = rep(0,M)

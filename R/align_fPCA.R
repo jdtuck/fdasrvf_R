@@ -35,8 +35,6 @@
 #' out = align_fPCA(simu_data$f,simu_data$time)
 align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE, sparam = 25, 
 											 parallel = FALSE,cores=8){
-	library(numDeriv)
-	library(foreach)
 	if (parallel){
 		library(doParallel)
 		cl = makeCluster(cores)
