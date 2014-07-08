@@ -11,6 +11,7 @@ Depends:
     foreach,
     mvtnorm,
     matrixcalc,
-    numDeriv
+    numDeriv,
+    splines
 Suggests:
     doParallel

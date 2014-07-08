@@ -344,3 +344,49 @@ cumtrapzmid <- function(x,y,c){
 	
 	return(fn)
 }
+
+warp_q_gamma <- function(time, q, gam){
+  M = length(gam)
+  gam_dev = gradient(gam, 1/(M-1))
+  q_tmp = approx(time,q,xout=(time[length(time)]-time[1])*gam + 
+               time[1])$y*sqrt(gam_dev) 
+  return(q_tmp)
+}
+
+zero_crossing <- function(Y, q, bt, time, y_max, y_min, gmax, gmin){
+  max_itr = 100
+  a = rep(0, max_itr)
+  a[1] = 1
+  f = rep(0, max_itr)
+  f[1] = y_max - Y
+  f[2] = y_min - Y
+  mrp = f[1]
+  mrn = f[2]
+  mrp_ind = 1  # most recent positive index
+  mrn_ind = 2  # most recent negative index
+  
+  for (ii in 2:max_itr){
+    x1 = a[mrp_ind]
+    x2 = a[mrn_ind]
+    y1 = mrp
+    y2 = mrn
+    a[ii] = (x1 *y2 - x2 * y1) / (y2-y1)
+    gam_m = a[ii] * gmax + (1-a[ii]) * gmin
+    qtmp = warp_q_gamma(time, q, gam_m)
+    f[ii] = trapz(time, qtmp*bt) - Y
+    
+    if (abs(f[ii]) < 1e-5){
+      break
+    } else if (f[ii]> 0){
+      mrp = f[ii]
+      mrp_ind = ii
+    } else{
+      mrn = f[ii]
+      mrn_ind = ii
+    }
+  }
+  
+  gamma = a[ii] * gmax + (1-a[ii]) * gmin
+  
+  return(gamma)
+}

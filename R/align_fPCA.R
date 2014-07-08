@@ -75,7 +75,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 	min_ind = which.min(dqq)
 	mq = q[,min_ind]
 	qhat_cent = q-matrix(mq,M,N)
-	K = 1/M* qhat_cent %*% t(qhat_cent)
+	K = 1/M * qhat_cent %*% t(qhat_cent)
 	out = svd2(K)
 	s = out$d
 	U = out$u
