@@ -84,6 +84,7 @@ mlogit_loss <- function(b, X, Y){
   N = nrow(Y)
   m = ncol(Y)
   M = ncol(X)
+  B = array(b,c(M, m))
   Yhat = X %*% B
   Yhat = Yhat - apply(Yhat,1,min) 
   Yhat = exp(-1*Yhat)
@@ -99,6 +100,7 @@ mlogit_loss <- function(b, X, Y){
 mlogit_gradient <- function(b, X, Y){
   N = nrow(Y)
   m = ncol(Y)
+  M = ncol(X)
   B = array(b,c(M, m))
   Yhat = X %*% B
   Yhat = Yhat - apply(Yhat,1,min)
