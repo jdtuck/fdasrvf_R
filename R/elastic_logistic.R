@@ -1,4 +1,4 @@
-elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20, 
+elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20, 
                                smooth_data = FALSE, sparam = 25, parallel = FALSE,
                                cores=2){
 
@@ -27,12 +27,6 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
   }
   Nb = ncol(B)
   
-  # second derivative 
-  Bdiff = matrix(0,M,Nb)
-  for (ii in 1:Nb){
-    Bdiff[,ii] = gradient(gradient(B[,ii],binsize), binsize)
-  }
-  
   # Compute q-function of the functional data
   tmp = gradient.spline(f,binsize,smooth_data)
   f = tmp$f
@@ -41,7 +35,7 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
   gam = kronecker(matrix(1,1,N),seq(0,1,length.out=M))
   
   itr = 1
-  SSE = rep(0, max_itr)
+  LL = rep(0, max_itr)
   while(itr <= max_itr) {
     cat(sprintf("Iteration: r=%d\n", itr))
     # align data
@@ -52,40 +46,27 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
       qn[,ii] = f_to_srvf(fn[,ii], time)
     }
     
-    # OLS using basis
+    # Find alpha and beta using l_bfgs
     Phi = matrix(1, N, Nb+1)
     for (ii in 1:N){
       for (jj in 2:(Nb+1)){
         Phi[ii,jj] = trapz(time,qn[,ii] * B[, jj-1])
       }
     }
-    
-    R = matrix(0, Nb+1, Nb+1)
-    for (ii in 2:Nb+1){
-      for (jj in 2:(Nb+1)){
-        R[ii,jj] = trapz(time,Bdiff[,ii-1] * Bdiff[,jj-1])
-      }
-    }
-    
-    xx = t(Phi) %*% Phi
-    inv_xx = solve(xx + lam * R)
-    xy = t(Phi) %*% y
-    b = inv_xx %*% xy
+    b0 = rep(0,Nb+1)
+    out = optim(b0, logit_loss, gr = logit_gradient, Phi, y,
+                method = "L-BFGS-B", control = list(maxit=200,pgtol=1e-10))
+    b = out$par
     
     alpha = b[1]
     beta = B %*% b[2:Nb+1]
     
-    # compute the SSE
-    int_X = rep(0, N)
-    for (ii in 1:N){
-      int_X[ii] = trapz(time, qn[,ii] * beta)
-    }
-    
-    SSE[itr] = sum((y-alpha-int_X)^2)
+    # compute the Loss
+    LL[itr] = logit_loss(b,Phi,y)
     
     # find gamma
     gamma_new<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
-      gam = regression_warp(beta, time, q[,k], y[k], alpha)
+      gam = logistic_warp(beta, time, q[,k], y[k])
     }
     
     if (pvecnorm(gamma-gamma_new,2) < 1e-5){
@@ -96,26 +77,12 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
     
     itr = itr + 1
   }
-  
-  # last step with centering of gam
-  gamI = SqrtMeanInverse(t(gam))
-  gamI_dev = gradient(gamI, 1/(M-1))
-  beta = approx(time,beta,xout=(time[length(time)]-time[1])*gamI + 
-                      time[1])$y*sqrt(gamI_dev)
-  
-  for (k in 1:N){
-    qn[,k] = approx(time,qn[,k],xout=(time[length(time)]-time[1])*gamI + 
-                         time[1])$y*sqrt(gamI_dev)
-    fn[,k] = approx(time,fn[,k],xout=(time[length(time)]-time[1])*gamI + 
-                         time[1])$y
-    gam[,k] = approx(time,gam[,k],xout=(time[length(time)]-time[1])*gamI + 
-                       time[1])$y
-  }
+  gamma = gamma_new
   
   if (parallel){
     stopCluster(cl)
   }
   
   return(list(alpha=alpha, beta=beta, fn=fn, qn=qn, gamma=gamma, q=q, B=B, 
-              b=b[2:length(b)], SSE=SSE[1:itr], mode='linear')  )
+              b=b[2:length(b)], Loss=LL[1:itr], mode='logistic')  )
 }

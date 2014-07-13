@@ -365,7 +365,7 @@ zero_crossing <- function(Y, q, bt, time, y_max, y_min, gmax, gmin){
   mrp_ind = 1  # most recent positive index
   mrn_ind = 2  # most recent negative index
   
-  for (ii in 2:max_itr){
+  for (ii in 3:max_itr){
     x1 = a[mrp_ind]
     x2 = a[mrn_ind]
     y1 = mrp
@@ -389,4 +389,12 @@ zero_crossing <- function(Y, q, bt, time, y_max, y_min, gmax, gmin){
   gamma = a[ii] * gmax + (1-a[ii]) * gmin
   
   return(gamma)
+}
+
+repmat = function(X,m,n){
+  ##R equivalent of repmat (matlab)
+  mx = dim(X)[1]
+  nx = dim(X)[2]
+  mat = matrix(t(matrix(X,mx,nx*n)),mx*m,nx*n,byrow=T)
+  return(mat)
 }

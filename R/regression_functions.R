@@ -67,7 +67,7 @@ logit_hessian <- function(s, b, X, y){
   return(Hs)
 }
 
-mlogit_warp_grad <- function(alpha, beta, time, q, y, max_itr=8000, tol=1e-10, delta=0.008, display=0){
+mlogit_warp <- function(alpha, beta, time, q, y, max_itr=8000, tol=1e-10, delta=0.008, display=0){
   m1 = length(time)
   m2 = ncol(beta)
   gam1 = seq(0,1,length.out=m1)

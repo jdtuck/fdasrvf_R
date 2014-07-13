@@ -1,5 +1,7 @@
-fdasrv 1.4.2
+fdasrv 1.5.0
 --------------
+v1.5.0
+* added elastic regression methods
 
 v1.4.2
 * Fixed gradient bug
