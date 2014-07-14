@@ -354,6 +354,8 @@ warp_q_gamma <- function(time, q, gam){
 }
 
 zero_crossing <- function(Y, q, bt, time, y_max, y_min, gmax, gmin){
+  # finds zero-crossing of optimal gamma, gam = s*gmax + (1-s)*gmin
+  # from elastic regression model
   max_itr = 100
   a = rep(0, max_itr)
   a[1] = 1
@@ -391,10 +393,16 @@ zero_crossing <- function(Y, q, bt, time, y_max, y_min, gmax, gmin){
   return(gamma)
 }
 
-repmat = function(X,m,n){
+repmat <- function(X,m,n){
   ##R equivalent of repmat (matlab)
   mx = dim(X)[1]
-  nx = dim(X)[2]
-  mat = matrix(t(matrix(X,mx,nx*n)),mx*m,nx*n,byrow=T)
+  if (is.null(mx)){
+    mx = 1
+    nx = length(X)
+  }else {
+    nx = dim(X)[2]
+    mat = matrix(t(matrix(X,mx,nx*n)),mx*m,nx*n,byrow=T)
+  }
+  
   return(mat)
 }

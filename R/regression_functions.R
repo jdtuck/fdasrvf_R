@@ -72,8 +72,19 @@ mlogit_warp <- function(alpha, beta, time, q, y, max_itr=8000, tol=1e-10, delta=
   m2 = ncol(beta)
   gam1 = seq(0,1,length.out=m1)
   gamout = rep(0,m1)
-  output <-.C("mlogit_warp_grad",m1=m1,m2=m2,alpha=alpha,beta=beta,ti=time,gami=gam1,q=q,
-              y=y,max_itri=max_itr,toli=tol,deltai=delta,displayi=display,gamout=gamout)
+  alpha = alpha/pvecnorm(alpha,2)
+  q = q/pvecnorm(q,2)
+  for (ii in 1:m2){
+    beta[,ii] = beta[,ii]/pvecnorm(beta[,ii],2)
+  }
+  beta1 = rep(0,m1*m2)
+  for (ii in 1:m2){
+    beta1[((ii-1)*m1+1):(ii*m1)] = beta[,ii]
+  }
+  output <-.C("mlogit_warp_grad",m1=as.integer(m1),m2=as.integer(m2),alpha=as.double(alpha),
+              beta=as.double(beta1),ti=as.double(time),gami=as.double(gam1),q=as.double(q),
+              y=as.integer(y),max_itri=as.integer(max_itr),toli=as.double(tol),
+              deltai=as.double(delta),displayi=as.integer(display),gamout=as.double(gamout))
 
   
   out = output$gamout
