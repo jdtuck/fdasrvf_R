@@ -1,5 +1,8 @@
-fdasrv 1.5.0
+fdasrv 1.5.1
 --------------
+v1.5.1
+* added gropt and simul optimization methods and alignment
+
 v1.5.0
 * added elastic regression methods
 
@@ -21,12 +24,12 @@ v1.3
 * Updated documentation
 
 v1.2
-* Changed SRVF calculation to use splines for derivatives 
+* Changed SRVF calculation to use splines for derivatives
 * Added control to the amount of warping via lambda to the time_warping function
 * Fixed documentation bugs and minor bugs in horizontal PCA calculation
 
 v1.1
-* Updated so the parallel functions are windows compatible and windows binary 
+* Updated so the parallel functions are windows compatible and windows binary
 can be compiled, now suggests doSNOW or doMC
 * Added variance calculation to time_warping function
 

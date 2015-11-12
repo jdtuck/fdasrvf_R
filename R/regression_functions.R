@@ -2,12 +2,12 @@ regression_warp <- function(beta, time, q, y, alpha){
   gam_M = optimum.reparam(beta,time,q,time)
   qM = warp_q_gamma(time, q, gam_M)
   y_M = trapz(time, qM * beta)
-  
+
   gam_m = optimum.reparam(-1 * beta,time,q,time)
   qm = warp_q_gamma(time, q, gam_m)
-  y_m = trapz(time, qm * beta) 
-  
-  
+  y_m = trapz(time, qm * beta)
+
+
   if (y > alpha + y_M){
     gamma_new = gam_M
   }else if (y < alpha + y_m){
@@ -15,7 +15,7 @@ regression_warp <- function(beta, time, q, y, alpha){
   }else{
     gamma_new = zero_crossing(y-alpha, q, beta, time, y_M, y_m, gam_M, gam_m)
   }
-  
+
   return(gamma_new)
 }
 
@@ -25,7 +25,7 @@ logistic_warp <- function(beta, time, q, y){
   } else if (y== -1){
     gamma = optimum.reparam(-1*beta,time,q,time)
   }
-  
+
   return(gamma)
 }
 
@@ -35,7 +35,7 @@ phi <- function(t){
   out[idx] = 1/(1+exp(-1*t[idx]))
   exp_t = exp(t[!idx])
   out[!idx] = exp_t / (1+ exp_t)
-  
+
   return(out)
 }
 
@@ -86,7 +86,7 @@ mlogit_warp <- function(alpha, beta, time, q, y, max_itr=8000, tol=1e-10, delta=
               y=as.integer(y),max_itri=as.integer(max_itr),toli=as.double(tol),
               deltai=as.double(delta),displayi=as.integer(display),gamout=as.double(gamout))
 
-  
+
   out = output$gamout
   return(out)
 }
@@ -97,11 +97,11 @@ mlogit_loss <- function(b, X, Y){
   M = ncol(X)
   B = array(b,c(M, m))
   Yhat = X %*% B
-  Yhat = Yhat - apply(Yhat,1,min) 
+  Yhat = Yhat - apply(Yhat,1,min)
   Yhat = exp(-1*Yhat)
   # l1-normalize
   Yhat = Yhat/apply(Yhat,1,sum)
-  
+
   Yhat = Yhat * Y
   nll = sum(log(apply(Yhat,1,sum)))
   nll = -1*nll / N
@@ -118,7 +118,7 @@ mlogit_gradient <- function(b, X, Y){
   Yhat = exp(-1*Yhat)
   # l1-normalize
   Yhat = Yhat/apply(Yhat,1,sum)
-  
+
   Yhat1 = Yhat * Y
   Yhat1 = Yhat1 / apply(Yhat1,1,sum)
   Yhat = Yhat - Yhat1
@@ -126,4 +126,3 @@ mlogit_gradient <- function(b, X, Y){
   grad = -1*grad/N
   return(grad)
 }
-
