@@ -406,3 +406,76 @@ repmat <- function(X,m,n){
 
   return(mat)
 }
+
+simul_align <- function(f1, f2){
+    # parameterize by arc-length
+    s1 = arclength(f1)
+    s2 = arclength(f2)
+
+    len1 = max(s1)
+    len2 = max(s2)
+
+    f1 = f1/len1
+    s1 = s1/len1
+    f2 = f2/len1
+    s2 = s2/len1
+
+    # get srvf (should be +/-1)
+    q1 = diff(f1)/diff(s1)
+    q1[diff(s1)==0] = 0;
+    q2 = diff(f2)/diff(s2);
+    q2[diff(s2)==0] = 0;
+
+    # get extreme points
+    out = extrema_1s(s1, q1);
+    ext1 = out$ext1
+    d1 = out$d1
+    out = extrema_1s(s2,q2);
+    ext2 = out$ext2
+    d2 = out$d2
+
+    out = match_ext(s1,ext1,d1,s2,ext2,d2)
+    D = out$D
+    P = out$P
+    mpath = out$mpath
+
+    te1 = s1[ext1]
+    te2 = s2[ext2]
+
+    fe1 = f1[ext1]
+    fe2 = f2[ext2]
+
+    out = simul_reparam(te1, te2, mpath)
+
+    g1 = out$g1
+    g2 = out$g2
+
+    return(list(s1=s1,s2=s2,g1=g1,g2=g2,ext1=ext1,ext2=ext2,mpath=mpath))
+}
+
+arclength <- function(f){
+    t1 = rep(0,length(f))
+    t1[2:length(f)] = abs(diff(f))
+    t1 = cumsum(t1)
+
+    return(t1)
+}
+
+extrema_1s <- function(t, q){
+    q = round(q)
+
+    if (q[1] != 0){
+        d = -q[1]
+    } else{
+        d = d[q!=0]
+        d = d[1]
+    }
+
+    ext = which(diff(q) != 0) + 1
+    ext2 = rep(0, length(ext)+2)
+    ext2[1] = 1
+    ext2[2:length(ext2)-1] = round(ext)
+    ext2[length(ext2)] = length(t)
+
+    return(list(ext2=ext2,d=d))
+}

@@ -5,19 +5,20 @@ Version: 1.5.1
 Date: 2015-11-12
 Author: J. Derek Tucker <jdtuck@sandia.gov>
 Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
-Description: A library for functional data analysis using the square root
-    velocity framework
+Description: Functions to support functional data analysis using the square root velocity framework.
 License: GPL-3
 LazyData: TRUE
 SystemRequirements: C++11
-Imports: Rcpp (>= 0.12.1)
-LinkingTo: Rcpp
-Depends:
-    R (>= 3.1.0),
+Imports:
+    Rcpp (>= 0.12.1),
     foreach,
     mvtnorm,
     matrixcalc,
     numDeriv,
     splines,
-    doParallel,
-    Rcpp
+    parallel,
+    doParallel
+LinkingTo: Rcpp
+Depends:
+    R (>= 3.1.0),
+RoxygenNote: 5.0.1

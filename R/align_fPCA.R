@@ -36,7 +36,6 @@
 align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE, sparam = 25,
                                              parallel = FALSE,cores=8){
     if (parallel){
-        library(doParallel)
         cl = makeCluster(cores)
         registerDoParallel(cl)
     } else

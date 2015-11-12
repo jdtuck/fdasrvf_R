@@ -1,4 +1,4 @@
-SOURCES=$(wildcard fdasrsf/*.cpp gropt/*/*.cpp)
+SOURCES= wrapper.cpp $(wildcard fdasrsf/*.cpp gropt/*/*.cpp)
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

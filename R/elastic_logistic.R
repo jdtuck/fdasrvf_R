@@ -31,11 +31,10 @@
 #'  Electronic Journal of Statistics (2014), submitted.
 #' @export
 elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
-                               smooth_data = FALSE, sparam = 25, parallel = FALSE,
-                               cores=2){
+                             smooth_data = FALSE, sparam = 25, parallel = FALSE,
+                             cores=2){
 
   if (parallel){
-    library(doParallel)
     cl = makeCluster(cores)
     registerDoParallel(cl)
   } else

@@ -19,7 +19,7 @@
 #' @references Huang, W. 2014, Optimization Algorithms on Riemannian Manifolds with Applications. Ph.D. Thesis, Florida State University.
 #' @docType package
 #' @useDynLib fdasrvf
-#' @import foreach mvtnorm matrixcalc numDeriv
+#' @import foreach mvtnorm matrixcalc numDeriv splines parallel doParallel Rcpp
 #' @aliases fdasrvf fdasrvf-package
 NULL
 #' Simulated two Gaussian Dataset

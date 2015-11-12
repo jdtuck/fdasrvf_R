@@ -40,7 +40,6 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
                                                  showplot = TRUE, smooth_data = FALSE, sparam = 25,
                                                  parallel = FALSE,cores=2){
     if (parallel){
-        library(doParallel)
         cl = makeCluster(cores)
         registerDoParallel(cl)
     } else

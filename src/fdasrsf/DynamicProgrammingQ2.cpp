@@ -1,45 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <Rcpp.h>
 #include "dp_grid.h"
-#include "DynamicProgrammingQ2.h"
-using namespace Rcpp;
-
-
-RcppExport SEXP DPQ2(SEXP Q1, SEXP T1, SEXP Q2, SEXP T2, SEXP m1, SEXP n1, SEXP n2, SEXP tv1, SEXP tv2, SEXP n1v, SEXP n2v, SEXP G, SEXP T, SEXP size, SEXP lam1){
-
-  NumericVector Q1i(Q1);
-  NumericVector Q2i(Q2);
-  NumericVector T1i(T1);
-  NumericVector T2i(T2);
-  NumericVector tv1i(tv1);
-  NumericVector tv2i(tv2);
-  NumericVector GG(G);
-  NumericVector TT(T);
-
-  double * _Q1i = &Q1i[0];
-  double * _Q2i = &Q2i[0];
-  double * _T1i = &T1i[0];
-  double * _T2i = &T2i[0];
-  double * _tv1i = &tv1i[0];
-  double * _tv2i = &tv2i[0];
-  double * _GG = &GG[0];
-  double * _TT = &TT[0];
-
-  int _m1 = as<int>(m1);
-  int _n1 = as<int>(n1);
-  int _n2 = as<int>(n2);
-  int _n1v = as<int>(n1v);
-  int _n2v = as<int>(n2v);
-  int _size = as<int>(size);
-  double _lam1 = as<double>(lam1);
-
-  DynamicProgrammingQ2(_Q1i, _T1i, _Q2i, _T2i, &_m1, &_n1, &_n2, _tv1i, _tv2i, &_n1v, &_n2v, _GG, _TT, &_size, &_lam1);
-
-  List ret; ret["G"] = wrap(GG); ret["T"] = wrap(TT); ret["size"] = wrap(_size);
-  return(ret);
-}
 
 void DynamicProgrammingQ2(double *Q1, double *T1, double *Q2, double *T2, const int *m1, const int *n1, const int *n2, double *tv1, double *tv2, const int *n1v, const int *n2v, double *G, double *T, int *size, const double *lam1){
   int *idxv1 = 0;

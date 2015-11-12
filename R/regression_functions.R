@@ -67,7 +67,8 @@ logit_hessian <- function(s, b, X, y){
   return(Hs)
 }
 
-mlogit_warp <- function(alpha, beta, time, q, y, max_itr=8000, tol=1e-10, delta=0.008, display=0){
+mlogit_warp <- function(alpha, beta, time, q, y, max_itr=8000, tol=1e-10,
+                        delta=0.008, display=0){
   m1 = length(time)
   m2 = ncol(beta)
   gam1 = seq(0,1,length.out=m1)
@@ -81,7 +82,8 @@ mlogit_warp <- function(alpha, beta, time, q, y, max_itr=8000, tol=1e-10, delta=
   for (ii in 1:m2){
     beta1[((ii-1)*m1+1):(ii*m1)] = beta[,ii]
   }
-  out = .Call('mlogit_warp_grad_wrap', PACKAGE = 'fdasrvf', m1, m2, alpha, beta1, time, gam1, q, y, max_itr, tol, delta, display, gamout);
+  output = .Call('mlogit_warp_grad_wrap', PACKAGE = 'fdasrvf', m1, m2, alpha,
+                 beta1, time, gam1, q, y, max_itr, tol, delta, display, gamout);
 
   out = output$gamout
   return(out)

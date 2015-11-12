@@ -2,40 +2,7 @@
 #include <float.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <Rcpp.h>
 #include "misc_funcs.h"
-#include "mlogit_warp_grad.h"
-using namespace Rcpp;
-
-
-RcppExport SEXP mlogit_warp_grad_wrap(SEXP m1, SEXP m2, SEXP alpha, SEXP beta, SEXP ti, SEXP gami, SEXP q, SEXP y, SEXP max_itri, SEXP toli, SEXP deltai, SEXP displayi, SEXP gamout){
-  NumericVector alphai(alpha);
-  NumericVector betai(beta);
-  NumericVector tii(ti);
-  NumericVector gamii(gami);
-  NumericVector qi(q);
-  IntegerVector yi(y);
-  NumericVector gamouti(gamout);
-
-  double * _alphai = &alphai[0];
-  double * _betai = &betai[0];
-  double * _tii = &tii[0];
-  double * _gamii = &gamii[0];
-  double * _qi = &qi[0];
-  int * _yi = &yi[0];
-  double * _gamouti = &gamouti[0];
-
-  int _m1 = as<int>(m1);
-  int _m2 = as<int>(m2);
-  int _max_itri = as<int>(max_itri);
-  double _toli = as<double>(toli);
-  double _deltai = as<double>(deltai);
-  int _displayi = as<int>(displayi);
-
-  mlogit_warp_grad(&_m1, &_m2, _alphai, _betai, _tii, _gamii, _qi, _yi, &_max_itri, &_toli, &_deltai, &_displayi, _gamouti);
-
-  return(gamouti);
-}
 
 void mlogit_warp_grad(int *m1, int *m2, double *alpha, double *beta, double *ti, double *gami, double *q, int *y, int *max_itri, double *toli, double *deltai, int *displayi, double *gamout){
 
