@@ -2,7 +2,8 @@
 #include <float.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <R.h>
+#include <Rcpp.h>
+using namespace Rcpp;
 
 /* Structure of Linear Interpolation */
 typedef struct {
@@ -378,9 +379,9 @@ void spline_eval(int nu, double *u, double *v, int n, double *x, double *y, doub
 
 
 void spline(int n, double *x, double *y, int nu, double *xi, double *yi) {
-    double *b = malloc(sizeof(double)*(n));
-    double *c = malloc(sizeof(double)*(n));
-    double *d = malloc(sizeof(double)*(n));
+    double *b = (double *) malloc(sizeof(double)*(n));
+    double *c = (double *) malloc(sizeof(double)*(n));
+    double *d = (double *) malloc(sizeof(double)*(n));
 
     spline_coef(n, x, y, b, c, d);
     spline_eval(nu, xi, yi, n, x, y, b, c, d);
@@ -440,8 +441,8 @@ void approx(double *x, double *y, int nxy, double *xout, double *yout,
 }
 
 void invertGamma(int n, double *gam, double *out) {
-	double *x = malloc(sizeof(double)*(n));
-	double *y = malloc(sizeof(double)*(n));
+	double *x = (double *) malloc(sizeof(double)*(n));
+	double *y = (double *) malloc(sizeof(double)*(n));
 	int k;
 
 	for (k=0; k<n; k++)
@@ -465,7 +466,7 @@ void SqrtMeanInverse(int *T1, int *n1, double *ti, double *gami, double *out){
     int k, iter, l, n2 = 1, min_ind = 0;
     int maxiter = 30, tt = 1;
     double lvm[maxiter];
-    double *x = malloc(sizeof(double)*(T));
+    double *x = (double *) malloc(sizeof(double)*(T));
 
     for (k=0; k<maxiter; k++)
         lvm[k] = 0;

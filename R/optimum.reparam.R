@@ -22,13 +22,15 @@
 #' gam = optimum.reparam(q[,1],simu_data$time,q[,2],simu_data$time)
 optimum.reparam <- function(Q1,T1,Q2,T2,lambda = 0){
     n = length(T1)
-    output <-.C("DynamicProgrammingQ2",Q1=as.double(Q1/pvecnorm(Q1,2)),
-                            T1=as.double(T1),Q2=as.double(Q2/pvecnorm(Q2,2)),T2=as.double(T2),
-                            m1=as.integer(1),n1=as.integer(n),n2=as.integer(n),tv1=as.double(T1),
-                            tv2=as.double(T2),n1v=as.integer(n),n2v=as.integer(n),G = as.double(rep(0,n)),
-                            T = as.double(rep(0,n)),size = as.integer(0),lam1 = as.double(lambda))
-    G = output$G[1:output$size]
-    Tf = output$T[1:output$size]
+    Q1=(Q1/pvecnorm(Q1,2))
+    Q2=(Q2/pvecnorm(Q2,2))
+    G = rep(0,n)
+    T = rep(0,n)
+    size = 0;
+    ret = .Call('DPQ2', PACKAGE = 'fdasrvf', Q1, T1, Q2, T2, 1, n, n, T1, T2, n, n, G, T, size, lambda);
+
+    G = ret$G[1:ret$size]
+    Tf = ret$T[1:ret$size]
     gam0 = approx(Tf,G,xout=T2)$y
     gam = (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])  # slight change on scale
     return(gam)

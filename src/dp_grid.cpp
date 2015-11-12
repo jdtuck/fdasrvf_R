@@ -5,28 +5,28 @@
 #include "dp_grid.h"
 
 
-void dp_all_edge_weights( 
+void dp_all_edge_weights(
   double *Q1, double *T1, int nsamps1,
   double *Q2, double *T2, int nsamps2,
-  int dim, 
-  double *tv1, int *idxv1, int ntv1, 
-  double *tv2, int *idxv2, int ntv2, 
+  int dim,
+  double *tv1, int *idxv1, int ntv1,
+  double *tv2, int *idxv2, int ntv2,
   double *W, double lam )
 {
   int sr, sc;  /* source row and column */
   int tr, tc;  /* target row and column */
   int l1, l2, l3;  /* for multidimensional array mapping */
   int i;
-  
+
   for ( i=0; i<ntv1*ntv2*ntv1*ntv2; W[i++]=1e6 );
 
-  /* W is a ntv2 x ntv1 x ntv2 x ntv1 array.  
-   * Weight of edge from (tv1[i],tv2[j]) to (tv1[k],tv2[l]) 
+  /* W is a ntv2 x ntv1 x ntv2 x ntv1 array.
+   * Weight of edge from (tv1[i],tv2[j]) to (tv1[k],tv2[l])
    * (Cartesian coordinates) is in grid(j,i,l,k).
-   * Mapping: 
-   *  (j,i,l,k) :--> j*ntv1*ntv2*ntv1 + 
+   * Mapping:
+   *  (j,i,l,k) :--> j*ntv1*ntv2*ntv1 +
    *                 i*ntv2*ntv1 +
-   *                 l*ntv1 + 
+   *                 l*ntv1 +
    *                 k
    */
   l1 = ntv1 * ntv2 * ntv1;
@@ -45,12 +45,12 @@ void dp_all_edge_weights(
         if ( sr < 0 || sc < 0 ) continue;
 
         /* grid(sr,sc,tr,tc) */
-        W[sr*l1+sc*l2+tr*l3+tc] = 
-         dp_edge_weight( Q1, T1, nsamps1, Q2, T2, nsamps2, dim, 
+        W[sr*l1+sc*l2+tr*l3+tc] =
+         dp_edge_weight( Q1, T1, nsamps1, Q2, T2, nsamps2, dim,
            tv1[sc], tv1[tc], tv2[sr], tv2[tr], idxv1[sc], idxv2[sr], lam );
-        
+
         /*
-        printf( "(%0.2f,%0.2f) --> (%0.2f,%0.2f) = %0.2f\n", 
+        printf( "(%0.2f,%0.2f) --> (%0.2f,%0.2f) = %0.2f\n",
           a, c, b, d, grid[sr*l1+sc*l2+tr*l3+tc] );
         */
       }
@@ -60,18 +60,18 @@ void dp_all_edge_weights(
 
 
 double dp_costs(
-  double *Q1, double *T1, int nsamps1, 
+  double *Q1, double *T1, int nsamps1,
   double *Q2, double *T2, int nsamps2,
-  int dim, 
-  double *tv1, int *idxv1, int ntv1, 
-  double *tv2, int *idxv2, int ntv2, 
+  int dim,
+  double *tv1, int *idxv1, int ntv1,
+  double *tv2, int *idxv2, int ntv2,
   double *E, int *P, double lam )
 {
   int sr, sc;  /* source row and column */
   int tr, tc;  /* target row and column */
   double w, cand_cost;
   int i;
-  
+
   E[0] = 0.0;
   for ( i=1; i<ntv1; E[i++]=1e6 );
   for ( i=1; i<ntv2; E[ntv1*i++]=1e6 );
@@ -89,7 +89,7 @@ double dp_costs(
 
         if ( sr < 0 || sc < 0 ) continue;
 
-        w = dp_edge_weight( Q1, T1, nsamps1, Q2, T2, nsamps2, dim, 
+        w = dp_edge_weight( Q1, T1, nsamps1, Q2, T2, nsamps2, dim,
           tv1[sc], tv1[tc], tv2[sr], tv2[tr], idxv1[sc], idxv2[sr], lam );
 
         cand_cost = E[ntv1*sr+sc] + w;
@@ -119,10 +119,10 @@ double dp_costs(
 
 
 double dp_edge_weight(
-  double *Q1, double *T1, int nsamps1, 
+  double *Q1, double *T1, int nsamps1,
   double *Q2, double *T2, int nsamps2,
-  int dim, 
-  double a, double b, 
+  int dim,
+  double a, double b,
   double c, double d,
   int aidx, int cidx, double lam)
 {
@@ -194,9 +194,9 @@ double dp_edge_weight(
 }
 
 
-int dp_build_gamma( 
-  int *P, 
-  double *tv1, int ntv1, 
+int dp_build_gamma(
+  int *P,
+  double *tv1, int ntv1,
   double *tv2, int ntv2,
   double *G, double *T )
 {
@@ -228,7 +228,7 @@ int dp_build_gamma(
     p = P[tr*ntv1+tc];
     sr = p / ntv1;
     sc = p % ntv1;
-    
+
     G[i] = tv2[sr];
     T[i] = tv1[sc];
 
@@ -260,7 +260,7 @@ int dp_lookup( double *T, int n, double t )
         r = m;
       else
         break;
-      
+
       m = (r+l)/2;
     }
 
@@ -282,4 +282,3 @@ void dp_all_indexes( double *p, int np, double *tv, int ntv, int *idxv )
     idxv[i] = pi;
   }
 }
-

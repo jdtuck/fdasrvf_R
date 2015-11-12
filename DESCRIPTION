@@ -1,17 +1,23 @@
 Package: fdasrvf
-Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
-Author: J. Derek Tucker <jdtuck@sandia.gov>
-Version: 1.5.1
-License: GPL-3
+Type: Package
 Title: Elastic Functional Data Analysis
+Version: 1.5.1
+Date: 2015-11-12
+Author: J. Derek Tucker <jdtuck@sandia.gov>
+Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
 Description: A library for functional data analysis using the square root
     velocity framework
+License: GPL-3
+LazyData: TRUE
+Imports: Rcpp (>= 0.12.1)
+LinkingTo: Rcpp
 Depends:
     R (>= 2.11.0),
     foreach,
     mvtnorm,
     matrixcalc,
     numDeriv,
-    splines
+    splines,
+    Rcpp
 Suggests:
     doParallel

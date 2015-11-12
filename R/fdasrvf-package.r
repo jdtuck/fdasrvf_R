@@ -18,7 +18,7 @@
 #' @references Robinson, D. T. 2012, Function Data Analysis and Partial Shape Matching in the Square Root Velocity Framework. Ph.D. Thesis, Florida State University.
 #' @references Huang, W. 2014, Optimization Algorithms on Riemannian Manifolds with Applications. Ph.D. Thesis, Florida State University.
 #' @docType package
-#' @useDynLib fdasrvf gropt
+#' @useDynLib fdasrvf
 #' @import foreach mvtnorm matrixcalc numDeriv
 #' @aliases fdasrvf fdasrvf-package
 NULL
