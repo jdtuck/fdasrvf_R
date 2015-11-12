@@ -1,4 +1,6 @@
 ^\.Rproj\.user$
 .gitignore
+.travis.yml
+appveyor.yml
 fdasrvf.Rproj
 ^.*\.Rproj$

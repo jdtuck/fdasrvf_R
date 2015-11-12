@@ -9,15 +9,15 @@ Description: A library for functional data analysis using the square root
     velocity framework
 License: GPL-3
 LazyData: TRUE
+SystemRequirements: C++11
 Imports: Rcpp (>= 0.12.1)
 LinkingTo: Rcpp
 Depends:
-    R (>= 2.11.0),
+    R (>= 3.1.0),
     foreach,
     mvtnorm,
     matrixcalc,
     numDeriv,
     splines,
+    doParallel,
     Rcpp
-Suggests:
-    doParallel

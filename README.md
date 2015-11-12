@@ -2,7 +2,8 @@ fdasrvf
 =======
 *R library for elastic functional data analysis*
 
-[![Build Status](https://img.shields.io/travis/jdtuck/ fdasrvf_R.svg?style=flat-square&label=linux)](https://travis-ci.org/jdtuck/ fdasrvf_R)
+[![Build Status](https://img.shields.io/travis/jdtuck/ fdasrvf_R.svg?style=flat-square&label=linux)](https://travis-ci.org/jdtuck/fdasrvf_R)
+[![Build status](https://img.shields.io/appveyor/ci/jdtuck/fdasrvf-r.svg?style=flat-square&label=windows)](https://ci.appveyor.com/project/jdtuck/fdasrvf-r/branch/master)
 
 A R package for functional data analysis using the square root
 velocity framework which performs pair-wise and group-wise

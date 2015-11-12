@@ -1,0 +1,16 @@
+##split sources to ensure the commands for linking are not too long!
+SOURCES1=$(wildcard fdasrsf/*.cpp)
+
+OBJS1 = $(SOURCES1:.cpp=.o)
+
+PKG_CPPFLAGS=-I.
+PKG_LIBS = libSn1.a
+
+all: libSn1.a $(SHLIB)
+
+$(SHLIB): libSn1.a $(OBJECTS)
+libSn1.a: $(OBJS1)
+
+clean:
+	@rm -f $(SHLIB) $(OBJECTS)
+	@rm -f $(OBJS1)
