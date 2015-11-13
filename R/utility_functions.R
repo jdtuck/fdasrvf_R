@@ -417,8 +417,8 @@ simul_align <- function(f1, f2){
 
     f1 = f1/len1
     s1 = s1/len1
-    f2 = f2/len1
-    s2 = s2/len1
+    f2 = f2/len2
+    s2 = s2/len2
 
     # get srvf (should be +/-1)
     q1 = diff(f1)/diff(s1)
@@ -428,11 +428,11 @@ simul_align <- function(f1, f2){
 
     # get extreme points
     out = extrema_1s(s1, q1);
-    ext1 = out$ext1
-    d1 = out$d1
+    ext1 = out$ext2
+    d1 = out$d
     out = extrema_1s(s2,q2);
     ext2 = out$ext2
-    d2 = out$d2
+    d2 = out$d
 
     out = match_ext(s1,ext1,d1,s2,ext2,d2)
     D = out$D
@@ -474,7 +474,7 @@ extrema_1s <- function(t, q){
     ext = which(diff(q) != 0) + 1
     ext2 = rep(0, length(ext)+2)
     ext2[1] = 1
-    ext2[2:length(ext2)-1] = round(ext)
+    ext2[2:(length(ext2)-1)] = round(ext)
     ext2[length(ext2)] = length(t)
 
     return(list(ext2=ext2,d=d))
@@ -529,25 +529,33 @@ match_ext <- function(t1, ext1, d1, t2, ext2, d2){
     for (i in 1:n1){
         for (j in 1:n2){
             if (((i+j)%%2)==0){
-                for (ib in seq(i-1,1+(i%%2),by=-2)){
-                    for (jb in seq(j-1,1+(j%%2),by=-2)){
-                        icurr = ib+seq(1,i,2)
-                        jcurr = jb+seq(1,j,2)
-                        W = sqrt(sum(te1[icurr]-te1[icurr-1])) *
-                            sqrt(sum(te2[jcurr]-te2[jcurr-1]))
-                        Dcurr = D[ib,jb] + W
-                        if (Dcurr > D[i,j]){
-                            D[i,j] = Dcurr
-                            P[i,j,] = c(ib,jb)
+                if ((i-1)>=(1+(i%%2))){
+                    for (ib in seq(i-1,1+(i%%2),by=-2)){
+                        if ((j-1)>=(1+(j%%2))){
+                            for (jb in seq(j-1,1+(j%%2),by=-2)){
+                                icurr = seq(ib+1,i,2)
+                                jcurr = seq(jb+1,j,2)
+                                W = sqrt(sum(te1[icurr]-te1[icurr-1])) *
+                                    sqrt(sum(te2[jcurr]-te2[jcurr-1]))
+                                Dcurr = D[ib,jb] + W
+                                if (Dcurr > D[i,j]){
+                                    D[i,j] = Dcurr
+                                    P[i,j,] = c(ib,jb)
+                                }
+                            }
+
                         }
-                    }
+                  }
+
                 }
             }
         }
     }
 
-    D = D[1+pad1[1]:n1-pad1[2], 1+pad2[1]:n2-pad2[2]]
-    P = P[1+pad1[1]:n1-pad1[2], 1+pad2[1]:n2-pad2[2],]
+    D = D[(1+pad1[1]):(n1-pad1[2]), (1+pad2[1]):(n2-pad2[2])]
+    P = P[(1+pad1[1]):(n1-pad1[2]), (1+pad2[1]):(n2-pad2[2]),]
+    P[,,1] = P[,,1]-pad1[1]
+    P[,,2] = P[,,2]-pad2[1]
 
     # Retrieve Best Path
     if (pad1[2] == pad2[2]){
@@ -559,12 +567,10 @@ match_ext <- function(t1, ext1, d1, t2, ext2, d2){
     }
     mpath = round(mpath)
     P = round(P)
-    prev_vert = P[mpath[1],mpath[2]]
-
-    mpath = t(mpath)
+    prev_vert = P[mpath[1],mpath[2],]
 
     while (any(prev_vert>0)){
-        mpath = c(prev_vert,mpath)
+        mpath = rbind(prev_vert,mpath,deparse.level=0)
         prev_vert = P[mpath[1,1],mpath[1,2],]
     }
 
@@ -584,8 +590,8 @@ simul_reparam <- function(te1, te2, mpath){
     }
 
     m = nrow(mpath)
-    for (i in 1:m-1){
-        out = simul_reparam_segment(mpath[i,], mpath[i+1,],te1,te2)
+    for (ii in 1:(m-1)){
+        out = simul_reparam_segment(mpath[ii,], mpath[ii+1,],te1,te2)
 
         g1 = c(g1,out$gg1)
         g2 = c(g2,out$gg2)
@@ -594,7 +600,7 @@ simul_reparam <- function(te1, te2, mpath){
     n1 = length(te1)
     n2 = length(te2)
 
-    if ((mpath[nrow(mpath),1]==n1-1) || (mpath[nrow(mpath),2] == n2-1)){
+    if ((mpath[nrow(mpath),1]==(n1-1)) || (mpath[nrow(mpath),2] == (n2-1))){
         g1 = c(g1,1)
         g2 = c(g2,1)
     }
@@ -603,8 +609,8 @@ simul_reparam <- function(te1, te2, mpath){
 }
 
 simul_reparam_segment <- function(src, tgt, te1, te2){
-    i1 = seq(src[1],tgt[1],2)
-    i2 = seq(src[2],tgt[2],2)
+    i1 = seq(src[1]+1,tgt[1],2)
+    i2 = seq(src[2]+1,tgt[2],2)
 
     v1 = sum(te1[i1]-te1[i1-1])
     v2 = sum(te2[i2]-te2[i2-1])
@@ -617,11 +623,11 @@ simul_reparam_segment <- function(src, tgt, te1, te2){
     u1 = 0.
     u2 = 0.
 
-    gg1 = 0
-    gg2 = 0
+    gg1 = vector()
+    gg2 = vector()
 
     while ((a1<tgt[1]) && (a2<tgt[2])){
-        if ((a1==tgt[1]-1) && (a2==tgt[2]-1)){
+        if ((a1==(tgt[1]-1)) && (a2==(tgt[2]-1))){
             a1 = tgt[1]
             a2 = tgt[2]
             gg1 = c(gg1, te1[a1])

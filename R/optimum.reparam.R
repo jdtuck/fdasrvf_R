@@ -53,7 +53,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
         tmax = max(T1)
         timet2 = T1
         timet2 = (timet2-tmin)/(tmax-tmin)
-        gam = simul_gam(u,out$g1,out$g2,timet2,out$s1,out$s2,timet2)
+        gam0 = simul_gam(u,out$g1,out$g2,timet2,out$s1,out$s2,timet2)
     } else if (method=="DP2") {
         opt = rep(0,n+1+1);
         swap = FALSE
@@ -62,11 +62,11 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
 
         out = .Call('opt_reparam', PACKAGE = 'fdasrvf', C1,C2,n,1,0.0,TRUE,
                     rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
-        gam = out$opt
-        gam = gam[1:length(gam)-2]
+        gam0 = out$opt
+        gam0 = gam0[1:(length(gam0)-2)]
 
         if (out$swap){
-            gam = invertGamma(gam);
+            gam0 = invertGamma(gam0);
         }
     } else {
         opt = rep(0,n+1+1);
@@ -82,11 +82,11 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
                         rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
         }
 
-        gam = out$opt
-        gam = gam[1:length(gam)-2]
+        gam0 = out$opt
+        gam0 = gam0[1:(length(gam0)-2)]
 
         if (out$swap){
-            gam = invertGamma(gam);
+            gam0 = invertGamma(gam0);
         }
     }
 
