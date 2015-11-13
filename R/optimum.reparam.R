@@ -31,14 +31,66 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
     n = length(T1)
     Q1=(Q1/pvecnorm(Q1,2))
     Q2=(Q2/pvecnorm(Q2,2))
-    G = rep(0,n)
-    T = rep(0,n)
-    size = 0;
-    ret = .Call('DPQ2', PACKAGE = 'fdasrvf', Q1, T1, Q2, T2, 1, n, n, T1, T2, n, n, G, T, size, lambda);
+    C1=srsf_to_f(Q1,T1,f1o)
+    C2=srsf_to_f(Q2,T2,f2o)
+    rotated = FALSE
+    isclosed = FALSE
+    skipm = 0
+    auto = 0
+    if (method=="DP"){
+        G = rep(0,n)
+        T = rep(0,n)
+        size = 0;
+        ret = .Call('DPQ2', PACKAGE = 'fdasrvf', Q1, T1, Q2, T2, 1, n, n, T1, T2, n, n, G, T, size, lambda);
 
-    G = ret$G[1:ret$size]
-    Tf = ret$T[1:ret$size]
-    gam0 = approx(Tf,G,xout=T2)$y
+        G = ret$G[1:ret$size]
+        Tf = ret$T[1:ret$size]
+        gam0 = approx(Tf,G,xout=T2)$y
+    } else if (method=="SIMUL"){
+        out = simul_align(C1,C2)
+        u = seq(0,1,length.out=length(out$g1))
+        tmin = min(T1)
+        tmax = max(T1)
+        timet2 = T1
+        timet2 = (timet2-tmin)/(tmax-tmin)
+        gam = simul_gam(u,out$g1,out$g2,timet2,out$s1,out$s2,timet2)
+    } else if (method=="DP2") {
+        opt = rep(0,n+1+1);
+        swap = FALSE
+        fopts = rep(0,5)
+        comtime = rep(0,5)
+
+        out = .Call('opt_reparam', PACKAGE = 'fdasrvf', C1,C2,n,1,0.0,TRUE,
+                    rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
+        gam = out$opt
+        gam = gam[1:length(gam)-2]
+
+        if (out$swap){
+            gam = invertGamma(gam);
+        }
+    } else {
+        opt = rep(0,n+1+1);
+        swap = FALSE
+        fopts = rep(0,5)
+        comtime = rep(0,5)
+
+        out = .Call('opt_reparam', PACKAGE = 'fdasrvf', C1,C2,n,1,w,FALSE,
+                    rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
+
+        if (out$fopts[1] == 1000){
+            out = .Call('opt_reparam', PACKAGE = 'fdasrvf', C1,C2,n,1,0.0,TRUE,
+                        rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
+        }
+
+        gam = out$opt
+        gam = gam[1:length(gam)-2]
+
+        if (out$swap){
+            gam = invertGamma(gam);
+        }
+    }
+
     gam = (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])  # slight change on scale
+
     return(gam)
 }

@@ -1,10 +1,10 @@
-#' Convert SRVF tp f
+#' Convert SRVF to f
 #'
 #' This function converts srvfs to functions
 #'
 #' @param q matrix of srvfs
 #' @param time time
-#' @param f0: initial value of f
+#' @param f0 initial value of f
 #' @return f matrix of functions
 #' @keywords srvf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
@@ -17,14 +17,17 @@
 #' @examples
 #' data("simu_data")
 #' q = f_to_srvf(simu_data$f,simu_data$time)
-#' f = f_to_srvf(q,simu_data$time,f[1,])
+#' f = srsf_to_f(q,simu_data$time,simu_data$f[1,])
 srsf_to_f <- function(q,time,f0=0.0){
-    if is.null(dim(q)){
+    if (is.null(dim(q))){
         integrand = q*abs(q)
         f = f0 + cumtrapz(time, integrand)
     } else {
-        M = nrows(q);
-        N = ncols(q);
+        M = nrow(q);
+        N = ncol(q);
+        if (is.null(dim(f0))){
+            f0 = rep(0,N)
+        }
         f = matrix(0,M,N)
         for (i in 1:N){
             qnorm = abs(q[,i])

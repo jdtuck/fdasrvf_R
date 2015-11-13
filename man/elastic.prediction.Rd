@@ -31,31 +31,12 @@ Returns a list containing
 This function performs prediction from an elastic regression model
  with phase-variablity
 }
-\keyword{(2014),}
-\keyword{@references}
-\keyword{A.,}
-\keyword{Application}
-\keyword{Classification,}
-\keyword{D.,}
-\keyword{Elastic}
-\keyword{Electronic}
-\keyword{Functional}
-\keyword{J.}
-\keyword{Journal}
-\keyword{Logistic}
-\keyword{Physiological}
-\keyword{Regression}
-\keyword{Signal}
-\keyword{Srivastava,}
-\keyword{Statistics}
-\keyword{Tucker,}
-\keyword{W.,}
-\keyword{Wu,}
+\references{
+Tucker, J. D., Wu, W., Srivastava, A.,
+ Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
+ Electronic Journal of Statistics (2014), submitted.
+}
 \keyword{alignment}
-\keyword{of}
 \keyword{regression}
 \keyword{srvf}
-\keyword{submitted.}
-\keyword{to}
-\keyword{with}
 

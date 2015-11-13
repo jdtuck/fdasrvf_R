@@ -37,8 +37,8 @@
 #' data("simu_data")
 #' out = time_warping(simu_data$f,simu_data$time)
 time_warping <- function(f, time, lambda = 0, method = "mean",
-                                                 showplot = TRUE, smooth_data = FALSE, sparam = 25,
-                                                 parallel = FALSE,cores=2){
+                         showplot = TRUE, smooth_data = FALSE, sparam = 25,
+                         parallel = FALSE,cores=2){
     if (parallel){
         cl = makeCluster(cores)
         registerDoParallel(cl)
