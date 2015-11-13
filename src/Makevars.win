@@ -7,6 +7,7 @@ OBJS1 = $(SOURCES1:.cpp=.o)
 OBJS2 = $(SOURCES2:.cpp=.o)
 
 PKG_CPPFLAGS=-I. -Igropt/incl/
+CXX_STD = CXX11
 PKG_LIBS = libfdasrvf1.a libfdasrvf2.a
 
 all: libfdasrvf1.a libfdasrvf2.a $(SHLIB)
