@@ -89,15 +89,15 @@ void RTRSR1::CheckParams(void)
 	char NO[] = "NO";
 	char *status;
 
-	std::cout << "RTRSR1 METHOD PARAMETERS:" << std::endl;
+	Rcpp::Rcout << "RTRSR1 METHOD PARAMETERS:" << std::endl;
 	status = YES;
-	std::cout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "]" << std::endl;
 };
 
 void RTRSR1::PrintInfo(void)
 {
 	printf("\n\tinpss:%.3e,IsUpdateHessian:%d,", inpss, isupdated);
-	std::cout << std::endl;
+	Rcpp::Rcout << std::endl;
 };
 
 void RTRSR1::SetParams(PARAMSMAP params)

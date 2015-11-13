@@ -63,12 +63,12 @@ void Stiefel::CheckParams(void) const
 	std::string StieRetractionnames[STIERETRACTIONLENGTH] = { "QF", "POLAR", "EXP", "CONSTRUCTED" };
 	std::string StieVectorTransportnames[STIEVECTORTRANSPORTLENGTH] = { "PARALLELIZATION", "RIGGING", "PARALLELTRANSLATION" };
 	Manifold::CheckParams();
-	std::cout << name << " PARAMETERS:" << std::endl;
-	std::cout << "n             :" << std::setw(15) << n << ",\t";
-	std::cout << "p             :" << std::setw(15) << p << std::endl;
-	std::cout << "metric        :" << std::setw(15) << StieMetricnames[metric] << ",\t";
-	std::cout << "retraction    :" << std::setw(15) << StieRetractionnames[retraction] << std::endl;
-	std::cout << "VecTran       :" << std::setw(15) << StieVectorTransportnames[VecTran] << std::endl;
+	Rcpp::Rcout << name << " PARAMETERS:" << std::endl;
+	Rcpp::Rcout << "n             :" << std::setw(15) << n << ",\t";
+	Rcpp::Rcout << "p             :" << std::setw(15) << p << std::endl;
+	Rcpp::Rcout << "metric        :" << std::setw(15) << StieMetricnames[metric] << ",\t";
+	Rcpp::Rcout << "retraction    :" << std::setw(15) << StieRetractionnames[retraction] << std::endl;
+	Rcpp::Rcout << "VecTran       :" << std::setw(15) << StieVectorTransportnames[VecTran] << std::endl;
 };
 
 void Stiefel::IntrProjection(Variable *x, Vector *etax, Vector *result) const
@@ -108,8 +108,8 @@ double Stiefel::Metric(Variable *x, Vector *etax, Vector *xix) const
 {
 	if (metric == EUCLIDEAN)
 		return Manifold::Metric(x, etax, xix);
-	std::cout << "Error: Metric has not been done!" << std::endl;
-    exit(0);
+	Rcpp::Rcout << "Error: Metric has not been done!" << std::endl;
+    //exit(0);
 	return 0;
 };
 
@@ -129,18 +129,18 @@ void Stiefel::Retraction(Variable *x, Vector *etax, Variable *result) const
 	if (retraction == CONSTRUCTED)
 		return ConRetraction(x, etax, result);
 
-	std::cout << "Error: Retraction has not been done!" << std::endl;
+	Rcpp::Rcout << "Error: Retraction has not been done!" << std::endl;
 };
 
 void Stiefel::coTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
 {
 	if (retraction == QF)
 		return qfcoTangentVector(x, etax, y, xiy, result);
-	
+
 	if (retraction == CONSTRUCTED)
 		return ConcoTangentVector(x, etax, y, xiy, result);
 
-	std::cout << "Error: coTangentVector has not been done!" << std::endl;
+	Rcpp::Rcout << "Error: coTangentVector has not been done!" << std::endl;
 };
 
 void Stiefel::DiffRetraction(Variable *x, Vector *etax, Variable *y, Vector *xix, Vector *result, bool IsEtaXiSameDir) const
@@ -151,7 +151,7 @@ void Stiefel::DiffRetraction(Variable *x, Vector *etax, Variable *y, Vector *xix
 	if (retraction == CONSTRUCTED)
 		return DiffConRetraction(x, etax, y, xix, result, IsEtaXiSameDir);
 
-	std::cout << "Error: DiffRetraction has not been done!" << std::endl;
+	Rcpp::Rcout << "Error: DiffRetraction has not been done!" << std::endl;
 };
 
 double Stiefel::Beta(Variable *x, Vector *etax) const
@@ -182,7 +182,7 @@ void Stiefel::VectorTransport(Variable *x, Vector *etax, Variable *y, Vector *xi
 	if (HasHHR)
 		return LCVectorTransport(x, etax, y, xix, result);
 
-	std::cout << "Error: VectorTransport has not been done!" << std::endl;
+	Rcpp::Rcout << "Error: VectorTransport has not been done!" << std::endl;
 };
 
 void Stiefel::InverseVectorTransport(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
@@ -193,7 +193,7 @@ void Stiefel::InverseVectorTransport(Variable *x, Vector *etax, Variable *y, Vec
 	if (HasHHR)
 		return LCInverseVectorTransport(x, etax, y, xiy, result);
 
-	std::cout << "Error: InverseVectorTransport has not been done!" << std::endl;
+	Rcpp::Rcout << "Error: InverseVectorTransport has not been done!" << std::endl;
 };
 
 void Stiefel::HInvTran(Variable *x, Vector *etax, Variable *y, LinearOPE *Hx, integer start, integer end, LinearOPE *result) const
@@ -204,7 +204,7 @@ void Stiefel::HInvTran(Variable *x, Vector *etax, Variable *y, LinearOPE *Hx, in
 	if (HasHHR)
 		return LCHInvTran(x, etax, y, Hx, start, end, result);
 
-	std::cout << "Error: HInvTran has not been done!" << std::endl;
+	Rcpp::Rcout << "Error: HInvTran has not been done!" << std::endl;
 };
 
 void Stiefel::TranH(Variable *x, Vector *etax, Variable *y, LinearOPE *Hx, integer start, integer end, LinearOPE *result) const
@@ -215,7 +215,7 @@ void Stiefel::TranH(Variable *x, Vector *etax, Variable *y, LinearOPE *Hx, integ
 	if (HasHHR)
 		return LCTranH(x, etax, y, Hx, start, end, result);
 
-	std::cout << "Error: TranH has not been done!" << std::endl;
+	Rcpp::Rcout << "Error: TranH has not been done!" << std::endl;
 };
 
 void Stiefel::TranHInvTran(Variable *x, Vector *etax, Variable *y, LinearOPE *Hx, LinearOPE *result) const
@@ -226,7 +226,7 @@ void Stiefel::TranHInvTran(Variable *x, Vector *etax, Variable *y, LinearOPE *Hx
 	if (HasHHR)
 		return LCTranHInvTran(x, etax, y, Hx, result);
 
-	std::cout << "Error: TranHInvTran has not been done!" << std::endl;
+	Rcpp::Rcout << "Error: TranHInvTran has not been done!" << std::endl;
 };
 
 void Stiefel::EucGradToGrad(Variable *x, Vector *egf, Vector *gf, const Problem *prob) const
@@ -244,7 +244,7 @@ void Stiefel::EucGradToGrad(Variable *x, Vector *egf, Vector *gf, const Problem 
 		ExtrProjection(x, egf, gf);
 		return;
 	}
-	std::cout << "Warning:The function converting Eucidean Gradient to Riemannian Gradient has not been done!" << std::endl;
+	Rcpp::Rcout << "Warning:The function converting Eucidean Gradient to Riemannian Gradient has not been done!" << std::endl;
 };
 
 void Stiefel::EucHvToHv(Variable *x, Vector *etax, Vector *exix, Vector *xix, const Problem *prob) const
@@ -294,7 +294,7 @@ void Stiefel::EucHvToHv(Variable *x, Vector *etax, Vector *exix, Vector *xix, co
 		}
 		return;
 	}
-	std::cout << "Warning:The function converting action of Eucidean Hessian to action of Riemannian Hessian has not been done!" << std::endl;
+	Rcpp::Rcout << "Warning:The function converting action of Eucidean Hessian to action of Riemannian Hessian has not been done!" << std::endl;
 };
 
 void Stiefel::ObtainIntr(Variable *x, Vector *etax, Vector *result) const
@@ -305,7 +305,7 @@ void Stiefel::ObtainIntr(Variable *x, Vector *etax, Vector *result) const
 	if (retraction == CONSTRUCTED)
 		ObtainIntrSquare(x, etax, result);
 	else
-		std::cout << "Warning: computing intrinsinc representation from extrinsic has not been implemented!" << std::endl;
+		Rcpp::Rcout << "Warning: computing intrinsinc representation from extrinsic has not been implemented!" << std::endl;
 };
 
 void Stiefel::ObtainExtr(Variable *x, Vector *intretax, Vector *result) const
@@ -316,7 +316,7 @@ void Stiefel::ObtainExtr(Variable *x, Vector *intretax, Vector *result) const
 	if (retraction == CONSTRUCTED)
 		ObtainExtrSquare(x, intretax, result);
 	else
-		std::cout << "Warning: computing extrinsic representation from intrinsinc has not been implemented!" << std::endl;
+		Rcpp::Rcout << "Warning: computing extrinsic representation from intrinsinc has not been implemented!" << std::endl;
 };
 
 void Stiefel::qfRetraction(Variable *x, Vector *etax, Variable *result) const
@@ -357,11 +357,11 @@ void Stiefel::qfRetraction(Variable *x, Vector *etax, Variable *result) const
 	double *work = new double[lwork];
 	dgeqp3_(&N, &P, ptrHHR, &N, jpvt, tau, work, &lwork, &info);
 	if (info < 0)
-		std::cout << "Error in qr decomposition!" << std::endl;
+		Rcpp::Rcout << "Error in qr decomposition!" << std::endl;
 	for (integer i = 0; i < P; i++)
 	{
 		if (jpvt[i] != (i + 1))
-			std::cout << "Error in qf retraction!" << std::endl;
+			Rcpp::Rcout << "Error in qf retraction!" << std::endl;
 	}
 	double *signs = new double[P];
 	for (integer i = 0; i < P; i++)
@@ -369,7 +369,7 @@ void Stiefel::qfRetraction(Variable *x, Vector *etax, Variable *result) const
 	dcopy_(&Length, ptrHHR, &inc, resultM, &inc);
 	dorgqr_(&N, &P, &P, resultM, &N, tau, work, &lwork, &info);
 	if (info < 0)
-		std::cout << "Error in forming Q matrix!" << std::endl;
+		Rcpp::Rcout << "Error in forming Q matrix!" << std::endl;
 	for (integer i = 0; i < P; i++)
 		dscal_(&N, signs + i, resultM + i * N, &inc);
 	result->AddToTempData("HHR", HouseHolderResult);
@@ -547,11 +547,11 @@ void Stiefel::ObtainIntrHHR(Variable *x, Vector *etax, Vector *result) const
 		x->AddToTempData("HHR", HouseHolderResult);
 		x->AddToTempData("HHRTau", HHRTau);
 		if (info < 0)
-			std::cout << "Error in qr decomposition!" << std::endl;
+			Rcpp::Rcout << "Error in qr decomposition!" << std::endl;
 		for (integer i = 0; i < P; i++)
 		{
 			if (jpvt[i] != (i + 1))
-				std::cout << "Error in qf retraction!" << std::endl;
+				Rcpp::Rcout << "Error in qf retraction!" << std::endl;
 		}
 		delete[] jpvt;
 		delete[] work;
@@ -632,11 +632,11 @@ void Stiefel::ObtainExtrHHR(Variable *x, Vector *intretax, Vector *result) const
 		x->AddToTempData("HHR", HouseHolderResult);
 		x->AddToTempData("HHRTau", HHRTau);
 		if (info < 0)
-			std::cout << "Error in qr decomposition!" << std::endl;
+			Rcpp::Rcout << "Error in qr decomposition!" << std::endl;
 		for (integer i = 0; i < P; i++)
 		{
 			if (jpvt[i] != (i + 1))
-				std::cout << "Error in qf retraction!" << std::endl;
+				Rcpp::Rcout << "Error in qf retraction!" << std::endl;
 		}
 		delete[] jpvt;
 		delete[] work;
@@ -795,7 +795,7 @@ void Stiefel::ConRetraction(Variable *x, Vector *etax, Variable *result) const
 void Stiefel::ConcoTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
 {
 	xiy->CopyTo(result);
-	std::cout << "The cotangent vector for the constructed retraction has not been implemented!" << std::endl;
+	Rcpp::Rcout << "The cotangent vector for the constructed retraction has not been implemented!" << std::endl;
 };
 
 void Stiefel::DiffConRetraction(Variable *x, Vector *etax, Variable *y, Vector *xix, Vector *result, bool IsEtaXiSameDir) const
@@ -827,7 +827,7 @@ void Stiefel::DiffConRetraction(Variable *x, Vector *etax, Variable *y, Vector *
 		}
 		return;
 	}
-	std::cout << "Warning: The differentiated retraction of the constructed retraction has not been implemented!" << std::endl;
+	Rcpp::Rcout << "Warning: The differentiated retraction of the constructed retraction has not been implemented!" << std::endl;
 	xix->CopyTo(result);
 };
 
@@ -856,10 +856,10 @@ void Stiefel::ObtainPerp(Variable *x) const
 		jpvt[i] = 0;
 	dgeqp3_(&N, &NmP, Perp, &N, jpvt, tau, work, &lwork, &info);
 	if (info < 0)
-		std::cout << "Error in qr decomposition!" << std::endl;
+		Rcpp::Rcout << "Error in qr decomposition!" << std::endl;
 	dorgqr_(&N, &NmP, &NmP, Perp, &N, tau, work, &lwork, &info);
 	if (info < 0)
-		std::cout << "Error in forming Q matrix!" << std::endl;
+		Rcpp::Rcout << "Error in forming Q matrix!" << std::endl;
 	delete[] jpvt;
 	delete[] tau;
 

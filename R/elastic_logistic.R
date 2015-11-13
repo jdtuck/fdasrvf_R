@@ -96,6 +96,7 @@ elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
     LL[itr] = logit_loss(b,Phi,y)
 
     # find gamma
+    k=1
     gamma_new<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
       gam = logistic_warp(beta, time, q[,k], y[k])
     }

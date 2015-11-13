@@ -741,7 +741,7 @@ void ProductManifold::CheckParams(void) const
 		Manifold::CheckParams();
 		for (integer i = 0; i < numofmani; i++)
 		{
-			std::cout << i << "-th manifold parameters (the number is " << powsinterval[i + 1] - powsinterval[i] << ") :" << std::endl;
+			Rcpp::Rcout << i << "-th manifold parameters (the number is " << powsinterval[i + 1] - powsinterval[i] << ") :" << std::endl;
 			manifolds[i]->CheckParams();
 		}
 	}

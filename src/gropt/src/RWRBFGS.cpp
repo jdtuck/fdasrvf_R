@@ -54,13 +54,13 @@ void RWRBFGS::CheckParams(void)
 	char NO[] = "NO";
 	char *status;
 
-	std::cout << "RWRBFGS METHOD PARAMETERS:" << std::endl;
+	Rcpp::Rcout << "RWRBFGS METHOD PARAMETERS:" << std::endl;
 	status = (nu >= 0 && nu < 1) ? YES : NO;
-	std::cout << "nu            :" << std::setw(15) << nu << "[" << status << "],\t";
+	Rcpp::Rcout << "nu            :" << std::setw(15) << nu << "[" << status << "],\t";
 	status = (mu >= 0) ? YES : NO;
-	std::cout << "mu            :" << std::setw(15) << mu << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "mu            :" << std::setw(15) << mu << "[" << status << "]" << std::endl;
 	status = YES;
-	std::cout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "]" << std::endl;
 };
 
 void RWRBFGS::GetSearchDir(void)
@@ -102,7 +102,7 @@ void RWRBFGS::UpdateData(void)
 void RWRBFGS::PrintInfo(void)
 {
 	printf("\n\tinpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", inpss, inpsy, isupdated);
-	std::cout << std::endl;
+	Rcpp::Rcout << std::endl;
 };
 
 void RWRBFGS::SetParams(PARAMSMAP params)

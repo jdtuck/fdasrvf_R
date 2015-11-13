@@ -15,7 +15,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	for (iter = CheckMemoryDeleted->begin(); iter != CheckMemoryDeleted->end(); iter++)
 	{
 		if (iter->second != 1)
-			std::cout << "Global address:" << iter->first << ", sharedtimes:" << iter->second << std::endl;
+			Rcpp::Rcout << "Global address:" << iter->first << ", sharedtimes:" << iter->second << std::endl;
 	}
 	delete CheckMemoryDeleted;
 	return;

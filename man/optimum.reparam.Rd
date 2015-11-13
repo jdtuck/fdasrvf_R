@@ -4,7 +4,8 @@
 \alias{optimum.reparam}
 \title{Align two functions}
 \usage{
-optimum.reparam(Q1, T1, Q2, T2, lambda = 0)
+optimum.reparam(Q1, T1, Q2, T2, lambda = 0, method = "DP", w = 0.01,
+  f1o = 0, f2o = 0)
 }
 \arguments{
 \item{Q1}{srvf of function 1}
@@ -16,6 +17,16 @@ optimum.reparam(Q1, T1, Q2, T2, lambda = 0)
 \item{T2}{sample points of function 2}
 
 \item{lambda}{controls amount of warping (default = 0)}
+
+\item{method}{controls which optmization method (default="DP") options are
+Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
+("LRBFGS") and Simultaneous Alignment ("SIMUL")}
+
+\item{w}{controls LRBFGS (default = 0.01)}
+
+\item{f1o}{initial value of f1, vector or scalar depending on q1, defaults to zero}
+
+\item{f2o}{initial value of f2, vector or scalar depending on q1, defaults to zero}
 }
 \value{
 gam warping function

@@ -51,7 +51,7 @@
 //	{
 //		if (elements[i] != nullptr)
 //		{
-//			std::cout << "Error: " << i << "-th element has been initialized!" << std::endl;
+//			Rcpp::Rcout << "Error: " << i << "-th element has been initialized!" << std::endl;
 //			return;
 //		}
 //	}
@@ -304,7 +304,7 @@ void ProductElement::CheckMemory(void) const
 		{
 			if (Space > elements[j]->GetSpace() || Space + length <= elements[j]->GetSpace())
 			{
-				std::cout << "Error: Memory of space in elements does not use that of Space in ProductElement!" << std::endl;
+				Rcpp::Rcout << "Error: Memory of space in elements does not use that of Space in ProductElement!" << std::endl;
 			}
 		}
 	}

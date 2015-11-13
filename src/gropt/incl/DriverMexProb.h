@@ -143,7 +143,7 @@ void ParseSolverParamsAndOptimizing(const mxArray *SolverParams, Problem *Prob, 
 	}
 	else
 	{
-		std::cout << "Warning: Unrecognized solver: " << stdmethodname << ". Use LRBFGS instead!" << std::endl;
+		Rcpp::Rcout << "Warning: Unrecognized solver: " << stdmethodname << ". Use LRBFGS instead!" << std::endl;
 		solver = new LRBFGS(Prob, initialX);
 	}
 	solver->SetParams(params);
@@ -269,7 +269,7 @@ Manifold *GetAManifold(const char *name, integer n, integer m, integer p)
 	}
 	else
 	{
-		std::cout << "Manifold: " << name << " does not implemented in this library!" << std::endl;
+		Rcpp::Rcout << "Manifold: " << name << " does not implemented in this library!" << std::endl;
 		return nullptr;
 	}
 };
@@ -302,7 +302,7 @@ Element *GetAnElement(const char *name, integer n, integer m, integer p)
 	}
 	else
 	{
-		std::cout << "Element: " << name << " does not implemented in this library!" << std::endl;
+		Rcpp::Rcout << "Element: " << name << " does not implemented in this library!" << std::endl;
 		return nullptr;
 	}
 };

@@ -27,7 +27,7 @@
 #' \item{SSE}{sum of squared errors}
 #' \item{type}{model type ('linear')}
 #' @keywords srvf alignment regression
-#'  @references Tucker, J. D., Wu, W., Srivastava, A.,
+#' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
 #'  Electronic Journal of Statistics (2014), submitted.
 #' @export

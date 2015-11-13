@@ -24,10 +24,10 @@ void StieVariable::RandInManifold(void)
 		jpvt[i] = 0;
 	dgeqp3_(&n, &p, xU, &n, jpvt, tau, work, &lwork, &info);
 	if (info < 0)
-		std::cout << "Error in qr decomposition!" << std::endl;
+		Rcpp::Rcout << "Error in qr decomposition!" << std::endl;
 	dorgqr_(&n, &p, &p, xU, &n, tau, work, &lwork, &info);
 	if (info < 0)
-		std::cout << "Error in forming Q matrix!" << std::endl;
+		Rcpp::Rcout << "Error in forming Q matrix!" << std::endl;
 	delete[] jpvt;
 	delete[] tau;
 };

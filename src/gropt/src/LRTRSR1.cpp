@@ -99,11 +99,11 @@ void LRTRSR1::CheckParams(void)
 	char NO[] = "NO";
 	char *status;
 
-	std::cout << "LRTRSR1 METHOD PARAMETERS:" << std::endl;
+	Rcpp::Rcout << "LRTRSR1 METHOD PARAMETERS:" << std::endl;
 	status = YES;
-	std::cout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "],\t";
+	Rcpp::Rcout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "],\t";
 	status = (LengthSY >= 0) ? YES : NO;
-	std::cout << "LengthSY      :" << std::setw(15) << LengthSY << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "LengthSY      :" << std::setw(15) << LengthSY << "[" << status << "]" << std::endl;
 };
 
 void LRTRSR1::HessianEta(Vector *Eta, Vector *result)
@@ -240,7 +240,7 @@ void LRTRSR1::Acceptence(void)
 void LRTRSR1::PrintInfo(void)
 {
 	printf("\n\tgamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", gamma, inpss, inpsy, inpyy, isupdated);
-	std::cout << std::endl;
+	Rcpp::Rcout << std::endl;
 };
 
 void LRTRSR1::SetParams(PARAMSMAP params)

@@ -29,7 +29,7 @@ int Spline::SplineUniformPeriodic(const double *Y, int n, double h, double *coef
 
 	if (!SolvePeriodicSystem(d, ud, ld, vec, s, nn))
 	{
-		std::cout << "error: fail to slove the linear system!!" << std::endl;
+		Rcpp::Rcout << "error: fail to slove the linear system!!" << std::endl;
 		return 0;
 	}
 
@@ -80,7 +80,7 @@ int Spline::SplinePeriodic(const double *X, const double *Y, int n, double *coef
 
 	if (!SolvePeriodicSystem(d, ud, ld, vec, s, nn))
 	{
-		std::cout << "error: fail to slove the linear system!!" << std::endl;
+		Rcpp::Rcout << "error: fail to slove the linear system!!" << std::endl;
 		return 0;
 	}
 
@@ -130,7 +130,7 @@ int Spline::SplineUniformSlopes(const double *Y, int n, double h, double *coefs)
 
 	if (!SolveTridiagonalSystem(d, ud, ld, vec, s, n))
 	{
-		std::cout << "error: fail to slove tridiagonal system!!" << std::endl;
+		Rcpp::Rcout << "error: fail to slove tridiagonal system!!" << std::endl;
 		return 0;
 	}
 
@@ -176,7 +176,7 @@ int Spline::SplineSlopes(const double *X, const double *Y, int n, double *coefs)
 
 	if (!SolveTridiagonalSystem(d, ud, ld, vec, s, n))
 	{
-		std::cout << "error: fail to slove tridiagonal system!!" << std::endl;
+		Rcpp::Rcout << "error: fail to slove tridiagonal system!!" << std::endl;
 		return 0;
 	}
 

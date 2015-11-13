@@ -73,15 +73,15 @@ void LRBFGS::CheckParams(void)
 	char NO[] = "NO";
 	char *status;
 
-	std::cout << "LRBFGS METHOD PARAMETERS:" << std::endl;
+	Rcpp::Rcout << "LRBFGS METHOD PARAMETERS:" << std::endl;
 	status = (nu >= 0 && nu < 1) ? YES : NO;
-	std::cout << "nu            :" << std::setw(15) << nu << "[" << status << "],\t";
+	Rcpp::Rcout << "nu            :" << std::setw(15) << nu << "[" << status << "],\t";
 	status = (mu >= 0) ? YES : NO;
-	std::cout << "mu            :" << std::setw(15) << mu << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "mu            :" << std::setw(15) << mu << "[" << status << "]" << std::endl;
 	status = YES;
-	std::cout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "],\t";
+	Rcpp::Rcout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "],\t";
 	status = (LengthSY >= 0) ? YES : NO;
-	std::cout << "LengthSY      :" << std::setw(15) << LengthSY << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "LengthSY      :" << std::setw(15) << LengthSY << "[" << status << "]" << std::endl;
 };
 
 void LRBFGS::GetSearchDir(void)
@@ -164,7 +164,7 @@ void LRBFGS::UpdateData(void)
 void LRBFGS::PrintInfo(void)
 {
 	printf("\n\tbetay:%.3e,rho:%.3e,gamma:%.3e,inpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", betay, rho, gamma, inpss, inpsy, isupdated);
-	std::cout << std::endl;
+	Rcpp::Rcout << std::endl;
 };
 
 void LRBFGS::SetParams(PARAMSMAP params)

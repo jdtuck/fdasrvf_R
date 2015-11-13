@@ -60,13 +60,13 @@ void RBroydenFamily::CheckParams(void)
 	char NO[] = "NO";
 	char *status;
 
-	std::cout << "RBROYDENFAMILY METHOD PARAMETERS:" << std::endl;
+	Rcpp::Rcout << "RBROYDENFAMILY METHOD PARAMETERS:" << std::endl;
 	status = (nu >= 0 && nu < 1) ? YES : NO;
-	std::cout << "nu            :" << std::setw(15) << nu << "[" << status << "],\t";
+	Rcpp::Rcout << "nu            :" << std::setw(15) << nu << "[" << status << "],\t";
 	status = (mu >= 0) ? YES : NO;
-	std::cout << "mu            :" << std::setw(15) << mu << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "mu            :" << std::setw(15) << mu << "[" << status << "]" << std::endl;
 	status = YES;
-	std::cout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "isconvex      :" << std::setw(15) << isconvex << "[" << status << "]" << std::endl;
 };
 
 void RBroydenFamily::GetSearchDir(void)
@@ -110,7 +110,7 @@ void RBroydenFamily::UpdateData(void)
 void RBroydenFamily::PrintInfo(void)
 {
 	printf("\n\tbetay:%.3e,Phic:%.3e,inpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", betay, phic, inpss, inpsy, isupdated);
-	std::cout << std::endl;
+	Rcpp::Rcout << std::endl;
 };
 
 void RBroydenFamily::SetParams(PARAMSMAP params)

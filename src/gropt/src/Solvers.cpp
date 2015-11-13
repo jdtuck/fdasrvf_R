@@ -22,7 +22,7 @@ void Solvers::PrintGenInfo(void)
 
 void Solvers::PrintInfo(void)
 {
-	std::cout << std::endl;
+	Rcpp::Rcout << std::endl;
 };
 
 bool Solvers::IsStopped(void)
@@ -46,7 +46,7 @@ bool Solvers::IsStopped(void)
 	if (Stop_Criterion == GRAD_F_0)
 		return (ngf / ngf0) < Tolerance;
 
-	std::cout << "Error: Stopping Criterion is not specefic!" << std::endl;
+	Rcpp::Rcout << "Error: Stopping Criterion is not specefic!" << std::endl;
 	return true;
 };
 
@@ -57,19 +57,19 @@ void Solvers::CheckParams(void)
 	char YES[] = "YES";
 	char NO[] = "NO";
 	char *status;
-	std::cout << "GENERAL PARAMETERS:" << std::endl;
+	Rcpp::Rcout << "GENERAL PARAMETERS:" << std::endl;
 	status = (Stop_Criterion >= 0 && Stop_Criterion < STOPCRITLENGTH) ? YES : NO;
-	std::cout << "Stop_Criterion:" << std::setw(15) << STOPCRITnames[Stop_Criterion] << "[" << status << "],\t";
+	Rcpp::Rcout << "Stop_Criterion:" << std::setw(15) << STOPCRITnames[Stop_Criterion] << "[" << status << "],\t";
 	status = (Tolerance > 0) ? YES : NO;
-	std::cout << "Tolerance     :" << std::setw(15) << Tolerance << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "Tolerance     :" << std::setw(15) << Tolerance << "[" << status << "]" << std::endl;
 	status = (Max_Iteration > 0 && Max_Iteration >= Min_Iteration) ? YES : NO;
-	std::cout << "Max_Iteration :" << std::setw(15) << Max_Iteration << "[" << status << "]" << ",\t";
+	Rcpp::Rcout << "Max_Iteration :" << std::setw(15) << Max_Iteration << "[" << status << "]" << ",\t";
 	status = (Min_Iteration >= 0 && Min_Iteration <= Max_Iteration) ? YES : NO;
-	std::cout << "Min_Iteration :" << std::setw(15) << Min_Iteration << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "Min_Iteration :" << std::setw(15) << Min_Iteration << "[" << status << "]" << std::endl;
 	status = (OutputGap > 0) ? YES : NO;
-	std::cout << "OutputGap     :" << std::setw(15) << OutputGap << "[" << status << "]" << ",\t";
+	Rcpp::Rcout << "OutputGap     :" << std::setw(15) << OutputGap << "[" << status << "]" << ",\t";
 	status = (DEBUG >= 0 && DEBUG < DEBUGLENGTH) ? YES : NO;
-	std::cout << "DEBUG         :" << std::setw(15) << DEBUGnames[DEBUG] << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "DEBUG         :" << std::setw(15) << DEBUGnames[DEBUG] << "[" << status << "]" << std::endl;
 };
 
 void Solvers::Run(void)

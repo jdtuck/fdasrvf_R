@@ -25,20 +25,20 @@ Euclidean::~Euclidean(void)
 void Euclidean::CheckParams(void) const
 {
 	Manifold::CheckParams();
-	std::cout << name << " PARAMETERS:" << std::endl;
+	Rcpp::Rcout << name << " PARAMETERS:" << std::endl;
 	if (col == 1 && num == 1)
-		std::cout << "row           :" << std::setw(15) << row << std::endl;
+		Rcpp::Rcout << "row           :" << std::setw(15) << row << std::endl;
 	else
 	if (num == 1)
 	{
-		std::cout << "row           :" << std::setw(15) << row << ",\t";
-		std::cout << "col           :" << std::setw(15) << col << std::endl;
+		Rcpp::Rcout << "row           :" << std::setw(15) << row << ",\t";
+		Rcpp::Rcout << "col           :" << std::setw(15) << col << std::endl;
 	}
 	else
 	{
-		std::cout << "row           :" << std::setw(15) << row << ",\t";
-		std::cout << "col           :" << std::setw(15) << col << std::endl;
-		std::cout << "num           :" << std::setw(15) << num << std::endl;
+		Rcpp::Rcout << "row           :" << std::setw(15) << row << ",\t";
+		Rcpp::Rcout << "col           :" << std::setw(15) << col << std::endl;
+		Rcpp::Rcout << "num           :" << std::setw(15) << num << std::endl;
 	}
 };
 

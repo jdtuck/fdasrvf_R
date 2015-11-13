@@ -115,7 +115,7 @@ double StieBrockett::f(Variable *x) const
 //
 //	if (xixTV == etaxTV)
 //	{
-//		std::cout << "Error in RieHessianEta!" << std::endl;
+//		Rcpp::Rcout << "Error in RieHessianEta!" << std::endl;
 //		exit(0);
 //	}
 //	char *transn = "n";

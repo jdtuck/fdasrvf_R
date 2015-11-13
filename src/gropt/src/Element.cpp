@@ -84,7 +84,7 @@ void Element::Print(const char *name, bool isonlymain) const
 
 void Element::RandInManifold(void)
 {
-	std::cout << "Warning: RandInManifold has not been overloaded!" << std::endl;
+	Rcpp::Rcout << "Warning: RandInManifold has not been overloaded!" << std::endl;
 };
 
 void Element::AddToTempData(std::string name, SharedSpace * &Temp)

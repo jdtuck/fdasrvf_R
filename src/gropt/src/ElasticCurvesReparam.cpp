@@ -49,7 +49,7 @@ void optimum_reparam(double *C1, double *C2, int n, int d, double w,
     for (iter = CheckMemoryDeleted->begin(); iter != CheckMemoryDeleted->end(); iter++)
     {
         if (iter->second != 1)
-            std::cout << "Global address:" << iter->first << ", sharedtimes:" << iter->second << std::endl;
+            Rcpp::Rcout << "Global address:" << iter->first << ", sharedtimes:" << iter->second << std::endl;
     }
     delete CheckMemoryDeleted;
     return;

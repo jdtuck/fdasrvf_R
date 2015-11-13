@@ -163,18 +163,18 @@ double ElasticCurvesRO::f(Variable *x) const
 	double penlty = 0;
 	tmp = l[0] * l[0];
 	tmp = (tmp + 1.0 / tmp) * sqrt(1.0 + tmp * tmp);
-	//std::cout << tmp << std::endl;//------------
+	//Rcpp::Rcout << tmp << std::endl;//------------
 	for (integer i = 1; i < n; i++)
 	{
 		tmp2 = l[i] * l[i];
 		tmp2 = (tmp2 + 1.0 / tmp2) * sqrt(1.0 + tmp2 * tmp2);
-		//std::cout << tmp2 << std::endl;//------------
+		//Rcpp::Rcout << tmp2 << std::endl;//------------
 		penlty += (tmp2 + tmp) / 2;
 		tmp = tmp2;
 	}
 	penlty *= w / (n - 1);
 	result += penlty;
-	//std::cout << "penlty:" << penlty << std::endl;//------
+	//Rcpp::Rcout << "penlty:" << penlty << std::endl;//------
 	//result = penlty;//------
 
 	// attach data to x. the data can be used in gradient and hessian computation.
@@ -185,7 +185,7 @@ double ElasticCurvesRO::f(Variable *x) const
 	{
 		x->AddToTempData("Oq1", SharedOq1);
 	}
-	//std::cout << "func :" << result << std::endl;//---
+	//Rcpp::Rcout << "func :" << result << std::endl;//---
 	return result;
 };
 

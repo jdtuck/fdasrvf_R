@@ -25,12 +25,12 @@ void main()
 	// choose a random seed
 	unsigned tt = (unsigned)time(NULL);
 	tt = 1425718285;
-	std::cout << "rand seed:" << tt << std::endl;//--
+	Rcpp::Rcout << "rand seed:" << tt << std::endl;//--
 	init_genrand(tt);
 	integer idx1 = static_cast<integer> (floor(genrand_real2() * 1020)), idx2 = static_cast<integer> (floor(genrand_real2() * 1020));
 	//idx1 = 0;
 	//idx2 = 2;
-	std::cout << "idx1:" << idx1 << ", idx2:" << idx2 << std::endl;//--
+	Rcpp::Rcout << "idx1:" << idx1 << ", idx2:" << idx2 << std::endl;//--
 	for (integer i = 0; i < n; i++)
 	{
 		for (integer j = 0; j < d; j++)
@@ -120,7 +120,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	n = mxGetM(prhs[0]);
 	d = mxGetN(prhs[0]);
 
-	std::cout << "(n, d):" << n << "," << d << std::endl;
+	Rcpp::Rcout << "(n, d):" << n << "," << d << std::endl;
 
 	if (mxGetM(prhs[1]) != n || mxGetN(prhs[1]) != d)
 	{
@@ -175,7 +175,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	for (iter = CheckMemoryDeleted->begin(); iter != CheckMemoryDeleted->end(); iter++)
 	{
 		if (iter->second != 1)
-			std::cout << "Global address:" << iter->first << ", sharedtimes:" << iter->second << std::endl;
+			Rcpp::Rcout << "Global address:" << iter->first << ", sharedtimes:" << iter->second << std::endl;
 	}
 	delete CheckMemoryDeleted;
 	return;

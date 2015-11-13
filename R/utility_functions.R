@@ -479,3 +479,230 @@ extrema_1s <- function(t, q){
 
     return(list(ext2=ext2,d=d))
 }
+
+match_ext <- function(t1, ext1, d1, t2, ext2, d2){
+    te1 = t1[ext1];
+    te2 = t2[ext2];
+
+    # We'll pad each sequence to start on a 'peak' and end on a 'valley'
+    pad1 = rep(0, 2)
+    pad2 = rep(0, 2)
+    if (d1 == -1){
+        te1a = rep(0, length(te1)+1)
+        te1a[2:length(te1a)] = te1
+        te1a[1] = te1a[2]
+        te1 = te1a
+        pad1[1] = 1
+    }
+
+    if ((length(te1)%%2)==1){
+        te1a = rep(0,length(te1)+1)
+        te1a[1:length(te1a)-1] = te1
+        te1a[length(te1a)] = te1[length(te1)]
+        te1 = te1a
+        pad1[2] = 1
+    }
+
+    if (d2 == -1){
+        te2a = rep(0, length(te2)+1)
+        te2a[2:length(te2a)] = te2
+        te2a[1] = te2a[2]
+        te2 = te2a
+        pad2[1] = 1
+    }
+
+    if ((length(te2)%%2)==1){
+        te2a = rep(0,length(te2)+1)
+        te2a[1:length(te2a)-1] = te2
+        te2a[length(te2a)] = te2[length(te2)]
+        te2 = te2a
+        pad2[2] = 1
+    }
+
+    n1 = length(te1)
+    n2 = length(te2)
+
+    # initialize weight and path matrices
+    D = matrix(0,n1,n2)
+    P = array(0,c(n1,n2,2))
+
+    for (i in 1:n1){
+        for (j in 1:n2){
+            if (((i+j)%%2)==0){
+                for (ib in seq(i-1,1+(i%%2),by=-2)){
+                    for (jb in seq(j-1,1+(j%%2),by=-2)){
+                        icurr = ib+seq(1,i,2)
+                        jcurr = jb+seq(1,j,2)
+                        W = sqrt(sum(te1[icurr]-te1[icurr-1])) *
+                            sqrt(sum(te2[jcurr]-te2[jcurr-1]))
+                        Dcurr = D[ib,jb] + W
+                        if (Dcurr > D[i,j]){
+                            D[i,j] = Dcurr
+                            P[i,j,] = c(ib,jb)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    D = D[1+pad1[1]:n1-pad1[2], 1+pad2[1]:n2-pad2[2]]
+    P = P[1+pad1[1]:n1-pad1[2], 1+pad2[1]:n2-pad2[2],]
+
+    # Retrieve Best Path
+    if (pad1[2] == pad2[2]){
+        mpath = dim(D)
+    } else if (D[nrow(D)-1,ncol(D)] > D[nrow(D),ncol(D)-1]){
+        mpath = dim(D) - c(1,0)
+    } else {
+        mpath = dim(D) - c(0,1)
+    }
+    mpath = round(mpath)
+    P = round(P)
+    prev_vert = P[mpath[1],mpath[2]]
+
+    mpath = t(mpath)
+
+    while (any(prev_vert>0)){
+        mpath = c(prev_vert,mpath)
+        prev_vert = P[mpath[1,1],mpath[1,2],]
+    }
+
+    return(list(D=D,P=P,mpath=mpath))
+}
+
+simul_reparam <- function(te1, te2, mpath){
+    g1 = 0
+    g2 = 0
+
+    if (mpath[1,2] == 2){
+        g1 = c(g1,0)
+        g2 = c(g2,te2[2])
+    }else if (mpath[1,1] == 2){
+        g1 = c(g1, te1[2])
+        g2 = c(g2,0)
+    }
+
+    m = nrow(mpath)
+    for (i in 1:m-1){
+        out = simul_reparam_segment(mpath[i,], mpath[i+1,],te1,te2)
+
+        g1 = c(g1,out$gg1)
+        g2 = c(g2,out$gg2)
+    }
+
+    n1 = length(te1)
+    n2 = length(te2)
+
+    if ((mpath[nrow(mpath),1]==n1-1) || (mpath[nrow(mpath),2] == n2-1)){
+        g1 = c(g1,1)
+        g2 = c(g2,1)
+    }
+
+    return(list(g1=g1,g2=g2))
+}
+
+simul_reparam_segment <- function(src, tgt, te1, te2){
+    i1 = seq(src[1],tgt[1],2)
+    i2 = seq(src[2],tgt[2],2)
+
+    v1 = sum(te1[i1]-te1[i1-1])
+    v2 = sum(te2[i2]-te2[i2-1])
+    R = v2/v1
+
+    a1 = src[1]
+    a2 = src[2]
+    t1 = te1[a1]
+    t2 = te2[a2]
+    u1 = 0.
+    u2 = 0.
+
+    gg1 = 0
+    gg2 = 0
+
+    while ((a1<tgt[1]) && (a2<tgt[2])){
+        if ((a1==tgt[1]-1) && (a2==tgt[2]-1)){
+            a1 = tgt[1]
+            a2 = tgt[2]
+            gg1 = c(gg1, te1[a1])
+            gg2 = c(gg2, te2[a2])
+        } else {
+            p1 = (u1+te1[a1+1]-t1)/v1
+            p2 = (u2+te2[a2+1]-t2)/v2
+            if (p1<p2){
+                lam = t2+R*(te1[a1+1]-t1)
+                gg1 = c(gg1,te1[a1+1],te1[a1+2])
+                gg2 = c(gg2, lam, lam)
+                u1 = u1 + te1[a1+1] - t1
+                u2 = u2 + lam - t2
+                t1 = te1[a1+2]
+                t2 = lam
+                a1 = a1 + 2
+            } else {
+                lam = t1 + (1./R)*(te2[a2+1]-t2)
+                gg1 = c(gg1,lam,lam)
+                gg2 = c(gg2, te2[a2+1], te2[a2+2])
+                u1 = u1 + lam - t1
+                u2 = u2 + te2[a2+1] - t2
+                t1 = lam
+                t2 = te2[a2+2]
+                a2 = a2 + 2
+            }
+        }
+    }
+
+    return(list(gg1=gg1,gg2=gg2))
+}
+
+simul_gam <- function(u,g1,g2,t,s1,s2,tt){
+    gs1 = interp1_flat(u,g1,tt)
+    gs2 = interp1_flat(u,g2,tt)
+
+    gt1 = interp1_flat(s1,t,gs1)
+    gt2 = interp1_flat(s2,t,gs2)
+
+    gam = interp1_flat(gt1,gt2,tt)
+
+    return(gam)
+}
+
+interp1_flat <- function(x,y,xx){
+    flat = which(diff(x) <=0)
+    n = length(flat)
+
+    if (n==0){
+        yy = approx(x,y,xx)$y
+    } else {
+        yy = rep(0,length(xx))
+        i1 = 1
+        if (flat[1] == 1){
+            i2 = 1
+            j = xx==x[i2]
+            yy[j] = min(y[i2:i2+1])
+        } else {
+            i2 = flat[1]
+            j = (xx>=x[i1]) & (xx<=x[i2])
+            yy[j] = approx(x[i1:i2],y[i1:i2],xx[j])$y
+            i1 = i2
+        }
+        for (k in 2:n){
+            i2 = flat[k]
+            if (i2 > i1+1){
+                j = (xx>=x[i1]) & (xx<=x[i2])
+                yy[j] = approx(x[i1+1:i2],y[i1+1:i2],xx[j])$y
+            }
+            j = xx == x[i2]
+            yy[j] = min(y[i2:i2+1])
+            i1 = i2
+        }
+        i2 = length(x)
+        j = (xx>=x[i1]) & (xx<=x[i2])
+        if (i1+1 == i2){
+            yy[j] = y[i2]
+        } else {
+            yy[j] = approx(x[i1+1:i2],y[i1+1:i2],xx[j])$y
+        }
+    }
+
+    return(yy)
+}

@@ -190,10 +190,10 @@ void DriverElasticCurvesRO(double *C1, double *C2, integer d, integer n, double 
 		GetCurveSmall(C1, C1s, d, n, ns, isclosed);
 		CurveToQ(C1s, d, ns, q1s, isclosed);
 	}
-	//std::cout << "lms:" << lms << ", ns:" << ns << std::endl;//----
+	//Rcpp::Rcout << "lms:" << lms << ", ns:" << ns << std::endl;//----
 	//for (integer i = 0; i < lms; i++) //---
 	//{
-	//	std::cout << ms[i] << std::endl;
+	//	Rcpp::Rcout << ms[i] << std::endl;
 	//}
 
 	double *Xoptptr = Xopt->ObtainWriteEntireData();
@@ -207,7 +207,7 @@ void DriverElasticCurvesRO(double *C1, double *C2, integer d, integer n, double 
 
 	for (integer i = 0; i < lms; i++) //lms
 	{
-		//std::cout << ms[i] << ", ";
+		//Rcpp::Rcout << ms[i] << ", ";
         starttime = getTickCount();
 		// obtain initial reparameterization
 		ShiftC(C2, d, n, C2shift, ms[i]);
@@ -266,7 +266,7 @@ void DriverElasticCurvesRO(double *C1, double *C2, integer d, integer n, double 
 					}
 					ECRO = new ElasticCurvesRO(q1, Rotq2shift, d, n, w, rotated, isclosed);
 					ECRO->SetDomain(Domain);
-					//std::cout << "CD1 func:" << ECRO->f(InitialX) << std::endl;
+					//Rcpp::Rcout << "CD1 func:" << ECRO->f(InitialX) << std::endl;
 				}
 
 				if (isclosed)
@@ -326,7 +326,7 @@ void DriverElasticCurvesRO(double *C1, double *C2, integer d, integer n, double 
 		{
 			ECRO->w = 0;
 			msV[i] = ECRO->f(InitialX);
-			//std::cout << "CD1H func:" << msV[i] << std::endl;
+			//Rcpp::Rcout << "CD1H func:" << msV[i] << std::endl;
 		}
 		if (!onlyDP)
 		{
@@ -380,7 +380,7 @@ void DriverElasticCurvesRO(double *C1, double *C2, integer d, integer n, double 
 			}
 			else
 			{
-				std::cout << "This solver is not used in this problem!" << std::endl;
+				Rcpp::Rcout << "This solver is not used in this problem!" << std::endl;
 				delete ECRO;
 				delete solver;
 				delete[] C2shift;
@@ -410,7 +410,7 @@ void DriverElasticCurvesRO(double *C1, double *C2, integer d, integer n, double 
 			ECRO->w = 0;
 			//--Xopt->RemoveAllFromTempData();
 			msV[i] = ECRO->f(const_cast<Element *> (solver->GetXopt()));
-			//std::cout << solverstr << "func:" << msV[i] << ", num of iter:" << solver->GetIter() << std::endl;//---
+			//Rcpp::Rcout << solverstr << "func:" << msV[i] << ", num of iter:" << solver->GetIter() << std::endl;//---
 		}
 		//ECRO->CheckGradHessian(solver->GetXopt());//--
 		delete ECRO;
@@ -450,8 +450,8 @@ void DriverElasticCurvesRO(double *C1, double *C2, integer d, integer n, double 
 				dcopy_(&dd, O2, &inc, Xoptptr + n, &inc);
 				//ForDebug::Print("XoptO2:", Xoptptr + n, d, d);//----
 
-//                 std::cout << "ms[i]:" << ms[i] << ",:" << static_cast<double> (ms[i]) / (n - 1) << std::endl;//---
-//                 std::cout << "Xoptptr[n + d * d]:" << Xoptptr[n + d * d] << std::endl;//---
+//                 Rcpp::Rcout << "ms[i]:" << ms[i] << ",:" << static_cast<double> (ms[i]) / (n - 1) << std::endl;//---
+//                 Rcpp::Rcout << "Xoptptr[n + d * d]:" << Xoptptr[n + d * d] << std::endl;//---
 				Xoptptr[n + d * d] = Xoptptr[n + d * d] + static_cast<double> (ms[i]) / (n - 1);
 			}
 		}
@@ -487,8 +487,8 @@ void DriverElasticCurvesRO(double *C1, double *C2, integer d, integer n, double 
         }
 	}
 
-	//std::cout << "min f:" << minmsV << std::endl;
-	//std::cout << "time:" << comtime[0] << std::endl;
+	//Rcpp::Rcout << "min f:" << minmsV << std::endl;
+	//Rcpp::Rcout << "time:" << comtime[0] << std::endl;
 	delete[] C2shift;
 	if (C2_coefs != nullptr)
 	{
@@ -527,8 +527,8 @@ double DynamicProgramming(const double *q1, const double *q2, integer d, integer
 		}
 		if (!splinestatus)
 		{
-			std::cout << "Error in computing spline!" << std::endl;
-			exit(EXIT_FAILURE);
+			Rcpp::Rcout << "Error in computing spline!" << std::endl;
+			// exit(EXIT_FAILURE);
 		}
 		for (integer j = 0; j < m; j++)
 		{
@@ -958,7 +958,7 @@ void FindBestRotation(const double *q1, const double *q2, integer d, integer n, 
 	dgesvd_(joba, joba, &d, &d, M, &d, S, U, &d, Vt, &d, work, &lwork, &info);
 	if (info != 0)
 	{
-		std::cout << "Error:singular value decomposition failed!" << std::endl;
+		Rcpp::Rcout << "Error:singular value decomposition failed!" << std::endl;
 	}
 	delete[] M;
 	delete[] work;
@@ -977,11 +977,11 @@ void FindBestRotation(const double *q1, const double *q2, integer d, integer n, 
 	dgetrf_(&d, &d, O2, &d, IM_PIV, &info);
 	if (info != 0)
 	{
-		std::cout << "Error:LU decomposition failed!" << std::endl;
+		Rcpp::Rcout << "Error:LU decomposition failed!" << std::endl;
 	}
 // 	for (integer i = 0; i < d; i++)//---
 // 	{
-// 		std::cout << "i:" << IM_PIV[i] << std::endl;//--
+// 		Rcpp::Rcout << "i:" << IM_PIV[i] << std::endl;//--
 // 	}//---
 	//ForDebug::Print("O2:", O2, 2, 2);//---
 	double det = 1;
@@ -998,7 +998,7 @@ void FindBestRotation(const double *q1, const double *q2, integer d, integer n, 
 	}
 	delete[] IM_PIV;
 	delete[] O2;
-	//std::cout << "det:" << det << std::endl;//---
+	//Rcpp::Rcout << "det:" << det << std::endl;//---
 	if (det > 0)
 	{
 		delete[] U;

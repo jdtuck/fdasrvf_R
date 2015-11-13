@@ -18,7 +18,7 @@ void Manifold::LinearOPEEta(Variable *x, LinearOPE *Hx, Vector *etax, Vector *re
 {
 	if (etax == result)
 	{
-		std::cout << "The arguments of etax and result should not be the same!" << std::endl;
+		Rcpp::Rcout << "The arguments of etax and result should not be the same!" << std::endl;
 	}
 	integer ell = Hx->Getsize()[0];
 	const double *v = etax->ObtainReadData();
@@ -345,19 +345,19 @@ void Manifold::ExtrProjection(Variable *x, Vector *v, Vector *result) const
 
 void Manifold::CheckParams(void) const
 {
-	std::cout << "GENERAL PARAMETERS:" << std::endl;
-	std::cout << "name          :" << std::setw(15) << name << ",\t";
-	std::cout << "IsIntrApproach:" << std::setw(15) << IsIntrApproach << std::endl;
-	std::cout << "IntrinsicDim  :" << std::setw(15) << IntrinsicDim << ",\t";
-	std::cout << "ExtrinsicDim  :" << std::setw(15) << ExtrinsicDim << std::endl;
-	std::cout << "HasHHR        :" << std::setw(15) << HasHHR << ",\t";
-	std::cout << "UpdBetaAlone  :" << std::setw(15) << UpdBetaAlone << std::endl;
-	std::cout << "HasLockCon    :" << std::setw(15) << HasLockCon << std::endl;
+	Rcpp::Rcout << "GENERAL PARAMETERS:" << std::endl;
+	Rcpp::Rcout << "name          :" << std::setw(15) << name << ",\t";
+	Rcpp::Rcout << "IsIntrApproach:" << std::setw(15) << IsIntrApproach << std::endl;
+	Rcpp::Rcout << "IntrinsicDim  :" << std::setw(15) << IntrinsicDim << ",\t";
+	Rcpp::Rcout << "ExtrinsicDim  :" << std::setw(15) << ExtrinsicDim << std::endl;
+	Rcpp::Rcout << "HasHHR        :" << std::setw(15) << HasHHR << ",\t";
+	Rcpp::Rcout << "UpdBetaAlone  :" << std::setw(15) << UpdBetaAlone << std::endl;
+	Rcpp::Rcout << "HasLockCon    :" << std::setw(15) << HasLockCon << std::endl;
 };
 
 void Manifold::CheckIntrExtr(Variable *x) const
 {
-	std::cout << "==============Check Intrinsic/Extrinsic transform=========" << std::endl;
+	Rcpp::Rcout << "==============Check Intrinsic/Extrinsic transform=========" << std::endl;
 	Vector *exetax = EMPTYEXTR->ConstructEmpty();
 	Vector *inetax = EMPTYINTR->ConstructEmpty();
 
@@ -370,7 +370,7 @@ void Manifold::CheckIntrExtr(Variable *x) const
 	exetax->Print("exetax2");
 	ObtainIntr(x, exetax, inetax);
 	inetax->Print("inetax2");
-	std::cout << "exeta1 and inetax1 should approximately equal exetax2 and inetax2 respectively!" << std::endl;
+	Rcpp::Rcout << "exeta1 and inetax1 should approximately equal exetax2 and inetax2 respectively!" << std::endl;
 
 	delete exetax;
 	delete inetax;
@@ -378,7 +378,7 @@ void Manifold::CheckIntrExtr(Variable *x) const
 
 void Manifold::CheckRetraction(Variable *x) const
 {
-	std::cout << "==============Check Retraction=========" << std::endl;
+	Rcpp::Rcout << "==============Check Retraction=========" << std::endl;
 	Vector *etax, *FDetax;
 	etax = EMPTYEXTR->ConstructEmpty();
 	FDetax = EMPTYEXTR->ConstructEmpty();
@@ -403,7 +403,7 @@ void Manifold::CheckRetraction(Variable *x) const
 	ScaleTimesVector(x, 1.0 / eps, FDetax, FDetax);
 	FDetax->Print("FDetax:");
 
-	std::cout << "etax should approximately equal FDetax = (R(eps etax)-R(etax))/eps!" << std::endl;
+	Rcpp::Rcout << "etax should approximately equal FDetax = (R(eps etax)-R(etax))/eps!" << std::endl;
 	delete etax;
 	delete FDetax;
 	delete y;
@@ -411,7 +411,7 @@ void Manifold::CheckRetraction(Variable *x) const
 
 void Manifold::CheckDiffRetraction(Variable *x, bool IsEtaXiSameDir) const
 {
-	std::cout << "==============Check Differentiated Retraction=========" << std::endl;
+	Rcpp::Rcout << "==============Check Differentiated Retraction=========" << std::endl;
 	Vector *etax, *xix, *zetax;
 	etax = EMPTYEXTR->ConstructEmpty();
 	xix = EMPTYEXTR->ConstructEmpty();
@@ -466,7 +466,7 @@ void Manifold::CheckDiffRetraction(Variable *x, bool IsEtaXiSameDir) const
 	VectorMinusVector(x, yeps, y, zetax);
 	ScaleTimesVector(x, 1.0 / eps, zetax, zetax);
 	zetax->Print("FDzetax:");
-	std::cout << "zetax = T_{R_etax} xix should approximately equal FDzetax = (R(etax+eps xix) - R(etax))/eps!" << std::endl;
+	Rcpp::Rcout << "zetax = T_{R_etax} xix should approximately equal FDzetax = (R(etax+eps xix) - R(etax))/eps!" << std::endl;
 
 	delete etax;
 	delete xix;
@@ -477,7 +477,7 @@ void Manifold::CheckDiffRetraction(Variable *x, bool IsEtaXiSameDir) const
 
 void Manifold::CheckLockingCondition(Variable *x) const
 {
-	std::cout << "==============Check Locking Condition=========" << std::endl;
+	Rcpp::Rcout << "==============Check Locking Condition=========" << std::endl;
 	Vector *etax, *xix, *zetax;
 	etax = EMPTYEXTR->ConstructEmpty();
 	xix = EMPTYEXTR->ConstructEmpty();
@@ -499,13 +499,13 @@ void Manifold::CheckLockingCondition(Variable *x) const
 		{
 			const SharedSpace *beta = inetax->ObtainReadTempData("beta");
 			const double *betav = beta->ObtainReadData();
-			std::cout << "beta = |etax| / |T_{etax} etax|:" << betav[0] << std::endl;
+			Rcpp::Rcout << "beta = |etax| / |T_{etax} etax|:" << betav[0] << std::endl;
 		}
 		else
 		{
-			std::cout << "beta:" << 1 << std::endl;
+			Rcpp::Rcout << "beta:" << 1 << std::endl;
 		}
-		std::cout << "|xix| / |T_{etax} xix|:" << sqrt(Metric(x, inxix, inxix) / Metric(x, inzetax, inzetax)) << std::endl;
+		Rcpp::Rcout << "|xix| / |T_{etax} xix|:" << sqrt(Metric(x, inxix, inxix) / Metric(x, inzetax, inzetax)) << std::endl;
 		ScaleTimesVector(x, sqrt(Metric(x, inxix, inxix) / Metric(x, inzetax, inzetax)),
 			inzetax, inzetax);
 		ObtainExtr(y, inzetax, zetax);
@@ -525,20 +525,20 @@ void Manifold::CheckLockingCondition(Variable *x) const
 		{
 			const SharedSpace *beta = etax->ObtainReadTempData("beta");
 			const double *betav = beta->ObtainReadData();
-			std::cout << "beta = |etax| / |T_{etax} etax|:" << betav[0] << std::endl;
+			Rcpp::Rcout << "beta = |etax| / |T_{etax} etax|:" << betav[0] << std::endl;
 		}
 		else
 		{
-			std::cout << "beta:" << 1 << std::endl;
+			Rcpp::Rcout << "beta:" << 1 << std::endl;
 		}
-		std::cout << "|xix| / |T_{etax} xix|:" << sqrt(Metric(x, xix, xix) / Metric(x, zetax, zetax)) << std::endl;
+		Rcpp::Rcout << "|xix| / |T_{etax} xix|:" << sqrt(Metric(x, xix, xix) / Metric(x, zetax, zetax)) << std::endl;
 		ScaleTimesVector(x, sqrt(Metric(x, xix, xix) / Metric(x, zetax, zetax)),
 			zetax, zetax);
 		zetax->Print("Beta DiffRetraction zetax:");
 		VectorTransport(x, etax, y, xix, zetax);
 		zetax->Print("Vector Transport zetax:");
 	}
-	std::cout << "Beta DiffRetraction zetax should approximately equal Vector Transport zetax!" << std::endl;
+	Rcpp::Rcout << "Beta DiffRetraction zetax should approximately equal Vector Transport zetax!" << std::endl;
 
 	delete etax;
 	delete xix;
@@ -548,7 +548,7 @@ void Manifold::CheckLockingCondition(Variable *x) const
 
 void Manifold::CheckcoTangentVector(Variable *x) const
 {
-	std::cout << "==============Check CoTangentVector=========" << std::endl;
+	Rcpp::Rcout << "==============Check CoTangentVector=========" << std::endl;
 	Vector *etax, *xix, *zetay, *xiy, *zetax;
 	etax = EMPTYEXTR->ConstructEmpty();
 	xix = EMPTYEXTR->ConstructEmpty();
@@ -578,11 +578,11 @@ void Manifold::CheckcoTangentVector(Variable *x) const
 		xiy->RandGaussian();
 		ExtrProjection(y, xiy, xiy);
 		ObtainIntr(y, xiy, inxiy);
-		std::cout << "<xiy, T_{R_{eta}} xix>:" << Metric(y, inxiy, inzetay) << std::endl;
+		Rcpp::Rcout << "<xiy, T_{R_{eta}} xix>:" << Metric(y, inxiy, inzetay) << std::endl;
 
 		coTangentVector(x, inetax, y, inxiy, inzetax);
 		ObtainExtr(x, inzetax, zetax);
-		std::cout << "C(x, etax, xiy) [xix]:" << Metric(x, inzetax, inxix) << std::endl;
+		Rcpp::Rcout << "C(x, etax, xiy) [xix]:" << Metric(x, inzetax, inxix) << std::endl;
 		delete inetax;
 		delete inxix;
 		delete inzetay;
@@ -596,11 +596,11 @@ void Manifold::CheckcoTangentVector(Variable *x) const
 		xiy->RandGaussian();
 		ExtrProjection(y, xiy, xiy);
 		ScaleTimesVector(y, sqrt(Metric(y, xiy, xiy)), xiy, xiy);
-		std::cout << "<xiy, T_{R_{eta}} xix>:" << Metric(y, xiy, zetay) << std::endl;
+		Rcpp::Rcout << "<xiy, T_{R_{eta}} xix>:" << Metric(y, xiy, zetay) << std::endl;
 		coTangentVector(x, etax, y, xiy, zetax);
-		std::cout << "C(x, etax, xiy) [xix]:" << Metric(x, zetax, xix) << std::endl;
+		Rcpp::Rcout << "C(x, etax, xiy) [xix]:" << Metric(x, zetax, xix) << std::endl;
 	}
-	std::cout << "<xiy, T_{R_{eta}} xix> should approximately equal C(x, etax, xiy) [xix]!" << std::endl;
+	Rcpp::Rcout << "<xiy, T_{R_{eta}} xix> should approximately equal C(x, etax, xiy) [xix]!" << std::endl;
 
 
 	delete etax;
@@ -613,7 +613,7 @@ void Manifold::CheckcoTangentVector(Variable *x) const
 
 void Manifold::CheckIsometryofVectorTransport(Variable *x) const
 {
-	std::cout << "==============Check Isometry of the Vector Transport=========" << std::endl;
+	Rcpp::Rcout << "==============Check Isometry of the Vector Transport=========" << std::endl;
 	Vector *etax, *xix, *zetay;
 	etax = EMPTYEXTR->ConstructEmpty();
 	xix = EMPTYEXTR->ConstructEmpty();
@@ -634,7 +634,7 @@ void Manifold::CheckIsometryofVectorTransport(Variable *x) const
 		ObtainIntr(x, xix, inxix);
 		Retraction(x, inetax, y);
 		VectorTransport(x, inetax, y, inxix, inzetay);
-		std::cout << "Before vector transport:" << Metric(x, inxix, inxix)
+		Rcpp::Rcout << "Before vector transport:" << Metric(x, inxix, inxix)
 			<< ", After vector transport:" << Metric(y, inzetay, inzetay) << std::endl;
 		delete inetax;
 		delete inxix;
@@ -644,10 +644,10 @@ void Manifold::CheckIsometryofVectorTransport(Variable *x) const
 	{
 		Retraction(x, etax, y);
 		VectorTransport(x, etax, y, xix, zetay);
-		std::cout << "Before vector transport:" << Metric(x, xix, xix)
+		Rcpp::Rcout << "Before vector transport:" << Metric(x, xix, xix)
 			<< ", After vector transport:" << Metric(y, zetay, zetay) << std::endl;
 	}
-	std::cout << "|xix| (Before vector transport) should approximately equal |T_{R_etax} xix| (After vector transport)" << std::endl;
+	Rcpp::Rcout << "|xix| (Before vector transport) should approximately equal |T_{R_etax} xix| (After vector transport)" << std::endl;
 
 	delete etax;
 	delete xix;
@@ -657,7 +657,7 @@ void Manifold::CheckIsometryofVectorTransport(Variable *x) const
 
 void Manifold::CheckIsometryofInvVectorTransport(Variable *x) const
 {
-	std::cout << "==============Check Isometry of the Inverse Vector Transport=========" << std::endl;
+	Rcpp::Rcout << "==============Check Isometry of the Inverse Vector Transport=========" << std::endl;
 	Vector *etax, *xix, *zetay;
 	etax = EMPTYEXTR->ConstructEmpty();
 	xix = EMPTYEXTR->ConstructEmpty();
@@ -680,7 +680,7 @@ void Manifold::CheckIsometryofInvVectorTransport(Variable *x) const
 		ObtainIntr(y, zetay, inzetay);
 
 		InverseVectorTransport(x, inetax, y, inzetay, inxix);
-		std::cout << "Before inverse vector transport:" << Metric(y, inzetay, inzetay)
+		Rcpp::Rcout << "Before inverse vector transport:" << Metric(y, inzetay, inzetay)
 			<< ", After inverse vector transport:" << Metric(x, inxix, inxix) << std::endl;
 		delete inetax;
 		delete inxix;
@@ -692,10 +692,10 @@ void Manifold::CheckIsometryofInvVectorTransport(Variable *x) const
 		zetay->RandGaussian();
 		ExtrProjection(x, zetay, zetay);
 		InverseVectorTransport(x, etax, y, zetay, xix);
-		std::cout << "Before inverse vector transport:" << Metric(y, zetay, zetay)
+		Rcpp::Rcout << "Before inverse vector transport:" << Metric(y, zetay, zetay)
 			<< ", After inverse vector transport:" << Metric(x, xix, xix) << std::endl;
 	}
-	std::cout << "|zetay| (Before inverse vector transport) should approximately equal |T_{R_etax}^{-1} zetay| (After inverse vector transport)" << std::endl;
+	Rcpp::Rcout << "|zetay| (Before inverse vector transport) should approximately equal |T_{R_etax}^{-1} zetay| (After inverse vector transport)" << std::endl;
 
 	delete etax;
 	delete xix;
@@ -705,7 +705,7 @@ void Manifold::CheckIsometryofInvVectorTransport(Variable *x) const
 
 void Manifold::CheckVecTranComposeInverseVecTran(Variable *x) const
 {
-	std::cout << "==============Check Vector Transport Compose Inverse Vector Transport=========" << std::endl;
+	Rcpp::Rcout << "==============Check Vector Transport Compose Inverse Vector Transport=========" << std::endl;
 	Vector *etax, *xix, *zetay;
 	etax = EMPTYEXTR->ConstructEmpty();
 	xix = EMPTYEXTR->ConstructEmpty();
@@ -730,7 +730,7 @@ void Manifold::CheckVecTranComposeInverseVecTran(Variable *x) const
 		InverseVectorTransport(x, inetax, y, inzetay, inxix);
 		ObtainExtr(x, inxix, xix);
 		xix->Print("T^{-1} ciric T xix:");
-		std::cout << "xix and T^{-1} ciric T xix should be similar!" << std::endl;
+		Rcpp::Rcout << "xix and T^{-1} ciric T xix should be similar!" << std::endl;
 		delete inetax;
 		delete inxix;
 		delete inzetay;
@@ -742,7 +742,7 @@ void Manifold::CheckVecTranComposeInverseVecTran(Variable *x) const
 		VectorTransport(x, etax, y, xix, zetay);
 		InverseVectorTransport(x, etax, y, zetay, xix);
 		xix->Print("T^{-1} ciric T xix:");
-		std::cout << "xix and T^{-1} ciric T xix should be similar!" << std::endl;
+		Rcpp::Rcout << "xix and T^{-1} ciric T xix should be similar!" << std::endl;
 	}
 	delete etax;
 	delete xix;
@@ -752,7 +752,7 @@ void Manifold::CheckVecTranComposeInverseVecTran(Variable *x) const
 
 void Manifold::CheckTranHInvTran(Variable *x) const
 {
-	std::cout << "==============Check Transport of a Hessian approximation=========" << std::endl;
+	Rcpp::Rcout << "==============Check Transport of a Hessian approximation=========" << std::endl;
 	Vector *etax;
 	Variable *y;
 	LinearOPE *Hx, *result;
@@ -804,7 +804,7 @@ void Manifold::CheckTranHInvTran(Variable *x) const
 
 void Manifold::CheckHaddScaledRank1OPE(Variable *x) const
 {
-	std::cout << "==============Check Rank one Update to a Hessian Approximation=========" << std::endl;
+	Rcpp::Rcout << "==============Check Rank one Update to a Hessian Approximation=========" << std::endl;
 	LinearOPE *Hx, *result;
 	double scaler = 1.0;
 	Vector *etax, *xix;

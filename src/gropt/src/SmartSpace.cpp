@@ -113,7 +113,7 @@ void SmartSpace::CopyTo(SmartSpace *eta) const
 #ifdef CHECKMEMORYDELETED
 		(*CheckMemoryDeleted)[eta->sharedtimes] = *(eta->sharedtimes);
 #endif
-		//std::cout << "Copyto   address:" << eta->sharedtimes << ", sharedtimes:" << *(eta->sharedtimes) << std::endl;
+		//Rcpp::Rcout << "Copyto   address:" << eta->sharedtimes << ", sharedtimes:" << *(eta->sharedtimes) << std::endl;
 		delete eta->sharedtimes; eta->sharedtimes = nullptr;
 		delete[] eta->Space; eta->Space = nullptr;
 	}
@@ -141,7 +141,7 @@ void SmartSpace::NewMemory(void)
 	}
 	catch (std::bad_alloc exception)
 	{
-		std::cout << "Catch exception:" << exception.what() << std::endl;
+		Rcpp::Rcout << "Catch exception:" << exception.what() << std::endl;
 	}
 };
 
@@ -172,7 +172,7 @@ SmartSpace::~SmartSpace(void)
 #ifdef CHECKMEMORYDELETED
 		(*CheckMemoryDeleted)[sharedtimes] = *sharedtimes;
 #endif
-		//std::cout << "destruct address:" << sharedtimes << ", sharedtimes:" << *sharedtimes << std::endl;
+		//Rcpp::Rcout << "destruct address:" << sharedtimes << ", sharedtimes:" << *sharedtimes << std::endl;
 
 		(*sharedtimes)--;
 		if (*sharedtimes == 0 && Space != nullptr)
@@ -192,34 +192,34 @@ void SmartSpace::Print(const char * name) const
 	{
 		if (size == nullptr)
 		{
-			std::cout << name << " is an empty data with size 0";
+			Rcpp::Rcout << name << " is an empty data with size 0";
 		}
 		else
 		{
-			std::cout << name << " is an empty data with size " << size[0];
+			Rcpp::Rcout << name << " is an empty data with size " << size[0];
 		}
 		for (integer i = 1; i < ls; i++)
-			std::cout << " x " << size[i];
-		std::cout << std::endl;
+			Rcpp::Rcout << " x " << size[i];
+		Rcpp::Rcout << std::endl;
 	}
 	else
 	if (ls == 1 || (ls > 1 && size[1] * product == 1))
 	{
-		std::cout << name << ", shared times:" << *sharedtimes << ", shared times address:" << sharedtimes << std::endl;
+		Rcpp::Rcout << name << ", shared times:" << *sharedtimes << ", shared times address:" << sharedtimes << std::endl;
 		for (integer i = 0; i < length; i++)
-			std::cout << Space[i] << std::endl;
+			Rcpp::Rcout << Space[i] << std::endl;
 	}
 	else
 	if (ls == 2 || product == 1)
 	{
-		std::cout << name << ", shared times:" << *sharedtimes << ", shared times address:" << sharedtimes << std::endl;
+		Rcpp::Rcout << name << ", shared times:" << *sharedtimes << ", shared times address:" << sharedtimes << std::endl;
 		for (integer j = 0; j < size[0]; j++)
 		{
 			for (integer k = 0; k < size[1]; k++)
 			{
-				std::cout << Space[j + size[0] * k] << "\t";
+				Rcpp::Rcout << Space[j + size[0] * k] << "\t";
 			}
-			std::cout << std::endl;
+			Rcpp::Rcout << std::endl;
 		}
 	}
 	else
@@ -231,17 +231,17 @@ void SmartSpace::Print(const char * name) const
 			idices[i] = 0;
 		while (1)
 		{
-			std::cout << name << "(:,:";
+			Rcpp::Rcout << name << "(:,:";
 			for (integer i = 2; i < ls; i++)
-				std::cout << "," << idices[i];
-			std::cout << ")" << ", shared times:" << *sharedtimes << std::endl;
+				Rcpp::Rcout << "," << idices[i];
+			Rcpp::Rcout << ")" << ", shared times:" << *sharedtimes << std::endl;
 			for (integer j = 0; j < row; j++)
 			{
 				for (integer k = 0; k < col; k++)
 				{
-					std::cout << ptr[j + row * k] << "\t";
+					Rcpp::Rcout << ptr[j + row * k] << "\t";
 				}
-				std::cout << std::endl;
+				Rcpp::Rcout << std::endl;
 			}
 			ptr += row * col;
 			idices[2]++;

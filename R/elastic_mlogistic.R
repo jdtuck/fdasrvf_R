@@ -26,7 +26,7 @@
 #' \item{Loss}{logistic loss}
 #' \item{type}{model type ('mlogistic')}
 #' @keywords srvf alignment regression
-#'  @references Tucker, J. D., Wu, W., Srivastava, A.,
+#' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
 #'  Electronic Journal of Statistics (2014), submitted.
 #' @export
@@ -107,6 +107,7 @@ elastic.mlogistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
     LL[itr] = mlogit_loss(b,Phi,Y)
 
     # find gamma
+    k=1
     gamma_new<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
       gam = mlogit_warp(alpha, beta, time, q[,k], Y[k,])
     }

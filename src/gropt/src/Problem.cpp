@@ -56,27 +56,27 @@ void Problem::CheckGradHessian(const Variable *xin) const
 		Domain->ScaleTimesVector(x, 0.5, xi, xi);
 	}
 
-	std::cout << "CHECK GRADIENT:" << std::endl;
-	std::cout << "\tSuppose the point is not a critical point." << std::endl;
-	std::cout << "\tIf there exists an interval of |eta| such that (fy - fx) / <gfx, eta>" << std::endl;
-	std::cout << "\tapproximates ONE, then the gradient is probably correct!" << std::endl;
+	Rcpp::Rcout << "CHECK GRADIENT:" << std::endl;
+	Rcpp::Rcout << "\tSuppose the point is not a critical point." << std::endl;
+	Rcpp::Rcout << "\tIf there exists an interval of |eta| such that (fy - fx) / <gfx, eta>" << std::endl;
+	Rcpp::Rcout << "\tapproximates ONE, then the gradient is probably correct!" << std::endl;
 
-	std::cout << "CHECK THE ACTION OF THE HESSIAN (PRESUME GRADIENT IS CORRECT):" << std::endl;
-	std::cout << "\tSuppose the retraction is second order or the point is a critical point." << std::endl;
-	std::cout << "\tIf there exists an interval of |eta| such that (fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>" << std::endl;
-	std::cout << "\tapproximates ONE, then the action of Hessian is probably correct." << std::endl;
+	Rcpp::Rcout << "CHECK THE ACTION OF THE HESSIAN (PRESUME GRADIENT IS CORRECT):" << std::endl;
+	Rcpp::Rcout << "\tSuppose the retraction is second order or the point is a critical point." << std::endl;
+	Rcpp::Rcout << "\tIf there exists an interval of |eta| such that (fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>" << std::endl;
+	Rcpp::Rcout << "\tapproximates ONE, then the action of Hessian is probably correct." << std::endl;
 
 	////TEST IDEA2: 
 	//for (integer i = 1; i < length - 1; i++)
 	//	printf("log(|eta|):%.3e, slope:%.3e\n", X[i], (Y[i + 1] - Y[i - 1]) / (X[i + 1] - X[i - 1]));
-	//std::cout << "CHECK GRADIENT:" << std::endl;
-	//std::cout << "\tIf there exists an interval of |eta| such that the slopes " << std::endl;
-	//std::cout << "\tapproximate TWO, then the gradient is probably correct!" << std::endl;
+	//Rcpp::Rcout << "CHECK GRADIENT:" << std::endl;
+	//Rcpp::Rcout << "\tIf there exists an interval of |eta| such that the slopes " << std::endl;
+	//Rcpp::Rcout << "\tapproximate TWO, then the gradient is probably correct!" << std::endl;
 
-	//std::cout << "CHECK THE ACTION OF THE HESSIAN (PRESUME GRADIENT IS CORRECT AND" << std::endl;
-	//std::cout << "THE COST FUNCTION IS NOT ONLY QUADRATIC):" << std::endl;
-	//std::cout << "\tIf there exists an interval of |eta| such that the slopes" << std::endl;
-	//std::cout << "\tapproximate THREE, then the action of Hessian is probably correct." << std::endl;
+	//Rcpp::Rcout << "CHECK THE ACTION OF THE HESSIAN (PRESUME GRADIENT IS CORRECT AND" << std::endl;
+	//Rcpp::Rcout << "THE COST FUNCTION IS NOT ONLY QUADRATIC):" << std::endl;
+	//Rcpp::Rcout << "\tIf there exists an interval of |eta| such that the slopes" << std::endl;
+	//Rcpp::Rcout << "\tapproximate THREE, then the action of Hessian is probably correct." << std::endl;
 
 	//x->Print("1, x:", false);//---
 	delete xi;
@@ -139,12 +139,12 @@ void Problem::RieHessianEta(Variable *x, Vector *etax, Vector *xix) const
 
 void Problem::EucGrad(Variable *x, Vector *egf) const
 {
-	std::cout << "Euclidean Gradient has not been done!" << std::endl;
+	Rcpp::Rcout << "Euclidean Gradient has not been done!" << std::endl;
 };
 
 void Problem::EucHessianEta(Variable *x, Vector *etax, Vector *exix) const
 {
-	std::cout << "The action of Euclidean Hessian has not been done!" << std::endl;
+	Rcpp::Rcout << "The action of Euclidean Hessian has not been done!" << std::endl;
 };
 
 void Problem::SetDomain(Manifold *inDomain)

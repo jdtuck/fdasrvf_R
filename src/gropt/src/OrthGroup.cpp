@@ -7,8 +7,8 @@ OrthGroup::OrthGroup(integer inn) :Stiefel(inn, inn)
 	delete EMPTYEXTR;
 	delete EMPTYINTR;
 	EMPTYEXTR = new OrthGroupVector(n, n);
-//	std::cout << "n:" << n << std::endl;//---
-//	std::cout << "IntrinsicDim:" << IntrinsicDim << std::endl;//---
+//	Rcpp::Rcout << "n:" << n << std::endl;//---
+//	Rcpp::Rcout << "IntrinsicDim:" << IntrinsicDim << std::endl;//---
 	EMPTYINTR = new OrthGroupVector(IntrinsicDim);
 };
 

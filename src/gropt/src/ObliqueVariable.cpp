@@ -47,27 +47,27 @@ void ObliqueVariable::Print(const char *name, bool isonlymain) const
 		{
 			if (size == nullptr)
 			{
-				std::cout << name << " is an empty data with size 0";
+				Rcpp::Rcout << name << " is an empty data with size 0";
 			}
 			else
 			{
-				std::cout << name << " is an empty data with size " << size[0];
+				Rcpp::Rcout << name << " is an empty data with size " << size[0];
 			}
 			for (integer i = 1; i < ls; i++)
-				std::cout << " x " << size[i];
-			std::cout << std::endl;
+				Rcpp::Rcout << " x " << size[i];
+			Rcpp::Rcout << std::endl;
 			return;
 		}
-		std::cout << name << ", shared times:" << *sharedtimes << ", shared times address:" << sharedtimes << std::endl;
+		Rcpp::Rcout << name << ", shared times:" << *sharedtimes << ", shared times address:" << sharedtimes << std::endl;
 		integer n = elements[0]->Getlength();
 		integer num = numofelements;
 		for (integer i = 0; i < n; i++)
 		{
 			for (integer j = 0; j < num; j++)
 			{
-				std::cout << elements[j]->GetSpace()[i] << "\t";
+				Rcpp::Rcout << elements[j]->GetSpace()[i] << "\t";
 			}
-			std::cout << std::endl;
+			Rcpp::Rcout << std::endl;
 		}
 		return;
 	}

@@ -20,6 +20,7 @@
 //#define TESTPRODUCTEXAMPLE
 #include <stdio.h>
 #include <stdlib.h>
+#include <Rcpp.h>
 // blas and lapack related
 #include <cstddef>
 #ifdef __cplusplus

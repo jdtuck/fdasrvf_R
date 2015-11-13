@@ -6,8 +6,6 @@ PKG_CPPFLAGS=-I. -Igropt/incl/
 
 CXX_STD = CXX11
 
-PKG_CXXFLAGS = -std=c++11
-
 all: $(SHLIB)
 
 #$(OBJECTS): clean

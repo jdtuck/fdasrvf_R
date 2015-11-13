@@ -38,11 +38,11 @@ void RCG::CheckParams(void)
 	char NO[] = "NO";
 	char *status;
 
-	std::cout << "RCG METHOD PARAMETERS:" << std::endl;
+	Rcpp::Rcout << "RCG METHOD PARAMETERS:" << std::endl;
 	status = (ManDim >= 0 && ManDim <= std::numeric_limits<integer>::max()) ? YES : NO;
-	std::cout << "ManDim        :" << std::setw(15) << ManDim << "[" << status << "],\t";
+	Rcpp::Rcout << "ManDim        :" << std::setw(15) << ManDim << "[" << status << "],\t";
 	status = (RCGmethod >= 0 && RCGmethod <= RCGMETHODSLENGTH) ? YES : NO;
-	std::cout << "RCGmethod     :" << std::setw(15) << RCGmethodSetnames[RCGmethod] << "[" << status << "]" << std::endl;
+	Rcpp::Rcout << "RCGmethod     :" << std::setw(15) << RCGmethodSetnames[RCGmethod] << "[" << status << "]" << std::endl;
 };
 
 void RCG::PrintInfo(void)
@@ -51,7 +51,7 @@ void RCG::PrintInfo(void)
 		printf("\n\tsigma:%.3e,Reset search direction to the negative gradient,", sigma);
 	else
 		printf("\n\tsigma:%.3e,", sigma);
-	std::cout << std::endl;
+	Rcpp::Rcout << std::endl;
 };
 
 void RCG::GetSearchDir(void)

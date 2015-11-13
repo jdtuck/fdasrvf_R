@@ -15,7 +15,7 @@
 #' \item{y_labels}{labels if logistic model}
 #' \item{PC}{probability of classification if logistic}
 #' @keywords srvf alignment regression
-#'  @references Tucker, J. D., Wu, W., Srivastava, A.,
+#' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
 #'  Electronic Journal of Statistics (2014), submitted.
 #' @export
