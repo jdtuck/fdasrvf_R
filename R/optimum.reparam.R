@@ -9,7 +9,7 @@
 #' @param lambda controls amount of warping (default = 0)
 #' @param method controls which optmization method (default="DP") options are
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-#' ("LRBFGS") and Simultaneous Alignment ("SIMUL")
+#' ("RBFGS") and Simultaneous Alignment ("SIMUL")
 #' @param w controls LRBFGS (default = 0.01)
 #' @param f1o initial value of f1, vector or scalar depending on q1, defaults to zero
 #' @param f2o initial value of f2, vector or scalar depending on q1, defaults to zero

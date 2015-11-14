@@ -5,7 +5,8 @@
 \title{Group-wise function alignment}
 \usage{
 time_warping(f, time, lambda = 0, method = "mean", showplot = TRUE,
-  smooth_data = FALSE, sparam = 25, parallel = FALSE, cores = 2)
+  smooth_data = FALSE, sparam = 25, parallel = FALSE, cores = 2,
+  omethod = "DP")
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
@@ -27,6 +28,8 @@ or "median", default = "mean")}
 \code{doParallel} pacakge}
 
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
+
+\item{omethod}{optimization method (DP,DP2,SIMUL,RBFGS)}
 }
 \value{
 Returns a list containing \item{f0}{original functions}

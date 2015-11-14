@@ -14,6 +14,7 @@
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
 #'   \code{doParallel} pacakge
 #' @param cores set number of cores to use with \code{doParallel} (default = 2)
+#' @param omethod optimization method (DP,DP2,SIMUL,RBFGS)
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 #' \item{qn}{aligned srvfs - similar structure to fn}
@@ -38,7 +39,7 @@
 #' out = time_warping(simu_data$f,simu_data$time)
 time_warping <- function(f, time, lambda = 0, method = "mean",
                          showplot = TRUE, smooth_data = FALSE, sparam = 25,
-                         parallel = FALSE,cores=2){
+                         parallel = FALSE, cores=2, omethod = "DP"){
     if (parallel){
         cl = makeCluster(cores)
         registerDoParallel(cl)
@@ -57,6 +58,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     M = nrow(f)
     N = ncol(f)
     f0 = f
+    w = 0.0;
 
     if (smooth_data){
         f = smooth.data(f,sparam)
@@ -80,7 +82,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     mf = f[,min_ind]
 
     gam<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
-        gam_tmp = optimum.reparam(mq,time,q[,k],time,lambda)
+        gam_tmp = optimum.reparam(mq,time,q[,k],time,lambda,omethod,w,mf[1],f[1,k])
     }
 
     gam = t(gam)
@@ -102,6 +104,9 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     tmp = matrix(0,M,MaxItr+2)
     tmp[,1] = mq
     mq = tmp
+    tmp = matrix(0,M,MaxItr+2)
+    tmp[,1] = mf
+    mf = tmp
     tmp = array(0,dim=c(M,N,MaxItr+2))
     tmp[,,1] = f
     f = tmp
@@ -117,7 +122,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 
         # Matching Step
         outfor<-foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
-            gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda)
+            gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda,omethod,w,mf[1,r],f[1,k,1])
             gam_dev = gradient(gam,1/(M-1))
             f_temp = approx(time,f[,k,1],xout=(time[length(time)]-time[1])*gam +
                 time[1])$y
@@ -151,6 +156,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
             # Minimization Step
             # compute the mean of the matched function
             mq[,r+1] = rowMeans(q[,,r+1])
+            mf[,r+1] = rowMeans(f[,,r+1])
 
             qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
         }
@@ -169,6 +175,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
             # compute the median of the matched function
             dist_iinv = (sum(1/ds[r+1]))^(-1)
             mq[,r+1] = (rowSums(q[,,r+1]/ds[r+1]))*dist_iinv
+            mf[,r+1] = (rowSums(f[,,r+1]/ds[r+1]))*dist_iinv
 
             qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
         }
@@ -180,7 +187,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     # One last run, centering of gam
     r = r+1
     outfor<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
-        gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda)
+        gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda,omethod,w,mf[1,r],f[1,k,1])
         gam_dev = gradient(gam,1/(M-1))
         list(gam,gam_dev)
     }

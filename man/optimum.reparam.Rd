@@ -20,7 +20,7 @@ optimum.reparam(Q1, T1, Q2, T2, lambda = 0, method = "DP", w = 0.01,
 
 \item{method}{controls which optmization method (default="DP") options are
 Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-("LRBFGS") and Simultaneous Alignment ("SIMUL")}
+("RBFGS") and Simultaneous Alignment ("SIMUL")}
 
 \item{w}{controls LRBFGS (default = 0.01)}
 
