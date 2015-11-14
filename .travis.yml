@@ -2,7 +2,7 @@ language: r
 sudo: required
 
 # Be strict when checking our package
-warnings_are_errors: true
+warnings_are_errors: false
 
 # Install the bleeding edge version of a package from github (eg to pick
 # up a not-yet-released bugfix)

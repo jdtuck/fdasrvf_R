@@ -2,3 +2,4 @@
 *.Rhistory
 *.o
 src/libfdasrvf1.a
+.Rproj.user
