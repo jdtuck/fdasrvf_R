@@ -1,5 +1,6 @@
 *.Rproj
 *.Rhistory
 *.o
-src/libfdasrvf1.a
+*.so
+*.a
 .Rproj.user
