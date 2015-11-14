@@ -4,4 +4,5 @@
 appveyor.yml
 ^\src\*.a
 fdasrvf.Rproj
+cran-comments.md
 ^.*\.Rproj$
