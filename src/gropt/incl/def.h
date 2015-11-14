@@ -20,7 +20,6 @@
 //#define TESTPRODUCTEXAMPLE
 #include <stdio.h>
 #include <stdlib.h>
-#include <Rcpp.h>
 // blas and lapack related
 #include <cstddef>
 #ifdef __cplusplus
@@ -346,7 +345,7 @@ extern void dgees_(
 #include <climits>
 #include <limits>
 #include "Timer.h"
-
+#include <Rcpp.h>
 #ifdef __INTEL_COMPILER
 const class {
 public:
