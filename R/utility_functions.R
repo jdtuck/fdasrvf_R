@@ -467,7 +467,7 @@ extrema_1s <- function(t, q){
     if (q[1] != 0){
         d = -q[1]
     } else{
-        d = d[q!=0]
+        d = q[q!=0]
         d = d[1]
     }
 
@@ -691,19 +691,22 @@ interp1_flat <- function(x,y,xx){
             yy[j] = approx(x[i1:i2],y[i1:i2],xx[j])$y
             i1 = i2
         }
-        for (k in 2:n){
+        if (n>1){
+          for (k in 2:n){
             i2 = flat[k]
-            if (i2 > i1+1){
-                j = (xx>=x[i1]) & (xx<=x[i2])
-                yy[j] = approx(x[i1+1:i2],y[i1+1:i2],xx[j])$y
+            if (i2 > (i1+1)){
+              j = (xx>=x[i1]) & (xx<=x[i2])
+              yy[j] = approx(x[i1+1:i2],y[i1+1:i2],xx[j])$y
             }
             j = xx == x[i2]
             yy[j] = min(y[i2:i2+1])
             i1 = i2
+          }
         }
+        
         i2 = length(x)
         j = (xx>=x[i1]) & (xx<=x[i2])
-        if (i1+1 == i2){
+        if ((i1+1) == i2){
             yy[j] = y[i2]
         } else {
             yy[j] = approx(x[i1+1:i2],y[i1+1:i2],xx[j])$y
