@@ -96,7 +96,7 @@ void RTRSR1::CheckParams(void)
 
 void RTRSR1::PrintInfo(void)
 {
-	printf("\n\tinpss:%.3e,IsUpdateHessian:%d,", inpss, isupdated);
+	Rprintf("\n\tinpss:%.3e,IsUpdateHessian:%d,", inpss, isupdated);
 	Rcpp::Rcout << std::endl;
 };
 

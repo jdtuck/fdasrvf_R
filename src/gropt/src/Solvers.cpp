@@ -13,10 +13,10 @@ void Solvers::OutPutResults(Variable *inx1, double &inf1, double &inngf0, double
 void Solvers::PrintGenInfo(void)
 {
 	if (nV == 0)
-		printf("i:%d,f:%.3e,df/f:%.3e,|gf|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,", iter, f2, 
+		Rprintf("i:%d,f:%.3e,df/f:%.3e,|gf|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,", iter, f2,
 			((f1 - f2) / f2), ngf, static_cast<double>(getTickCount() - starttime) / CLK_PS, nf, ng, nR);
 	else
-		printf("i:%d,f:%.3e,df/f:%.3e,|gf|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,nV(nVp):%d(%d),", iter, f2,
+		Rprintf("i:%d,f:%.3e,df/f:%.3e,|gf|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,nV(nVp):%d(%d),", iter, f2,
 			((f1 - f2) / f2), ngf, static_cast<double>(getTickCount() - starttime) / CLK_PS, nf, ng, nR, nV, nVp);
 };
 
@@ -59,17 +59,17 @@ void Solvers::CheckParams(void)
 	char *status;
 	Rcpp::Rcout << "GENERAL PARAMETERS:" << std::endl;
 	status = (Stop_Criterion >= 0 && Stop_Criterion < STOPCRITLENGTH) ? YES : NO;
-	Rcpp::Rcout << "Stop_Criterion:" << std::setw(15) << STOPCRITnames[Stop_Criterion] << "[" << status << "],\t";
+	// Rcpp::Rcout << "Stop_Criterion:" << std::setw(15) << STOPCRITnames[Stop_Criterion] << "[" << status << "],\t";
 	status = (Tolerance > 0) ? YES : NO;
-	Rcpp::Rcout << "Tolerance     :" << std::setw(15) << Tolerance << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "Tolerance     :" << std::setw(15) << Tolerance << "[" << status << "]" << std::endl;
 	status = (Max_Iteration > 0 && Max_Iteration >= Min_Iteration) ? YES : NO;
-	Rcpp::Rcout << "Max_Iteration :" << std::setw(15) << Max_Iteration << "[" << status << "]" << ",\t";
+	// Rcpp::Rcout << "Max_Iteration :" << std::setw(15) << Max_Iteration << "[" << status << "]" << ",\t";
 	status = (Min_Iteration >= 0 && Min_Iteration <= Max_Iteration) ? YES : NO;
-	Rcpp::Rcout << "Min_Iteration :" << std::setw(15) << Min_Iteration << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "Min_Iteration :" << std::setw(15) << Min_Iteration << "[" << status << "]" << std::endl;
 	status = (OutputGap > 0) ? YES : NO;
-	Rcpp::Rcout << "OutputGap     :" << std::setw(15) << OutputGap << "[" << status << "]" << ",\t";
+	// Rcpp::Rcout << "OutputGap     :" << std::setw(15) << OutputGap << "[" << status << "]" << ",\t";
 	status = (DEBUG >= 0 && DEBUG < DEBUGLENGTH) ? YES : NO;
-	Rcpp::Rcout << "DEBUG         :" << std::setw(15) << DEBUGnames[DEBUG] << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "DEBUG         :" << std::setw(15) << DEBUGnames[DEBUG] << "[" << status << "]" << std::endl;
 };
 
 void Solvers::Run(void)
@@ -87,7 +87,7 @@ void Solvers::Run(void)
 		gradSeries = new double[1 + Max_Iteration];
 	}
 	if (DEBUG >= FINALRESULT)
-		printf("=========================%s=========================\n", SolverName.c_str());
+		Rprintf("=========================%s=========================\n", SolverName.c_str());
 };
 
 void Solvers::Initialization(const Problem *prob, const Variable *initialx, const Vector *EMPTYETA)

@@ -1,10 +1,10 @@
 fdasrv 1.5.1
 --------------
 v1.5.1
-* added gropt and simul optimization methods and alignment
+* added gropt optimization methods and alignment
 
 v1.5.0
-* added elastic regression methods
+* added simul optimization method for reparam
 
 v1.4.2
 * Fixed gradient bug

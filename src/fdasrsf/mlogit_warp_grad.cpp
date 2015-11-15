@@ -19,12 +19,23 @@ void mlogit_warp_grad(int *m1, int *m2, double *alpha, double *beta, double *ti,
 	int k, j;
 	int n1 = 1;
 	int itr = 1;
-	double gam1[TT], psi1[TT], q_tmp[TT], q_tmp_diff[TT];
-	double A[m], Adiff[TT*m], xout[TT], tmp[TT], tmp1, tmpi, binsize;
 	double eps = DBL_EPSILON;
-	double tmp3[TT*m], h[TT], vec[TT];
-	double psi2[TT], gam2[TT];
-	double res_cos, res_sin, max_val_change, max_val[max_itr];
+	double tmp1, tmpi, binsize;
+	double res_cos, res_sin, max_val_change;
+	double *gam1 = new double[TT];
+	double *psi1 = new double[TT];
+	double *q_tmp = new double[TT];
+	double *q_tmp_diff = new double[TT];
+	double *max_val = new double[max_itr];
+	double *A = new double[m];
+	double *Adiff = new double[TT*m];
+	double *xout = new double[TT];
+	double *tmp = new double[TT];
+	double *tmp3 = new double[TT*m];
+	double *h = new double[TT];
+	double *vec = new double[TT];
+	double *psi2 = new double[TT];
+	double *gam2 = new double[TT];
 	double *tmp2 = (double *) malloc(sizeof(double)*(TT));
 
 	// Pointers
@@ -182,6 +193,10 @@ void mlogit_warp_grad(int *m1, int *m2, double *alpha, double *beta, double *ti,
 	for (k=1; k<TT; k++){
 		gamout[k] = gam2_ptr[k];
 	}
+
+	delete [] tmp3; delete [] h; delete [] vec; delete [] psi2; delete [] gam2;
+	delete [] gam1; delete [] psi1; delete [] q_tmp; delete [] q_tmp_diff;
+	delete [] A; delete [] xout; delete [] tmp; delete [] max_val;
 
 	free(tmp2);
 }

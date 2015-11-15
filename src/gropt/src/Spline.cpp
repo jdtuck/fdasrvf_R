@@ -13,7 +13,7 @@ int Spline::SplineUniformPeriodic(const double *Y, int n, double h, double *coef
 	s = vec + nn;
 	if (fabs(Y[0] - Y[nn]) > sqrt(std::numeric_limits<double>::epsilon()))
 	{
-		printf("warning: %e = Y[start] != Y[end] = %e: %e, Using curbic spline with periodic condition may cause problems.\n", Y[0], Y[nn], Y[0] - Y[nn]);
+		Rprintf("warning: %e = Y[start] != Y[end] = %e: %e, Using curbic spline with periodic condition may cause problems.\n", Y[0], Y[nn], Y[0] - Y[nn]);
 	}
 
 	for (i = 0; i < nn; i++)
@@ -58,7 +58,7 @@ int Spline::SplinePeriodic(const double *X, const double *Y, int n, double *coef
 	s = vec + nn;
 	if (fabs(Y[0] - Y[nn]) > std::numeric_limits<double>::epsilon())
 	{
-		printf("warning: %e = Y[start] != Y[end] = %e, Using curbic spline with periodic condition may cause problems.\n", Y[0], Y[nn]);
+		Rprintf("warning: %e = Y[start] != Y[end] = %e, Using curbic spline with periodic condition may cause problems.\n", Y[0], Y[nn]);
 	}
 	for (i = 0; i < nn; i++)
 	{
@@ -206,7 +206,7 @@ int Spline::SolveTridiagonalSystem(double *d, double *ud, double *ld, double *ve
 	}
 	if (fabs(d[n - 1]) < std::numeric_limits<double>::epsilon())
 	{
-		printf("tridiagonal system can not be solved!!");
+		Rprintf("tridiagonal system can not be solved!!");
 		return 0;
 	}
 	s[n - 1] = vec[n - 1] / d[n - 1];
@@ -214,7 +214,7 @@ int Spline::SolveTridiagonalSystem(double *d, double *ud, double *ld, double *ve
 	{
 		if (fabs(d[i]) < std::numeric_limits<double>::epsilon())
 		{
-			printf("tridiagonal system can not be solved!!");
+			Rprintf("tridiagonal system can not be solved!!");
 			return 0;
 		}
 		s[i] = (vec[i] - s[i + 1] * ud[i]) / d[i];
@@ -265,7 +265,7 @@ int Spline::SolvePeriodicSystem(double *d, double *ud, double *ld, double *vec, 
 	s[nn] = vec[nn - 1] / d[nn - 1];
 	if (fabs(d[nn - 1]) < std::numeric_limits<double>::epsilon())
 	{
-		printf("upper triangle system can not be solved!!");
+		Rprintf("upper triangle system can not be solved!!");
 		return 0;
 	}
 	s[nn - 1] = (vec[nn - 2] - s[nn] * ud[nn - 2]) / d[nn - 2];
@@ -273,7 +273,7 @@ int Spline::SolvePeriodicSystem(double *d, double *ud, double *ld, double *vec, 
 	{
 		if (fabs(d[i - 1]) < std::numeric_limits<double>::epsilon())
 		{
-			printf("upper triangle system can not be solved!!");
+			Rprintf("upper triangle system can not be solved!!");
 			return 0;
 		}
 		s[i] = (vec[i - 1] - s[nn] * last_column[i - 1] - s[i + 1] * ud[i - 1]) / d[i - 1];

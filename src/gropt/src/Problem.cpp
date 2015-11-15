@@ -50,7 +50,7 @@ void Problem::CheckGradHessian(const Variable *xin) const
 		HessianEta(x, xi, Hv);
 		Y[i] = log(fabs(fy - fx - Domain->Metric(x, gfx, xi) - 0.5 * Domain->Metric(x, xi, Hv)));
 		X[i] = 0.5 * log(Domain->Metric(x, xi, xi));
-		printf("i:%d,|eta|:%.3e,(fy-fx)/<gfx,eta>:%.3e,(fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>:%.3e\n", i, 
+		Rprintf("i:%d,|eta|:%.3e,(fy-fx)/<gfx,eta>:%.3e,(fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>:%.3e\n", i, 
 			sqrt(Domain->Metric(x, xi, xi)), (fy-fx)/Domain->Metric(x, gfx, xi), 
 			(fy - fx - Domain->Metric(x, gfx, xi)) / (0.5 * Domain->Metric(x, xi, Hv)));
 		Domain->ScaleTimesVector(x, 0.5, xi, xi);
@@ -68,7 +68,7 @@ void Problem::CheckGradHessian(const Variable *xin) const
 
 	////TEST IDEA2: 
 	//for (integer i = 1; i < length - 1; i++)
-	//	printf("log(|eta|):%.3e, slope:%.3e\n", X[i], (Y[i + 1] - Y[i - 1]) / (X[i + 1] - X[i - 1]));
+	//	Rprintf("log(|eta|):%.3e, slope:%.3e\n", X[i], (Y[i + 1] - Y[i - 1]) / (X[i + 1] - X[i - 1]));
 	//Rcpp::Rcout << "CHECK GRADIENT:" << std::endl;
 	//Rcpp::Rcout << "\tIf there exists an interval of |eta| such that the slopes " << std::endl;
 	//Rcpp::Rcout << "\tapproximate TWO, then the gradient is probably correct!" << std::endl;

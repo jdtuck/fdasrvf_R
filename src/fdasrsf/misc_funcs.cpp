@@ -461,11 +461,22 @@ void invertGamma(int n, double *gam, double *out) {
 
 void SqrtMeanInverse(int *T1, int *n1, double *ti, double *gami, double *out){
     int T = *T1, n = *n1;
-    double psi[T*n], gam[T*n], mu[T], vec[T*n], v[T], y[T], tmpi, len, vm[T], mnpsi[T], dqq[n];
-    double eps = DBL_EPSILON, tmpv[T], min = 0.0, binsize, tmp, gam_mu[T];
+    double tmpi, len;
+    double eps = DBL_EPSILON, min = 0.0, binsize, tmp;
     int k, iter, l, n2 = 1, min_ind = 0;
     int maxiter = 30, tt = 1;
-    double lvm[maxiter];
+    double *psi = new double[T*n];
+    double *gam = new double[T*n];
+    double *mu = new double[T];
+    double *vec = new double[T*n];
+    double *v = new double[T];
+    double *y = new double[T];
+    double *vm = new double[T];
+    double *mnpsi = new double[T];
+    double *dqq = new double[n];
+    double *tmpv = new double[T];
+    double *gam_mu = new double[T];
+    double *lvm = new double[maxiter];
     double *x = (double *) malloc(sizeof(double)*(T));
 
     for (k=0; k<maxiter; k++)
@@ -597,6 +608,9 @@ void SqrtMeanInverse(int *T1, int *n1, double *ti, double *gami, double *out){
 
     invertGamma(T, gam_mu_ptr, out);
 
+    delete [] psi; delete [] gam; delete [] mu; delete [] vec; delete [] v;
+    delete [] y; delete [] vm; delete [] mnpsi; delete [] dqq; delete [] tmpv;
+    delete [] gam_mu; delete [] lvm;
     free(x);
     return;
 }
@@ -627,7 +641,10 @@ void group_action_by_gamma(int *n1, int *T1, double *q, double *gam, double *qn)
     double dt = 1.0/T, max=1, min=0;
     int j, k;
     double val;
-    double gammadot[T], ti[T], tmp[T], tmp1[T];
+    double *gammadot = new double[T];
+    double *ti = new double[T];
+    double *tmp = new double[T];
+    double *tmp1 = new double[T];
     double *gammadot_ptr, *time_ptr, *tmp_ptr, *tmp1_ptr;
 
     time_ptr = ti;
@@ -650,6 +667,8 @@ void group_action_by_gamma(int *n1, int *T1, double *q, double *gam, double *qn)
 
     for (k=0; k<T*n; k++)
         qn[k] = qn[k] / sqrt(val);
+
+    delete [] gammadot; delete [] ti; delete [] tmp; delete [] tmp1;
 
     return;
 }

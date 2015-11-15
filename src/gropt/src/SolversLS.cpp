@@ -39,7 +39,7 @@ void SolversLS::Run(void)
 	iter = 0;
 	if (DEBUG >= ITERRESULT)
 	{
-		printf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
+		Rprintf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
 		timeSeries[iter] = static_cast<double>(getTickCount() - starttime) / CLK_PS;
 		funSeries[iter] = f1;
 		gradSeries[iter] = ngf;
@@ -88,17 +88,17 @@ void SolversLS::Run(void)
 		lengthSeries = iter + 1;
 	if (DEBUG >= FINALRESULT)
 	{
-		printf("Iter:%d,f:%.3e,|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,", iter, f2,
+		Rprintf("Iter:%d,f:%.3e,|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,", iter, f2,
 			ngf, ngf / ngf0, ComTime, nf, ng, nR);
 		if (nH != 0)
 		{
-			printf("nH:%d,", nH);
+			Rprintf("nH:%d,", nH);
 		}
 		if (nV != 0)
 		{
-			printf("nV(nVp):%d(%d),", nV, nVp);
+			Rprintf("nV(nVp):%d(%d),", nV, nVp);
 		}
-		printf("\n");
+		Rprintf("\n");
 	}
 };
 
@@ -124,7 +124,7 @@ void SolversLS::LinesearchArmijo(void)
 		Prob->Grad(x2, gf2); ng++;
 		return;
 	}
-	
+
 	// use polynomial interplation
 	double prestepsize = stepsize, prestepsize2 = 0, f2pre = 0;
 	if (f1 - f2 < -LS_alpha * initialslope * stepsize)
@@ -141,7 +141,7 @@ void SolversLS::LinesearchArmijo(void)
 	double a11, a12, a21, a22, b1, b2, c, a = 0, b = 0;
 	while (f1 - f2 < -LS_alpha * initialslope * stepsize)
 	{
-		a11 = 1.0 / prestepsize / prestepsize; 
+		a11 = 1.0 / prestepsize / prestepsize;
 		a12 = - 1.0 / prestepsize2 / prestepsize2;
 		a21 = -prestepsize2 / prestepsize / prestepsize;
 		a22 = prestepsize / prestepsize2 / prestepsize2;
@@ -467,7 +467,7 @@ void SolversLS::Zoom(double x1, double fx1, double slopex1, double x2, double fx
 void SolversLS::PrintGenInfo(void)
 {
 	Solvers::PrintGenInfo();
-	printf("LSstatus:%s,initslope:%.3e,newslope:%.3e,initstepsize:%.3e,stepsize:%.3e,", LSstatusSetnames[LSstatus].c_str(), initialslope, newslope, initiallength, stepsize);
+	Rprintf("LSstatus:%s,initslope:%.3e,newslope:%.3e,initstepsize:%.3e,stepsize:%.3e,", LSstatusSetnames[LSstatus].c_str(), initialslope, newslope, initiallength, stepsize);
 };
 
 void SolversLS::CheckParams(void)
@@ -479,29 +479,29 @@ void SolversLS::CheckParams(void)
 	char NO[] = "NO";
 	char *status;
 
-	Rcpp::Rcout << "LINE SEARCH TYPE METHODS PARAMETERS:" << std::endl;
+//	Rcpp::Rcout << "LINE SEARCH TYPE METHODS PARAMETERS:" << std::endl;
 	status = (LineSearch_LS >= 0 && LineSearch_LS < LSALGOLENGTH) ? YES : NO;
-	Rcpp::Rcout << "LineSearch_LS :" << std::setw(15) << LSALGOnames[LineSearch_LS] << "[" << status << "],\t";
+	// Rcpp::Rcout << "LineSearch_LS :" << std::setw(15) << LSALGOnames[LineSearch_LS] << "[" << status << "],\t";
 	status = (LS_alpha > 0 && LS_alpha < 0.5) ? YES : NO;
-	Rcpp::Rcout << "LS_alpha      :" << std::setw(15) << LS_alpha << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "LS_alpha      :" << std::setw(15) << LS_alpha << "[" << status << "]" << std::endl;
 	if (LineSearch_LS == WOLFE || LineSearch_LS == STRONGWOLFE)
 	{
 		status = (LS_beta > 0 && LS_beta < 1) ? YES : NO;
-		Rcpp::Rcout << "LS_beta       :" << std::setw(15) << LS_beta << "[" << status << "],\t";
+		// Rcpp::Rcout << "LS_beta       :" << std::setw(15) << LS_beta << "[" << status << "],\t";
 	}
 	else
 	{
 		status = (LS_ratio1 > 0 && LS_ratio1 <= LS_ratio2) ? YES : NO;
-		Rcpp::Rcout << "LS_ratio1     :" << std::setw(15) << LS_ratio1 << "[" << status << "],\t";
+		// Rcpp::Rcout << "LS_ratio1     :" << std::setw(15) << LS_ratio1 << "[" << status << "],\t";
 		status = (LS_ratio2 > LS_ratio1 && LS_ratio2 < 1) ? YES : NO;
-		Rcpp::Rcout << "LS_ratio2     :" << std::setw(15) << LS_ratio2 << "[" << status << "]" << std::endl;
+		// Rcpp::Rcout << "LS_ratio2     :" << std::setw(15) << LS_ratio2 << "[" << status << "]" << std::endl;
 	}
 	status = (Initstepsize > 0) ? YES : NO;
-	Rcpp::Rcout << "Initstepsize  :" << std::setw(15) << Initstepsize << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "Initstepsize  :" << std::setw(15) << Initstepsize << "[" << status << "]" << std::endl;
 	status = (Minstepsize > 0 && Minstepsize <= Maxstepsize) ? YES : NO;
-	Rcpp::Rcout << "Minstepsize   :" << std::setw(15) << Minstepsize << "[" << status << "],\t";
+	// Rcpp::Rcout << "Minstepsize   :" << std::setw(15) << Minstepsize << "[" << status << "],\t";
 	status = (Maxstepsize > 0 && Maxstepsize >= Minstepsize) ? YES : NO;
-	Rcpp::Rcout << "Maxstepsize   :" << std::setw(15) << Maxstepsize << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "Maxstepsize   :" << std::setw(15) << Maxstepsize << "[" << status << "]" << std::endl;
 };
 
 void SolversLS::UpdateData(void)

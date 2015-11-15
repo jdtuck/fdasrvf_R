@@ -118,7 +118,7 @@ void LRBFGS::UpdateData(void)
 	inpss = Mani->Metric(x2, s, s);
 	inpyy = Mani->Metric(x2, y, y);
 	rho = 1 / inpsy;
-	if (inpsy / inpss >= nu * pow(ngf, mu) && inpss > std::numeric_limits<double>::epsilon() 
+	if (inpsy / inpss >= nu * pow(ngf, mu) && inpss > std::numeric_limits<double>::epsilon()
         && inpsy > std::numeric_limits<double>::epsilon())
 	{
 		gamma = inpsy / inpyy;
@@ -140,7 +140,8 @@ void LRBFGS::UpdateData(void)
 			y->CopyTo(Y[beginidx]);
 			s->CopyTo(S[beginidx]);
 			RHO[beginidx] = rho;
-			beginidx = (++beginidx) % LengthSY;
+			beginidx++;
+			beginidx %= LengthSY;
 			for (integer i = beginidx; i < beginidx + LengthSY - 1; i++)
 			{
 				idx = i % LengthSY;
@@ -163,7 +164,7 @@ void LRBFGS::UpdateData(void)
 
 void LRBFGS::PrintInfo(void)
 {
-	printf("\n\tbetay:%.3e,rho:%.3e,gamma:%.3e,inpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", betay, rho, gamma, inpss, inpsy, isupdated);
+	Rprintf("\n\tbetay:%.3e,rho:%.3e,gamma:%.3e,inpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", betay, rho, gamma, inpss, inpsy, isupdated);
 	Rcpp::Rcout << std::endl;
 };
 

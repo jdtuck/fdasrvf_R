@@ -18,7 +18,7 @@ void SolversTR::Run(void)
 	iter = 0;
 	if (DEBUG >= ITERRESULT)
 	{
-		printf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
+		Rprintf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
 		timeSeries[iter] = static_cast<double>(getTickCount() - starttime) / CLK_PS;
 		funSeries[iter] = f1; gradSeries[iter] = ngf;
 		nf++; ng++;
@@ -77,7 +77,7 @@ void SolversTR::Run(void)
             iter++;
 			if (DEBUG >= ITERRESULT && iter % OutputGap == 0)
 			{
-				Rcpp::Rcout << "X_{" << iter << "} WAS REJECTED." << std::endl;
+				//Rcpp::Rcout << "X_{" << iter << "} WAS REJECTED." << std::endl;
 				PrintGenInfo();
 				PrintInfo(); // Output information specific to Algorithms
 			}
@@ -95,17 +95,17 @@ void SolversTR::Run(void)
 
 	if (DEBUG >= FINALRESULT)
 	{
-		printf("Iter:%d,f:%.3e,|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,", iter, f2,
+		Rprintf("Iter:%d,f:%.3e,|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,", iter, f2,
 			ngf, ngf / ngf0, ComTime, nf, ng, nR);
 		if (nH != 0)
 		{
-			printf("nH:%d,", nH);
+			Rprintf("nH:%d,", nH);
 		}
 		if (nV != 0)
 		{
-			printf("nV(nVp):%d(%d),", nV, nVp);
+			Rprintf("nV(nVp):%d(%d),", nV, nVp);
 		}
-		printf("\n");
+		Rprintf("\n");
 	}
 };
 
@@ -136,7 +136,7 @@ void SolversTR::tCG_TR(void)
 	norm_r0 = norm_r;
 
 	PreConditioner(x1, r, z);
-	
+
 	z_r = Mani->Metric(x1, z, r);
 	d_Pd = z_r;
 
@@ -212,7 +212,7 @@ void SolversTR::PreConditioner(Variable *x, Vector *eta, Vector *result)
 void SolversTR::PrintGenInfo(void)
 {
 	Solvers::PrintGenInfo();
-	printf("nH:%d,rho:%.2e,radius:%.3e,tCGstatus:%s,innerIter:%d,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str(), innerIter);
+	Rprintf("nH:%d,rho:%.2e,radius:%.3e,tCGstatus:%s,innerIter:%d,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str(), innerIter);
 };
 
 void SolversTR::CheckParams(void)
@@ -223,29 +223,29 @@ void SolversTR::CheckParams(void)
 	char NO[] = "NO";
 	char *status;
 
-	Rcpp::Rcout << "TRUST REGION TYPE METHODS PARAMETERS:" << std::endl;
+	// Rcpp::Rcout << "TRUST REGION TYPE METHODS PARAMETERS:" << std::endl;
 	status = (initial_Delta > 0) ? YES : NO;
-	Rcpp::Rcout << "initial_Delta :" << std::setw(15) << initial_Delta << "[" << status << "],\t";
+	// Rcpp::Rcout << "initial_Delta :" << std::setw(15) << initial_Delta << "[" << status << "],\t";
 	status = (Acceptence_Rho > 0 && Acceptence_Rho < 0.25) ? YES : NO;
-	Rcpp::Rcout << "Acceptence_Rho:" << std::setw(15) << Acceptence_Rho << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "Acceptence_Rho:" << std::setw(15) << Acceptence_Rho << "[" << status << "]" << std::endl;
 	status = (Shrinked_tau > 0 && Shrinked_tau < 1) ? YES : NO;
-	Rcpp::Rcout << "Shrinked_tau  :" << std::setw(15) << Shrinked_tau << "[" << status << "],\t";
+	// Rcpp::Rcout << "Shrinked_tau  :" << std::setw(15) << Shrinked_tau << "[" << status << "],\t";
 	status = (Magnified_tau > 1) ? YES : NO;
-	Rcpp::Rcout << "Magnified tau :" << std::setw(15) << Magnified_tau << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "Magnified tau :" << std::setw(15) << Magnified_tau << "[" << status << "]" << std::endl;
 	status = (minimum_Delta > 0 && minimum_Delta <= maximum_Delta) ? YES : NO;
-	Rcpp::Rcout << "minimum_Delta :" << std::setw(15) << minimum_Delta << "[" << status << "],\t";
+	// Rcpp::Rcout << "minimum_Delta :" << std::setw(15) << minimum_Delta << "[" << status << "],\t";
 	status = (maximum_Delta > 0 && maximum_Delta >= minimum_Delta) ? YES : NO;
-	Rcpp::Rcout << "maximum_Delta :" << std::setw(15) << maximum_Delta << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "maximum_Delta :" << std::setw(15) << maximum_Delta << "[" << status << "]" << std::endl;
 	status = (Min_Inner_Iter >= 0 && Min_Inner_Iter <= Max_Inner_Iter) ? YES : NO;
-	Rcpp::Rcout << "Min_Inner_Iter:" << std::setw(15) << Min_Inner_Iter << "[" << status << "],\t";
+	// Rcpp::Rcout << "Min_Inner_Iter:" << std::setw(15) << Min_Inner_Iter << "[" << status << "],\t";
 	status = (Max_Inner_Iter >= 0 && Max_Inner_Iter >= Min_Inner_Iter) ? YES : NO;
-	Rcpp::Rcout << "Max_Inner_Iter:" << std::setw(15) << Max_Inner_Iter << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "Max_Inner_Iter:" << std::setw(15) << Max_Inner_Iter << "[" << status << "]" << std::endl;
 	status = (theta >= 0) ? YES : NO;
-	Rcpp::Rcout << "theta         :" << std::setw(15) << theta << "[" << status << "],\t";
+	// Rcpp::Rcout << "theta         :" << std::setw(15) << theta << "[" << status << "],\t";
 	status = (kappa > 0 && kappa < 1) ? YES : NO;
-	Rcpp::Rcout << "kappa         :" << std::setw(15) << kappa << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "kappa         :" << std::setw(15) << kappa << "[" << status << "]" << std::endl;
 	status = YES;
-	Rcpp::Rcout << "useRand       :" << std::setw(15) << useRand << "[" << status << "]" << std::endl;
+	// Rcpp::Rcout << "useRand       :" << std::setw(15) << useRand << "[" << status << "]" << std::endl;
 };
 
 void SolversTR::UpdateData(void)

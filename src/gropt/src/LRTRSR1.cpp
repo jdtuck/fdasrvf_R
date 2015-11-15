@@ -165,14 +165,14 @@ void LRTRSR1::UpdateData(void)
 	denorminator = Mani->Metric(x1, s, zeta);
 	inpss = Mani->Metric(x1, s, s);
 	norm2ymBs = Mani->Metric(x1, zeta, zeta);
-	if (iter == 0) // This is for the robustness when the cost function is quadratic 
+	if (iter == 0) // This is for the robustness when the cost function is quadratic
 	{			   // and its Hessian is identity everywhere.
 		inpsy = Mani->Metric(x1, s, y);
 		inpyy = Mani->Metric(x1, y, y);
 		gamma = inpyy / inpsy;
 	}
 	if (denorminator * denorminator >= mintolsq * inpss * norm2ymBs && norm2ymBs >= mintolsq
-		&& (iter != 0 || fabs(gamma - inpsy / inpss) > mintol)) // This is for the robustness when the cost 
+		&& (iter != 0 || fabs(gamma - inpsy / inpss) > mintol)) // This is for the robustness when the cost
 												// function is quadratic and its Hessian is identity everywhere.
 	{
 		inpsy = Mani->Metric(x1, s, y);
@@ -216,7 +216,8 @@ void LRTRSR1::UpdateData(void)
 				SY[i + (LengthSY - 1) * LengthSY] = Mani->Metric(x1, Y[idx], S[beginidx]);
 				SY[LengthSY - 1 + i * LengthSY] = SY[i + (LengthSY - 1) * LengthSY];
 			}
-			beginidx = (++beginidx) % LengthSY;
+			beginidx++;
+			beginidx %= LengthSY;
 		}
 		isupdated = true;
 		ischangedSandY = true;
@@ -239,7 +240,7 @@ void LRTRSR1::Acceptence(void)
 
 void LRTRSR1::PrintInfo(void)
 {
-	printf("\n\tgamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", gamma, inpss, inpsy, inpyy, isupdated);
+	Rprintf("\n\tgamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", gamma, inpss, inpsy, inpyy, isupdated);
 	Rcpp::Rcout << std::endl;
 };
 

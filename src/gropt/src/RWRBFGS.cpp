@@ -101,7 +101,7 @@ void RWRBFGS::UpdateData(void)
 
 void RWRBFGS::PrintInfo(void)
 {
-	printf("\n\tinpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", inpss, inpsy, isupdated);
+	Rprintf("\n\tinpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", inpss, inpsy, isupdated);
 	Rcpp::Rcout << std::endl;
 };
 

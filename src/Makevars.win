@@ -1,8 +1,22 @@
 ##split sources to ensure the commands for linking are not too long!
-SOURCES1=$(wildcard fdasrsf/*.cpp)
-SOURCES2=$(wildcard gropt/src/*.cpp)
+SOURCES1 = wrapper.cpp fdasrsf/dp_grid.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp
+SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/ProductManifold.cpp gropt/src/SolversTR.cpp \
+	gropt/src/DriverMexProb.cpp gropt/src/LowRankVariable.cpp gropt/src/randgen.cpp gropt/src/Sphere.cpp \
+	gropt/src/ElasticCurvesReparam.cpp gropt/src/LowRankVector.cpp gropt/src/RBFGS.cpp gropt/src/SphereVariable.cpp \
+	gropt/src/ElasticCurvesRO.cpp gropt/src/LRBFGS.cpp gropt/src/RBroydenFamily.cpp gropt/src/SphereVector.cpp \
+	gropt/src/Element.cpp gropt/src/LRTRSR1.cpp gropt/src/RCG.cpp gropt/src/Spline.cpp \
+	gropt/src/EucFrechetMean.cpp gropt/src/Manifold.cpp gropt/src/RNewton.cpp gropt/src/StieBrockett.cpp \
+	gropt/src/Euclidean.cpp gropt/src/Oblique.cpp gropt/src/RSD.cpp gropt/src/Stiefel.cpp \
+	gropt/src/EucQuadratic.cpp gropt/src/ObliqueTestSparsePCA.cpp gropt/src/RTRNewton.cpp gropt/src/StieSoftICA.cpp \
+	gropt/src/EucVariable.cpp gropt/src/ObliqueVariable.cpp gropt/src/RTRSD.cpp gropt/src/StieSumBrockett.cpp \
+	gropt/src/EucVector.cpp gropt/src/ObliqueVector.cpp gropt/src/RTRSR1.cpp gropt/src/StieVariable.cpp \
+	gropt/src/ForDebug.cpp gropt/src/OrthGroup.cpp gropt/src/RWRBFGS.cpp gropt/src/StieVector.cpp \
+	gropt/src/L2Sphere.cpp gropt/src/OrthGroupVariable.cpp gropt/src/SharedSpace.cpp gropt/src/TestElasticCurvesRO.cpp \
+	gropt/src/L2SphereVariable.cpp gropt/src/OrthGroupVector.cpp gropt/src/SmartSpace.cpp gropt/src/Timer.cpp \
+	gropt/src/L2SphereVector.cpp gropt/src/Problem.cpp gropt/src/Solvers.cpp gropt/src/WeightedLowRank.cpp \
+	gropt/src/LinearOPE.cpp gropt/src/ProductElement.cpp gropt/src/SolversLS.cpp
 
-OBJECTS=wrapper.o
+OBJECTS = wrapper.o
 OBJS1 = $(SOURCES1:.cpp=.o)
 OBJS2 = $(SOURCES2:.cpp=.o)
 PKG_CPPFLAGS= -I. -Igropt/incl/
@@ -16,6 +30,6 @@ libfdasrvf1.a: $(OBJS1)
 libfdasrvf2.a: $(OBJS2)
 
 clean:
-	@rm -f $(SHLIB $(OBJECTS)
+	@rm -f $(SHLIB) $(OBJECTS)
 	@rm -f $(OBJS1)
 	@rm -f $(OBJS2)

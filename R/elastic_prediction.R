@@ -18,7 +18,6 @@
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
 #'  Electronic Journal of Statistics (2014), submitted.
-#' @export
 elastic.prediction <- function(f, time, model, y=NULL, smooth_data = FALSE, sparam = 25){
   binsize = mean(diff(time))
   eps = .Machine$double.eps

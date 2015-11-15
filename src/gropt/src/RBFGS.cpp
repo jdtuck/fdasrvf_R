@@ -104,7 +104,7 @@ void RBFGS::UpdateData(void)
 
 void RBFGS::PrintInfo(void)
 {
-	printf("\n\tbetay:%.3e,inpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", betay, inpss, inpsy, isupdated);
+	Rprintf("\n\tbetay:%.3e,inpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", betay, inpss, inpsy, isupdated);
 	Rcpp::Rcout << std::endl;
 };
 

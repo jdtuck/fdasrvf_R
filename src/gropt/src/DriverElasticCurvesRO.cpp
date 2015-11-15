@@ -794,7 +794,7 @@ void FindInitialBreaksAndNs(const double *C, integer d, integer n, integer minSk
 		}
 		/*        if((dx1 * dy2 - dx2 * dy1 < - sin_angle && dir > 0) || (dx1 * dy2 - dx2 * dy1 > sin_angle && dir < 0))
 		threshold = thresholdsmall;*/
-		/*        printf("%f, dir: %d, theta: %f, threshold: %f\n", dx1 * dy2 - dx2 * dy1, dir, theta, threshold);*/
+		/*        Rprintf("%f, dir: %d, theta: %f, threshold: %f\n", dx1 * dy2 - dx2 * dy1, dir, theta, threshold);*/
 		if (theta > thresholdsmall && i + rand_shift - sind >= minSkip)
 		{
 			theta = 0;
@@ -804,7 +804,7 @@ void FindInitialBreaksAndNs(const double *C, integer d, integer n, integer minSk
 			Lms++;
 		}
 	}
-	printf("total theta:%e, %f M_PI\n", total_theta, total_theta / M_PI);
+	Rprintf("total theta:%e, %f M_PI\n", total_theta, total_theta / M_PI);
 	Ns = static_cast<int> (static_cast<double> (n) / 3);
 	Ns = (Ns > 30) ? 30 : Ns;
 	Ns += static_cast<int> (total_theta / M_PI * 2.0);

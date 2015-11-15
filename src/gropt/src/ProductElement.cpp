@@ -238,7 +238,7 @@ void ProductElement::RandGaussian(double mean, double variance)
 
 void ProductElement::Print(const char *name, bool isonlymain) const
 {
-	printf("=================Product data: %s=========================\n", name);
+	Rprintf("=================Product data: %s=========================\n", name);
 	for (integer i = 0; i < numofelements; i++)
 	{
 		//std::string s = std::to_string(i);
@@ -252,10 +252,10 @@ void ProductElement::Print(const char *name, bool isonlymain) const
 		MAP::const_iterator thisiter;
 		for (thisiter = TempData.begin(); thisiter != TempData.end(); thisiter++)
 		{
-			printf("=================Temp data in %s ================\n", name);
+			Rprintf("=================Temp data in %s ================\n", name);
 			thisiter->second->Print(thisiter->first.c_str());
 		}
-		printf("=================end of output: %s=========================\n", name);
+		Rprintf("=================end of output: %s=========================\n", name);
 	}
 };
 

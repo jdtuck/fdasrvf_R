@@ -77,7 +77,7 @@ void RNewton::HessianEta(Vector *Eta, Vector *result) const
 
 void RNewton::PrintInfo(void)
 {
-	printf("\n\tnH:%d,tCGstatus:%s,innerIter:%d,", nH, tCGLSstatusSetnames[tCGLSstatus].c_str(), innerIter);
+	Rprintf("\n\tnH:%d,tCGstatus:%s,innerIter:%d,", nH, tCGLSstatusSetnames[tCGLSstatus].c_str(), innerIter);
 	Rcpp::Rcout << std::endl;
 };
 

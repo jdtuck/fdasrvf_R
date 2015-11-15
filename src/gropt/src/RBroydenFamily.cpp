@@ -109,7 +109,7 @@ void RBroydenFamily::UpdateData(void)
 
 void RBroydenFamily::PrintInfo(void)
 {
-	printf("\n\tbetay:%.3e,Phic:%.3e,inpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", betay, phic, inpss, inpsy, isupdated);
+	Rprintf("\n\tbetay:%.3e,Phic:%.3e,inpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", betay, phic, inpss, inpsy, isupdated);
 	Rcpp::Rcout << std::endl;
 };
 

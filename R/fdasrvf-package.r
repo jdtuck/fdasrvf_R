@@ -20,6 +20,8 @@
 #' @docType package
 #' @useDynLib fdasrvf
 #' @import foreach mvtnorm matrixcalc numDeriv splines parallel doParallel Rcpp
+#' @importFrom graphics layout legend matplot plot title
+#' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var
 #' @aliases fdasrvf fdasrvf-package
 NULL
 #' Simulated two Gaussian Dataset

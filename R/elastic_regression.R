@@ -30,7 +30,6 @@
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
 #'  Electronic Journal of Statistics (2014), submitted.
-#' @export
 elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
                                smooth_data = FALSE, sparam = 25, parallel = FALSE,
                                cores=2){
