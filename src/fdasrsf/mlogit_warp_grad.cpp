@@ -2,6 +2,7 @@
 #include <float.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <Rcpp.h>
 #include "misc_funcs.h"
 
 void mlogit_warp_grad(int *m1, int *m2, double *alpha, double *beta, double *ti, double *gami, double *q, int *y, int *max_itri, double *toli, double *deltai, int *displayi, double *gamout){
@@ -173,7 +174,7 @@ void mlogit_warp_grad(int *m1, int *m2, double *alpha, double *beta, double *ti,
 		max_val[itr] = tmpi - log(tmp1);
 
 		if (display == 1)
-			printf("Iteration %d : Cost %f\n", itr, max_val[itr]);
+			Rprintf("Iteration %d : Cost %f\n", itr, max_val[itr]);
 
 		gam_ptr = gam2;
 		psi_ptr = psi2;
