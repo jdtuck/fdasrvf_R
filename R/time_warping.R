@@ -179,7 +179,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 
             qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
         }
-        if (qun[r] < 1e-2 || r >=MaxItr){
+        if (qun[r] < 1e-4 || r >=MaxItr){
             break
         }
     }
