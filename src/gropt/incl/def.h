@@ -346,23 +346,6 @@ extern void dgees_(
 #include <limits>
 #include "Timer.h"
 #include <Rcpp.h>
-#ifdef __INTEL_COMPILER
-const class {
-public:
-	template<class T> // convertible to any type
-	operator T*(void) const // of null non-member
-	{
-		return 0;
-	} // pointer...
-	template<class C, class T> // or any type of null
-	operator T C::*(void) const // member pointer...
-	{
-		return 0;
-	}
-private:
-	void operator&(void) const; // whose address can't be taken
-} nullptr = {};
-#endif // end of __GNUC__
 
 #include <map>
 #include <string>
