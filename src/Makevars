@@ -15,11 +15,13 @@ SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/P
 	gropt/src/L2SphereVector.cpp gropt/src/Problem.cpp gropt/src/Solvers.cpp gropt/src/WeightedLowRank.cpp \
 	gropt/src/LinearOPE.cpp gropt/src/ProductElement.cpp gropt/src/SolversLS.cpp
 
-SOURCES = $(SOURCES1) $(SOURCES2)
+SOURCES3 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
+
+SOURCES = $(SOURCES1) $(SOURCES2) $(SOURCES3)
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
-PKG_CPPFLAGS = -I. -Igropt/incl/
+PKG_CPPFLAGS = -I. -Igropt/incl/ -Ifdaqmap/incl/
 PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 
 CXX_STD = CXX11

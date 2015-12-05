@@ -16,20 +16,25 @@ SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/P
 	gropt/src/L2SphereVector.cpp gropt/src/Problem.cpp gropt/src/Solvers.cpp gropt/src/WeightedLowRank.cpp \
 	gropt/src/LinearOPE.cpp gropt/src/ProductElement.cpp gropt/src/SolversLS.cpp
 
+SOURCE3 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
+
 OBJECTS = wrapper.o
 OBJS1 = $(SOURCES1:.cpp=.o)
 OBJS2 = $(SOURCES2:.cpp=.o)
-PKG_CPPFLAGS= -I. -Igropt/incl/
+OBJS3 = $(SOURCES3:.cpp=.o)
+PKG_CPPFLAGS= -I. -Igropt/incl/ -Ifdaqmap/incl/
 CXX_STD = CXX11
-PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) libfdasrvf1.a libfdasrvf2.a
+PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) libfdasrvf1.a libfdasrvf2.a libfdasrvf3.a
 
-all: libfdasrvf1.a libfdasrvf2.a $(SHLIB)
+all: libfdasrvf1.a libfdasrvf2.a libfdasrvf3.a $(SHLIB)
 
-$(SHLIB): libfdasrvf1.a libfdasrvf2.a $(OBJECTS)
+$(SHLIB): libfdasrvf1.a libfdasrvf2.a libfdasrvf3.a $(OBJECTS)
 libfdasrvf1.a: $(OBJS1)
 libfdasrvf2.a: $(OBJS2)
+libfdasrvf3.a: $(OBJS3)
 
 clean:
 	@rm -f $(SHLIB) $(OBJECTS)
 	@rm -f $(OBJS1)
 	@rm -f $(OBJS2)
+	@rm -f $(OBJS3)

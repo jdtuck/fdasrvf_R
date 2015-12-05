@@ -16,6 +16,7 @@ Imports:
     matrixcalc,
     numDeriv,
     splines,
+    akima,
     parallel,
     doParallel
 LinkingTo: Rcpp

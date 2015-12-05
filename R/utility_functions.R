@@ -1,3 +1,23 @@
+ndims <- function(x){
+    return(length(dim(x)))
+}
+
+
+meshgrid <- function(x, y = x) {
+    if (!is.numeric(x) || !is.numeric(y))
+        stop("Arguments 'x' and 'y' must be numeric vectors.")
+
+    x <- c(x); y <- c(y)
+    n <- length(x)
+    m <- length(y)
+
+    X <- matrix(rep(x, each = m),  nrow = m, ncol = n)
+    Y <- matrix(rep(y, times = n), nrow = m, ncol = n)
+
+    return(list(X = X, Y = Y))
+}
+
+
 cumtrapz <- function(x,y){
     m = length(y)
 
@@ -703,7 +723,7 @@ interp1_flat <- function(x,y,xx){
             i1 = i2
           }
         }
-        
+
         i2 = length(x)
         j = (xx>=x[i1]) & (xx<=x[i2])
         if ((i1+1) == i2){
