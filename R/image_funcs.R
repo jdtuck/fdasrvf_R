@@ -272,3 +272,110 @@ check_crossing <- function(f) {
 
     return (is_diffeo)
 }
+
+
+formbasisTid <- function(M,m,n,basis_type="t"){
+    out = meshgrid(seq(0,1,length.out=n),seq(0,1,length.out=m))
+
+    idx = 1
+
+    if (basis_type=="t"){
+        b = array(0, dim=c(m,n,2,2*M))
+        for (s in 1:M) {
+            c1 = sqrt(2)*pi*s
+            sPI2 = 2*pi*s
+
+            b[,,1,idx] = matrix(0,m,n)
+            b[,,2,idx] = (cos(sPI2*out$Y)-1)/c1
+
+
+            b[,,1,idx+1] = (cos(sPI2*out$X)-1)/c1
+            b[,,2,idx+1] = matrix(0,m,n)
+
+            idx = idx + 2
+        }
+    }
+
+    if (basis_type == "s"){
+        b = array(0,dim=c(m,n,2,2*M))
+        for (s in 1:M) {
+            c1 = sqrt(2)*pi*s
+            sPI2 = 2*pi*2
+
+            b[,,i,idx] = matrix(0,m,n)
+            b[,,2,idx] = sin(sPI2*out$X)/c1
+
+            b[,,1,idx+1] = sin(sPI2*out$X)/c1
+            b[,,2,idx+1] = matrix(0,m,n)
+
+            idx = idx + 2
+        }
+    }
+
+    if (basis_type == "i"){
+        b = array(0, dim=c(m,n,2,M*M*8))
+        for (s1 in 1:M) {
+            s1PI2 = 2*pi*s1
+            for (s2 in 1:M) {
+                s2PI2 = 2*pi*s2
+                c1 = pi*sqrt(s1^2+3*s2^2)
+                b[,,1,idx] = (cos(s1PI2*out$X)-1)*(cos(s2PI2*out$Y))/c1
+                b[,,2,idx] = matrix(0,m,n)
+                b[,,1,idx+2] = ((cos(s1PI2*out$X)-1)*sin(s2PI2*out$Y))/c1
+                b[,,2,idx+2] = matrix(0,m,n)
+                c1 = pi*sqrt(s1^2+s2^2)
+                b[,,1,idx+4] = sin(s1PI2*out$X)*(cos(s2PI2*out$Y))/c1
+                b[,,2,idx+4] = matrix(0,m,n)
+                b[,,1,idx+6] = (sin(s1PI2*out$X)*sin(s2PI2*out$Y))/c1
+                b[,,2,idx+6] = matrix(0,m,n)
+
+                c1 = pi*sqrt(s1^2+3*s2^2)
+                b[,,1,idx+1] = matrix(0,m,n)
+                b[,,2,idx+1] = (cos(s1PI2*out$Y)-1)*(cos(s2PI2*out$X))/c1
+                b[,,1,idx+3] = matrix(0,m,n)
+                b[,,2,idx+3] = ((cos(s1PI2*out$Y)-1)*sin(s2PI2*out$X))/c1
+                c1 = pi*sqrt(s1^2+s2^2)
+                b[,,1,idx+5] = matrix(0,m,n)
+                b[,,2,idx+5] = sin(s1PI2*out$Y)*(cos(s2PI2*out$X))/c1
+                b[,,1,idx+7] = matrix(0,m,n)
+                b[,,2,idx+7] = (sin(s1PI2*out$Y)*sin(s2PI2*out$X))/c1
+
+                idx = idx + 8
+            }
+        }
+    }
+
+    if (basis_type == "o"){
+        b = array(0,dim=c(m,n,2,M*4))
+        for (s in 1:M) {
+            c1 = sqrt((4*pi^2*s^2+9)/6)
+            sPI2 = 2*pi*s
+            b[,,1,idx] = (cos(sPI2*out$X))*out$Y/c1
+            b[,,2,idx] = matrix(0,m,n)
+            b[,,2,idx+1] = (cos(sPI2*out$Y)-1)*out$X/c1
+            b[,,1,idx+1] = matrix(0,m,n)
+            b[,,1,idx+2] = sin(sPI2*out$X)*out$Y/c1
+            b[,,2,idx+2] = matrix(0,m,n)
+            b[,,2,idx+3] = sin(sPI2*out$Y)*out$X/c1
+            b[,,1,idx+3] = matrix(0,m,n)
+            idx = idx + 4
+        }
+    }
+
+    return(list(b=b,U=out$X,V=out$Y))
+}
+
+
+run_basis <- function(Ft, M=10, basis_type="t", is_orthon=TRUE){
+    m = dim(Ft)[1]
+    n = dim(Ft)[2]
+
+    gamid = makediffeoid(m,n)
+
+    out = formbasisTid(M, m, n, basis_type)
+    if (is_orthon){
+        b = gram_schmidt_c(b)
+    }
+
+    return(list(b=out$b,gamid=gamid))
+}

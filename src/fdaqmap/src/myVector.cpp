@@ -1,9 +1,11 @@
 #include <iostream>
 #include <cstring>
 #include <cmath>
+#include <Rcpp.h>
 #include "myVector.h"
 
 using namespace std;
+using namespace Rcpp;
 
 double InProd(const double *u, const double *v, int d)
 {
@@ -121,4 +123,3 @@ void GramSchmitdSquare(double *x, int &n, int n1, int n2, int d)
 
     n = k;
 }
-

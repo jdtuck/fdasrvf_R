@@ -2,10 +2,12 @@
 #include <cmath>
 #include <iostream>
 #include <stdio.h>
+#include <Rcpp.h>
 #include "UnitSquareImage.h"
 #include "ImageRegister.h"
 
 using namespace std;
+using namespace Rcpp;
 
 void findgrad(double *dfdu, double *dfdv, const double *f, int n, int t) {
     int i, j, k, N = n*t;
@@ -483,7 +485,7 @@ int ReparamSurf(double *Fnew, double *gamnew, double *H,
     // compute initial energy
     Hdiff = 100;
     Calculate_Distance(H+iter,qt,qm,n,t,d);
-    printf("iter %d, energy %f \n", iter, *(H+iter));
+    Rprintf("iter %d, energy %f \n", iter, *(H+iter));
 
     // main iteration
     for (iter = 1; iter < itermax && Hdiff > tol; ++iter) {
@@ -517,7 +519,7 @@ update:
         Calculate_Distance(H+iter,qt,qm,n,t,d);
         Hdiff = (H[iter-1]-H[iter])/H[iter-1];
 
-        printf("iter %d, energy %f \n", iter, *(H+iter));
+        Rprintf("iter %d, energy %f \n", iter, *(H+iter));
 
         // update iteration or break out
         if (H[iter] <= H[iter-1]) {
@@ -650,4 +652,3 @@ void jacob_image(double *A, const double *F, int n, int t) {
     A[n*(t-1) + n-1] = sqrt(abs(c));
 
 }
-
