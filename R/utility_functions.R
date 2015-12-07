@@ -2,7 +2,6 @@ ndims <- function(x){
     return(length(dim(x)))
 }
 
-
 meshgrid <- function(x, y = x) {
     if (!is.numeric(x) || !is.numeric(y))
         stop("Arguments 'x' and 'y' must be numeric vectors.")
@@ -17,6 +16,22 @@ meshgrid <- function(x, y = x) {
     return(list(X = X, Y = Y))
 }
 
+gradient2 <- function(a,dx=1,dy=1){
+    m = dim(a)[1]
+    n = dim(a)[2]
+    dxdu = matrix(0,m,n)
+    dydv = matrix(0,m,n)
+
+    for (i in 1:m) {
+        dxdu[i,] = gradient(as.vector(a[i,]), dx)
+    }
+
+    for (i in 1:m) {
+        dydv[,i] = gradient(as.vector(a[,i]), dy)
+    }
+
+    return(list(dxdu=dxdu,dydv=dydv))
+}
 
 cumtrapz <- function(x,y){
     m = length(y)
