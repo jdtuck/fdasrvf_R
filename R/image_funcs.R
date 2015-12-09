@@ -102,7 +102,7 @@ compgrad2D <- function(f){
         dfdv = array(0,dim=dim(f))
     }
 
-    out = .Call('findgrad2D', PACKAGE = 'fdasrvf', dfdu, dfdv, f, n, t, d)
+    out = .Call('find_grad_2D', PACKAGE = 'fdasrvf', dfdu, dfdv, f, n, t, d)
 
     return(list(dfdu=out$dfdu,dfdv=out$dfdv))
 }
@@ -118,7 +118,7 @@ gram_schmidt_c <- function(b){
 
     out = compgrad2D(G[,,,cnt])
     dvx = out$dfdu; dvy = out$dfdv
-    l = t(c(dvx))*c(dvx)*ds + t(c(dvy))*c(dvy)*ds
+    l = (t(c(dvx))%*%c(dvx)*ds + t(c(dvy))%*%c(dvy)*ds)[1]
 
     for (i in 2:N) {
         G[,,,i] = b[,,,i]
@@ -127,12 +127,12 @@ gram_schmidt_c <- function(b){
         for (j in 1:(i-1)) {
             out = compgrad2D(G[,,,j])
             dv2x = out$dfdu; dv2y = out$dfdv
-            t1 = t(c(dv1x))*c(dv2x)*ds+t(c(dv1y))*c(dv2y)*ds
+            t1 = (t(c(dv1x))%*%c(dv2x)*ds+t(c(dv1y))%*%c(dv2y)*ds)[1]
             G[,,,i] = G[,,,i]-t1*G[,,,j]
         }
 
         v = G[,,,i]
-        l = t(c(vec))*c(v)*ds
+        l = (t(c(v))%*%c(v)*ds)[1]
 
         if (l>0){
             cnt = cnt + 1
@@ -144,10 +144,10 @@ gram_schmidt_c <- function(b){
 }
 
 
-jacob_imag <- function(F){
-    m = dim(F)[1]; n = dim(F)[2]; d = dim(F)[3]
+jacob_imag <- function(F1){
+    m = dim(F)[1]; n = dim(F1)[2]; d = dim(F)[3]
 
-    out = compgrad2D(F)
+    out = compgrad2D(F1)
     mult_factor = matrix(0,m,n)
     if (d==2){
         mult_factor = out$dfdu[,,1]%*%out$dfdv[,,2] - out$dfdu[,,2]%*%out$dfdv[,,1]
@@ -176,20 +176,20 @@ makediffeoid <- function(nrows,ncols){
 }
 
 
-imag_to_q <- function(F){
-    dims = ndims(F)
+imag_to_q <- function(F1){
+    dims = ndims(F1)
     if (dims < 3){
         stop("Data dimension is wrong!")
     }
-    d = dim(F)[3]
+    d = dim(F1)[3]
     if (d<2){
         stop("Data dimension is wrong!")
     }
-    q = F;
+    q = F1;
 
-    sqrtmultfact = sqrt(jacob_imag(F))
+    sqrtmultfact = sqrt(jacob_imag(F1))
     for (i in 1:d) {
-        q[,,i] = sqrtmultfact*F[,,i]
+        q[,,i] = sqrtmultfact*F1[,,i]
     }
 
     return (q)
@@ -379,9 +379,10 @@ run_basis <- function(Ft, M=10, basis_type="t", is_orthon=TRUE){
     gamid = makediffeoid(m,n)
 
     out = formbasisTid(M, m, n, basis_type)
+    b = out$b
     if (is_orthon){
         b = gram_schmidt_c(b)
     }
 
-    return(list(b=out$b,gamid=gamid))
+    return(list(b=b,gamid=gamid))
 }

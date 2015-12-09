@@ -19,7 +19,7 @@
 #' @export
 reparam_image <- function(It, Im, gam, b, stepsize=1e-5, itermax=1000, lmark=FALSE){
     m = dim(It)[1]
-    n = dim(IT)[2]
+    n = dim(It)[2]
     gamid = makediffeoid(m,n)
 
     # Main Loop-----------------------------------------------------------------

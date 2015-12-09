@@ -9,6 +9,21 @@
 using namespace std;
 using namespace Rcpp;
 
+RcppExport SEXP find_grad_2D(SEXP dfdui, SEXP dfdvi, SEXP fi, SEXP ni, SEXP ti, SEXP di){
+    int n = as<int>(ni);
+    int t = as<int>(ti);
+    int d = as<int>(di);
+    NumericVector f(fi);
+    NumericVector dfdu(dfdui);
+    NumericVector dfdv(dfdvi);
+
+    findgrad2D(dfdu.begin(), dfdv.begin(), f.begin(), n, t, d);
+    List ret;
+    ret["dfdu"] = dfdu;
+    ret["dfdv"] = dfdv;
+    return(ret);
+}
+
 RcppExport SEXP check_cross(SEXP fi, SEXP ni, SEXP ti, SEXP Di){
     int temp;
     int n = as<int>(ni);
