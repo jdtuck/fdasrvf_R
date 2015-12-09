@@ -9,6 +9,32 @@
 using namespace std;
 using namespace Rcpp;
 
+RcppExport SEXP check_cross(SEXP fi, SEXP ni, SEXP ti, SEXP Di){
+    int temp;
+    int n = as<int>(ni);
+    int t = as<int>(ti);
+    int D = as<int>(Di);
+    NumericVector f(fi);
+
+    temp = check_crossing(f.begin(), n, t, D);
+
+    return(temp);
+}
+
+RcppExport SEXP find_phistar(SEXP wi, SEXP qi, SEXP bi, SEXP ni, SEXP ti, SEXP di, SEXP Ki){
+    int n = as<int>(ni);
+    int t = as<int>(ti);
+    int d = as<int>(di);
+    int K = as<int>(Ki);
+    NumericVector w(wi);
+    NumericVector q(qi);
+    NumericVector b(bi);
+
+    findphistar(w.begin(), q.begin(), b.begin(), n, t, d, K);
+
+    return(w);
+}
+
 void findgrad(double *dfdu, double *dfdv, const double *f, int n, int t) {
     int i, j, k, N = n*t;
     double du, dv;
@@ -307,6 +333,8 @@ void findphistar(double *w, double *q, double *b, int n, int t, int d, int K) {
     delete [] dqdv;
     delete [] expr1;
     delete [] expr2;
+
+    return;
 }
 
 
@@ -334,6 +362,7 @@ void findupdategam(double *gamupdate, const double *v, const double *w, const do
         }
     }
 
+    return;
 }
 
 // ------------------------------------------------------------------------
@@ -343,6 +372,7 @@ void updategam(double *gamnew, const double *gamupdate, const double *gamid, dou
         gamnew[i] = gamid[i] + eps*gamupdate[i];
     }
 
+    return;
 }
 
 // ------------------------------------------------------------------------
@@ -384,6 +414,8 @@ void Apply_gam_gamid(double *gamcum, const double *gamid, const double *gaminc, 
     delete [] y;
     delete [] D1;
     delete [] D2;
+
+    return;
 }
 
 //-------------------------------------------------------------------------
@@ -415,6 +447,8 @@ void Apply_Gamma_Surf(double *Fnew, const double *F, const double *gam, int m, i
     delete [] Dv;
     delete [] Du;
     delete [] zu;
+
+    return;
 }
 
 // ------------------------------------------------------------------------
@@ -580,6 +614,8 @@ void InvtGamma(double *gaminv, const double *gam, const double *gamid, int n) {
 
     delete [] y;
     delete [] D;
+
+    return;
 }
 
 // ------------------------------------------------------------------------
@@ -650,5 +686,7 @@ void jacob_image(double *A, const double *F, int n, int t) {
     bdiff2(dfdv, F + n*(t*0 + t-1) + n-1, dv, 1, N);
     jacob(c,dfdu,dfdv);
     A[n*(t-1) + n-1] = sqrt(abs(c));
+
+    return;
 
 }

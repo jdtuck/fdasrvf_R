@@ -6,13 +6,19 @@ apply_gam_to_gam <- function(gamnew, gam){
     nt = md*n
     U = seq(0, 1, length.out=m)
     V = seq(0, 1, length.out=n)
+    xlim = c(0,1);
+    ylim = c(0,1);
+    dx1 = (1-0)/(m-1)
+    dy1 = (1-0)/(n-1)
     Ut = seq(0, 1, length.out=mt)
     Vt = seq(0, 1, length.out=nt)
+    dx = (1-0)/(mt-1)
+    dy = (1-0)/(nt-1)
     gam_tmp = array(0, dim=c(mt,nt,D))
     gam_new_tmp = array(0, dim=c(mt,nt,D))
     for (i in 1:D) {
-        gam_tmp[,,i] = bicubic(U,V,gam[,,i],Ut,Vt)$z
-        gam_new_tmp[,,i] = bicubic(U,V,gamnew[,,i],Ut,Vt)$z
+        gam_tmp[,,i] = bicubic.grid(U,V,gam[,,i],xlim,zlim,dx,dy)$z
+        gam_new_tmp[,,i] = bicubic.grid(U,V,gamnew[,,i],xlim,zlim,dx,dy)$z
     }
 
     gam_cum_tmp = array(0,dim=c(mt,nt,D))
@@ -27,7 +33,7 @@ apply_gam_to_gam <- function(gamnew, gam){
 
     gam_cum = array(0,dim=c(m,n,D))
     for (i in 1:D) {
-        gam_cum[,,i] = bicubic(Ut,Vt,gam_cum_tmp[,,i],U,V)
+        gam_cum[,,i] = bicubic.grid(Ut,Vt,gam_cum_tmp[,,i],xlim,ylim,dx1,dy1)$z
     }
 
     return(gam_cum)
@@ -230,7 +236,7 @@ findphistar <- function(q, b){
 
     w = array(0,dim=c(n,t,d,K))
 
-    out = .Call('findphistar', PACKAGE = 'fdasrvf', w, q, b, n, t, d, K)
+    out = .Call('find_phistar', PACKAGE = 'fdasrvf', w, q, b, n, t, d, K)
 
     return (out$w)
 }
@@ -261,7 +267,7 @@ check_crossing <- function(f) {
     if (D!=2)
         stop("Third dimension of first argument to be 2")
 
-    diffeo = .Call('check_crossing', PACKAGE = 'fdasrvf', f, n, t, D)
+    diffeo = .Call('check_cross', PACKAGE = 'fdasrvf', f, n, t, D)
 
     if (diffeo == 0)
         is_diffeo = F
