@@ -18,7 +18,7 @@ RcppExport SEXP check_cross(SEXP fi, SEXP ni, SEXP ti, SEXP Di){
 
     temp = check_crossing(f.begin(), n, t, D);
 
-    return(temp);
+    return wrap(temp);
 }
 
 RcppExport SEXP find_phistar(SEXP wi, SEXP qi, SEXP bi, SEXP ni, SEXP ti, SEXP di, SEXP Ki){
