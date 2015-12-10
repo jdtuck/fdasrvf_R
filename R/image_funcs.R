@@ -17,17 +17,15 @@ apply_gam_to_gam <- function(gamnew, gam){
     gam_tmp = array(0, dim=c(mt,nt,D))
     gam_new_tmp = array(0, dim=c(mt,nt,D))
     for (i in 1:D) {
-        gam_tmp[,,i] = bicubic.grid(U,V,gam[,,i],xlim,zlim,dx,dy)$z
-        gam_new_tmp[,,i] = bicubic.grid(U,V,gamnew[,,i],xlim,zlim,dx,dy)$z
+        gam_tmp[,,i] = bicubic.grid(U,V,gam[,,i],xlim,ylim,dx,dy)$z
+        gam_new_tmp[,,i] = bicubic.grid(U,V,gamnew[,,i],xlim,ylim,dx,dy)$z
     }
 
     gam_cum_tmp = array(0,dim=c(mt,nt,D))
-    Ut1 = sort(rep(Ut,nt))
-    Vt1 = rep(Vt,mt)
-    x2 = c(gam_tmp[,,1])
-    y2 = c(t(gam_tmp[,,2]))
+    x2 = c(gam_tmp[,,2])
+    y2 = sort(c(t(gam_tmp[,,1])))
     for (i in 1:D) {
-        tmp = interpp(Ut1,Vt1,c(c(gam_new_tmp[,,i])),x2,y2)
+        tmp = bicubic(Ut,Vt,gam_new_tmp[,,i],x2,y2)
         gam_cum_tmp[,,i] = matrix(tmp$z,nrow=mt,byrow=F)
     }
 
@@ -53,16 +51,14 @@ apply_gam_to_imag <- function(img, gam){
 
     U = seq(0,1,length.out=m)
     V = seq(0,1,length.out=n)
-    Ut1 = sort(rep(U,n))
-    Vt1 = rep(V,m)
-    x2 = c(gam[,,1])
-    y2 = c(t(gam[,,2]))
+    x2 = c(gam[,,2])
+    y2 = sort(c(t(gam[,,1])))
     if (d==1){
-        tmp = interpp(Ut1,Vt1,c(img),x2,y2)
+        tmp = bicubic(U,V,img,x2,y2)
         img_new = matrix(tmp$z,nrow=m,byrow=F)
     } else {
         for (i in 1:d) {
-            tmp = interpp(Ut1,Vt1,c(img[,,i]),x2,y2)
+            tmp = bicubic(U,V,img[,,i],x2,y2)
             img_new[,,i] = matrix(tmp$z,nrow=m,byrow=F)
         }
     }
@@ -75,13 +71,11 @@ apply_gam_gamid <- function(gamid, gaminc){
     m = dim(gamid)[1]; n = dim(gamid)[2]; d = dim(gamid)[3]
     U = seq(0,1,length.out=m)
     V = seq(0,1,length.out=n)
-    Ut1 = sort(rep(U,n))
-    Vt1 = rep(V,m)
-    x2 = c(gaminc[,,1])
-    y2 = c(t(gaminc[,,2]))
+    x2 = c(gaminc[,,2])
+    y2 = sort(c(t(gaminc[,,1])))
     gam_cum = array(0,dim=c(m,n,d))
     for (i in 1:d) {
-        tmp = interpp(Ut1,Vt1,c(gamid[,,i]),x2,y2)
+        tmp = bicubic(U,V,gamid[,,i],x2,y2)
         gam_cum[,,i] = matrix(tmp$z,nrow=m,byrow=F)
     }
 
@@ -145,7 +139,7 @@ gram_schmidt_c <- function(b){
 
 
 jacob_imag <- function(F1){
-    m = dim(F)[1]; n = dim(F1)[2]; d = dim(F)[3]
+    m = dim(F1)[1]; n = dim(F1)[2]; d = dim(F1)[3]
 
     out = compgrad2D(F1)
     mult_factor = matrix(0,m,n)
@@ -214,7 +208,7 @@ comp_energy <- function(q1, q2) {
     ds = 1./(m-1)/(n-1)
 
     tmp = q1-q2
-    H = t(c(tmp))*c(tmp)*ds
+    H = (t(c(tmp))%*%c(tmp)*ds)[1]
 
     return (H)
 }
@@ -238,7 +232,7 @@ findphistar <- function(q, b){
 
     out = .Call('find_phistar', PACKAGE = 'fdasrvf', w, q, b, n, t, d, K)
 
-    return (out$w)
+    return (out)
 }
 
 
@@ -252,7 +246,7 @@ findupdategam <- function(v, w, b) {
 
     for (k in 1:K) {
         vt = w[,,,k]
-        innp[k] = t(c(v))*c(vt)*ds
+        innp[k] = (t(c(v))%*%c(vt)*ds)[1]
 
         gamupdate = gamupdate + innp[k]*b[,,,k]
     }

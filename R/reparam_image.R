@@ -86,5 +86,5 @@ reparam_image <- function(It, Im, gam, b, stepsize=1e-5, itermax=1000, lmark=FAL
 
     H = H[1:iter]
 
-    retun(list(gamnew=gamnew,Inew=Inew,H=H,stepsize=stepsize))
+    return(list(gamnew=gamnew,Inew=Inew,H=H,stepsize=stepsize))
 }
