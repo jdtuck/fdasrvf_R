@@ -1,8 +1,8 @@
 Package: fdasrvf
 Type: Package
 Title: Elastic Functional Data Analysis
-Version: 1.5.1
-Date: 2015-11-15
+Version: 1.5.2
+Date: 2016-1-11
 Author: J. Derek Tucker <jdtuck@sandia.gov>
 Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
 Description: Functions to support functional data analysis using the square root velocity framework.

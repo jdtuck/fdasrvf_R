@@ -33,30 +33,68 @@ gradient2 <- function(a,dx=1,dy=1){
     return(list(dxdu=dxdu,dydv=dydv))
 }
 
-cumtrapz <- function(x,y){
-    m = length(y)
+cumtrapz <- function(x,y,dims=1){
+    if ((dims-1)>0){
+        perm = c(dims:max(ndims(y),dims), 1:(dims-1))
+    } else {
+        perm = c(dims:max(ndims(y),dims))
+    }
 
-    dt = diff(x)/2
-    z = c(0, cumsum(dt*(y[1:(m-1)] + y[2:m])))
+    if (ndims(y) == 0){
+        n = 1
+        m = length(y)
+    } else {
+        if (length(x) != dim(y)[dims])
+            stop('Dimension Mismatch')
+        y = aperm(y, perm)
+        m = nrow(y)
+        n = ncol(y)
+    }
 
-    dim(z) = c(m,1)
+    if (n==1){
+        dt = diff(x)/2.0
+        z = c(0, cumsum(dt*(y[1:(m-1)] + y[2:m])))
+        dim(z) = c(m,1)
+    } else {
+        tmp = diff(x)
+        dim(tmp) = c(m-1,1)
+        dt = repmat(tmp/2.0,1,n)
+        z = rbind(rep(0,n), apply(dt*(y[1:(m-1),] + y[2:m,]),2,cumsum))
+        perm2 = rep(0, length(perm))
+        perm2[perm] = 1:length(perm)
+        z = aperm(z, perm2)
+    }
 
     return(z)
 }
 
-trapz <- function(x,y){
-    M = nrow(y)
-    if (is.null(M)){
+trapz <- function(x,y,dim=1){
+    if ((dim-1)>0){
+        perm = c(dim:max(ndims(y),dim), 1:(dim-1))
+    } else {
+        perm = c(dim:max(ndims(y),dim))
+    }
+
+    if (ndims(y) == 0){
+        m = 1
+    } else {
+        m = nrow(y)
+    }
+
+    if (m==1){
         M = length(y)
         out = sum(diff(x)*(y[-M]+y[-1])/2)
-    }else{
-        M = nrow(y)
-        N = ncol(y)
-        out = rep(0,N)
-        for (i in 1:N){
-            out[i] = sum(diff(x)*(y[-M,i]+y[-1,i])/2)
-        }
+    } else {
+        y = aperm(y, perm)
+        out = t(diff(x)) %*% (y[1:(m-1),]+y[2:m,])/2.
+        siz = dim(y)
+        siz[1] = 1
+        out = array(out, siz)
+        perm2 = rep(0, length(perm))
+        perm2[perm] = 1:length(perm)
+        out = aperm(out, perm2)
     }
+
     return(out)
 }
 
@@ -434,6 +472,7 @@ repmat <- function(X,m,n){
   if (is.null(mx)){
     mx = 1
     nx = length(X)
+    mat = matrix(t(matrix(X,mx,nx*n)),mx*m,nx*n,byrow=T)
   }else {
     nx = dim(X)[2]
     mat = matrix(t(matrix(X,mx,nx*n)),mx*m,nx*n,byrow=T)

@@ -1,10 +1,10 @@
 #' Align two functions
 #'
-#' This function aligns two srvf functions using Dynamic Programming
+#' This function aligns two SRSF functions using Dynamic Programming
 #'
-#' @param Q1 srvf of function 1
+#' @param Q1 srsf of function 1
 #' @param T1 sample points of function 1
-#' @param Q2 srvf of function 2
+#' @param Q2 srsf of function 2
 #' @param T2 sample points of function 2
 #' @param lambda controls amount of warping (default = 0)
 #' @param method controls which optmization method (default="DP") options are
@@ -14,7 +14,7 @@
 #' @param f1o initial value of f1, vector or scalar depending on q1, defaults to zero
 #' @param f2o initial value of f2, vector or scalar depending on q1, defaults to zero
 #' @return gam warping function
-#' @keywords srvf alignment, pca
+#' @keywords srsf alignment, pca
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
 #'  arXiv:1103.3817v2 [math.ST].

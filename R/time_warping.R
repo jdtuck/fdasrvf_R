@@ -1,7 +1,7 @@
 #' Group-wise function alignment
 #'
 #' This function aligns a collection of functions using the elastic square-root
-#' velocity (srvf) framework.
+#' slope (srsf) framework.
 #'
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
@@ -17,16 +17,16 @@
 #' @param omethod optimization method (DP,DP2,SIMUL,RBFGS)
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
-#' \item{qn}{aligned srvfs - similar structure to fn}
-#' \item{q0}{original srvf - similar structure to fn}
+#' \item{qn}{aligned SRSFs - similar structure to fn}
+#' \item{q0}{original SRSF - similar structure to fn}
 #' \item{fmean}{function mean or median - vector of length \eqn{N}}
-#' \item{mqn}{srvf mean or median - vector of length \eqn{N}}
+#' \item{mqn}{SRSF mean or median - vector of length \eqn{N}}
 #' \item{gam}{warping functions - similar structure to fn}
 #' \item{orig.var}{Original Variance of Functions}
 #' \item{amp.var}{Amplitude Variance}
 #' \item{phase.var}{Phase Variance}
 #' \item{qun}{Cost Function Value}
-#' @keywords srvf alignment
+#' @keywords srsf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
 #'  arXiv:1103.3817v2 [math.ST].
@@ -81,7 +81,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     mq = q[,min_ind]
     mf = f[,min_ind]
 
-    gam<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
+    gam<-foreach(k = 1:N, .combine=cbind,.packages="fdaSRSF") %dopar% {
         gam_tmp = optimum.reparam(mq,time,q[,k],time,lambda,omethod,w,mf[1],f[1,k])
     }
 
@@ -94,9 +94,9 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 
     # Compute Mean
     if (method == 1)
-        cat(sprintf("Computing Karcher mean of %d functions in SRVF space...\n",N))
+        cat(sprintf("Computing Karcher mean of %d functions in SRSF space...\n",N))
     if (method == 2)
-        cat(sprintf("Computing median of %d functions in SRVF space...\n",N))
+        cat(sprintf("Computing median of %d functions in SRSF space...\n",N))
     MaxItr = 20
     ds = rep(0,MaxItr+2)
     ds[1] = Inf

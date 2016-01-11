@@ -2,7 +2,7 @@
 % Please edit documentation in R/f_to_srvf.R
 \name{f_to_srvf}
 \alias{f_to_srvf}
-\title{Convert to SRVF}
+\title{Convert to SRSF}
 \usage{
 f_to_srvf(f, time)
 }
@@ -12,10 +12,10 @@ f_to_srvf(f, time)
 \item{time}{time}
 }
 \value{
-q matrix of srvfs
+q matrix of SRSFs
 }
 \description{
-This function converts functions to srvf
+This function converts functions to srsf
 }
 \examples{
 data("simu_data")
@@ -31,5 +31,5 @@ Tucker, J. D., Wu, W., Srivastava, A.,
  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
-\keyword{srvf}
+\keyword{srsf}
 

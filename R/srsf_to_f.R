@@ -1,12 +1,12 @@
-#' Convert SRVF to f
+#' Convert SRSF to f
 #'
-#' This function converts srvfs to functions
+#' This function converts SRSFs to functions
 #'
-#' @param q matrix of srvfs
+#' @param q matrix of srsf
 #' @param time time
 #' @param f0 initial value of f
 #' @return f matrix of functions
-#' @keywords srvf alignment
+#' @keywords srsf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
 #'  arXiv:1103.3817v2 [math.ST].

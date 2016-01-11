@@ -34,10 +34,10 @@ or "median", default = "mean")}
 \value{
 Returns a list containing \item{f0}{original functions}
 \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
-\item{qn}{aligned srvfs - similar structure to fn}
-\item{q0}{original srvf - similar structure to fn}
+\item{qn}{aligned SRSFs - similar structure to fn}
+\item{q0}{original SRSF - similar structure to fn}
 \item{fmean}{function mean or median - vector of length \eqn{N}}
-\item{mqn}{srvf mean or median - vector of length \eqn{N}}
+\item{mqn}{SRSF mean or median - vector of length \eqn{N}}
 \item{gam}{warping functions - similar structure to fn}
 \item{orig.var}{Original Variance of Functions}
 \item{amp.var}{Amplitude Variance}
@@ -46,7 +46,7 @@ Returns a list containing \item{f0}{original functions}
 }
 \description{
 This function aligns a collection of functions using the elastic square-root
-velocity (srvf) framework.
+slope (srsf) framework.
 }
 \examples{
 data("simu_data")
@@ -62,5 +62,5 @@ Tucker, J. D., Wu, W., Srivastava, A.,
  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
-\keyword{srvf}
+\keyword{srsf}
 

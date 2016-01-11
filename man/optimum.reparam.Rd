@@ -8,11 +8,11 @@ optimum.reparam(Q1, T1, Q2, T2, lambda = 0, method = "DP", w = 0.01,
   f1o = 0, f2o = 0)
 }
 \arguments{
-\item{Q1}{srvf of function 1}
+\item{Q1}{srsf of function 1}
 
 \item{T1}{sample points of function 1}
 
-\item{Q2}{srvf of function 2}
+\item{Q2}{srsf of function 2}
 
 \item{T2}{sample points of function 2}
 
@@ -32,7 +32,7 @@ Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 gam warping function
 }
 \description{
-This function aligns two srvf functions using Dynamic Programming
+This function aligns two SRSF functions using Dynamic Programming
 }
 \examples{
 data("simu_data")
@@ -50,5 +50,5 @@ Tucker, J. D., Wu, W., Srivastava, A.,
 }
 \keyword{alignment,}
 \keyword{pca}
-\keyword{srvf}
+\keyword{srsf}
 

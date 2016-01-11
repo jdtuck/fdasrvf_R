@@ -2,12 +2,12 @@
 % Please edit documentation in R/srsf_to_f.R
 \name{srsf_to_f}
 \alias{srsf_to_f}
-\title{Convert SRVF to f}
+\title{Convert SRSF to f}
 \usage{
 srsf_to_f(q, time, f0 = 0)
 }
 \arguments{
-\item{q}{matrix of srvfs}
+\item{q}{matrix of srsf}
 
 \item{time}{time}
 
@@ -17,7 +17,7 @@ srsf_to_f(q, time, f0 = 0)
 f matrix of functions
 }
 \description{
-This function converts srvfs to functions
+This function converts SRSFs to functions
 }
 \examples{
 data("simu_data")
@@ -34,5 +34,5 @@ Tucker, J. D., Wu, W., Srivastava, A.,
  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
-\keyword{srvf}
+\keyword{srsf}
 

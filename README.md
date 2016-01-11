@@ -52,6 +52,10 @@ J. D. Tucker, W. Wu, and A. Srivastava, "Analysis of signals under compositional
 noise With applications to SONAR data," IEEE Journal of Oceanic Engineering, Vol
 29, no. 2. pp 318-330, Apr 2014.
 
+Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of
+elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence,
+IEEE Transactions on 33 (7), 1415-1428.
+
 S. Kurtek, A. Srivastava, and W. Wu. Signal estimation under random
 time-warpings and nonlinear signal alignment. In Proceedings of Neural
 Information Processing Systems (NIPS), 2011.

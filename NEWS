@@ -1,5 +1,8 @@
-fdasrv 1.5.1
+fdasrv 1.5.2
 --------------
+v1.5.2
+* added image alignment functions and fix minor bugs
+
 v1.5.1
 * added gropt optimization methods and alignment
 
