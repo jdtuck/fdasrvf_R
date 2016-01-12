@@ -81,7 +81,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     mq = q[,min_ind]
     mf = f[,min_ind]
 
-    gam<-foreach(k = 1:N, .combine=cbind,.packages="fdaSRSF") %dopar% {
+    gam<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
         gam_tmp = optimum.reparam(mq,time,q[,k],time,lambda,omethod,w,mf[1],f[1,k])
     }
 
