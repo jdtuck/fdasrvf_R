@@ -16,8 +16,8 @@ q array describing srvf
 This function converts curves to SRVF
 }
 \examples{
-data("curve_data")
-q = curve_to_q(beta)
+data("mpeg7")
+q = curve_to_q(beta[,,1,1])
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.

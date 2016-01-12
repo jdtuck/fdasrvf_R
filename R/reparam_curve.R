@@ -18,8 +18,8 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("curve_data")
-#' gam = reparam_curve(curve_data$beta1,curve_data$beta2)
+#' data("mpeg7")
+#' gam = reparam_curve(beta[,,1,1],beta[,,1,5])
 reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
                           isclosed=F){
 
@@ -36,7 +36,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
         # Optimzie over SO(n)
         out = find_rotation_seed_coord(beta1, beta2);
         beta2 = out$beta2
-        R = out$R
+        R = out$O_hat
         tau = out$tau
         q2 = curve_to_q(beta2)
 
@@ -51,12 +51,12 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
         ret = .Call('DPQ2', PACKAGE = 'fdasrvf', q1i, timet, q2i, timet, n1, M, M, timet, timet, M, M, G, T1, size, lambda);
 
         G = ret$G[1:ret$size]
-        Tf = ret$T1[1:ret$size]
-        gam0 = approx(Tf,G,xout=T2)$y
+        Tf = ret$T[1:ret$size]
+        gam0 = approx(Tf,G,xout=timet)$y
     } else if (method=="DP2") {
-        c1 = beta1
+        c1 = t(beta1)
         dim(c1) = c(M*n1)
-        c2 = beta2
+        c2 = t(beta2)
         dim(c2) = c(M*n1)
         opt = rep(0,M+n1*n1+1);
         swap = FALSE
@@ -76,20 +76,20 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
         }
 
     } else {
-        c1 = beta1
+        c1 = t(beta1)
         dim(c1) = c(M*n1)
-        c2 = beta2
+        c2 = t(beta2)
         dim(c2) = c(M*n1)
         opt = rep(0,M+n1*n1+1);
         swap = FALSE
         fopts = rep(0,5)
         comtime = rep(0,5)
 
-        out = .Call('opt_reparam', PACKAGE = 'fdasrvf', C1,C2,n,1,w,FALSE,
+        out = .Call('opt_reparam', PACKAGE = 'fdasrvf', c1,c2,M,n1,w,FALSE,
                     rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
 
         if (out$fopts[1] == 1000){
-            out = .Call('opt_reparam', PACKAGE = 'fdasrvf', C1,C2,n,1,0.0,TRUE,
+            out = .Call('opt_reparam', PACKAGE = 'fdasrvf', c1,c2,M,n1,0.0,TRUE,
                         rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
         }
 

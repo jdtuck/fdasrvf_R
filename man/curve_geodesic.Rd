@@ -21,8 +21,8 @@ a list containing \item{geod}{curves along geodesic (n,T,k)}
 Form geodesic between two curves using Elastic Method
 }
 \examples{
-data("curve_data")
-out = curve_geodesic(curve_data$beta1, curve_data$beta2
+data("mpeg7")
+out = curve_geodesic(beta[,,1,1], beta[,,1,5])
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.

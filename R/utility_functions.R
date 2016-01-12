@@ -68,16 +68,19 @@ cumtrapz <- function(x,y,dims=1){
     return(z)
 }
 
-trapz <- function(x,y,dim=1){
-    if ((dim-1)>0){
-        perm = c(dim:max(ndims(y),dim), 1:(dim-1))
+trapz <- function(x,y,dims=1){
+    if ((dims-1)>0){
+        perm = c(dims:max(ndims(y),dims), 1:(dims-1))
     } else {
-        perm = c(dim:max(ndims(y),dim))
+        perm = c(dims:max(ndims(y),dims))
     }
 
     if (ndims(y) == 0){
         m = 1
     } else {
+        if (length(x) != dim(y)[dims])
+            stop('Dimension Mismatch')
+        y = aperm(y, perm)
         m = nrow(y)
     }
 
@@ -85,7 +88,6 @@ trapz <- function(x,y,dim=1){
         M = length(y)
         out = sum(diff(x)*(y[-M]+y[-1])/2)
     } else {
-        y = aperm(y, perm)
         out = t(diff(x)) %*% (y[1:(m-1),]+y[2:m,])/2.
         siz = dim(y)
         siz[1] = 1

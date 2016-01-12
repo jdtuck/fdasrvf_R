@@ -12,8 +12,8 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("curve_data")
-#' out = curve_pair_align(curve_data$beta1, curve_data$beta2)
+#' data("mpeg7")
+#' out = curve_pair_align(beta[,,1,1], beta[,,1,5])
 curve_pair_align <- function(beta1, beta2){
     T1 = ncol(beta1)
     centroid1 = calculatecentroid(beta1)
@@ -28,9 +28,9 @@ curve_pair_align <- function(beta1, beta2){
     # Iteratively optimize over SO(n) x Gamma using old DP
     out = reparam_curve(beta1, beta2)
     beta2n = out$R %*% shift_f(beta2, out$tau)
-    gamI = invertGamma(gam)
+    gamI = invertGamma(out$gam)
     beta2n = group_action_by_gamma_coord(beta2n, gamI)
-    out = find_rotation_and_seed_coord(beta1, beta2n)
+    out = find_rotation_seed_coord(beta1, beta2n)
     q2n = curve_to_q(out$beta2new)
 
     return(list(beta2n=out$beta2new, q2n=q2n, gam=gamI, q1=q1))

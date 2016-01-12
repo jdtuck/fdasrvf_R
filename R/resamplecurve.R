@@ -9,11 +9,11 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("curve_data")
-#' xn = resamplecurve(curve_data$x,100)
+#' data("mpeg7")
+#' xn = resamplecurve(beta[,,1,1],200)
 resamplecurve <- function(x, N=100){
-    n = nrow(X)
-    T1 = ncol(X)
+    n = nrow(x)
+    T1 = ncol(x)
     xn = matrix(0,n,N)
 
     delta = rep(0, T1);

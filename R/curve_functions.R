@@ -218,7 +218,7 @@ group_action_by_gamma_coord <- function(f, gamma){
     timet = seq(0, 1, length.out = T1)
 
     for (j in 1:n){
-        fn[j,] = spline(timet, f[j,], xout=gamma)
+        fn[j,] = spline(timet, f[j,], xout=gamma)$y
     }
 
     return(fn)
@@ -317,7 +317,7 @@ inverse_exp_coord <- function(beta1, beta2){
     beta2 = out$R %*% shift_f(beta2,out$tau)
     gamI = invertGamma(out$gam)
     beta2 = group_action_by_gamma_coord(beta2, gamI)
-    out = find_rotation_and_seed_coord(beta1, beta2)
+    out = find_rotation_seed_coord(beta1, beta2)
     q2n = curve_to_q(out$beta2new)
 
     # Compute geodesic distance

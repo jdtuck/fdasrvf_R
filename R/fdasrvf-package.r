@@ -87,3 +87,15 @@ NULL
 #' @usage data("simu_warp")
 #' @format A list which contains the outputs of the time_warping function
 NULL
+#' MPEG7 Curve Dataset
+#'
+#' Contains the MPEG7 curve data set which is 20 curves in 65 classes. The array
+#' is structured with dimension (2,100,65,20)
+#'
+#'
+#' @docType data
+#' @keywords datasets
+#' @name mpeg7_data
+#' @usage data("mpeg7")
+#' @format an array of shape (2,100,65,20)
+NULL
