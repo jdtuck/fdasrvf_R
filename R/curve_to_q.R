@@ -22,7 +22,7 @@ curve_to_q <- function(beta){
     v = v/len
     q = matrix(0,n,T1)
     for (i in 1:T1){
-        L = sqrt(norm(v[,i],2))
+        L = sqrt(pvecnorm(v[,i],2))
         if (L>0.0001){
             q[,i] = v[,i]/L
         } else {

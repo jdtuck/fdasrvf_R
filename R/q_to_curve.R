@@ -15,7 +15,7 @@ q_to_curve <- function(q){
     T1  = ncol(q)
     qnorm = rep(0, T1)
     for (i in 1:T1){
-        qnorm[i] = norm(q[,i],2)
+        qnorm[i] = pvecnorm(q[,i],2)
     }
 
     integrand = matrix(0,2,T1)

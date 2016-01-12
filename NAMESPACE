@@ -2,6 +2,9 @@
 
 export(SqrtMean)
 export(align_fPCA)
+export(calc_shape_dist)
+export(curve_geodesic)
+export(curve_pair_align)
 export(curve_to_q)
 export(elastic.distance)
 export(f_to_srvf)
