@@ -15,9 +15,9 @@ Imports:
     mvtnorm,
     matrixcalc,
     splines,
-    akima,
     parallel,
     doParallel
+Suggests: akima
 LinkingTo: Rcpp
 Depends:
     R (>= 3.1.0),
