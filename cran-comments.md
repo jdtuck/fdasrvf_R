@@ -6,7 +6,5 @@
 ## R CMD check results
 There were no ERRORs and no WARNINGs:
 
-There was 1 NOTE:
-
 ## Downstream dependencies
 There are no downstream dependencies
