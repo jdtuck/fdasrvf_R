@@ -22,7 +22,7 @@ Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 
 \item{rotated}{boolean if rotation is desireid}
 
-\item{closed}{boolean if curve is closed}
+\item{isclosed}{boolean if curve is closed}
 }
 \value{
 return a List containing \item{gam}{warping function}

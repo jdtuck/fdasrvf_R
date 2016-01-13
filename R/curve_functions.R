@@ -66,8 +66,8 @@ calculate_variance <- function(beta){
         a1 = beta[,i] - centroid
         integrand[,,i] = a1 %*% t(a1) * normbetadot[i]
     }
-    l = trapz(t, normbetadot)
-    variance = trapz(t, integrand, 3)
+    l = trapz(time, normbetadot)
+    variance = trapz(time, integrand, 3)
     varaince = variance / l
 
     return(variance)
@@ -117,13 +117,13 @@ find_basis_normal <- function(q){
 calc_j <- function(basis){
     b1 = basis[[1]]
     b2 = basis[[2]]
-    T = ncol(b1)
+    T1 = ncol(b1)
 
     integrand11 = rep(0,T1)
     integrand12 = rep(0,T1)
     integrand22 = rep(0,T1)
 
-    for (i in 1:T){
+    for (i in 1:T1){
         integrand11[i] = t(b1[,i])%*%b1[,i]
         integrand12[i] = t(b1[,i])%*%b2[,i]
         integrand12[i] = t(b2[,i])%*%b2[,i]
@@ -452,4 +452,22 @@ rot_mat <- function(theta){
     O[2,2] = cos(theta)
 
     return(O)
+}
+
+
+karcher_calc <- function(beta, q, betamean, mu, mode="O"){
+    if (mode=="C"){
+        basis = find_basis_normal(mu)
+    }
+    # Compute shooting vector form mu to q_i
+    out = inverse_exp_coord(betamean, beta)
+
+    # Project to tangent space of manifold to obtain v_i
+    if (mode=="O"){
+        v = out$v
+    } else {
+        v = project_tangent(out$v, q, basis)
+    }
+
+    return(list(v=v,d=out$dist))
 }

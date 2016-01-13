@@ -302,7 +302,7 @@ formbasisTid <- function(M,m,n,basis_type="t"){
             c1 = sqrt(2)*pi*s
             sPI2 = 2*pi*2
 
-            b[,,i,idx] = matrix(0,m,n)
+            b[,,1,idx] = matrix(0,m,n)
             b[,,2,idx] = sin(sPI2*out$X)/c1
 
             b[,,1,idx+1] = sin(sPI2*out$X)/c1

@@ -20,7 +20,7 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @docType package
 #' @useDynLib fdasrvf
-#' @import foreach mvtnorm matrixcalc numDeriv splines parallel doParallel Rcpp akima
+#' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp akima
 #' @importFrom graphics layout legend matplot plot title
 #' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var
 #' @aliases fdasrvf fdasrvf-package
@@ -95,7 +95,7 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name mpeg7_data
+#' @name beta
 #' @usage data("mpeg7")
 #' @format an array of shape (2,100,65,20)
 NULL

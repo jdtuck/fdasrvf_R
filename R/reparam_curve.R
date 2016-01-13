@@ -10,7 +10,7 @@
 #' ("RBFGS")
 #' @param w controls LRBFGS (default = 0.01)
 #' @param rotated boolean if rotation is desireid
-#' @param closed boolean if curve is closed
+#' @param isclosed boolean if curve is closed
 #' @return return a List containing \item{gam}{warping function}
 #' \item{R}{rotation matrix}
 #' \item{tau}{seed point}
