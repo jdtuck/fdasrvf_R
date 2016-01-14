@@ -12,6 +12,7 @@
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
 #'   \code{doParallel} pacakge
 #' @param cores set number of cores to use with \code{doParallel} (default = 2)
+#' @param MaxItr maximum number of iterations
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 #' \item{qn}{aligned srvfs - similar structure to fn}
@@ -32,9 +33,9 @@
 #' @export
 #' @examples
 #' data("simu_data")
-#' out = align_fPCA(simu_data$f,simu_data$time)
+#' out = align_fPCA(simu_data$f,simu_data$time,MaxItr = 1)  # use more iterations for accuracy
 align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE, sparam = 25,
-                                             parallel = FALSE,cores=8){
+                       parallel = FALSE, cores=8, MaxItr = 51){
     if (parallel){
         cl = makeCluster(cores)
         registerDoParallel(cl)
@@ -102,7 +103,6 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
     }
 
     cat(sprintf("Aligning %d functions in SRVF space to %d fPCA components...\n",N,num_comp))
-    MaxItr = 51
     tmp = matrix(0,M,MaxItr+2)
     tmp[,1] = mq
     mq = tmp

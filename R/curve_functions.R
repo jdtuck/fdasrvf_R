@@ -227,63 +227,72 @@ group_action_by_gamma_coord <- function(f, gamma){
 
 project_curve <- function(q){
     T1 = ncol(q)
-    tol = 1e-5
-    maxit = 200
-    itr = 0
-    delta = 0.5
-    x = q_to_curve(q)
-    a = -1*calculatecentroid(x)
-
-    out = psi(x,a,q)
-    psi1 = out$psi1
-    psi2 = out$psi2
-    psi3 = out$psi3
-    psi4 = out$psi4
-
-    r = c(psi3,psi4)
-    rnorm = rep(0,maxit+1)
-    rnorm[1] = pvecnorm(r)
-
-    while (itr<=maxit){
-        basis = find_basis_normal(q)
-
-        # calculate Jacobian
-        J = calc_j(basis)
-
-        # Newton-Raphson step to update q
-        y = solve(J,-r)
-        dq = delta * (y[1]*basis[[1]] + y[2]*basis[[2]])
-        normdq = sqrt(innerprod_q2(dq,dq))
-        q = cos(normdq) * q + sin(normdq) * dq/normdq
-        q = q / sqrt(innerprod_q2(q,q))
-
-        # update x and a from the new q
-        beta_new = q_to_curve(q)
-        x = beta_new
-        a = -1 * calculatecentroid(x)
-        dim(a) = c(length(a),1)
-        beta_new = x + repmat(a,1,T1)
-
-        # calculate the new value of psi
-        out = psi(x,a,q)
-        psi1 = out$psi1
-        psi2 = out$psi2
-        psi3 = out$psi3
-        psi4 = out$psi4
-
-        r = c(psi3,psi4)
-        rnorm[itr+1] = pvecnorm(r)
-
-        if (pvecnorm(r) < tol){
+    n = nrow(q)
+    if (n==2){
+      dt = 0.35
+    }
+    
+    if (n==3) {
+      dt = 0.2
+    }
+    
+    epsilon =- 1e-6
+    
+    e = diag(1,n)
+    iter = 1
+    res = rep(1,n)
+    J = matrix(0,n,n)
+    s = seq(0,1,length.out=T1)
+    qnorm = rep(0,T1)
+    G = rep(0,n)
+    C = rep(0,301)
+    
+    qnew = q
+    qnew = qnew / sqrt(innerprod_q2(qnew,qnew))
+    
+    while (pvecnorm(res) > epsilon){
+        if (iter > 300){
             break
         }
-
-        itr = itr + 1
+        
+        # Compute Jacobian
+        for (i in 1:n){
+            for (j in 1:n){
+              J[i,j]  = 3 * trapz(s, qnew[i,]*qnew[j,])
+            }
+        }
+        J = J + diag(1,n)
+        
+        for (i in 1:T1){
+            qnorm[i] = pvecnorm(qnew[,i])
+        }
+        
+        # Compute the residue
+        for (i in 1:n){
+            G[i] = trapz(s,qnew[i,]*qnorm)
+        }
+        
+        res = -1*G
+        
+        if (pvecnorm(res)<epsilon)
+            break
+        
+        x = solve(J,res)
+        C[iter] = pvecnorm(res)
+        
+        delG = find_basis_normal(qnew)
+        tmp = 0
+        for (i in 1:n){
+            tmp = tmp + x[i]*delG[[i]]*dt
+        }
+        qnew = qnew + tmp
+        
+        iter = iter + 1
     }
+    
+    qnew = qnew / sqrt(innerprod_q2(qnew,qnew))
 
-    rnorm = rnorm[1:(itr-1)]
-
-    return(q)
+    return(qnew)
 }
 
 
@@ -301,7 +310,7 @@ pre_proc_curve <- function(beta, T1=100){
 }
 
 
-inverse_exp_coord <- function(beta1, beta2){
+inverse_exp_coord <- function(beta1, beta2, mode="O"){
     T1 = ncol(beta1)
     centroid1 = calculatecentroid(beta1)
     dim(centroid1) = c(length(centroid1),1)
@@ -311,14 +320,22 @@ inverse_exp_coord <- function(beta1, beta2){
     beta2 = beta2 - repmat(centroid2, 1, T1)
 
     q1 = curve_to_q(beta1)
+    
+    if (mode=="C"){
+      isclosed = TRUE
+    }
 
     # Iteratively optimize over SO(n) x Gamma using old DP
-    out = reparam_curve(beta1, beta2)
+    out = reparam_curve(beta1, beta2, isclosed=isclosed)
     beta2 = out$R %*% shift_f(beta2,out$tau)
     gamI = invertGamma(out$gam)
     beta2 = group_action_by_gamma_coord(beta2, gamI)
     out = find_rotation_seed_coord(beta1, beta2)
     q2n = curve_to_q(out$beta2new)
+    
+    if (mode=="C"){
+      q2n = project_curve(q2n)
+    }
 
     # Compute geodesic distance
     q1dotq2 = innerprod_q2(q1, q2n)

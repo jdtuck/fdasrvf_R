@@ -4,12 +4,14 @@
 \alias{resamplecurve}
 \title{Resample Curve}
 \usage{
-resamplecurve(x, N = 100)
+resamplecurve(x, N = 100, mode = "O")
 }
 \arguments{
 \item{x}{matrix defining curve (n,T)}
 
 \item{N}{Number of samples to re-sample curve, N usually is > T}
+
+\item{mode}{Open ("O") or Closed ("C") curves}
 }
 \value{
 xn matrix defining resampled curve

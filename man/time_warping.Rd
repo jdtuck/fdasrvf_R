@@ -6,7 +6,7 @@
 \usage{
 time_warping(f, time, lambda = 0, method = "mean", showplot = TRUE,
   smooth_data = FALSE, sparam = 25, parallel = FALSE, cores = 2,
-  omethod = "DP")
+  omethod = "DP", MaxItr = 20)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
@@ -30,6 +30,8 @@ or "median", default = "mean")}
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
 
 \item{omethod}{optimization method (DP,DP2,SIMUL,RBFGS)}
+
+\item{MaxItr}{maximum number of iterations}
 }
 \value{
 Returns a list containing \item{f0}{original functions}
@@ -50,7 +52,7 @@ slope (srsf) framework.
 }
 \examples{
 data("simu_data")
-out = time_warping(simu_data$f,simu_data$time)
+out = time_warping(simu_data$f,simu_data$time, MaxItr=1) # use more iterations for accuracy
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

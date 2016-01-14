@@ -4,12 +4,14 @@
 \alias{calc_shape_dist}
 \title{Elastic Shape Distance}
 \usage{
-calc_shape_dist(beta1, beta2)
+calc_shape_dist(beta1, beta2, mode = "O")
 }
 \arguments{
 \item{beta1}{array describing curve1 (n,T)}
 
 \item{beta2}{array describing curve}
+
+\item{mode}{Open ("O") or Closed ("C") curves}
 }
 \value{
 d geodesic distance

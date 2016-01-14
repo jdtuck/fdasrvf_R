@@ -5,7 +5,7 @@
 \title{Group-wise function alignment and PCA Extractions}
 \usage{
 align_fPCA(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
-  sparam = 25, parallel = FALSE, cores = 8)
+  sparam = 25, parallel = FALSE, cores = 8, MaxItr = 51)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
@@ -24,6 +24,8 @@ align_fPCA(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 \code{doParallel} pacakge}
 
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
+
+\item{MaxItr}{maximum number of iterations}
 }
 \value{
 Returns a list containing \item{f0}{original functions}
@@ -46,7 +48,7 @@ components.
 }
 \examples{
 data("simu_data")
-out = align_fPCA(simu_data$f,simu_data$time)
+out = align_fPCA(simu_data$f,simu_data$time,MaxItr = 1)  # use more iterations for accuracy
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,

@@ -15,6 +15,7 @@
 #'   \code{doParallel} pacakge
 #' @param cores set number of cores to use with \code{doParallel} (default = 2)
 #' @param omethod optimization method (DP,DP2,SIMUL,RBFGS)
+#' @param MaxItr maximum number of iterations
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 #' \item{qn}{aligned SRSFs - similar structure to fn}
@@ -36,10 +37,10 @@
 #' @export
 #' @examples
 #' data("simu_data")
-#' out = time_warping(simu_data$f,simu_data$time)
+#' out = time_warping(simu_data$f,simu_data$time, MaxItr=1) # use more iterations for accuracy
 time_warping <- function(f, time, lambda = 0, method = "mean",
                          showplot = TRUE, smooth_data = FALSE, sparam = 25,
-                         parallel = FALSE, cores=2, omethod = "DP"){
+                         parallel = FALSE, cores=2, omethod = "DP", MaxItr = 20){
     if (parallel){
         cl = makeCluster(cores)
         registerDoParallel(cl)
@@ -97,7 +98,6 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
         cat(sprintf("Computing Karcher mean of %d functions in SRSF space...\n",N))
     if (method == 2)
         cat(sprintf("Computing median of %d functions in SRSF space...\n",N))
-    MaxItr = 20
     ds = rep(0,MaxItr+2)
     ds[1] = Inf
     qun = rep(0,MaxItr)

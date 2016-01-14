@@ -17,21 +17,42 @@ apply_gam_to_gam <- function(gamnew, gam){
     gam_tmp = array(0, dim=c(mt,nt,D))
     gam_new_tmp = array(0, dim=c(mt,nt,D))
     for (i in 1:D) {
-        gam_tmp[,,i] = bicubic.grid(U,V,gam[,,i],xlim,ylim,dx,dy)$z
-        gam_new_tmp[,,i] = bicubic.grid(U,V,gamnew[,,i],xlim,ylim,dx,dy)$z
+        if (requireNamespace("akima", quietly = TRUE)) {
+            gam_tmp[,,i] = akima::bicubic.grid(U,V,gam[,,i],xlim,ylim,dx,dy)$z
+            gam_new_tmp[,,i] = akima::bicubic.grid(U,V,gamnew[,,i],xlim,ylim,dx,dy)$z
+        } else {
+            grid.list<- list(x=Ut, y=Vt)
+            obj<-list(x=U, y=V, z=gam[,,i])
+            gam_tmp[,,i] = interp.surface.grid(obj, grid.list)$z
+            obj<-list(x=U, y=V, z=gamnew[,,i])
+            gam_new_tmp[,,i] = interp.surface.grid(obj, grid.list)$z
+        }
+        
     }
 
     gam_cum_tmp = array(0,dim=c(mt,nt,D))
     x2 = c(gam_tmp[,,2])
     y2 = sort(c(t(gam_tmp[,,1])))
     for (i in 1:D) {
-        tmp = bicubic(Ut,Vt,gam_new_tmp[,,i],x2,y2)
-        gam_cum_tmp[,,i] = matrix(tmp$z,nrow=mt,byrow=F)
+        if (requireNamespace("akima", quietly = TRUE)) {
+            tmp = akima::bicubic(Ut,Vt,gam_new_tmp[,,i],x2,y2)$z
+        } else {
+            grid.list<- cbind(x2, y2)
+            obj<-list(x=Ut, y=Vt, z=gam_new_tmp[,,i])
+            tmp = interp.surface(obj, grid.list)
+        }
+        gam_cum_tmp[,,i] = matrix(tmp,nrow=mt,byrow=F)
     }
 
     gam_cum = array(0,dim=c(m,n,D))
     for (i in 1:D) {
-        gam_cum[,,i] = bicubic.grid(Ut,Vt,gam_cum_tmp[,,i],xlim,ylim,dx1,dy1)$z
+        if (requireNamespace("akima", quietly = TRUE)) {
+            gam_cum[,,i] = akima::bicubic.grid(Ut,Vt,gam_cum_tmp[,,i],xlim,ylim,dx1,dy1)$z
+        } else {
+            grid.list<- list(x=U, y=V)
+            obj<-list(x=Ut, y=Vt, z=gam_cum_tmp[,,i])
+            gam_tmp[,,i] = interp.surface.grid(obj, grid.list)$z
+        }
     }
 
     return(gam_cum)
@@ -54,12 +75,24 @@ apply_gam_to_imag <- function(img, gam){
     x2 = c(gam[,,2])
     y2 = sort(c(t(gam[,,1])))
     if (d==1){
-        tmp = bicubic(U,V,img,x2,y2)
-        img_new = matrix(tmp$z,nrow=m,byrow=F)
+        if (requireNamespace("akima", quietly = TRUE)) {
+            tmp = akima::bicubic(U,V,img,x2,y2)$z
+        } else {
+            grid.list<- cbind(x2, y2)
+            obj<-list(x=U, y=V, z=img)
+            tmp = interp.surface(obj, grid.list)
+        }
+        img_new = matrix(tmp,nrow=m,byrow=F)
     } else {
         for (i in 1:d) {
-            tmp = bicubic(U,V,img[,,i],x2,y2)
-            img_new[,,i] = matrix(tmp$z,nrow=m,byrow=F)
+            if (requireNamespace("akima", quietly = TRUE)) {
+                tmp = akima::bicubic(U,V,img[,,i],x2,y2)$z
+            } else {
+                grid.list<- cbind(x2, y2)
+                obj<-list(x=U, y=V, z=img[,,i])
+                tmp = interp.surface(obj, grid.list)
+            }
+            img_new[,,i] = matrix(tmp,nrow=m,byrow=F)
         }
     }
 
@@ -75,8 +108,14 @@ apply_gam_gamid <- function(gamid, gaminc){
     y2 = sort(c(t(gaminc[,,1])))
     gam_cum = array(0,dim=c(m,n,d))
     for (i in 1:d) {
-        tmp = bicubic(U,V,gamid[,,i],x2,y2)
-        gam_cum[,,i] = matrix(tmp$z,nrow=m,byrow=F)
+        if (requireNamespace("akima", quietly = TRUE)) {
+            tmp = akima::bicubic(U,V,gamid[,,i],x2,y2)$z
+        } else {
+            grid.list<- cbind(x2, y2)
+            obj<-list(x=U, y=V, z=gamid[,,i])
+            tmp = interp.surface(obj, grid.list)
+        }
+        gam_cum[,,i] = matrix(tmp,nrow=m,byrow=F)
     }
 
     return (gam_cum)
