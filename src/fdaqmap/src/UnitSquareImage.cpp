@@ -636,8 +636,9 @@ void InvtGamma(double *gaminv, const double *gam, const double *gamid, int n) {
 // ------------------------------------------------------------------------
 void jacob_image(double *A, const double *F, int n, int t) {
     int j, k, N = n*t;
-    double dfdu[2], dfdv[2], c, du, dv;
-
+    double dfdu[2], dfdv[2], du, dv;
+    double c=0.0;
+    
     du = 1.0/(n-1);
     dv = 1.0/(t-1);
 
