@@ -6,7 +6,5 @@
 ## R CMD check results
 There were no ERRORs and no WARNINGs:
 
-The change in license is required as the package now imports akima
-
 ## Downstream dependencies
 There are no downstream dependencies
