@@ -1,5 +1,8 @@
-fdasrv 1.6.0
+fdasrv 1.6.1
 --------------
+v1.6.1
+* bug fixess to curve functions
+
 v1.6.0
 * added open and closed curve function (N-D)
 
