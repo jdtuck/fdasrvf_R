@@ -26,8 +26,11 @@ curve_karcher_mean <- function(beta, mode="O", maxit=20){
     }
 
     # Initialize mu as one of the shapes
-    mu = q[,,1]
-    betamean = beta[,,1]
+    mnq = rowMeans(q[1,,])
+    dqq = sqrt(colSums((q[1,,] - matrix(mnq,ncol=N,nrow=T1))^2))
+    min_ind = which.min(dqq)
+    mu = q[,,min_ind]
+    betamean = beta[,,min_ind]
 
     delta = 0.5
     tolv = 1e-4
@@ -47,7 +50,7 @@ curve_karcher_mean <- function(beta, mode="O", maxit=20){
 
         # TODO: parallelize
         for (i in 1:N){
-            out = karcher_calc(beta[,,n], q[,,n], betamean, mu, mode)
+            out = karcher_calc(beta[,,i], q[,,i], betamean, mu, mode)
             v[,,i] = out$v
             sumd[itr+1] = sumd[itr+1] + out$d^2
         }
