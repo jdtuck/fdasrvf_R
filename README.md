@@ -12,7 +12,7 @@ analysis
 
 ### Installation
 ------------------------------------------------------------------------------
-v1.6.1 is on [CRAN](http://cran.r-project.org/web/packages/fdasrvf/index.html)
+v1.6.1 is on [CRAN](https://cran.r-project.org/package=fdasrvf)
 and can be installed as
 > `install.packages("fdasrvf")`
 
