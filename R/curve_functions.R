@@ -43,7 +43,7 @@ find_best_rotation <- function(q1, q2){
         S = diag(1,n)
         S[,n] = -S[,n]
     }
-    R = U*S*t(V)
+    R = U%*%S%*%t(V)
     q2new = R%*%q2
 
     return(list(q2new=q2new, R=R))
