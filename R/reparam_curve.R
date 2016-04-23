@@ -19,7 +19,7 @@
 #' @export
 #' @examples
 #' data("mpeg7")
-#' gam = reparam_curve(beta[,,1,1],beta[,,1,5])
+#' gam = reparam_curve(beta[,,1,1],beta[,,1,5])$gam
 reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
                           isclosed=F){
 
