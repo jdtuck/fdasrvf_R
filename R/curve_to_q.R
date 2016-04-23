@@ -18,8 +18,6 @@ curve_to_q <- function(beta){
         v[i,] = gradient(beta[i,], 1.0/(T1-1))
     }
 
-#     len = sum(sqrt(colSums(v*v)))/T1
-#     v = v/len
     q = matrix(0,n,T1)
     for (i in 1:T1){
         L = sqrt(pvecnorm(v[,i],2))
