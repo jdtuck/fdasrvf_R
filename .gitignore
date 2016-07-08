@@ -3,4 +3,5 @@
 *.o
 *.so
 *.a
+.DS_Store
 .Rproj.user
