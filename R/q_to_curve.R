@@ -12,16 +12,14 @@
 #' q = curve_to_q(beta[,,1,1])
 #' beta1 = q_to_curve(q)
 q_to_curve <- function(q){
-    T1  = ncol(q)
-    qnorm = rep(0, T1)
-    for (i in 1:T1){
-        qnorm[i] = pvecnorm(q[,i],2)
-    }
-
-    integrand = matrix(0,2,T1)
-    integrand[1,] = q[1,]*qnorm
-    integrand[2,] = q[2,]*qnorm
-    beta = cumtrapz(1.:T1, integrand,2)/T1
-
-    return(beta)
+    T1 = ncol(q)
+  n = nrow(q)
+  qnorm = rep(0, T1)
+  for (i in 1:T1) {
+    qnorm[i] = pvecnorm(q[, i], 2)
+  }
+  integrand = matrix(0, n, T1)
+  integrand=t(apply(q,1,function(qrow) qrow*qnorm ))
+  beta = cumtrapz(1:T1, integrand, 2)/T1
+  return(beta)
 }
