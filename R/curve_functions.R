@@ -2,17 +2,15 @@ calculatecentroid <- function(beta){
     n = nrow(beta)
     T1 = ncol(beta)
 
-    betadot = matrix(0, n, T1)
-    for (i in 1:n){
-        betadot[i,] = gradient(beta[i,], 1.0/(T1-1))
-    }
+    betadot = apply(beta,1,gradient,1.0/(T1-1))
+    betadot = t(betadot)
 
-    normbetadot = rep(0, T1)
+    normbetadot = apply(betadot,2,pvecnorm,2)
     integrand = matrix(0, n, T1)
     for (i in 1:T1){
-        normbetadot[i] = pvecnorm(betadot[,i], 2)
         integrand[,i] = beta[,i] * normbetadot[i]
     }
+    
     scale = trapz(seq(0,1,length.out=T1), normbetadot)
     centroid = trapz(seq(0,1,length.out=T1), integrand, 2)/scale
 
@@ -53,10 +51,9 @@ find_best_rotation <- function(q1, q2){
 calculate_variance <- function(beta){
     n = nrow(beta)
     T1 = ncol(beta)
-    betadot = matrix(0, n, T1)
-    for (i in 1:n){
-        betadot[i,] = gradient(beta[i,], 1.0/(T1-1))
-    }
+    betadot = apply(beta,1,gradient,1.0/(T1-1))
+    betadot = t(betadot)
+    
     normbetadot = rep(0,T)
     centroid = calculatecentroid(beta)
     integrand = array(0, c(n,n,T1))

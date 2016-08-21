@@ -1,7 +1,11 @@
-fdasrv 1.6.1
+fdasrv 1.6.2
 --------------
+v1.6.2
+* updated curve functions to support R^n
+* cleaned up curve function for loops
+
 v1.6.1
-* bug fixess to curve functions
+* bug fixes to curve functions
 
 v1.6.0
 * added open and closed curve function (N-D)
