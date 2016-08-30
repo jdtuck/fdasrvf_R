@@ -93,7 +93,7 @@ function_mean_bayes <- function(f, time, times = 5, group = 1:dim(f)[2], showplo
   for (j in 1:n) {reg.curve[,j] <- (spline(seq(0,m),f[,j],n=times*(m+1)-1)$y)[(rtmatrix[,j]-1)*times+1]}
   crossmean <- apply(reg.curve,1,mean)
 
-  if (fig)
+  if (showplot)
   {
     plotl <- min(f)
     plotu <- max(f)

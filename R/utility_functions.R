@@ -856,3 +856,22 @@ findkarcherinv <- function(warps, times, round = F){
   revscalevec <- sqrt(diff(invidy))
   return(list(invidy = invidy,revscalevec = revscalevec))
 }
+
+Enorm<-function(X)
+{
+  #finds Euclidean norm of real matrix X
+  if(is.complex(X)) {
+    n <- sqrt(Re(c(st(X) %*% X)))
+  }
+  else {
+    n <- sqrt(sum(diag(t(X) %*% X)))
+  }
+  n
+}
+
+qtocurve <- function(qt, t = seq(0,1,length = length(qt)+1)){
+  m <- length(qt)
+  curve <- rep(0,m+1)
+  for(i in 2:(m+1)){curve[i] <- qt[i-1]*abs(qt[i-1])*(t[i]-t[i-1])+curve[i-1]}
+  return(curve)
+}

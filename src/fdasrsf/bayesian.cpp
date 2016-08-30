@@ -11,8 +11,7 @@ vec approx(int nd,vec xd, vec yd,int ni, vec xi);
 vec findinv(mat warps, int times);
 vec R_diff(vec x);
 
-// [[Rcpp::export]]
-List dpcode(vec q1, vec q1L, vec q2L, int times, int cut)
+RcppExport SEXP dpcode(vec q1, vec q1L, vec q2L, int times, int cut)
 {
 
   int colnum = q1L.size();
@@ -134,10 +133,10 @@ List dpcode(vec q1, vec q1L, vec q2L, int times, int cut)
                        Named("q2LL") = q2LL));
 }
 
-// [[Rcpp::export]]
-List simucode(int iter, int p, vec qt1_5, vec qt2_5, int L, float tau, int times,
-              float kappa, float alpha, float beta, float powera, float dist,
-              float dist_min, vec best_match, vec match, int thin, int cut)
+RcppExport SEXP simucode(int iter, int p, vec qt1_5, vec qt2_5, int L, float tau,
+                         int times, float kappa, float alpha, float beta,
+                         float powera, float dist, float dist_min, vec best_match,
+                         vec match, int thin, int cut)
 {
 
   match -= 1;
@@ -261,13 +260,13 @@ List simucode(int iter, int p, vec qt1_5, vec qt2_5, int L, float tau, int times
                        Named("dist_min")=dist_min));
 }
 
-// [[Rcpp::export]]
-List itercode(int iter, int n, int m, vec mu_5, mat match_matrix, mat qt_matrix,
-              mat qt_fitted_matrix, int L, float tau, int times, float kappa,
-              float alpha, float beta, float powera, vec best_vec, vec dist_vec,
-              mat best_match_matrix, vec mu_prior, float var_const, vec sumdist,
-              int thin, vec mu_q, vec mu_q_standard, float logmax, int burnin,
-              float AVG)
+RcppExport SEXP itercode(int iter, int n, int m, vec mu_5, mat match_matrix,
+                         mat qt_matrix, mat qt_fitted_matrix, int L, float tau,
+                         int times, float kappa, float alpha, float beta,
+                         float powera, vec best_vec, vec dist_vec,
+                         mat best_match_matrix, vec mu_prior, float var_const,
+                         vec sumdist, int thin, vec mu_q, vec mu_q_standard,
+                         float logmax, int burnin, float AVG)
 {
   rowvec scale(L);
 

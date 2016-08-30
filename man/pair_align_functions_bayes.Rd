@@ -37,7 +37,8 @@ to f1
 }
 \examples{
 data("simu_data")
-out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2], simu_data$time, iter=2) # use more iterations
+out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2],
+                                 simu_data$time, iter=2) # use more iterations
 }
 \references{
 Cheng, W., Dryden, I. L., & Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447–475.

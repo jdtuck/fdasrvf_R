@@ -5,7 +5,7 @@
 \title{Bayesian Group Warping}
 \usage{
 function_group_warp_bayes(f, time, iter = 50000, powera = 1, times = 5,
-  tau = ceiling(times * 0.04), gp = seq(dim(input)[2]), showplot = TRUE)
+  tau = ceiling(times * 0.04), gp = seq(dim(f)[2]), showplot = TRUE)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
@@ -20,7 +20,7 @@ function_group_warp_bayes(f, time, iter = 50000, powera = 1, times = 5,
 
 \item{tau}{(default ceil(times*.4))}
 
-\item{gp}{(default seq(dim(input)[2]))}
+\item{gp}{(default seq(dim(f)[2]))}
 
 \item{showplot}{shows plots of functions (default = T)}
 }

@@ -22,7 +22,7 @@
 #' @docType package
 #' @useDynLib fdasrvf
 #' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields RcppArmadillo
-#' @importFrom graphics layout legend matplot plot title
+#' @importFrom graphics layout legend matplot plot title lines
 #' @importFrom coda traceplot mcmc
 #' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var spline
 #' @aliases fdasrvf fdasrvf-package

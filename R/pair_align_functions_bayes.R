@@ -21,7 +21,8 @@
 #' @export
 #' @examples
 #' data("simu_data")
-#' out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2], simu_data$time, iter=2) # use more iterations
+#' out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2],
+#'                                  simu_data$time, iter=2) # use more iterations
 pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
                                        tau = ceiling(times*.4), powera=1,
                                        showplot = TRUE){
@@ -36,9 +37,9 @@ pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
   beta <- 0.001
   scale <- T
 
-  timet <- seq(0,1,length=length(input1))
-  qt1_5 <- Qt.matrix(input1,timet)
-  qt2_5 <- Qt.matrix(input2,timet)
+  timet <- seq(0,1,length=length(f1))
+  qt1_5 <- Qt.matrix(f1,timet)
+  qt2_5 <- Qt.matrix(f2,timet)
   p <- length(qt1_5)
   if (p%%times!=0) {stop(cat(sprintf("Number of points on q function = %d is not a multiple of times = %d.", p,times)))}
   L <- round(length(qt1_5)/times)
@@ -49,7 +50,7 @@ pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
     rescale <- sqrt(p/sum((qt2_5)^2))
     qt2_5 <- rescale*qt2_5
   }
-  res <- DP(qt1_5[row],qt1_5,qt2_5,times,cut)
+  res <- dpcode(qt1_5[row],qt1_5,qt2_5,times,cut)
   match <- c(res$MatchIn2,p+1)
   match_collect <- matrix(0,iter/thin,L+1)
   best_match <- match
@@ -91,8 +92,8 @@ pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
   Meanidy[Meanidy > p] <- p
   Meanidy <- c(Meanidy,p+1)
 
-  reg_q <- (spline(seq(0,p),input2,n=times*(p+1)-1)$y)[(bestidy-1)*times+1]
-  reg_a <- (spline(seq(0,p),input2,n=times*(p+1)-1)$y)[(Meanidy-1)*times+1]
+  reg_q <- (spline(seq(0,p),f2,n=times*(p+1)-1)$y)[(bestidy-1)*times+1]
+  reg_a <- (spline(seq(0,p),f2,n=times*(p+1)-1)$y)[(Meanidy-1)*times+1]
 
   if (showplot){
 
@@ -118,17 +119,17 @@ pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
     legend("topleft",c("Quotient estimate","Pointwise mean","Pointwise 95% interval"),
            col=c("blue","black","red"),lty=c(1,2,2))
 
-    plot (timet,input1,type="l",col="black",main="",ylab="Height",xlab="t")
-    lines(timet,input2,col="blue")
+    plot (timet,f1,type="l",col="black",main="",ylab="Height",xlab="t")
+    lines(timet,f2,col="blue")
     legend("topleft",c("function 1","function 2"),col=c("black","blue"),lty=c(1,1))
     title("Original functions")
 
-    plot(timet,input1,type="l",col="black",main="",ylab="Height",xlab="t")
+    plot(timet,f1,type="l",col="black",main="",ylab="Height",xlab="t")
     lines(timet,reg_q,col="blue")
     legend("topleft",c("function 1","function 2*"),col=c("black","blue"),lty=c(1,1))
     title("Registration by DP estimate")
 
-    plot(timet,input1,type="l",col="black",main="",ylab="Height",xlab="t")
+    plot(timet,f1,type="l",col="black",main="",ylab="Height",xlab="t")
     lines(timet,reg_a,col="blue")
     legend("topleft",c("function 1","function 2*"),col=c("black","blue"),lty=c(1,1))
     title("Registration by Bayesian estimate")
@@ -140,6 +141,6 @@ pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
     title("Traceplot of log posterior after burn-in")
   }
 
-  return(list(f1 = input1, f2_q = reg_q, gam_q = (bestidy-1)/p,
+  return(list(f1 = f1, f2_q = reg_q, gam_q = (bestidy-1)/p,
               f2_a = reg_a, gam_a = (Meanidy-1)/p))
 }

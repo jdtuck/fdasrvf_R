@@ -8,7 +8,7 @@
 #' @param powera (default 1)
 #' @param times number of subsample points to look at (default = 5)
 #' @param tau (default ceil(times*.4))
-#' @param gp (default seq(dim(input)[2]))
+#' @param gp (default seq(dim(f)[2]))
 #' @param showplot shows plots of functions (default = T)
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{f_q}{f aligned using best}
@@ -25,7 +25,7 @@
 #' out = function_mean_bayes(simu_data$f, simu_data$time, iter=2)
 #' }
 function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
-                                      tau=ceiling(times*.04), gp=seq(dim(input)[2]),
+                                      tau=ceiling(times*.04), gp=seq(dim(f)[2]),
                                       showplot = TRUE){
 
   # Default setting shall work for many situations. If convergence issues arise then adjust proposal variance tau.
@@ -38,15 +38,15 @@ function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
   thin <- 1
   scale <- T
 
-  m <- dim(input)[1]-1
+  m <- dim(f)[1]-1
   if (m%%times!=0) {stop(cat(sprintf("Number of points on q function = %d is not a multiple of times = %d.", m,times)))}
   timet <- seq(0,1,length=m+1)
-  n <- dim(input)[2]
+  n <- dim(f)[2]
   qt.matrix <- matrix(0,m,n)
   qt.fitted.matrix <- matrix(0,m,n)
 
   for (j in 1:n){
-    qt.matrix[,j] <- Qt.matrix(input[,j],timet)
+    qt.matrix[,j] <- Qt.matrix(f[,j],timet)
     if(scale){
       rescale <- sqrt(m/sum((qt.matrix[,j])^2))
       qt.matrix[,j] <- rescale*qt.matrix[,j]
@@ -58,7 +58,7 @@ function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
   match.matrix <- matrix(0,L+1,n)
   best_match.matrix <- matrix(0,L+1,n)
 
-  res.dp <- DP.mean(input,times,fig=F)
+  res.dp <- fucntion_mean_bayes(f,times,showplot=F)
   mu_5 <- res.dp$estimator2
   match.matrix <- res.dp$match.matrix
 
@@ -107,38 +107,34 @@ function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
 
   for (t in 1:n){
     gam_q[,t] <- approx(c(row,m+1),best_match.matrix[,t],method="linear",xout=1:(m+1))$y
-    f_q[,t] <- (spline(seq(0,m),input[,t],n=times*(m+1)-1)$y)[(gam_q[,t]-1)*times+1]
+    f_q[,t] <- (spline(seq(0,m),f[,t],n=times*(m+1)-1)$y)[(gam_q[,t]-1)*times+1]
     gam_a[,t] <- approx(c(row,m+1),bayes_warps[,t],method="linear", xout=1:(m+1))$y
-    f_a[,t] <- (spline(seq(0,m),input[,t],n=times*(m+1)-1)$y)[(gam_a[,t]-1)*times+1]
+    f_a[,t] <- (spline(seq(0,m),f[,t],n=times*(m+1)-1)$y)[(gam_a[,t]-1)*times+1]
   }
 
   if(showplot)
   {
-    windows()
     traceplot(mcmc(log.posterior[burnin:iter]))
     title("Trace plot of log posterior after burn-in period")
 
-    windows()
     traceplot(mcmc(kappafamily[burnin:iter]))
     title("Trace plot of kappa after burn-in period")
 
-    plotl <- min(input)
-    plotu <- max(input)
-    windows()
-    plot(timet,input[,1],type="l", main="",ylab="",xlab="t",
+    plotl <- min(f)
+    plotu <- max(f)
+    plot(timet,f[,1],type="l", main="",ylab="",xlab="t",
          ylim=c(plotl-0.1*abs(plotl),plotu+0.1*abs(plotu)))
     for (t in 1:n){
-      lines(timet,input[,t],col=gp[t])
+      lines(timet,f[,t],col=gp[t])
     }
-    title("Original curves")
+    title("Original functions")
 
-    windows()
     plot(timet,f_q[,1],type="l",main="",ylab="",
          xlab="t",ylim=c(plotl-0.1*abs(plotl),plotu+0.1*abs(plotu)))
     for (t in 1:n){
       lines(timet,f_q[,t],col=gp[t])
     }
-    title("Quotient registered curves")
+    title("DP registered functions")
 
     windows()
     plot(timet,f_a[,1],type="l",main="",ylab="",
@@ -146,9 +142,9 @@ function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
     for (t in 1:n){
       lines(timet,f_a[,t],col=gp[t])
     }
-    title("Bayesian registered curves")
+    title("Bayesian registered functions")
   }
 
-  return(list(f0 = input, f_q = f_q, gam_q = (gam_q-1)/m, f_a = f_a ,
+  return(list(f0 = f, f_q = f_q, gam_q = (gam_q-1)/m, f_a = f_a ,
               gam_a = (gam_a-1)/m, qmn = mu.est))
 }
