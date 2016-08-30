@@ -24,9 +24,9 @@
 #' data("simu_data")
 #' out = function_mean_bayes(simu_data$f, simu_data$time, iter=2)
 #' }
-function_mean_bayes <- function(f, time, iter=50000, powera=1, times=5,
-                                tau=ceiling(times*.04), gp=seq(dim(input)[2]),
-                                showplot = TRUE){
+function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
+                                      tau=ceiling(times*.04), gp=seq(dim(input)[2]),
+                                      showplot = TRUE){
 
   # Default setting shall work for many situations. If convergence issues arise then adjust proposal variance tau.
   if(times==2) {warning("Small times may lead to convergence issues.")}
