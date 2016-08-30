@@ -77,8 +77,10 @@ function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
 
   burnin <- round(0.5*iter/thin)
   AVG <- length(burnin:(iter/thin))
-  temp <- itermatch(iter,n,m,mu_5,match.matrix,qt.matrix,qt.fitted.matrix,L,tau,times,kappa,alpha,beta,powera,
-                    best.vec,dist.vec,best_match.matrix,mu.prior, var.const,sumdist,thin,mu.q,mu.q.standard,logmax,burnin-1, AVG)
+  temp <- itercode(iter,n,m,mu_5,match.matrix,qt.matrix,qt.fitted.matrix,L,tau,
+                   times,kappa,alpha,beta,powera,best.vec,dist.vec,
+                   best_match.matrix,mu.prior, var.const,sumdist,thin,mu.q,
+                   mu.q.standard,logmax,burnin-1, AVG)
 
   mu.q.standard <- temp$mu.q.standard
   mu.q <- temp$mu.q
