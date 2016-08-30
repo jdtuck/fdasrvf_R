@@ -10,6 +10,8 @@ pair_align_functions(f1, f2, time, lambda = 0, method = "DP", w = 0.01,
 \arguments{
 \item{f1}{function 1}
 
+\item{f2}{function 2}
+
 \item{time}{sample points of functions}
 
 \item{lambda}{controls amount of warping (default = 0)}
@@ -23,8 +25,6 @@ Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 \item{f1o}{initial value of f1, vector or scalar depending on q1, defaults to zero}
 
 \item{f2o}{initial value of f2, vector or scalar depending on q1, defaults to zero}
-
-\item{f2function}{2}
 }
 \value{
 Returns a list containing \item{f2tilde}{aligned f2}
@@ -36,7 +36,6 @@ to f1
 }
 \examples{
 data("simu_data")
-q = f_to_srvf(simu_data$f,simu_data$time)
 out = pair_align_functions(simu_data$f[,1],simu_data$f[,2],simu_data$time)
 }
 \references{

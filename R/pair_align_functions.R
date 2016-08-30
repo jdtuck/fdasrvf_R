@@ -4,7 +4,7 @@
 #' to f1
 #'
 #' @param f1 function 1
-#' @param f2function 2
+#' @param f2 function 2
 #' @param time sample points of functions
 #' @param lambda controls amount of warping (default = 0)
 #' @param method controls which optmization method (default="DP") options are
@@ -25,7 +25,6 @@
 #' @export
 #' @examples
 #' data("simu_data")
-#' q = f_to_srvf(simu_data$f,simu_data$time)
 #' out = pair_align_functions(simu_data$f[,1],simu_data$f[,2],simu_data$time)
 pair_align_functions <- function(f1, f2, time,lambda=0,method="DP",w=0.01,
                                  f1o=0.0, f2o=0.0){

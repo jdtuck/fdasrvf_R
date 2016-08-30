@@ -1,4 +1,5 @@
-SOURCES1 = wrapper.cpp fdasrsf/dp_grid.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp
+SOURCES1 = wrapper.cpp fdasrsf/dp_grid.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp \
+  fdasrsf/bayesian.cpp
 SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/ProductManifold.cpp gropt/src/SolversTR.cpp \
 	gropt/src/DriverMexProb.cpp gropt/src/LowRankVariable.cpp gropt/src/randgen.cpp gropt/src/Sphere.cpp \
 	gropt/src/ElasticCurvesReparam.cpp gropt/src/LowRankVector.cpp gropt/src/RBFGS.cpp gropt/src/SphereVariable.cpp \

@@ -88,10 +88,10 @@ trapz <- function(x,y,dims=1){
         M = length(y)
         out = sum(diff(x)*(y[-M]+y[-1])/2)
     } else {
-        slice1 = y[as.vector(outer(1:(m-1), dim(y)[1]*( 1:prod(dim(y)[-1])-1 ), '+')) ] 
-        dim(slice1) = c(m-1, length(slice1)/(m-1)) 
-        slice2 = y[as.vector(outer(2:m, dim(y)[1]*( 1:prod(dim(y)[-1])-1 ), '+'))] 
-        dim(slice2) = c(m-1, length(slice2)/(m-1)) 
+        slice1 = y[as.vector(outer(1:(m-1), dim(y)[1]*( 1:prod(dim(y)[-1])-1 ), '+')) ]
+        dim(slice1) = c(m-1, length(slice1)/(m-1))
+        slice2 = y[as.vector(outer(2:m, dim(y)[1]*( 1:prod(dim(y)[-1])-1 ), '+'))]
+        dim(slice2) = c(m-1, length(slice2)/(m-1))
         out = t(diff(x)) %*% (slice1+slice2)/2.
         siz = dim(y)
         siz[1] = 1
@@ -816,4 +816,43 @@ circshift <- function(a, sz) {
         stop("Length of 'sz' must be equal to the no. of dimensions of 'a'.")
 
     return(a)
+}
+
+Qt.matrix <- function(input, newt = seq(0,1,1/(dim(input)[1]-1))){
+  Qt <- NULL
+  Qt <- sign(c(diff(input)))*sqrt(abs(diff(input))/diff(newt))
+
+  return(Qt)
+}
+
+findkarcherinv <- function(warps, times, round = F){
+  m <- dim(warps)[1]
+  n <- dim(warps)[2]
+  psi.m <- matrix(0,m-1,n)
+  for(j in 1:n){psi.m[,j]<- sqrt(diff(warps[,j])/times)}
+  w <- apply(psi.m,1,mean)
+  mupsi <- w/sqrt(sum(w^2/(m-1)))
+  v.m <- matrix(0,m-1,n)
+  check <- 1
+  while(check > 0.01){
+    for (i in 1:n){
+      theta <- acos(sum(mupsi*psi.m[,i]/(m-1)))
+      v.m[,i] <- theta/sin(theta)*(psi.m[,i]-cos(theta)*mupsi)
+    }
+    vbar <- apply(v.m,1,mean)
+    check <- Enorm(vbar)/sqrt(m-1)
+    if (check>0){
+      mupsi.update <- cos(0.01*Enorm(vbar)/sqrt(m-1))*mupsi+sin(0.01*Enorm(vbar)/sqrt(m-1))*vbar/(Enorm(vbar)/sqrt(m-1))
+    }
+    else { mupsi.update <- cos(0.01*Enorm(vbar)/sqrt(m-1))*mupsi}
+  }
+  karcher.s <- 1+c(0,cumsum(mupsi.update^2)*times)
+  if(round){
+    invidy <- c(round(approx(karcher.s,seq(1,(m-1)*times+1,times),method="linear",xout=1:((m-1)*times))$y),(m-1)*times+1)
+  }
+  else{
+    invidy <- c((approx(karcher.s,seq(1,(m-1)*times+1,times),method="linear",xout=1:((m-1)*times))$y),(m-1)*times+1)
+  }
+  revscalevec <- sqrt(diff(invidy))
+  return(list(invidy = invidy,revscalevec = revscalevec))
 }

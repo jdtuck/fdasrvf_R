@@ -254,8 +254,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
         legend('topright',inset=0.01,legend=c('Mean','Mean + STD', 'Mean - STD'),
                      col=c('blue','red','green'),lty=1)
 
-        plot(time,fmean,type="l",col="green",main=bquote(paste(f[mean]," ",
-                                                                                                                     lambda == .(lambda))))
+        plot(time,fmean,type="l",col="green",main=bquote(paste(f[mean]," ", lambda == .(lambda))))
     }
 
     if (parallel){
