@@ -14,7 +14,7 @@
 #' @param f1o initial value of f1, vector or scalar depending on q1, defaults to zero
 #' @param f2o initial value of f2, vector or scalar depending on q1, defaults to zero
 #' @return gam warping function
-#' @keywords srsf alignment, pca
+#' @keywords srsf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
 #'  arXiv:1103.3817v2 [math.ST].
