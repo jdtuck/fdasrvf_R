@@ -12,6 +12,8 @@ pair_align_functions_bayes(f1, f2, timet, iter = 15000, times = 5,
 
 \item{f2}{function 2}
 
+\item{timet}{sample points of functions}
+
 \item{iter}{number of iterations (default = 15000)}
 
 \item{times}{factor of length of subsample points to look at (default = 5)}
@@ -21,8 +23,6 @@ pair_align_functions_bayes(f1, f2, timet, iter = 15000, times = 5,
 \item{powera}{Dirchelet prior parameter (default 1)}
 
 \item{showplot}{shows plots of functions (default = T)}
-
-\item{time}{sample points of functions}
 }
 \value{
 Returns a list containing \item{f1}{function 1}
@@ -40,7 +40,7 @@ data("simu_data")
 out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2], simu_data$time)
 }
 \references{
-Cheng, W., Dryden, I. L., & Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447–475.
+Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 }
 \keyword{alignment,}
 \keyword{bayesian}

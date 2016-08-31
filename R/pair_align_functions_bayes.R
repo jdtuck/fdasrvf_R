@@ -5,7 +5,7 @@
 #'
 #' @param f1 function 1
 #' @param f2 function 2
-#' @param time sample points of functions
+#' @param timet sample points of functions
 #' @param iter number of iterations (default = 15000)
 #' @param times factor of length of subsample points to look at (default = 5)
 #' @param tau standard deviation of Normal prior for increment (default ceil(times*.4))
@@ -17,7 +17,7 @@
 #' \item{f2_a}{registered fucntion using ambient space}
 #' \item{q2_a}{warping function ambient space}
 #' @keywords srsf alignment, bayesian
-#' @references Cheng, W., Dryden, I. L., & Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447–475.
+#' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @export
 #' @examples
 #' data("simu_data")
