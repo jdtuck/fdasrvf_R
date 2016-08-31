@@ -14,22 +14,22 @@ function_group_warp_bayes(f, time, iter = 50000, powera = 1, times = 5,
 
 \item{iter}{number of iterations (default = 150000)}
 
-\item{powera}{(default 1)}
+\item{powera}{Dirchelet prior parameter (default 1)}
 
-\item{times}{number of subsample points to look at (default = 5)}
+\item{times}{factor of length of subsample points to look at (default = 5)}
 
-\item{tau}{(default ceil(times*.4))}
+\item{tau}{standard deviation of Normal prior for increment (default ceil(times*.4))}
 
-\item{gp}{(default seq(dim(f)[2]))}
+\item{gp}{number of colors in plots (default seq(dim(f)[2]))}
 
 \item{showplot}{shows plots of functions (default = T)}
 }
 \value{
 Returns a list containing \item{f0}{original functions}
-\item{f_q}{f aligned using best}
-\item{gam_q}{warping functions best}
-\item{f_a}{f aligned using best mean}
-\item{gam_a}{warping functions mean}
+\item{f_q}{f aligned quotient space}
+\item{gam_q}{warping functions quotient space}
+\item{f_a}{f aligned ambient space}
+\item{gam_a}{warping ambient space}
 \item{qmn}{mean srsf}
 }
 \description{
@@ -38,7 +38,7 @@ This function aligns a set of functions using Bayesian SRSF framework
 \examples{
 \dontrun{
 data("simu_data")
-out = function_mean_bayes(simu_data$f, simu_data$time, iter=2)
+out = function_group_warp_bayes(simu_data$f, simu_data$time)
 }
 }
 \references{

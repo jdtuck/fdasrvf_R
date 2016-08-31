@@ -11,8 +11,14 @@ vec approx(int nd,vec xd, vec yd,int ni, vec xi);
 vec findinv(mat warps, int times);
 vec R_diff(vec x);
 
-RcppExport SEXP dpcode(vec q1, vec q1L, vec q2L, int times, int cut)
+RcppExport SEXP dpcode(SEXP R_q1, SEXP R_q1L, SEXP R_q2L, SEXP R_times, SEXP R_cut)
 {
+
+  int times = as<int>(R_times);
+  int cut = as<int>(R_cut);
+  vec q1 = as<vec>(R_q1);
+  vec q1L = as<vec>(R_q1L);
+  vec q2L = as<vec>(R_q2L);
 
   int colnum = q1L.size();
   int rownum = colnum/times;
@@ -133,14 +139,29 @@ RcppExport SEXP dpcode(vec q1, vec q1L, vec q2L, int times, int cut)
                        Named("q2LL") = q2LL));
 }
 
-RcppExport SEXP simucode(int iter, int p, vec qt1_5, vec qt2_5, int L, float tau,
-                         int times, float kappa, float alpha, float beta,
-                         float powera, float dist, float dist_min, vec best_match,
-                         vec match, int thin, int cut)
+RcppExport SEXP simucode(SEXP R_iter, SEXP R_p, SEXP R_qt1_5, SEXP R_qt2_5,
+                         SEXP R_L, SEXP R_tau, SEXP R_times, SEXP R_kappa,
+                         SEXP R_alpha, SEXP R_beta, SEXP R_powera, SEXP R_dist,
+                         SEXP R_dist_min, SEXP R_best_match, SEXP R_match,
+                         SEXP R_thin, SEXP R_cut)
 {
 
-  match -= 1;
-  best_match -= 1;
+  int iter = as<int>(R_iter);
+  int p = as<int>(R_p);
+  vec match = as<vec>(R_match)-1;
+  vec best_match = as<vec>(R_best_match)-1;
+  int L = as<int>(R_L);
+  float tau = as<float>(R_tau);
+  int times = as<int>(R_times);
+  float kappa = as<float>(R_kappa);
+  float alpha = as<float>(R_alpha) ;
+  float beta = as<float>(R_beta);
+  float powera = as<float>(R_powera);
+  float dist = as<float>(R_dist);
+  float dist_min = as<float>(R_dist_min);
+  int thin = as<int>(R_thin);
+  vec qt1_5 = as<vec>(R_qt1_5);
+  vec qt2_5 = as<vec>(R_qt2_5);
 
   IntegerVector Ixout(2*times),Ioriginal(L+1);
   float increment,n_dist,o_dist,adjustcon,ratio,prob,u,logpost;
@@ -260,15 +281,41 @@ RcppExport SEXP simucode(int iter, int p, vec qt1_5, vec qt2_5, int L, float tau
                        Named("dist_min")=dist_min));
 }
 
-RcppExport SEXP itercode(int iter, int n, int m, vec mu_5, mat match_matrix,
-                         mat qt_matrix, mat qt_fitted_matrix, int L, float tau,
-                         int times, float kappa, float alpha, float beta,
-                         float powera, vec best_vec, vec dist_vec,
-                         mat best_match_matrix, vec mu_prior, float var_const,
-                         vec sumdist, int thin, vec mu_q, vec mu_q_standard,
-                         float logmax, int burnin, float AVG)
+RcppExport SEXP itercode(SEXP R_iter, SEXP R_n, SEXP R_m, SEXP R_mu_5, SEXP R_match_matrix,
+                         SEXP R_qt_matrix, SEXP R_qt_fitted_matrix, SEXP R_L, SEXP R_tau,
+                         SEXP R_times, SEXP R_kappa, SEXP R_alpha, SEXP R_beta,
+                         SEXP R_powera, SEXP R_best_vec, SEXP R_dist_vec,
+                         SEXP R_best_match_matrix, SEXP R_mu_prior, SEXP R_var_const,
+                         SEXP R_sumdist, SEXP R_thin, SEXP R_mu_q, SEXP R_mu_q_standard,
+                         SEXP R_logmax, SEXP R_burnin, SEXP R_AVG)
 {
+  int iter = as<int>(R_iter);
+  int n = as<int>(R_n);
+  int m = as<int>(R_m);
+  vec mu_5 = as<vec>(R_mu_5);
+  mat match_matrix = as<mat>(R_match_matrix)-1;
+  mat qt_matrix = as<mat>(R_qt_matrix);
+  mat qt_fitted_matrix = as<mat>(R_qt_fitted_matrix);
+  int L = as<int>(R_L);
   rowvec scale(L);
+  float tau = as<float>(R_tau);
+  int times = as<int>(R_times);
+  float kappa = as<float>(R_kappa);
+  float alpha = as<float>(R_alpha) ;
+  float beta = as<float>(R_beta);
+  float powera = as<float>(R_powera);
+  vec best_vec = as<vec>(R_best_vec);
+  vec dist_vec = as<vec>(R_dist_vec) ;
+  mat best_match_matrix = as<mat>(R_best_match_matrix)-1;
+  vec mu_prior = as<vec>(R_mu_prior);
+  float var_const = as<float>(R_var_const);
+  vec sumdist = as<vec>(R_sumdist);
+  int thin = as<int>(R_thin);
+  mat mu_q = as<mat>(R_mu_q);
+  mat mu_q_standard = as<mat>(R_mu_q_standard);
+  float logmax = as<float>(R_logmax);
+  int burnin = as<int>(R_burnin);
+  float AVG = as<float>(R_AVG);
 
   float increment,adjustcon,ratio,prob,u,n_dist,o_dist,dist,logpost,SigmaVar,rescale;
   int increment_int,newj,tempnew,tempold,tempx;
@@ -424,11 +471,11 @@ RcppExport SEXP itercode(int iter, int n, int m, vec mu_5, mat match_matrix,
                       Named("bayes_warps") = R_bayes_warps);
 }
 
-vec approx(int nd,vec xd, vec yd,int ni, vec xi)
+vec approx(int nd,vec xd, vec yd, int ni, vec xi)
 {
   int i,k;
   double t;
-  arma::vec yi(ni);
+  vec yi(ni);
   for ( i = 0; i < ni; i++ )
   {
     if ( xi(i) <= xd(0) )

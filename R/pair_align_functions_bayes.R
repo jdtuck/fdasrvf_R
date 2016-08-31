@@ -6,24 +6,23 @@
 #' @param f1 function 1
 #' @param f2 function 2
 #' @param time sample points of functions
-#' @param iter number of iterations (default = 150000)
-#' @param times number of subsample points to look at (default = 5)
-#' @param tau (default ceil(times*.4))
-#' @param powera (default 1)
+#' @param iter number of iterations (default = 15000)
+#' @param times factor of length of subsample points to look at (default = 5)
+#' @param tau standard deviation of Normal prior for increment (default ceil(times*.4))
+#' @param powera Dirchelet prior parameter (default 1)
 #' @param showplot shows plots of functions (default = T)
 #' @return Returns a list containing \item{f1}{function 1}
-#' \item{f2_q}{registered function using best}
-#' \item{gam_q}{warping function best}
-#' \item{f2_a}{registered fucntion using mean}
-#' \item{q2_a}{warping function mean}
+#' \item{f2_q}{registered function using quotient space}
+#' \item{gam_q}{warping function quotient space}
+#' \item{f2_a}{registered fucntion using ambient space}
+#' \item{q2_a}{warping function ambient space}
 #' @keywords srsf alignment, bayesian
 #' @references Cheng, W., Dryden, I. L., & Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447–475.
 #' @export
 #' @examples
 #' data("simu_data")
-#' out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2],
-#'                                  simu_data$time, iter=2) # use more iterations
-pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
+#' out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2], simu_data$time)
+pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
                                        tau = ceiling(times*.4), powera=1,
                                        showplot = TRUE){
 
@@ -37,11 +36,20 @@ pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
   beta <- 0.001
   scale <- T
 
-  timet <- seq(0,1,length=length(f1))
-  qt1_5 <- Qt.matrix(f1,timet)
-  qt2_5 <- Qt.matrix(f2,timet)
+  qt1_5 <- f_to_srvf(f1,timet)
+  qt2_5 <- f_to_srvf(f2,timet)
   p <- length(qt1_5)
-  if (p%%times!=0) {stop(cat(sprintf("Number of points on q function = %d is not a multiple of times = %d.", p,times)))}
+  if (p%%times!=0) {
+    cat(sprintf("Resampling as number of points on q function = %d is not a multiple of times = %d.", p,times))
+    N = floor(p/times)*times
+    tmp = resample.f(f1,timet,N)
+    f1 = tmp$fn
+    f2 = resample.f(f2,timet,N)$fn
+    timet = tmp$timet
+    qt1_5 <- f_to_srvf(f1,timet)
+    qt2_5 <- f_to_srvf(f2,timet)
+    p <- length(qt1_5)
+  }
   L <- round(length(qt1_5)/times)
   row <- times*seq(0,L-1,1)+1
   if (scale){
@@ -77,7 +85,6 @@ pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
   kappafamily <- res$kappafamily
   bestidy <- approx(c(row,p+1),best_match,method="linear",xout=1:p)$y
   bestidy[bestidy > p] <- p
-  bestidy <- c(bestidy,p+1)
   burnin <- round(0.5*iter/thin)
   LowerP <- NULL
   UpperP <- NULL
@@ -90,15 +97,14 @@ pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
 
   Meanidy <- approx(c(row,p+1),MeanP,method="linear",xout=1:p)$y
   Meanidy[Meanidy > p] <- p
-  Meanidy <- c(Meanidy,p+1)
 
-  reg_q <- (spline(seq(0,p),f2,n=times*(p+1)-1)$y)[(bestidy-1)*times+1]
-  reg_a <- (spline(seq(0,p),f2,n=times*(p+1)-1)$y)[(Meanidy-1)*times+1]
+  reg_q <- (spline(seq(0,p-1),f2,n=times*(p+1)-1)$y)[(bestidy-1)*times+1]
+  reg_a <- (spline(seq(0,p-1),f2,n=times*(p+1)-1)$y)[(Meanidy-1)*times+1]
 
   if (showplot){
 
-    input3 <- qtocurve(qt1_5,timet)
-    input4 <- qtocurve(qt2_5,timet)
+    input3 <- srsf_to_f(qt1_5,timet,f1[1])
+    input4 <- srsf_to_f(qt2_5,timet,f2[1])
     range <- max(input3)-min(input3)
     curve1 <- input3-mean(input3)
     curve2 <- input4-mean(input4)+1*range
@@ -126,8 +132,8 @@ pair_align_functions_bayes <- function(f1, f2, time, iter=15000, times = 5,
 
     plot(timet,f1,type="l",col="black",main="",ylab="Height",xlab="t")
     lines(timet,reg_q,col="blue")
-    legend("topleft",c("function 1","function 2*"),col=c("black","blue"),lty=c(1,1))
-    title("Registration by DP estimate")
+    legend("topleft",c("function 1","function 2"),col=c("black","blue"),lty=c(1,1))
+    title("Registration by Quotient estimate")
 
     plot(timet,f1,type="l",col="black",main="",ylab="Height",xlab="t")
     lines(timet,reg_a,col="blue")

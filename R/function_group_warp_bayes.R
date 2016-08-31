@@ -5,16 +5,16 @@
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time sample points of functions
 #' @param iter number of iterations (default = 150000)
-#' @param powera (default 1)
-#' @param times number of subsample points to look at (default = 5)
-#' @param tau (default ceil(times*.4))
-#' @param gp (default seq(dim(f)[2]))
+#' @param powera Dirchelet prior parameter (default 1)
+#' @param times factor of length of subsample points to look at (default = 5)
+#' @param tau standard deviation of Normal prior for increment (default ceil(times*.4))
+#' @param gp number of colors in plots (default seq(dim(f)[2]))
 #' @param showplot shows plots of functions (default = T)
 #' @return Returns a list containing \item{f0}{original functions}
-#' \item{f_q}{f aligned using best}
-#' \item{gam_q}{warping functions best}
-#' \item{f_a}{f aligned using best mean}
-#' \item{gam_a}{warping functions mean}
+#' \item{f_q}{f aligned quotient space}
+#' \item{gam_q}{warping functions quotient space}
+#' \item{f_a}{f aligned ambient space}
+#' \item{gam_a}{warping ambient space}
 #' \item{qmn}{mean srsf}
 #' @keywords srsf alignment, bayesian
 #' @references Cheng, W., Dryden, I. L., & Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447–475.
@@ -22,7 +22,7 @@
 #' @examples
 #' \dontrun{
 #' data("simu_data")
-#' out = function_mean_bayes(simu_data$f, simu_data$time, iter=2)
+#' out = function_group_warp_bayes(simu_data$f, simu_data$time)
 #' }
 function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
                                       tau=ceiling(times*.04), gp=seq(dim(f)[2]),
@@ -58,7 +58,7 @@ function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
   match.matrix <- matrix(0,L+1,n)
   best_match.matrix <- matrix(0,L+1,n)
 
-  res.dp <- fucntion_mean_bayes(f,times,showplot=F)
+  res.dp <- function_mean_bayes(f,times,showplot=F)
   mu_5 <- res.dp$estimator2
   match.matrix <- res.dp$match.matrix
 
@@ -134,9 +134,8 @@ function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
     for (t in 1:n){
       lines(timet,f_q[,t],col=gp[t])
     }
-    title("DP registered functions")
+    title("Quotient registered functions")
 
-    windows()
     plot(timet,f_a[,1],type="l",main="",ylab="",
          xlab="t",ylim=c(plotl-0.1*abs(plotl),plotu+0.1*abs(plotu)))
     for (t in 1:n){

@@ -12,7 +12,7 @@ function_mean_bayes(f, time, times = 5, group = 1:dim(f)[2],
 
 \item{time}{sample points of functions}
 
-\item{times}{number of subsample points to look at (default = 5)}
+\item{times}{factor of length of subsample points to look at (default = 5)}
 
 \item{group}{(default 1:dim(f)[2])}
 
@@ -20,10 +20,10 @@ function_mean_bayes(f, time, times = 5, group = 1:dim(f)[2],
 }
 \value{
 Returns a list containing \item{distfamily}{dist matrix}
-\item{match.matrix}{matches}
+\item{match.matrix}{matrix of warping functions}
 \item{position}{position}
 \item{mu_5}{function mean}
-\item{rtmatrix}{trmatrix}
+\item{rtmatrix}{rtmatrix}
 \item{sumdist}{sumdist}
 \item{qt.fitted}{aligned srsf functions}
 \item{estimator}{estimator}
@@ -31,7 +31,7 @@ Returns a list containing \item{distfamily}{dist matrix}
 \item{regfuncs}{registered functions}
 }
 \description{
-This function calculates karcher mean of functions using Bayesian SRSF framework
+This function calculates karcher mean of functions using DP fast for bayes method
 }
 \examples{
 \dontrun{

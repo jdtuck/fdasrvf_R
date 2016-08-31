@@ -1,17 +1,17 @@
 #' Bayesian Karcher Mean Calculation
 #'
-#' This function calculates karcher mean of functions using Bayesian SRSF framework
+#' This function calculates karcher mean of functions using DP fast for bayes method
 #'
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time sample points of functions
-#' @param times number of subsample points to look at (default = 5)
+#' @param times factor of length of subsample points to look at (default = 5)
 #' @param group (default 1:dim(f)[2])
 #' @param showplot shows plots of functions (default = T)
 #' @return Returns a list containing \item{distfamily}{dist matrix}
-#' \item{match.matrix}{matches}
+#' \item{match.matrix}{matrix of warping functions}
 #' \item{position}{position}
 #' \item{mu_5}{function mean}
-#' \item{rtmatrix}{trmatrix}
+#' \item{rtmatrix}{rtmatrix}
 #' \item{sumdist}{sumdist}
 #' \item{qt.fitted}{aligned srsf functions}
 #' \item{estimator}{estimator}
@@ -19,7 +19,6 @@
 #' \item{regfuncs}{registered functions}
 #' @keywords srsf alignment, bayesian
 #' @references Cheng, W., Dryden, I. L., & Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447–475.
-#' @export
 #' @examples
 #' \dontrun{
 #' data("simu_data")

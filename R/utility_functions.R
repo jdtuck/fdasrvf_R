@@ -213,6 +213,16 @@ gradient.spline <- function(f,binsize,smooth_data=F){
     return(list(g=g, f=f.out))
 }
 
+resample.f <- function(f, timet, N=100){
+  T1 = length(f)
+
+  newdel = seq(timet[1],timet[T1],length.out=N)
+
+  fn = spline(timet,f,xout=newdel)$y
+
+  return(list(fn=fn,timet=newdel))
+}
+
 SqrtMeanInverse <- function(gam){
     n = nrow(gam)
     T1 = ncol(gam)
@@ -874,4 +884,12 @@ qtocurve <- function(qt, t = seq(0,1,length = length(qt)+1)){
   curve <- rep(0,m+1)
   for(i in 2:(m+1)){curve[i] <- qt[i-1]*abs(qt[i-1])*(t[i]-t[i-1])+curve[i-1]}
   return(curve)
+}
+
+st<-function(zstar)
+{
+  #input complex matrix
+  #output transpose of the complex conjugate
+  st <- t(Conj(zstar))
+  st
 }

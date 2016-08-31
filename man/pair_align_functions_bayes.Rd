@@ -4,7 +4,7 @@
 \alias{pair_align_functions_bayes}
 \title{Align two functions}
 \usage{
-pair_align_functions_bayes(f1, f2, time, iter = 15000, times = 5,
+pair_align_functions_bayes(f1, f2, timet, iter = 15000, times = 5,
   tau = ceiling(times * 0.4), powera = 1, showplot = TRUE)
 }
 \arguments{
@@ -12,24 +12,24 @@ pair_align_functions_bayes(f1, f2, time, iter = 15000, times = 5,
 
 \item{f2}{function 2}
 
-\item{time}{sample points of functions}
+\item{iter}{number of iterations (default = 15000)}
 
-\item{iter}{number of iterations (default = 150000)}
+\item{times}{factor of length of subsample points to look at (default = 5)}
 
-\item{times}{number of subsample points to look at (default = 5)}
+\item{tau}{standard deviation of Normal prior for increment (default ceil(times*.4))}
 
-\item{tau}{(default ceil(times*.4))}
-
-\item{powera}{(default 1)}
+\item{powera}{Dirchelet prior parameter (default 1)}
 
 \item{showplot}{shows plots of functions (default = T)}
+
+\item{time}{sample points of functions}
 }
 \value{
 Returns a list containing \item{f1}{function 1}
-\item{f2_q}{registered function using best}
-\item{gam_q}{warping function best}
-\item{f2_a}{registered fucntion using mean}
-\item{q2_a}{warping function mean}
+\item{f2_q}{registered function using quotient space}
+\item{gam_q}{warping function quotient space}
+\item{f2_a}{registered fucntion using ambient space}
+\item{q2_a}{warping function ambient space}
 }
 \description{
 This function aligns two functions using Bayesian SRSF framework. It will align f2
@@ -37,8 +37,7 @@ to f1
 }
 \examples{
 data("simu_data")
-out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2],
-                                 simu_data$time, iter=2) # use more iterations
+out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2], simu_data$time)
 }
 \references{
 Cheng, W., Dryden, I. L., & Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447–475.
