@@ -12,7 +12,7 @@ analysis
 
 ### Installation
 ------------------------------------------------------------------------------
-v1.6.2 is on [CRAN](https://cran.r-project.org/package=fdasrvf)
+v1.7.0 is on [CRAN](https://cran.r-project.org/package=fdasrvf)
 and can be installed as
 > `install.packages("fdasrvf")`
 
@@ -63,3 +63,6 @@ Information Processing Systems (NIPS), 2011.
 Wen Huang, Kyle A. Gallivan, Anuj Srivastava, Pierre-Antoine Absil. "Riemannian
 Optimization for Elastic Shape Analysis", Short version, The 21st International
 Symposium on Mathematical Theory of Networks and Systems (MTNS 2014).
+
+Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian registration of functions 
+and curves. Bayesian Analysis, 11(2), 447-475.

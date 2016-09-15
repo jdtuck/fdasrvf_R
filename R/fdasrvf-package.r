@@ -19,9 +19,10 @@
 #' @references Huang, W. 2014, Optimization Algorithms on Riemannian Manifolds with Applications. Ph.D. Thesis, Florida State University.
 #' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+#' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @docType package
 #' @useDynLib fdasrvf
-#' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields RcppArmadillo
+#' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields
 #' @importFrom graphics layout legend matplot plot title lines
 #' @importFrom coda traceplot mcmc
 #' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var spline

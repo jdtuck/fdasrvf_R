@@ -17,7 +17,8 @@
 #' \item{gam_a}{warping ambient space}
 #' \item{qmn}{mean srsf}
 #' @keywords srsf alignment, bayesian
-#' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
+#' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
+#' registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @export
 #' @examples
 #' \dontrun{

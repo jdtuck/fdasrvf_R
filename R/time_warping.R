@@ -37,7 +37,8 @@
 #' @export
 #' @examples
 #' data("simu_data")
-#' out = time_warping(simu_data$f,simu_data$time, MaxItr=1) # use more iterations for accuracy
+#' # use more iterations for accuracy
+#' out = time_warping(simu_data$f,simu_data$time, MaxItr=1)
 time_warping <- function(f, time, lambda = 0, method = "mean",
                          showplot = TRUE, smooth_data = FALSE, sparam = 25,
                          parallel = FALSE, cores=2, omethod = "DP", MaxItr = 20){
