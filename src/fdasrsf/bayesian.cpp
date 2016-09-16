@@ -23,8 +23,6 @@ RcppExport SEXP dpcode(SEXP R_q1, SEXP R_q1L, SEXP R_q2L, SEXP R_times, SEXP R_c
   int colnum = q1L.size();
   int rownum = colnum/times;
   int q2LLlen = (colnum-1)*times+1;
-  vec q2LL(q2LLlen);
-  q2LL.fill(0);
   IntegerVector tempspan1(q2LLlen);
   tempspan1.fill(0);
   tempspan1= seq_len(q2LLlen)-1;
@@ -33,7 +31,7 @@ RcppExport SEXP dpcode(SEXP R_q1, SEXP R_q1L, SEXP R_q2L, SEXP R_times, SEXP R_c
   vec q2LL_time = temp_span2*(1/timesf);
   IntegerVector q2L_time1 = seq_len(colnum)-1;
   NumericVector q2L_time2 = as<NumericVector>(q2L_time1);
-  q2LL = approx(colnum,q2L_time2,q2L,q2LLlen,q2LL_time);
+  vec q2LL = approx(colnum, q2L_time2, q2L, q2LLlen, q2LL_time);
   mat ID(rownum+1,colnum+1);
   ID.fill(0);
   mat S(rownum+1,colnum+1);
@@ -103,8 +101,8 @@ RcppExport SEXP dpcode(SEXP R_q1, SEXP R_q1L, SEXP R_q2L, SEXP R_times, SEXP R_c
     for (int l= 0;l<(times-1);l++)
     {
       intery[l] = round(times*intery2[l]);
-      if (intery[l] > q2LLlen)
-        intery[l] = q2LLlen;
+      if (intery[l] >= q2LLlen)
+        intery[l] = q2LLlen-1;
     }
     for (int l=0;l<(times-1);l++)
     {
