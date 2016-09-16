@@ -103,6 +103,8 @@ RcppExport SEXP dpcode(SEXP R_q1, SEXP R_q1L, SEXP R_q2L, SEXP R_times, SEXP R_c
     for (int l= 0;l<(times-1);l++)
     {
       intery[l] = round(times*intery2[l]);
+      if (intery[l] > q2LLlen)
+        intery[l] = q2LLlen;
     }
     for (int l=0;l<(times-1);l++)
     {

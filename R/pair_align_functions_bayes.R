@@ -41,7 +41,7 @@ pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
   qt2_5 <- f_to_srvf(f2,timet)
   p <- length(qt1_5)
   if (p%%times!=0) {
-    cat(sprintf("Resampling as number of points on q function = %d is not a multiple of times = %d.", p,times))
+    cat(sprintf("Resampling as number of points on q function = %d is not a multiple of times = %d.\n", p,times))
     N = floor(p/times)*times
     tmp = resample.f(f1,timet,N)
     f1 = tmp$fn
