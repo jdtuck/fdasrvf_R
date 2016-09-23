@@ -1,5 +1,8 @@
-fdasrv 1.7.0
+fdasrv 1.7.1
 --------------
+v1.7.1
+* fix memory leaks in bayesian c code
+
 v1.7.0
 * added a pair align function for 1-D data
 * added bayesian alignment for 1-D functions
