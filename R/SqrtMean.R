@@ -40,7 +40,7 @@ SqrtMean <- function(gam){
     for (iter in 1:maxiter){
         for (i in 1:n){
             v = psi[,i] - mu
-            dot<- simpson(seq(0,1,length.out=TT-1),mu*psi[,i])
+            dot<- sum(mu*psi[,i])./(TT-1)
             dot.limited<- ifelse(dot>1, 1, ifelse(dot<(-1), -1, dot))
             len = acos(dot.limited)
             if (len > 0.0001){
@@ -57,16 +57,10 @@ SqrtMean <- function(gam){
         }
     }
 
-    phi = matrix(0,TT,n)
-    for (i in 1:n){
-        tmp = rep(0,TT)
-        tmp[1:TT-1] = psi[,i]*psi[,i]/TT
-        phi[,i] = cumsum(tmp)
-    }
-    gam_mu = gam_mu = c(0,cumsum(mu*mu))/n
+    gam_mu = c(0,cumsum(mu*mu))/n
     gam_mu = (gam_mu - min(gam_mu))/(max(gam_mu)-min(gam_mu))
 
-    out = list(mu = mu,gam_mu = gam_mu,psi = psi,vec = vec)
+    out = list(mu = mu,gam_mu = gam_mu, psi = psi, vec = vec)
     return(out)
 
 }
