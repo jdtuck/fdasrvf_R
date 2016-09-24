@@ -40,7 +40,7 @@ SqrtMean <- function(gam){
     for (iter in 1:maxiter){
         for (i in 1:n){
             v = psi[,i] - mu
-            dot<- sum(mu*psi[,i])./(TT-1)
+            dot<- sum(mu*psi[,i])/(TT-1)
             dot.limited<- ifelse(dot>1, 1, ifelse(dot<(-1), -1, dot))
             len = acos(dot.limited)
             if (len > 0.0001){
