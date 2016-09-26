@@ -51,7 +51,7 @@ horizFPCA <- function(gam,no,showplot = TRUE){
             }
             tmp = rep(0,TT)
             tmp[2:TT] = cumsum(psi_pca[k,,j]*psi_pca[k,,j])
-            gam_pca[k,,j] = tmp/TT
+            gam_pca[k,,j] = (tmp-tmp[1]) / (tmp[length(tmp)] - tmp[1])
             cnt = cnt + 1
         }
     }

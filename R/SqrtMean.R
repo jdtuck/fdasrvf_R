@@ -22,27 +22,27 @@
 SqrtMean <- function(gam){
     TT = nrow(gam)
     n = ncol(gam)
+    eps = .Machine$double.eps
 
     psi = matrix(0,TT-1,n)
     for (i in 1:n){
-        psi[,i] = sqrt(diff(gam[,i])*TT)
+        psi[,i] = sqrt(diff(gam[,i])*TT+eps)
     }
 
     # Find Direction
     mnpsi = rowMeans(psi)
-    dqq = sqrt(colSums((psi - matrix(mnpsi,ncol=n,nrow=TT-1))^2))
-    min_ind = which.min(dqq)
-    mu = psi[,min_ind]
+    w = rowMeans(psi)
+    mu = w/sqrt(sum(w^2/(TT-1)))
     tt = 1
-    maxiter = 10
+    maxiter = 500
     vec = matrix(0,TT-1,n)
-    lvm = rep(0,5)
+    lvm = rep(0,maxiter)
     for (iter in 1:maxiter){
         for (i in 1:n){
             v = psi[,i] - mu
-            dot<- sum(mu*psi[,i])/(TT-1)
+            dot <- sum(mu*psi[,i]/(TT-1))
             dot.limited<- ifelse(dot>1, 1, ifelse(dot<(-1), -1, dot))
-            len = acos(dot.limited)
+            len = dot.limited
             if (len > 0.0001){
                 vec[,i] = (len/sin(len))*(psi[,i] - cos(len)*mu)
             }else{
@@ -50,17 +50,20 @@ SqrtMean <- function(gam){
             }
         }
         vm = rowMeans(vec)
-        lvm[iter] = sqrt(sum(vm*vm)/TT)
+        vm1 = vm*vm
+        lvm[iter] = Enorm(vm)/sqrt(TT)
         mu = cos(tt*lvm[iter])*mu + (sin(tt*lvm[iter])/lvm[iter])*vm
-        if (lvm[iter] < 1e-6 || iter >=maxiter){
+        if (lvm[iter] < 1e-6 || iter >= maxiter){
             break
         }
     }
 
-    gam_mu = c(0,cumsum(mu*mu))/n
+    tmp = mu * mu
+    gam_mu = c(0,cumsum(tmp))/TT
     gam_mu = (gam_mu - min(gam_mu))/(max(gam_mu)-min(gam_mu))
 
     out = list(mu = mu,gam_mu = gam_mu, psi = psi, vec = vec)
+
     return(out)
 
 }

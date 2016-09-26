@@ -876,7 +876,7 @@ Enorm<-function(X)
   else {
     n <- sqrt(sum(diag(t(X) %*% X)))
   }
-  n
+  return(n)
 }
 
 qtocurve <- function(qt, t = seq(0,1,length = length(qt)+1)){
