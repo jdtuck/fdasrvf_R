@@ -3,6 +3,11 @@ r:
   - oldrel
   - release
   - devel
+
+matrix:
+  allow_failures:
+      - r: devel
+
 sudo: required
 
 # Be strict when checking our package
