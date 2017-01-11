@@ -14,7 +14,7 @@
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
 #'   \code{doParallel} pacakge
 #' @param cores set number of cores to use with \code{doParallel} (default = 2)
-#' @param omethod optimization method (DP,DP2,SIMUL,RBFGS)
+#' @param omethod optimization method (DP,DP2,RBFGS)
 #' @param MaxItr maximum number of iterations
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

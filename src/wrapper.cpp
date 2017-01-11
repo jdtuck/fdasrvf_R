@@ -1,6 +1,7 @@
 #include "gropt/incl/ElasticCurvesReparam.h"
 #include "fdasrsf/DynamicProgrammingQ2.h"
 #include "fdasrsf/mlogit_warp_grad.h"
+#include "fdasrsf/DP.h"
 #include <Rcpp.h>
 using namespace Rcpp;
 
@@ -65,6 +66,26 @@ RcppExport SEXP DPQ2(SEXP Q1, SEXP T1, SEXP Q2, SEXP T2, SEXP m1, SEXP n1, SEXP 
 
   List ret; ret["G"] = wrap(GG); ret["T"] = wrap(TT); ret["size"] = wrap(_size);
   return(ret);
+}
+
+RcppExport SEXP DPQ(SEXP Q1, SEXP Q2, SEXP n1, SEXP N1, SEXP lam1, SEXP Disp, SEXP yy){
+
+  NumericVector Q1i(Q1);
+  NumericVector Q2i(Q2);
+  NumericVector yyi(yy);
+
+  double * _Q1i = &Q1i[0];
+  double * _Q2i = &Q2i[0];
+  double * _yyi = &yyi[0];
+
+  int _n1 = as<int>(n1);
+  int _N1 = as<int>(N1);
+  int _Disp = as<int>(Disp);
+  double _lam1 = as<double>(lam1);
+
+  DP(_Q1i, _Q2i, &_n1, &_N1, &_lam1, &_Disp, _yyi);
+
+  return(yyi);
 }
 
 RcppExport SEXP opt_reparam(SEXP C1, SEXP C2, SEXP n, SEXP d, SEXP w,

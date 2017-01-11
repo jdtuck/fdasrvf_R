@@ -29,7 +29,7 @@ or "median", default = "mean")}
 
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
 
-\item{omethod}{optimization method (DP,DP2,SIMUL,RBFGS)}
+\item{omethod}{optimization method (DP,DP2,RBFGS)}
 
 \item{MaxItr}{maximum number of iterations}
 }

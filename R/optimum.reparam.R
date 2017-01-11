@@ -8,8 +8,8 @@
 #' @param T2 sample points of function 2
 #' @param lambda controls amount of warping (default = 0)
 #' @param method controls which optmization method (default="DP") options are
-#' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-#' ("RBFGS") and Simultaneous Alignment ("SIMUL")
+#' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), and Riemannian BFGS
+#' ("RBFGS")
 #' @param w controls LRBFGS (default = 0.01)
 #' @param f1o initial value of f1, vector or scalar depending on q1, defaults to zero
 #' @param f2o initial value of f2, vector or scalar depending on q1, defaults to zero
@@ -29,6 +29,8 @@
 optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
                             f2o=0.0){
     n = length(T1)
+    if (method=="DPo" && all(T1!=T2))
+      method = "DP"
     Q1=(Q1/pvecnorm(Q1,2))
     Q2=(Q2/pvecnorm(Q2,2))
     C1=srsf_to_f(Q1,T1,f1o)
@@ -46,6 +48,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
         G = ret$G[1:ret$size]
         Tf = ret$T[1:ret$size]
         gam0 = approx(Tf,G,xout=T2)$y
+    } else if (method=="DPo"){
+        gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', Q2, Q1, 1, n, lambda, 0, rep(0,n))
     } else if (method=="SIMUL"){
         out = simul_align(C1,C2)
         u = seq(0,1,length.out=length(out$g1))

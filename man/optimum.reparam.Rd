@@ -19,8 +19,8 @@ optimum.reparam(Q1, T1, Q2, T2, lambda = 0, method = "DP", w = 0.01,
 \item{lambda}{controls amount of warping (default = 0)}
 
 \item{method}{controls which optmization method (default="DP") options are
-Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-("RBFGS") and Simultaneous Alignment ("SIMUL")}
+Dynamic Programming ("DP"), Coordinate Descent ("DP2"), and Riemannian BFGS
+("RBFGS")}
 
 \item{w}{controls LRBFGS (default = 0.01)}
 
