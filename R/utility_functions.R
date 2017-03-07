@@ -419,9 +419,8 @@ svd2 <- function (x, nu = min(n, p), nv = min(n, p), LINPACK = FALSE)
     svd.x
 }
 
-cumtrapzmid <- function(x,y,c){
+cumtrapzmid <- function(x,y,c,mid){
     a = length(x)
-    mid = round(a/2)
 
     # case < mid
     fn = rep(0,a)
