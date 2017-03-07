@@ -34,4 +34,3 @@ Tucker, J. D., Wu, W., Srivastava, A.,
 \keyword{diffeomorphism,}
 \keyword{function}
 \keyword{warping}
-

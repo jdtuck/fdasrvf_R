@@ -23,4 +23,4 @@ Suggests: akima
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
     R (>= 3.1.0),
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

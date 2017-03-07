@@ -48,4 +48,3 @@ registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 \keyword{alignment,}
 \keyword{bayesian}
 \keyword{srsf}
-

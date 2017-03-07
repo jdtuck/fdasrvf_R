@@ -37,4 +37,3 @@ Q. Xie, S. Kurtek, E. Klassen, G. E. Christensen and A. Srivastava. Metric-based
 }
 \keyword{alignment}
 \keyword{image}
-

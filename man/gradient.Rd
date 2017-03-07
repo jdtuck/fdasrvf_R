@@ -23,4 +23,3 @@ out = gradient(simu_data$f[,1],mean(diff(simu_data$time)))
 }
 \keyword{alignment}
 \keyword{srvf}
-

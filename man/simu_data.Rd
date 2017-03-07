@@ -18,4 +18,3 @@ is the identity warping). The variables are as follows: f containing the
 21 functions of 101 samples and time which describes the sampling
 }
 \keyword{datasets}
-

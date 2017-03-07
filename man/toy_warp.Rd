@@ -15,4 +15,3 @@ f containing the 29 functions of 101 samples and time which describes the
 sampling which as been aligned
 }
 \keyword{datasets}
-

@@ -40,4 +40,3 @@ Tucker, J. D., Wu, W., Srivastava, A.,
 \keyword{detection}
 \keyword{outlier}
 \keyword{srvf}
-

@@ -32,4 +32,3 @@ Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of el
 }
 \keyword{alignment}
 \keyword{srvf}
-

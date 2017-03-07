@@ -39,4 +39,3 @@ Tucker, J. D., Wu, W., Srivastava, A.,
 \keyword{alignment}
 \keyword{regression}
 \keyword{srvf}
-

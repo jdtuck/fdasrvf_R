@@ -13,4 +13,3 @@ Contains the MPEG7 curve data set which is 20 curves in 65 classes. The array
 is structured with dimension (2,100,65,20)
 }
 \keyword{datasets}
-

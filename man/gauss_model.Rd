@@ -39,4 +39,3 @@ Tucker, J. D., Wu, W., Srivastava, A.,
  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{pca}
-

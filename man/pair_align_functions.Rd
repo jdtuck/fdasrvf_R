@@ -49,4 +49,3 @@ Tucker, J. D., Wu, W., Srivastava, A.,
 }
 \keyword{alignment}
 \keyword{srsf}
-

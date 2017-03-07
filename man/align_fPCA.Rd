@@ -58,4 +58,3 @@ Tucker, J. D., Wu, W., Srivastava, A.,
 \keyword{alignment,}
 \keyword{pca}
 \keyword{srvf}
-
