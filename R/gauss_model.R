@@ -30,7 +30,8 @@ gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
 
     # compute mean and covariance in q-domain
     mq_new = rowMeans(qn)
-    m_new = sign(fn[round(length(time)/2),])*sqrt(abs(fn[round(length(time)/2),]))  # scaled version
+    id = round(length(time)/2)
+    m_new = sign(fn[id,])*sqrt(abs(fn[id,]))  # scaled version
     mqn = c(mq_new,mean(m_new))
     C = cov(t(rbind(qn,m_new)))
 
@@ -41,8 +42,12 @@ gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
     # compute the correspondence to the original function domain
     fs = matrix(0,M,n)
     for (k in 1:n){
-        fs[,k] = cumtrapzmid(time,q_s[1:(end-1),k]*abs(q_s[1:(end-1),k]),sign(q_s[end,k])*(q_s[end,k]^2))
+        fs[,k] = cumtrapzmid(time,q_s[1:(end-1),k]*abs(q_s[1:(end-1),k]),sign(q_s[end,k])*(q_s[end,k]^2),id)
     }
+    fbar = rowMeans(fn)
+    fsbar = rowMeans(fs)
+    err = kronecker(matrix(1,1,n),fbar-fsbar)
+    fs = fs + err
 
     # random warping generation
     rgam = randomGamma(gam,n)
