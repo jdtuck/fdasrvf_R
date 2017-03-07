@@ -33,7 +33,8 @@ vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
 
     # FPCA
     mq_new = rowMeans(qn)
-    m_new = sign(fn[round(length(time)/2),])*sqrt(abs(fn[round(length(time)/2),]))  # scaled version
+    id = round(length(time)/2)
+    m_new = sign(fn[id,])*sqrt(abs(fn[id,]))  # scaled version
     mqn = c(mq_new,mean(m_new))
     K = cov(t(rbind(qn,m_new))) #out$sigma
 
@@ -56,9 +57,14 @@ vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
         for (i in 1:Nstd){
             f_pca[,i,k] = cumtrapzmid(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*
                 abs(q_pca[1:(dim(q_pca)[1]-1),i,k]),sign(q_pca[dim(q_pca)[1],i,k])*
-                (q_pca[dim(q_pca)[1],i,k]^2))
+                (q_pca[dim(q_pca)[1],i,k]^2),id)
         }
+        fbar = rowMeans(fn)
+        fsbar = rowMeans(f_pca[,,k])
+        err = kronecker(matrix(1,1,Nstd),fbar-fsbar)
+        f_pca[,,k] = f_pca[,,k] + err
     }
+
     N2 = dim(qn)[2]
     c = matrix(0,N2,no)
     for (k in NP){
