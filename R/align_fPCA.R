@@ -208,6 +208,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 
     # Get Final PCA
     mq_new = rowMeans(qn)
+    id = round(length(time)/2)
     m_new = sign(fn[round(length(time)/2),])*sqrt(abs(fn[round(length(time)/2),]))  # scaled version
     mqn2 = c(mq_new,mean(m_new))
     K = cov(t(rbind(qn,m_new)))
@@ -228,7 +229,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
     f_pca = array(0,dim=c((length(mqn)),Nstd,num_comp))
     for (k in NP){
         for (i in 1:Nstd){
-            f_pca[,i,k] = cumtrapzmid(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*abs(q_pca[1:(dim(q_pca)[1]-1),i,k]),sign(q_pca[dim(q_pca)[1],i,k])*(q_pca[dim(q_pca)[1],i,k]^2))
+            f_pca[,i,k] = cumtrapzmid(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*abs(q_pca[1:(dim(q_pca)[1]-1),i,k]),sign(q_pca[dim(q_pca)[1],i,k])*(q_pca[dim(q_pca)[1],i,k]^2), id)
         }
     }
 

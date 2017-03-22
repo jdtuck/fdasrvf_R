@@ -57,7 +57,7 @@ vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
         for (i in 1:Nstd){
             f_pca[,i,k] = cumtrapzmid(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*
                 abs(q_pca[1:(dim(q_pca)[1]-1),i,k]),sign(q_pca[dim(q_pca)[1],i,k])*
-                (q_pca[dim(q_pca)[1],i,k]^2),id)
+                (q_pca[dim(q_pca)[1],i,k]^2), id)
         }
         fbar = rowMeans(fn)
         fsbar = rowMeans(f_pca[,,k])
