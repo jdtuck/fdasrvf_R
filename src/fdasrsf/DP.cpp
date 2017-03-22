@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
+#include <cstdlib>
 
 #define NNBRS	23
 
@@ -140,7 +141,7 @@ void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *Disp, doubl
 
 		for (j = 0; j < cnt; ++j) {
 			x = xy[2*j + 0];
-			Ftmp = fabs(i - x);
+			Ftmp = std::abs(i - x);
 			if (j == 0 || Ftmp < Fmin) {
 				Fmin = Ftmp;
 				Fidx = j;

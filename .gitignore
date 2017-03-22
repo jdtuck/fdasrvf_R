@@ -3,5 +3,7 @@
 *.o
 *.so
 *.a
+.tags
+.tags1
 .DS_Store
 .Rproj.user
