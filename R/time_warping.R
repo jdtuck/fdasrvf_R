@@ -88,7 +88,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     }
 
     gam = t(gam)
-    gamI = SqrtMeanInverse(gam)
+    gamI = SqrtMeanInverse(t(gam))
     gamI_dev = gradient(gamI, 1/(M-1))
     mf = approx(time,mf,xout=(time[length(time)]-time[1])*gamI + time[1])$y
     mq = f_to_srvf(mf,time)
@@ -199,7 +199,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     dim(gam_dev)=c(M,N)
     gam_dev = t(gam_dev)
 
-    gamI = SqrtMeanInverse(gam)
+    gamI = SqrtMeanInverse(t(gam))
     gamI_dev = gradient(gamI, 1/(M-1))
     mq[,r+1] = approx(time,mq[,r],xout=(time[length(time)]-time[1])*gamI +
         time[1])$y*sqrt(gamI_dev)
