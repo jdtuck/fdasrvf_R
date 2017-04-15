@@ -2,6 +2,7 @@ fdasrv 1.7.1
 --------------
 v1.7.1
 * fix memory leaks in bayesian c code
+* update SqrtMean calculation to have more numerical accuracy
 
 v1.7.0
 * added a pair align function for 1-D data

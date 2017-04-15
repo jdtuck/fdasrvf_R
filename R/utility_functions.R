@@ -224,53 +224,45 @@ resample.f <- function(f, timet, N=100){
 }
 
 SqrtMeanInverse <- function(gam){
-    n = nrow(gam)
-    T1 = ncol(gam)
-    dt = 1/(T1-1)
-    psi = matrix(0,n,T1-1)
+  TT = nrow(gam)
+  n = ncol(gam)
+  eps = .Machine$double.eps
+  time <- seq(0,1,length.out=TT)
+
+  psi = matrix(0,TT,n)
+  binsize <- mean(diff(time))
+  for (i in 1:n){
+      psi[,i] = sqrt(gradient(gam[,i],binsize))
+  }
+
+  # Find Direction
+  mu = rowMeans(psi)
+  stp <- .3
+  maxiter = 501
+  vec = matrix(0,TT,n)
+  lvm = rep(0,maxiter)
+  iter <- 1
+
+  for (i in 1:n){
+    vec[,i] <- inv_exp_map(mu, psi[,i])
+  }
+  vbar <- rowMeans(vec)
+  lvm[iter] <- l2_norm(vbar)
+
+  while (lvm[iter]>0.00000001 & iter<maxiter){
+    mu <- exp_map(mu, stp*vbar)
+    iter <- iter + 1
     for (i in 1:n){
-        psi[i,] = sqrt(diff(gam[i,])/dt+.Machine$double.eps)
+      vec[,i] <- inv_exp_map(mu, psi[,i])
     }
+    vbar <- rowMeans(vec)
+    lvm[iter] <- l2_norm(vbar)
+  }
 
-    # Find direction
-    mnpsi = colMeans(psi)
-    dqq = sqrt(colSums((t(psi) - matrix(mnpsi,ncol=n,nrow=T1-1))^2))
-    min_ind = which.min(dqq)
-    mu = psi[min_ind,]
-    tt = 1
-    maxiter = 20
-    eps = .Machine$double.eps
-    lvm = rep(0,1,maxiter)
-    vec = matrix(0,n,T1-1)
-    for (iter in 1:maxiter){
-        for (i in 1:n){
-            v = psi[i,] - mu
-            dot<- simpson(seq(0,1,length.out=T1-1),mu*psi[i,])
-            dot.limited<- ifelse(dot>1, 1, ifelse(dot<(-1), -1, dot))
-            len = acos(dot.limited)
-            if (len > 0.0001){
-                vec[i,] = (len/sin(len))*(psi[i,] - cos(len)*mu)
-            }else{
-                vec[i,] = rep(0,T1-1)
-            }
-        }
-        vm = colMeans(vec)
-        lvm[iter] = sqrt(sum(vm*vm)*dt)
-        if (sum(vm) == 0){ # we had a problem, pick id (i.e., they are all id)
-            mu = rep(1,T1-1)
-            break
-        }else{
-            mu = cos(tt*lvm[iter])*mu + (sin(tt*lvm[iter])/lvm[iter])*vm
-            if (lvm[iter] < 1e-6 || iter >=maxiter){
-                break
-            }
-        }
-
-    }
-    gam_mu = c(0,cumsum(mu*mu))/T1
-    gam_mu = (gam_mu - min(gam_mu))/(max(gam_mu)-min(gam_mu))
-    gamI = invertGamma(gam_mu)
-    return(gamI)
+  gam_mu = cumtrapz(time, mu*mu)
+  gam_mu = (gam_mu - min(gam_mu))/(max(gam_mu)-min(gam_mu))
+  gamI = invertGamma(gam_mu)
+  return(gamI)
 }
 
 invertGamma <- function(gam){
@@ -891,4 +883,35 @@ st<-function(zstar)
   #output transpose of the complex conjugate
   st <- t(Conj(zstar))
   st
+}
+
+exp_map<-function(psi, v){
+  v_norm <- l2_norm(v)
+  expgam <- cos(v_norm) * psi + sin(v_norm) * v / v_norm
+  return(expgam)
+}
+
+inv_exp_map<-function(Psi, psi){
+  theta <- acos(inner_product(Psi,psi))
+
+  if (theta < 1e-10){
+    exp_inv = rep(0,length(psi))
+  } else {
+    exp_inv = theta / sin(theta) * (psi-cos(theta)*Psi)
+  }
+  return(exp_inv)
+}
+
+l2_norm<-function(psi){
+  M <- length(psi)
+  time <- seq(0,1,length.out=M)
+  l2norm <- sqrt(trapz(time,psi*psi))
+  return(l2norm)
+}
+
+inner_product<-function(psi1, psi2){
+  M <- length(psi1)
+  time <- seq(0,1,length.out=M)
+  ip <- trapz(time,psi1*psi2)
+  return(ip)
 }
