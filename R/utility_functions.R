@@ -285,8 +285,9 @@ randomGamma <- function(gam,num){
     s = out$d
     U = out$u
     n = 5
-    TT = nrow(vec) + 1
+    TT = nrow(vec)
     vm = rowMeans(vec)
+    time <- seq(0,1,length.out=TT)
 
     rgam = matrix(0,num,TT)
     for (k in 1:num){
@@ -295,11 +296,10 @@ randomGamma <- function(gam,num){
         for (i in 1:n){
             v = v + a[i]*sqrt(s[i])*U[,i]
         }
-        vn = pvecnorm(v,2)/sqrt(TT)
-        psi = cos(vn)*mu + sin(vn)*v/vn
-        tmp = rep(0,TT)
-        tmp[2:TT] = cumsum(psi*psi)
-        rgam[k,] = tmp/TT
+        psi <- exp_map(mu,v)
+
+        gam0 <- cumtrapz(time,psi*psi)
+        rgam[k,] = (gam0 - min(gam0))/(max(gam0)-min(gam0))
     }
     return(rgam)
 }
