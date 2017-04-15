@@ -193,7 +193,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
     }
 
     # Center Mean
-    gamI = SqrtMeanInverse(t(gamf))
+    gamI = SqrtMeanInverse(gamf)
     gamI_dev = gradient(gamI, 1/(M-1))
     mqn = approx(time,mqn,xout=(time[length(time)]-time[1])*gamI + time[1])$y*sqrt(gamI_dev)
 
