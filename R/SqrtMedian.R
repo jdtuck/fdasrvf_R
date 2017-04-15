@@ -1,7 +1,7 @@
 #' SRVF transform of warping functions
 #'
 #' This function calculates the srvf of warping functions with corresponding
-#' shooting vectors and finds the mean
+#' shooting vectors and finds the median
 #'
 #' @param gam matrix (\eqn{N} x \eqn{M}) of \eqn{M} warping functions with \eqn{N} samples
 #' @return Returns a list containing \item{mu}{Karcher mean psi function}
@@ -17,9 +17,9 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' out = SqrtMean(simu_warp$gam)
-SqrtMean <- function(gam){
+#' data("simu_warp_median")
+#' out = SqrtMedian(simu_warp_median$gam)
+SqrtMedian <- function(gam){
     TT = nrow(gam)
     n = ncol(gam)
     eps = .Machine$double.eps
@@ -36,13 +36,19 @@ SqrtMean <- function(gam){
     stp <- .3
     maxiter = 501
     vec = matrix(0,TT,n)
+    vtil <- matrix(0,TT,n)
+    d <- rep(0,n)
+    dtil <- rep(0,n)
     lvm = rep(0,maxiter)
     iter <- 1
 
     for (i in 1:n){
       vec[,i] <- inv_exp_map(mu, psi[,i])
+      d[i] <- acos(inner_product(mu,psi[,i]))
+      vtil[,i] <- vec[,i] / d[i]
+      dtil[i] <- 1/d[i]
     }
-    vbar <- rowMeans(vec)
+    vbar <- rowSums(vtil) * sum(dtil)^(-1)
     lvm[iter] <- l2_norm(vbar)
 
     while (lvm[iter]>0.00000001 & iter<maxiter){
@@ -50,15 +56,18 @@ SqrtMean <- function(gam){
       iter <- iter + 1
       for (i in 1:n){
         vec[,i] <- inv_exp_map(mu, psi[,i])
+        d[i] <- acos(inner_product(mu,psi[,i]))
+        vtil[,i] <- vec[,i] / d[i]
+        dtil[i] <- 1/d[i]
       }
-      vbar <- rowMeans(vec)
+      vbar <- rowSums(vtil) * sum(dtil)^(-1)
       lvm[iter] <- l2_norm(vbar)
     }
 
-    gam_mu = cumtrapz(time, mu*mu)
-    gam_mu = (gam_mu - min(gam_mu))/(max(gam_mu)-min(gam_mu))
+    gam_median = cumtrapz(time, mu*mu)
+    gam_median = (gam_median - min(gam_median))/(max(gam_median)-min(gam_median))
 
-    out = list(mu = mu,gam_mu = gam_mu, psi = psi, vec = vec)
+    out = list(median = mu,gam_median = gam_median, psi = psi, vec = vec)
 
     return(out)
 
