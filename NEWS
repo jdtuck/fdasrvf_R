@@ -1,5 +1,9 @@
-fdasrv 1.7.1
+fdasrv 1.8.0
 --------------
+v1.8.0
+* added phase and amplitude boxplot functions
+* fixed issue with time_warping finding the median
+
 v1.7.1
 * fix memory leaks in bayesian c code
 * update SqrtMean calculation to have more numerical accuracy
