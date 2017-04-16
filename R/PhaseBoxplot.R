@@ -107,7 +107,7 @@ PhaseBoxplot <- function(gam, kp, showplot=T){
   maxx <- gam[,max_index]
 
   if (showplot){
-    plot(time, median_x, col="black",xlab="Time",main="Amplitude Boxplot", type="l", ylim=c(0, 1))
+    plot(time, median_x, col="black",xlab="Time",main="Phase Boxplot", type="l", ylim=c(0, 1))
     lines(time, Q1, col="blue")
     lines(time, Q3, col="green")
     lines(time, upper, col="red")
