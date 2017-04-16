@@ -27,7 +27,7 @@ shooting vectors and finds the median
 }
 \examples{
 data("simu_warp_median")
-out = PhaseBoxplot(t(simu_warp_median$gam), 1)
+out = PhaseBoxplot(simu_warp_median$gam, 1)
 }
 \references{
 Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
