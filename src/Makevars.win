@@ -1,5 +1,5 @@
 ##split sources to ensure the commands for linking are not too long!
-SOURCES1 = wrapper.cpp fdasrsf/DP.cpp fdasrsf/dp_grid.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp \
+SOURCES1 = registerDynamicSymbol.cpp wrapper.cpp fdasrsf/DP.cpp fdasrsf/dp_grid.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp \
   fdasrsf/bayesian.cpp
 SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/ProductManifold.cpp gropt/src/SolversTR.cpp \
 	gropt/src/DriverMexProb.cpp gropt/src/LowRankVariable.cpp gropt/src/randgen.cpp gropt/src/Sphere.cpp \

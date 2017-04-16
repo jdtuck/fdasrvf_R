@@ -22,7 +22,7 @@
 #' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @references Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
 #' @docType package
-#' @useDynLib fdasrvf
+#' @useDynLib fdasrvf, .registration=TRUE
 #' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields
 #' @importFrom graphics layout legend matplot plot title lines image
 #' @importFrom coda traceplot mcmc
