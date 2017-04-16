@@ -5,7 +5,10 @@ Version: 1.8.0
 Date: 2017-4-16
 Author: J. Derek Tucker <jdtuck@sandia.gov>
 Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
-Description: Functions to support functional data analysis using the square root velocity framework.
+Description: Performs alignment, PCA, and modeling of multidimensional and
+            unidimensional functions using the square-root velocity framework
+            (Srivastava et al., 2011). This framework allows for elastic analysis
+            of functional data through phase and amplitude separation.
 License: GPL-3
 LazyData: TRUE
 SystemRequirements: C++11
