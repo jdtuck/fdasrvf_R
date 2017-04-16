@@ -92,7 +92,7 @@ PhaseBoxplot <- function(gam, kp, showplot=T){
   }
 
   # identify ampitude extremes
-  distance_to_upper <- rep(-Inf, N)
+  distance_to_upper <- rep(Inf, N)
   distance_to_lower <- rep(Inf, N)
   out_50_CR <- setdiff(setdiff(1:N, CR_50), outlier_index)
   for (i in 1:length(out_50_CR)){
@@ -100,7 +100,7 @@ PhaseBoxplot <- function(gam, kp, showplot=T){
     distance_to_upper[j] = sqrt(trapz(time,(upper_v-v[,j])^2))
     distance_to_lower[j] = sqrt(trapz(time,(lower_v-v[,j])^2))
   }
-  max_index <- which.max(distance_to_upper)
+  max_index <- which.min(distance_to_upper)
   min_index <- which.min(distance_to_lower)
   min_psi <- psi[,min_index]
   max_psi <- psi[,max_index]
