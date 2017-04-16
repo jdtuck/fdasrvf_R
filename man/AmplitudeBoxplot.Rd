@@ -36,10 +36,12 @@ shooting vectors and finds the median
 \examples{
 data("simu_warp_median")
 data("simu_data")
-out = AmplitudeBoxplot(simu_warp_median$fn, simu_warp_median$fmean, simu_warp_median$qn, simu_warp_median$mqn, simu_data$time, 1)
+out = AmplitudeBoxplot(simu_warp_median$fn, simu_warp_median$fmean, simu_warp_median$qn,
+                       simu_warp_median$mqn, simu_data$time, 1)
 }
 \references{
-Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
+Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization
+of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
 }
 \keyword{alignment}
 \keyword{boxplot}
