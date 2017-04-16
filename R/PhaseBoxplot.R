@@ -3,14 +3,10 @@
 #' This function calculates the srvf of warping functions with corresponding
 #' shooting vectors and finds the median
 #'
-#' @param fn matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned functions with \eqn{N} samples
-#' @param fmedian vector of \eqn{M} samples of the median calculated using \code{\link{time_warping}} with median
-#' @param qn matrix (\eqn{N} x \eqn{M}) of \eqn{M} of aligned srvfs
-#' @param qmedian vector of \eqn{M} samples of the median calculated using \code{\link{time_warping}} with median
-#' @param time vector of size \eqn{N} describing the sample points
-#' @param ka scalar for outlier cutoff
+#' @param gam matrix (\eqn{N} x \eqn{M}) of \eqn{M} warping functions with \eqn{N} samples
+#' @param kp scalar for outlier cutoff
 #' @param showplot shows plots of functions (default = T)
-#' @return Returns a list containing \item{median_y}{median function}
+#' @return Returns a list containing \item{median_x}{median warping function}
 #' \item{Q1}{First quartile}
 #' \item{Q3}{Second quartile}
 #' \item{minn}{minimum extreme function}
@@ -19,56 +15,61 @@
 #' @keywords srvf alignment boxplot
 #' @references Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
-#' @export
 #' @examples
 #' data("simu_warp_median")
-#' data("simu_data")
-#' out = AmplitudeBoxplot(simu_warp_median$fn, simu_warp_median$fmean, simu_warp_median$qn, simu_warp_median$mqn, simu_data$time, 1)
-AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, ka, showplot=T){
-  M <- nrow(fn)
-  N <- ncol(fn)
+#' out = PhaseBoxplot(t(simu_warp_median$gam), 1)
+PhaseBoxplot <- function(gam, kp, showplot=T){
+  M <- nrow(gam)
+  N <- ncol(gam)
   lambda <- 0.5
 
   # amplitude median
-  median_y <- fmedian
+  out <- SqrtMedian(gam)
+  median_x <- out$gam_median
+  psi_median <- out$median
+  psi <- out$psi
 
-  # compute amplitude distances
-  dy = rep(0, N)
+  # compute phase distances
+  time <- seq(0,1,length.out=M)
+  binsize <- mean(diff(time))
+  dx = rep(0, N)
   for (i in 1:N){
-    dy[i] = sqrt(trapz(time, (qmedian-qn[,i])^2))
+    psi[,i] <- sqrt(gradient(gam[,i],binsize))
+    v[,i] <- inv_exp_map(psi_median, psi[,i])
+    dx[i] = sqrt(trapz(time, v[,i]^2))
   }
-  dy_ordering <- sort(dy, index.return = T)$ix
-  CR_50 <- dy_ordering[1:round(N/2)]  # 50% central region
-  m <- max(dy[CR_50])  # maximal amplitude distance with 50% central region
+  dx_ordering <- sort(dx, index.return = T)$ix
+  CR_50 <- dx_ordering[1:round(N/2)]  # 50% central region
+  m <- max(dx[CR_50])  # maximal phase distance with 50% central region
 
-  # identify amplitude quartiles
+  # identify phase quartiles
   angle <- matrix(0, length(CR_50), length(CR_50))
   energy <- matrix(0, length(CR_50), length(CR_50))
   for (i in 1:(length(CR_50)-1)){
     for (j in (i+1):length(CR_50)){
-      q1 <- qn[,CR_50[i]] - qmedian
-      q3 <- qn[,CR_50[j]] - qmedian
+      q1 <- v[,CR_50[i]]
+      q3 <- v[,CR_50[j]]
       q1 <- q1/sqrt(trapz(time,q1*q1))
       q3 <- q3/sqrt(trapz(time,q3*q3))
       angle[i,j] <- trapz(time,q1*q3)
-      energy[i,j] <- (1-lambda) * (dy[CR_50[i]]/m + dy[CR_50[j]]/m) - lambda * (angle[i,j]+1)
+      energy[i,j] <- (1-lambda) * (dx[CR_50[i]]/m + dx[CR_50[j]]/m) - lambda * (angle[i,j]+1)
     }
   }
   maxloc <- which(energy == max(energy), arr.ind = TRUE)
 
   Q1_index <- CR_50[maxloc[1,1]]
   Q3_index <- CR_50[maxloc[1,2]]
-  Q1_q <- qn[,Q1_index]
-  Q3_q <- qn[,Q3_index]
-  Q1 <- fn[,Q1_index]
-  Q3 <- fn[,Q3_index]
+  Q1 <- gam[,Q1_index]
+  Q3 <- gam[,Q3_index]
+  Q1_psi <- sqrt(gradient(Q1,1/(M-1)))
+  Q3_psi <- sqrt(gradient(Q3,1/(M-1)))
 
-  # compute amplitude whiskers
-  IQR <- dy[Q1_index] + dy[Q3_index]
-  v1 <- Q1_q - qmedian
-  v3 <- Q3_q - qmedian
-  upper_q <- Q3_q + ka * IQR * v3 / sqrt(trapz(time,v3*v3))
-  lower_q <- Q1_q + ka * IQR * v1 / sqrt(trapz(time,v1*v1))
+  # compute phase whiskers
+  IQR <- dx[Q1_index] + dx[Q3_index]
+  v1 <- v[,Q1_index]
+  v3 <- v[,Q3_index]
+  upper_q <- v3 + kp * IQR * v3 / sqrt(trapz(time,v3*v3))
+  lower_q <- v1 + kp * IQR * v1 / sqrt(trapz(time,v1*v1))
   upper <- fmedian[1]+cumtrapz(time,upper_q*abs(upper_q))
   lower <- fmedian[1]+cumtrapz(time,lower_q*abs(lower_q))
 

@@ -10,8 +10,8 @@ SqrtMedian(gam)
 \item{gam}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} warping functions with \eqn{N} samples}
 }
 \value{
-Returns a list containing \item{mu}{Karcher mean psi function}
-\item{gam_mu}{Karcher mean warping function}
+Returns a list containing \item{median}{Karcher median psi function}
+\item{gam_median}{Karcher mean warping function}
 \item{psi}{srvf of warping functions}
 \item{vec}{shooting vectors}
 }
