@@ -18,7 +18,6 @@
 #' \item{outlier_index}{indexes of outlier functions}
 #' @keywords srvf alignment boxplot
 #' @references Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
-#'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
 #' data("simu_warp_median")
