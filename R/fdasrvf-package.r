@@ -26,6 +26,7 @@
 #' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields
 #' @importFrom graphics layout legend matplot plot title lines
 #' @importFrom coda traceplot mcmc
+#' @importFrom viridisLite viridis
 #' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var spline
 #' @aliases fdasrvf fdasrvf-package
 NULL

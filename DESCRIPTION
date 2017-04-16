@@ -18,7 +18,8 @@ Imports:
     splines,
     parallel,
     fields,
-    doParallel
+    doParallel,
+    viridisLite
 Suggests: akima
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
