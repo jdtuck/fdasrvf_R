@@ -30,6 +30,12 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, ka, showplot=T){
   N <- ncol(fn)
   lambda <- 0.5
 
+  # translation
+  translation <- rep(0,N)
+  for (i in 1:N){
+    translation[i] <- trapz(time, fn[,i]/(time[M]-time[1]))
+  }
+
   # amplitude median
   median_y <- fmedian
 
@@ -88,7 +94,7 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, ka, showplot=T){
   }
 
   # identify ampitude extremes
-  distance_to_upper <- rep(Inf, N)
+  distance_to_upper <- rep(-Inf, N)
   distance_to_lower <- rep(Inf, N)
   out_50_CR <- setdiff(setdiff(1:N, CR_50), outlier_index)
   for (i in 1:length(out_50_CR)){
@@ -104,13 +110,13 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, ka, showplot=T){
   maxx <- fn[,max_index]
 
   if (showplot){
-    ymin <- min(c(min(fmedian),min(Q1),min(Q3),min(upper),min(lower)))
-    ymax <- max(c(max(fmedian),max(Q1),max(Q3),max(upper),max(lower)))
+    ymin <- min(c(min(fmedian),min(Q1),min(Q3),min(maxx),min(minn)))
+    ymax <- max(c(max(fmedian),max(Q1),max(Q3),max(maxx),max(minn)))
     plot(time, fmedian, col="black",xlab="Time",main="Amplitude Boxplot", type="l", ylim=c(ymin, ymax))
     lines(time, Q1, col="blue")
     lines(time, Q3, col="green")
-    lines(time, upper, col="red")
-    lines(time, lower, col="magenta")
+    lines(time, maxx, col="red")
+    lines(time, minn, col="magenta")
 
     s <- seq(0,1,length.out=100)
     Fs2 <- matrix(0,length(time), 397)

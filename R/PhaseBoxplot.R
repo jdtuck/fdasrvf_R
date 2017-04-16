@@ -92,7 +92,7 @@ PhaseBoxplot <- function(gam, kp, showplot=T){
   }
 
   # identify ampitude extremes
-  distance_to_upper <- rep(Inf, N)
+  distance_to_upper <- rep(-Inf, N)
   distance_to_lower <- rep(Inf, N)
   out_50_CR <- setdiff(setdiff(1:N, CR_50), outlier_index)
   for (i in 1:length(out_50_CR)){
@@ -111,8 +111,8 @@ PhaseBoxplot <- function(gam, kp, showplot=T){
     plot(time, median_x, col="black",xlab="Time",main="Phase Boxplot", type="l", ylim=c(0, 1))
     lines(time, Q1, col="blue")
     lines(time, Q3, col="green")
-    lines(time, upper, col="red")
-    lines(time, lower, col="magenta")
+    lines(time, minn, col="red")
+    lines(time, maxx, col="magenta")
 
     s <- seq(0,1,length.out=100)
     Fs2 <- matrix(0,length(time), 397)
