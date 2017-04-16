@@ -1,6 +1,8 @@
 ^\.Rproj\.user$
 .gitignore
 .travis.yml
+.tags
+.tags1
 appveyor.yml
 ^\src\*.a
 fdasrvf.Rproj
