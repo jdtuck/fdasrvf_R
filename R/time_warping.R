@@ -278,6 +278,6 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 
 
     return(list(f0=f[,,1],fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,gam=gam,
-                            orig.var=orig.var,amp.var=amp.var,phase.var=phase.var,qun=qun))
+                            orig.var=orig.var,amp.var=amp.var,phase.var=phase.var,qun=qun[1:(r-1)]))
 
 }

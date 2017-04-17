@@ -29,8 +29,8 @@
 optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
                             f2o=0.0){
     n = length(T1)
-    if (method=="DPo" && all(T1!=T2))
-      method = "DP"
+    if (method=="DP" && all(T1!=T2))
+      method = "DPo"
     Q1=(Q1/pvecnorm(Q1,2))
     Q2=(Q2/pvecnorm(Q2,2))
     C1=srsf_to_f(Q1,T1,f1o)
@@ -39,7 +39,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
     isclosed = FALSE
     skipm = 0
     auto = 0
-    if (method=="DP"){
+    if (method=="DPo"){
         G = rep(0,n)
         T = rep(0,n)
         size = 0;
@@ -48,7 +48,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
         G = ret$G[1:ret$size]
         Tf = ret$T[1:ret$size]
         gam0 = approx(Tf,G,xout=T2)$y
-    } else if (method=="DPo"){
+    } else if (method=="DP"){
         gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', Q2, Q1, 1, n, lambda, 0, rep(0,n))
     } else if (method=="SIMUL"){
         out = simul_align(C1,C2)
