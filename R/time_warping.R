@@ -114,7 +114,8 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     tmp = array(0,dim=c(M,N,MaxItr+2))
     tmp[,,1] = q
     q = tmp
-    qun = rep(0,MaxItr+1)
+    qun = rep(0,MaxItr+2)
+    qun[1] = pvecnorm(mq[,1]-q[,min_ind,1],2)/pvecnorm(q[,min_ind,1],2)
     stp <- .3
     for (r in 1:MaxItr){
         cat(sprintf("updating step: r=%d\n", r))
@@ -169,7 +170,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
             mq[,r+1] = rowMeans(q[,,r+1])
             mf[,r+1] = rowMeans(f[,,r+1])
 
-            qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
+            qun[r+1] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
         }
 
         if (method == 2){ # Median
@@ -188,9 +189,9 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
             mq[,r+1] <- mq[,r] + stp*vbar
             mf[,r+1] <- median(f[1,,1]) + cumtrapz(time,mq[,r+1]*abs(mq[,r+1]))
 
-            qun[r] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
+            qun[r+1] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
         }
-        if (qun[r] < 1e-4 || r >=MaxItr){
+        if (qun[r+1] < 1e-4 || r >=MaxItr){
             break
         }
     }
@@ -278,6 +279,6 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 
 
     return(list(f0=f[,,1],fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,gam=gam,
-                            orig.var=orig.var,amp.var=amp.var,phase.var=phase.var,qun=qun[1:(r-1)]))
+                            orig.var=orig.var,amp.var=amp.var,phase.var=phase.var,qun=qun[1:r]))
 
 }
