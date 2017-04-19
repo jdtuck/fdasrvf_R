@@ -764,16 +764,12 @@ st<-function(zstar)
   st
 }
 
-l2_norm<-function(psi){
-  M <- length(psi)
-  time <- seq(0,1,length.out=M)
+l2_norm<-function(psi, time=seq(0,1,length.out=length(psi))){
   l2norm <- sqrt(trapz(time,psi*psi))
   return(l2norm)
 }
 
-inner_product<-function(psi1, psi2){
-  M <- length(psi1)
-  time <- seq(0,1,length.out=M)
+inner_product<-function(psi1, psi2, time=seq(0,1,length.out=length(psi1))){
   ip <- trapz(time,psi1*psi2)
   return(ip)
 }
