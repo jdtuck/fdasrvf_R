@@ -1,7 +1,6 @@
-#' SRVF transform of warping functions
+#' Phase Boxplot
 #'
-#' This function calculates the srvf of warping functions with corresponding
-#' shooting vectors and finds the median
+#' This function constructs the amplitude boxplot
 #'
 #' @param gam matrix (\eqn{N} x \eqn{M}) of \eqn{M} warping functions with \eqn{N} samples
 #' @param kp scalar for outlier cutoff

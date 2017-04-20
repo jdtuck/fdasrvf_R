@@ -2,7 +2,7 @@
 % Please edit documentation in R/AmplitudeBoxplot.R
 \name{AmplitudeBoxplot}
 \alias{AmplitudeBoxplot}
-\title{SRVF transform of warping functions}
+\title{Amplitude Boxplot}
 \usage{
 AmplitudeBoxplot(fn, fmedian, qn, qmedian, time, ka, showplot = T)
 }
@@ -30,8 +30,7 @@ Returns a list containing \item{median_y}{median function}
 \item{outlier_index}{indexes of outlier functions}
 }
 \description{
-This function calculates the srvf of warping functions with corresponding
-shooting vectors and finds the median
+This function constructs the amplitude boxplot
 }
 \examples{
 data("simu_warp_median")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/PhaseBoxplot.R
 \name{PhaseBoxplot}
 \alias{PhaseBoxplot}
-\title{SRVF transform of warping functions}
+\title{Phase Boxplot}
 \usage{
 PhaseBoxplot(gam, kp, showplot = T)
 }
@@ -22,8 +22,7 @@ Returns a list containing \item{median_x}{median warping function}
 \item{outlier_index}{indexes of outlier functions}
 }
 \description{
-This function calculates the srvf of warping functions with corresponding
-shooting vectors and finds the median
+This function constructs the amplitude boxplot
 }
 \examples{
 data("simu_warp_median")

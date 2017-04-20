@@ -1,7 +1,6 @@
-#' SRVF transform of warping functions
+#' Amplitude Boxplot
 #'
-#' This function calculates the srvf of warping functions with corresponding
-#' shooting vectors and finds the median
+#' This function constructs the amplitude boxplot
 #'
 #' @param fn matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned functions with \eqn{N} samples
 #' @param fmedian vector of \eqn{M} samples of the median calculated using \code{\link{time_warping}} with median
