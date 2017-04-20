@@ -1,5 +1,9 @@
-fdasrv 1.8.0
+fdasrv 1.8.1
 --------------
+v1.8.1
+* fix boxplot functions documentation
+* added quartile option
+
 v1.8.0
 * added phase and amplitude boxplot functions
 * fixed issue with time_warping finding the median

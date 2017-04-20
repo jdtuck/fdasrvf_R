@@ -7,11 +7,14 @@
 #' @param qn matrix (\eqn{N} x \eqn{M}) of \eqn{M} of aligned srvfs
 #' @param qmedian vector of \eqn{M} samples of the median calculated using \code{\link{time_warping}} with median
 #' @param time vector of size \eqn{N} describing the sample points
-#' @param ka scalar for outlier cutoff
+#' @param alpha quantile value (default=.05, i.e., 95\%)
+#' @param ka scalar for outlier cutoff (default=1)
 #' @param showplot shows plots of functions (default = T)
 #' @return Returns a list containing \item{median_y}{median function}
 #' \item{Q1}{First quartile}
 #' \item{Q3}{Second quartile}
+#' \item{Q1a}{First quantile based on alpha}
+#' \item{Q3a}{Second quantile based on alpha}
 #' \item{minn}{minimum extreme function}
 #' \item{maxx}{maximum extreme function}
 #' \item{outlier_index}{indexes of outlier functions}
@@ -23,8 +26,9 @@
 #' data("simu_warp_median")
 #' data("simu_data")
 #' out = AmplitudeBoxplot(simu_warp_median$fn, simu_warp_median$fmean, simu_warp_median$qn,
-#'                        simu_warp_median$mqn, simu_data$time, 1)
-AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, ka, showplot=T){
+#'                        simu_warp_median$mqn, simu_data$time)
+AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, alpha=.05, ka=1,
+                             showplot=T){
   M <- nrow(fn)
   N <- ncol(fn)
   lambda <- 0.5
@@ -69,14 +73,39 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, ka, showplot=T){
   Q1 <- fn[,Q1_index]
   Q3 <- fn[,Q3_index]
 
+  # identify amplitude quantile
+  dy_ordering <- sort(dy, index.return = T)$ix
+  CR_alpha <- dy_ordering[1:round(N*(1-alpha))]  # (1-alpha)% central region
+  m <- max(dy[CR_alpha])  # maximal amplitude distance with (1-alpha)% central region
+  angle <- matrix(0, length(CR_alpha), length(CR_alpha))
+  energy <- matrix(0, length(CR_alpha), length(CR_alpha))
+  for (i in 1:(length(CR_alpha)-1)){
+    for (j in (i+1):length(CR_alpha)){
+      q1 <- qn[,CR_alpha[i]] - qmedian
+      q3 <- qn[,CR_alpha[j]] - qmedian
+      q1 <- q1/sqrt(trapz(time,q1*q1))
+      q3 <- q3/sqrt(trapz(time,q3*q3))
+      angle[i,j] <- trapz(time,q1*q3)
+      energy[i,j] <- (1-lambda) * (dy[CR_alpha[i]]/m + dy[CR_alpha[j]]/m) - lambda * (angle[i,j]+1)
+    }
+  }
+  maxloc <- which(energy == max(energy), arr.ind = TRUE)
+
+  Q1a_index <- CR_alpha[maxloc[1,1]]
+  Q3a_index <- CR_alpha[maxloc[1,2]]
+  Q1a_q <- qn[,Q1a_index]
+  Q3a_q <- qn[,Q3a_index]
+  Q1a <- fn[,Q1a_index]
+  Q3a <- fn[,Q3a_index]
+
   # compute amplitude whiskers
   IQR <- dy[Q1_index] + dy[Q3_index]
   v1 <- Q1_q - qmedian
   v3 <- Q3_q - qmedian
   upper_q <- Q3_q + ka * IQR * v3 / sqrt(trapz(time,v3*v3))
   lower_q <- Q1_q + ka * IQR * v1 / sqrt(trapz(time,v1*v1))
-  upper <- fmedian[1]+cumtrapz(time,upper_q*abs(upper_q))
-  lower <- fmedian[1]+cumtrapz(time,lower_q*abs(lower_q))
+  upper <- cumtrapz(time,upper_q*abs(upper_q))
+  lower <- cumtrapz(time,lower_q*abs(lower_q))
 
   upper_dis <- sqrt(trapz(time,(upper_q-qmedian)^2))
   lower_dis <- sqrt(trapz(time,(lower_q-qmedian)^2))
@@ -109,13 +138,16 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, ka, showplot=T){
   maxx <- fn[,max_index]
 
   if (showplot){
+    colors <- viridis(6)
     ymin <- min(c(min(fmedian),min(Q1),min(Q3),min(maxx),min(minn)))
     ymax <- max(c(max(fmedian),max(Q1),max(Q3),max(maxx),max(minn)))
     plot(time, fmedian, col="black",xlab="Time",main="Amplitude Boxplot", type="l", ylim=c(ymin, ymax))
-    lines(time, Q1, col="blue")
-    lines(time, Q3, col="green")
-    lines(time, maxx, col="red")
-    lines(time, minn, col="magenta")
+    lines(time, Q1, col=colors[1])
+    lines(time, Q3, col=colors[2])
+    lines(time, Q1a, col=colors[3])
+    lines(time, Q3a, col=colors[4])
+    lines(time, maxx, col=colors[5])
+    lines(time, minn, col=colors[6])
 
     s <- seq(0,1,length.out=100)
     Fs2 <- matrix(0,length(time), 397)
@@ -140,5 +172,6 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, ka, showplot=T){
 
   }
 
-  return(list(median_y=median_y,Q1=Q1,Q3=Q3,minn=minn,maxx=maxx,outlier_index=outlier_index))
+  return(list(median_y=median_y,Q1=Q1,Q3=Q3,Q1a=Q1a,Q3a=Q3a,minn=minn,maxx=maxx,
+              outlier_index=outlier_index))
 }
