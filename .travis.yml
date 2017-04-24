@@ -1,4 +1,5 @@
 language: r
+cache: packages
 r:
   - oldrel
   - release
@@ -8,7 +9,6 @@ matrix:
   allow_failures:
       - r: devel
 
-sudo: required
 dist: trusty
 
 # Be strict when checking our package
