@@ -15,9 +15,6 @@
 #' \item{U}{eigenvectors}
 #' @keywords srvf alignment
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
-#'  May 2012. Generative Models for Function Data using Phase and Amplitude Separation,
-#'  submitted to Computational Statistics and Data Analysis.
-#' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
