@@ -137,12 +137,12 @@ PhaseBoxplot <- function(gam, alpha=.05, kp=1, showplot=T){
   if (showplot){
     colors <- viridis(6)
     plot(time, median_x, col="black",xlab="Time",main="Phase Boxplot", type="l", ylim=c(0, 1))
-    lines(time, Q1, col=colors[1])
-    lines(time, Q3, col=colors[2])
-    lines(time, Q1a, col=colors[3])
-    lines(time, Q3a, col=colors[4])
-    lines(time, maxx, col=colors[5])
-    lines(time, minn, col=colors[6])
+    lines(time, Q1, col="blue")
+    lines(time, Q3, col="blue")
+    lines(time, Q1a, col="green")
+    lines(time, Q3a, col="green")
+    lines(time, maxx, col="red")
+    lines(time, minn, col="red")
 
     s <- seq(0,1,length.out=100)
     Fs2 <- matrix(0,length(time), 397)
