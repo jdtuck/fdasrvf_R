@@ -20,7 +20,7 @@
 #' @export
 #' @examples
 #' data("simu_warp_median")
-#' out = PhaseBoxplot(simu_warp_median$gam)
+#' out <- PhaseBoxplot(simu_warp_median$gam)
 PhaseBoxplot <- function(gam, alpha=.05, kp=1, showplot=T){
   M <- nrow(gam)
   N <- ncol(gam)

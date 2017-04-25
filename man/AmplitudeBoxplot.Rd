@@ -40,8 +40,8 @@ This function constructs the amplitude boxplot
 \examples{
 data("simu_warp_median")
 data("simu_data")
-out = AmplitudeBoxplot(simu_warp_median$fn, simu_warp_median$fmean, simu_warp_median$qn,
-                       simu_warp_median$mqn, simu_data$time)
+out <- AmplitudeBoxplot(simu_warp_median$fn, simu_warp_median$fmean, simu_warp_median$qn,
+                        simu_warp_median$mqn, simu_data$time)
 }
 \references{
 Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization

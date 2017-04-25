@@ -30,7 +30,7 @@ This function constructs the amplitude boxplot
 }
 \examples{
 data("simu_warp_median")
-out = PhaseBoxplot(simu_warp_median$gam)
+out <- PhaseBoxplot(simu_warp_median$gam)
 }
 \references{
 Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization
