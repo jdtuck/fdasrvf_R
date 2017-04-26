@@ -12,8 +12,7 @@
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
-#'   \code{doParallel} pacakge
-#' @param cores set number of cores to use with \code{doParallel} (default = 2)
+#'   \code{doParallel} pacakge (default=T)
 #' @param omethod optimization method (DP,DP2,RBFGS)
 #' @param MaxItr maximum number of iterations
 #' @return Returns a list containing \item{f0}{original functions}
@@ -41,8 +40,9 @@
 #' out = time_warping(simu_data$f,simu_data$time, MaxItr=1)
 time_warping <- function(f, time, lambda = 0, method = "mean",
                          showplot = TRUE, smooth_data = FALSE, sparam = 25,
-                         parallel = FALSE, cores=2, omethod = "DP", MaxItr = 20){
+                         parallel = TRUE, omethod = "DP", MaxItr = 20){
     if (parallel){
+        cores = detectCores()
         cl = makeCluster(cores)
         registerDoParallel(cl)
     } else
