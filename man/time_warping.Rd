@@ -51,7 +51,7 @@ slope (srsf) framework.
 \examples{
 data("simu_data")
 # use more iterations for accuracy
-out = time_warping(simu_data$f,simu_data$time, MaxItr=1)
+out = time_warping(simu_data$f,simu_data$time, parallel=F, MaxItr=1)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
