@@ -182,7 +182,7 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, alpha=.05, ka=1,
         plot3D::lines3D(x=time,y=rep(d3, M),z=Q3,col="blue",lwd=6,add=T,plot=F)+
         plot3D::lines3D(x=time,y=rep(d3+d3a, M),z=Q3a,col="green",lwd=6,add=T,plot=F)+
         plot3D::lines3D(x=time,y=rep(d3+d3a+du, M),z=maxx,col="red",lwd=6,add=T,plot=F)
-      plot3d::plotrgl()
+      plot3Drgl::plotrgl()
       rgl::par3d("windowRect"= c(0,0,640,640))
       rgl::grid3d(c("x", "y+", "z"))
       rgl::axes3d(c('x--',"y--",'z'))
