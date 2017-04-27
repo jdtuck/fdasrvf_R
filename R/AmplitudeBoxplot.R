@@ -43,9 +43,9 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, alpha=.05, ka=1,
   median_y <- fmedian
 
   # compute amplitude distances
-  dy = rep(0, N)
+  dy <- rep(0, N)
   for (i in 1:N){
-    dy[i] = sqrt(trapz(time, (qmedian-qn[,i])^2))
+    dy[i] <- sqrt(trapz(time, (qmedian-qn[,i])^2))
   }
   dy_ordering <- sort(dy, index.return = T)$ix
   CR_50 <- dy_ordering[1:round(N/2)]  # 50% central region
