@@ -7,9 +7,9 @@ Author: J. Derek Tucker <jdtuck@sandia.gov>
 Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
 Description: Performs alignment, PCA, and modeling of multidimensional and
             unidimensional functions using the square-root velocity framework
-            (Srivastava et al., 2011 <arXiv:1103.3817> and 
-            Tucker et al., 2014 <DOI:10.1016/j.csda.2012.12.001>). This framework 
-            allows for elastic analysis of functional data through phase and 
+            (Srivastava et al., 2011 <arXiv:1103.3817> and
+            Tucker et al., 2014 <DOI:10.1016/j.csda.2012.12.001>). This framework
+            allows for elastic analysis of functional data through phase and
             amplitude separation.
 License: GPL-3
 LazyData: TRUE
@@ -25,7 +25,7 @@ Imports:
     fields,
     doParallel,
     viridisLite
-Suggests: akima
+Suggests: akima, plot3Drgl
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
     R (>= 3.1.0),
