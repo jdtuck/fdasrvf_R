@@ -174,19 +174,19 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, alpha=.05, ka=1,
     allparts<-c(part1,part2[2:100],part3[2:100],part4[2:100],part5[2:100],part6[2:100])
 
     if (requireNamespace("plot3Drgl", quietly = TRUE)) {
-      p=persp3D(x=time,y=allparts,z=Fs2,col=viridis(128),plot=F,main="Amplitude Surface Plot",ticktype="detailed",box=F)+
-        lines3D(x=time,y=rep(0,M),z=fmedian,col="black",lwd=6,add=T,plot=F)+
-        lines3D(x=time,y=rep(-d1,M),z=Q1,col="blue",lwd=6,add=T,plot=F)+
-        lines3D(x=time,y=rep(-d1-d1a,M),z=Q1a,col="green",lwd=6,add=T,plot=F)+
-        lines3D(x=time,y=rep(-d1-d1a-dl, M),z=minn,col="red",lwd=6,add=T,plot=F)+
-        lines3D(x=time,y=rep(d3, M),z=Q3,col="blue",lwd=6,add=T,plot=F)+
-        lines3D(x=time,y=rep(d3+d3a, M),z=Q3a,col="green",lwd=6,add=T,plot=F)+
-        lines3D(x=time,y=rep(d3+d3a+du, M),z=maxx,col="red",lwd=6,add=T,plot=F)
-      plotrgl()
-      par3d("windowRect"= c(0,0,640,640))
-      grid3d(c("x", "y+", "z"))
-      axes3d(c('x--',"y--",'z'))
-      title3d(xlab="Time",ylab="Distance")
+      p=plot3D::persp3D(x=time,y=allparts,z=Fs2,col=viridis(128),plot=F,main="Amplitude Surface Plot",ticktype="detailed",box=F)+
+        plot3D::lines3D(x=time,y=rep(0,M),z=fmedian,col="black",lwd=6,add=T,plot=F)+
+        plot3D::lines3D(x=time,y=rep(-d1,M),z=Q1,col="blue",lwd=6,add=T,plot=F)+
+        plot3D::lines3D(x=time,y=rep(-d1-d1a,M),z=Q1a,col="green",lwd=6,add=T,plot=F)+
+        plot3D::lines3D(x=time,y=rep(-d1-d1a-dl, M),z=minn,col="red",lwd=6,add=T,plot=F)+
+        plot3D::lines3D(x=time,y=rep(d3, M),z=Q3,col="blue",lwd=6,add=T,plot=F)+
+        plot3D::lines3D(x=time,y=rep(d3+d3a, M),z=Q3a,col="green",lwd=6,add=T,plot=F)+
+        plot3D::lines3D(x=time,y=rep(d3+d3a+du, M),z=maxx,col="red",lwd=6,add=T,plot=F)
+      plot3d::plotrgl()
+      rgl::par3d("windowRect"= c(0,0,640,640))
+      rgl::grid3d(c("x", "y+", "z"))
+      rgl::axes3d(c('x--',"y--",'z'))
+      rgl::title3d(xlab="Time",ylab="Distance")
     } else {
       image(time, allparts, Fs2, main="Surface Plot", ylab="", col=viridis(128))
       lines(time, rep(0, M), col="black", lwd=1)
@@ -197,7 +197,6 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, alpha=.05, ka=1,
       lines(time, rep(d3+d3a, M), col="green", lwd=1)
       lines(time, rep(d3+d3a+du, M), col="red", lwd=1)
     }
-
 
   }
 
