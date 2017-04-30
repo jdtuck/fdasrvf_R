@@ -5,7 +5,7 @@
 \title{Group-wise function alignment}
 \usage{
 time_warping(f, time, lambda = 0, method = "mean", showplot = TRUE,
-  smooth_data = FALSE, sparam = 25, parallel = TRUE, omethod = "DP",
+  smooth_data = FALSE, sparam = 25, parallel = FALSE, omethod = "DP",
   MaxItr = 20)
 }
 \arguments{
@@ -25,7 +25,7 @@ or "median", default = "mean")}
 \item{sparam}{number of times to apply box filter (default = 25)}
 
 \item{parallel}{enable parallel mode using \code{\link{foreach}} and
-\code{doParallel} pacakge (default=T)}
+\code{doParallel} pacakge (default=F)}
 
 \item{omethod}{optimization method (DP,DP2,RBFGS)}
 
@@ -51,7 +51,7 @@ slope (srsf) framework.
 \examples{
 data("simu_data")
 # use more iterations for accuracy
-out = time_warping(simu_data$f,simu_data$time, parallel=FALSE, MaxItr=1)
+out = time_warping(simu_data$f,simu_data$time, MaxItr=1)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
