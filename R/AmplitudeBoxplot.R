@@ -25,8 +25,8 @@
 #' @examples
 #' data("simu_warp_median")
 #' data("simu_data")
-#' out <- AmplitudeBoxplot(simu_warp_median$fn[,1:10], simu_warp_median$fmean,
-#'                         simu_warp_median$qn[,1:10], simu_warp_median$mqn, simu_data$time)
+#' out <- AmplitudeBoxplot(simu_warp_median$fn, simu_warp_median$fmean,
+#'                         simu_warp_median$qn, simu_warp_median$mqn, simu_data$time)
 AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, alpha=.05, ka=1,
                              showplot=T){
   M <- nrow(fn)
