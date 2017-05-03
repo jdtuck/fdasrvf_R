@@ -2,8 +2,7 @@
 #'
 #' This function constructs the amplitude boxplot
 #'
-#' @param warp_median fdawarp objecet from \link{time_warping} of input data using
-#'        \code{\link{time_warping}} with median
+#' @param warp_median fdawarp objecet from \link{time_warping} of aligned data using the median
 #' @param alpha quantile value (default=.05, i.e., 95\%)
 #' @param kp scalar for outlier cutoff (default=1)
 #' @param showplot shows plots of functions (default = T)

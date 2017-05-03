@@ -3,10 +3,7 @@
 #' This function models the functional data using a Gaussian model extracted from
 #' the principal components of the srvfs
 #'
-#' @param fn matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned functions with \eqn{N} samples
-#' @param time vector of size \eqn{N} describing the sample points
-#' @param qn matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned srvfs
-#' @param gam warping functions
+#' @param warp_data fdawarp objecet from \link{time_warping} of aligned data
 #' @param n number of random samples (n = 1)
 #' @param sort_samples sort samples (default = F)
 #' @return Returns a list containing \item{fs}{random aligned samples}
@@ -18,10 +15,13 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_data")
 #' data("simu_warp")
-#' out1 = gauss_model(simu_warp$fn,simu_data$time,simu_warp$qn,simu_warp$gam,n = 10)
-gauss_model <- function(fn,time,qn,gam,n = 1,sort_samples = FALSE){
+#' out1 = gauss_model(simu_warp,n = 10)
+gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
+    fn <- warp_data$fn
+    time <- warp_data$time
+    qn <- warp_data$qn
+    gam <- warp_data$gam
     # Parameters
     no = 3
     eps = .Machine$double.eps

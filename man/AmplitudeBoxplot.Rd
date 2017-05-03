@@ -7,8 +7,7 @@
 AmplitudeBoxplot(warp_median, alpha = 0.05, ka = 1, showplot = T)
 }
 \arguments{
-\item{warp_median}{fdawarp objecet from \link{time_warping} of input data using
-\code{\link{time_warping}} with median}
+\item{warp_median}{fdawarp objecet from \link{time_warping} of aligned data using the median}
 
 \item{alpha}{quantile value (default=.05, i.e., 95\%)}
 

@@ -7,7 +7,7 @@
 vertFPCA(warp_data, no, showplot = TRUE)
 }
 \arguments{
-\item{warp_data}{fdawarp objecet from \link{time_warping} of input data}
+\item{warp_data}{fdawarp objecet from \link{time_warping} of aligned data}
 
 \item{no}{number of prinicpal components to extract}
 

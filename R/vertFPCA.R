@@ -3,7 +3,7 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param warp_data fdawarp objecet from \link{time_warping} of input data
+#' @param warp_data fdawarp objecet from \link{time_warping} of aligned data
 #' @param no number of prinicpal components to extract
 #' @param showplot show plots of prinipal directions (default = T)
 #' @return Returns a vfpca object containing \item{q_pca}{srvf principal directions}
