@@ -3,10 +3,10 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param gam matrix (\eqn{N} x \eqn{N}) of \eqn{M} of warping functions with \eqn{N} time samples
+#' @param warp_data fdawarp objecet from \link{time_warping} of input data
 #' @param no number of prinicpal components to extract
 #' @param showplot show plots of prinipal directions (default = T)
-#' @return Returns a list containing \item{gam_pca}{warping functions principal directions}
+#' @return Returns a hfpca object containing \item{gam_pca}{warping functions principal directions}
 #' \item{psi_pca}{srvf principal directions}
 #' \item{latent}{latent values}
 #' \item{U}{eigenvectors}
@@ -19,8 +19,9 @@
 #' @export
 #' @examples
 #' data("simu_warp")
-#' hfpca = horizFPCA(simu_warp$gam,no = 3)
-horizFPCA <- function(gam,no,showplot = TRUE){
+#' hfpca = horizFPCA(simu_warp,no = 3)
+horizFPCA <- function(warp_data,no,showplot = TRUE){
+    gam <- warp_data$gam
     tmp = SqrtMean(gam)
     vec = tmp$vec
     mu = tmp$mu
@@ -64,17 +65,10 @@ horizFPCA <- function(gam,no,showplot = TRUE){
     hfpca$vec = vec
     hfpca$mu = mu
 
+    class(hfpca) <- "hfpca"
+
     if (showplot){
-        layout(matrix(c(1,2,3), 1, 3, byrow = TRUE))
-        matplot(seq(0,1,len=TT),t(gam_pca[,,1]),type="l",xlab = "t",ylab = "t")
-        title(main="PD 1")
-        matplot(seq(0,1,len=TT),t(gam_pca[,,2]),type="l",xlab = "t",ylab = "t")
-        title(main="PD 2")
-        matplot(seq(0,1,len=TT),t(gam_pca[,,3]),type="l",xlab = "t",ylab = "t")
-        title(main="PD 3")
-        layout(1)
-        cumm_coef = 100*cumsum(s)/sum(s)
-        plot(cumm_coef,type="l",col="blue",main="Coefficient Cumulative Percentage", ylab = "Percentage")
+        plot(hfpca)
     }
     return(hfpca)
 }

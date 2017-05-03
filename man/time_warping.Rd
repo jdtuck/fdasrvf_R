@@ -32,7 +32,7 @@ or "median", default = "mean")}
 \item{MaxItr}{maximum number of iterations}
 }
 \value{
-Returns a list containing \item{f0}{original functions}
+Returns a fdawarp object containing \item{f0}{original functions}
 \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 \item{qn}{aligned SRSFs - similar structure to fn}
 \item{q0}{original SRSF - similar structure to fn}

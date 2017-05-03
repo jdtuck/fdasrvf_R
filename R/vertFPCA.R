@@ -3,12 +3,10 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param fn matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned functions with \eqn{N} samples
-#' @param time vector of size \eqn{N} describing the sample points
-#' @param qn matrix (\eqn{N} x \eqn{M}) of \eqn{M} of aligned srvfs
+#' @param warp_data fdawarp objecet from \link{time_warping} of input data
 #' @param no number of prinicpal components to extract
 #' @param showplot show plots of prinipal directions (default = T)
-#' @return Returns a list containing \item{q_pca}{srvf principal directions}
+#' @return Returns a vfpca object containing \item{q_pca}{srvf principal directions}
 #' \item{f_pca}{f principal directions}
 #' \item{latent}{latent values}
 #' \item{coef}{coefficients}
@@ -20,10 +18,12 @@
 #' @export
 #' @examples
 #' data("simu_warp")
-#' data("simu_data")
-#' vfpca = vertFPCA(simu_warp$fn,simu_data$time,simu_warp$qn,no = 3)
-vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
+#' vfpca = vertFPCA(simu_warp,no = 3)
+vertFPCA <- function(warp_data,no,showplot = TRUE){
     # Parameters
+    fn <- warp_data$fn
+    time <- warp_data$time
+    qn <- warp_data$qn
     coef = -2:2
     NP = 1:no  # number of principal components
     Nstd = length(coef)
@@ -76,25 +76,12 @@ vertFPCA <- function(fn,time,qn,no,showplot = TRUE){
     vfpca$latent = s
     vfpca$coef = c
     vfpca$U = U
+    vfpca$time = time
+
+    class(vfpca) <- "vfpca"
 
     if (showplot){
-        layout(matrix(c(1,2,3,4,5,6), 2, 3, byrow = TRUE))
-        dims = dim(q_pca)
-        matplot(time,q_pca[1:(dims[1]-1),,1],type="l")
-        title(main="q domain: PD 1")
-        matplot(time,q_pca[1:(dims[1]-1),,2],type="l")
-        title(main="q domain: PD 2")
-        matplot(time,q_pca[1:(dims[1]-1),,3],type="l")
-        title(main="q domain: PD 3")
-        matplot(time,f_pca[,,1],type="l")
-        title(main="f domain: PD 1")
-        matplot(time,f_pca[,,2],type="l")
-        title(main="f domain: PD 2")
-        matplot(time,f_pca[,,3],type="l")
-        title(main="f domain: PD 3")
-        layout(1)
-        cumm_coef = 100*cumsum(s)/sum(s)
-        plot(cumm_coef,type="l",col="blue",main="Coefficient Cumulative Percentage", ylab = "Percentage")
+        plot(vfpca)
     }
 
     return(vfpca)

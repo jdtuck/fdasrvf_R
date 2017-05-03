@@ -4,17 +4,17 @@
 \alias{horizFPCA}
 \title{Horizontal Functional Principal Component Analysis}
 \usage{
-horizFPCA(gam, no, showplot = TRUE)
+horizFPCA(warp_data, no, showplot = TRUE)
 }
 \arguments{
-\item{gam}{matrix (\eqn{N} x \eqn{N}) of \eqn{M} of warping functions with \eqn{N} time samples}
+\item{warp_data}{fdawarp objecet from \link{time_warping} of input data}
 
 \item{no}{number of prinicpal components to extract}
 
 \item{showplot}{show plots of prinipal directions (default = T)}
 }
 \value{
-Returns a list containing \item{gam_pca}{warping functions principal directions}
+Returns a hfpca object containing \item{gam_pca}{warping functions principal directions}
 \item{psi_pca}{srvf principal directions}
 \item{latent}{latent values}
 \item{U}{eigenvectors}
@@ -27,7 +27,7 @@ on aligned data
 }
 \examples{
 data("simu_warp")
-hfpca = horizFPCA(simu_warp$gam,no = 3)
+hfpca = horizFPCA(simu_warp,no = 3)
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,

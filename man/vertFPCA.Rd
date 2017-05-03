@@ -4,21 +4,17 @@
 \alias{vertFPCA}
 \title{Vertical Functional Principal Component Analysis}
 \usage{
-vertFPCA(fn, time, qn, no, showplot = TRUE)
+vertFPCA(warp_data, no, showplot = TRUE)
 }
 \arguments{
-\item{fn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned functions with \eqn{N} samples}
-
-\item{time}{vector of size \eqn{N} describing the sample points}
-
-\item{qn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} of aligned srvfs}
+\item{warp_data}{fdawarp objecet from \link{time_warping} of input data}
 
 \item{no}{number of prinicpal components to extract}
 
 \item{showplot}{show plots of prinipal directions (default = T)}
 }
 \value{
-Returns a list containing \item{q_pca}{srvf principal directions}
+Returns a vfpca object containing \item{q_pca}{srvf principal directions}
 \item{f_pca}{f principal directions}
 \item{latent}{latent values}
 \item{coef}{coefficients}
@@ -30,8 +26,7 @@ on aligned data
 }
 \examples{
 data("simu_warp")
-data("simu_data")
-vfpca = vertFPCA(simu_warp$fn,simu_data$time,simu_warp$qn,no = 3)
+vfpca = vertFPCA(simu_warp,no = 3)
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,
