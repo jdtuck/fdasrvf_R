@@ -4,19 +4,11 @@
 \alias{AmplitudeBoxplot}
 \title{Amplitude Boxplot}
 \usage{
-AmplitudeBoxplot(fn, fmedian, qn, qmedian, time, alpha = 0.05, ka = 1,
-  showplot = T)
+AmplitudeBoxplot(warp_median, alpha = 0.05, ka = 1, showplot = T)
 }
 \arguments{
-\item{fn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned functions with \eqn{N} samples}
-
-\item{fmedian}{vector of \eqn{M} samples of the median calculated using \code{\link{time_warping}} with median}
-
-\item{qn}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} of aligned srvfs}
-
-\item{qmedian}{vector of \eqn{M} samples of the median calculated using \code{\link{time_warping}} with median}
-
-\item{time}{vector of size \eqn{N} describing the sample points}
+\item{warp_median}{fdawarp objecet from \link{time_warping} of input data using
+\code{\link{time_warping}} with median}
 
 \item{alpha}{quantile value (default=.05, i.e., 95\%)}
 
@@ -25,7 +17,7 @@ AmplitudeBoxplot(fn, fmedian, qn, qmedian, time, alpha = 0.05, ka = 1,
 \item{showplot}{shows plots of functions (default = T)}
 }
 \value{
-Returns a list containing \item{median_y}{median function}
+Returns a ampbox object containing \item{median_y}{median function}
 \item{Q1}{First quartile}
 \item{Q3}{Second quartile}
 \item{Q1a}{First quantile based on alpha}
@@ -33,15 +25,14 @@ Returns a list containing \item{median_y}{median function}
 \item{minn}{minimum extreme function}
 \item{maxx}{maximum extreme function}
 \item{outlier_index}{indexes of outlier functions}
+\item{fmedian}{median function}
 }
 \description{
 This function constructs the amplitude boxplot
 }
 \examples{
 data("simu_warp_median")
-data("simu_data")
-out <- AmplitudeBoxplot(simu_warp_median$fn, simu_warp_median$fmean,
-                        simu_warp_median$qn, simu_warp_median$mqn, simu_data$time)
+out <- AmplitudeBoxplot(simu_warp_median)
 }
 \references{
 Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization

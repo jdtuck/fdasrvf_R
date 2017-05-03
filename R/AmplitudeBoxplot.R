@@ -2,15 +2,12 @@
 #'
 #' This function constructs the amplitude boxplot
 #'
-#' @param fn matrix (\eqn{N} x \eqn{M}) of \eqn{M} aligned functions with \eqn{N} samples
-#' @param fmedian vector of \eqn{M} samples of the median calculated using \code{\link{time_warping}} with median
-#' @param qn matrix (\eqn{N} x \eqn{M}) of \eqn{M} of aligned srvfs
-#' @param qmedian vector of \eqn{M} samples of the median calculated using \code{\link{time_warping}} with median
-#' @param time vector of size \eqn{N} describing the sample points
+#' @param warp_median fdawarp objecet from \link{time_warping} of input data using
+#'        \code{\link{time_warping}} with median
 #' @param alpha quantile value (default=.05, i.e., 95\%)
 #' @param ka scalar for outlier cutoff (default=1)
 #' @param showplot shows plots of functions (default = T)
-#' @return Returns a list containing \item{median_y}{median function}
+#' @return Returns a ampbox object containing \item{median_y}{median function}
 #' \item{Q1}{First quartile}
 #' \item{Q3}{Second quartile}
 #' \item{Q1a}{First quantile based on alpha}
@@ -18,17 +15,24 @@
 #' \item{minn}{minimum extreme function}
 #' \item{maxx}{maximum extreme function}
 #' \item{outlier_index}{indexes of outlier functions}
+#' \item{fmedian}{median function}
 #' @keywords srvf alignment boxplot
 #' @references Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization
 #' of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
 #' @export
 #' @examples
 #' data("simu_warp_median")
-#' data("simu_data")
-#' out <- AmplitudeBoxplot(simu_warp_median$fn, simu_warp_median$fmean,
-#'                         simu_warp_median$qn, simu_warp_median$mqn, simu_data$time)
-AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, alpha=.05, ka=1,
-                             showplot=T){
+#' out <- AmplitudeBoxplot(simu_warp_median)
+AmplitudeBoxplot <- function(warp_median, alpha=.05, ka=1, showplot=T){
+
+  fn <- warp_median$fn
+  median_y <- warp_median$fmean
+  qn <- warp_median$qn
+  qmedian <- warp_median$mqn
+  time <- warp_median$time
+  if (warp_median$method != 'median'){
+      stop('need aligned to median, please rerun time_warping with method="median"')
+  }
   M <- nrow(fn)
   N <- ncol(fn)
   lambda <- 0.5
@@ -38,9 +42,6 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, alpha=.05, ka=1,
   for (i in 1:N){
     translation[i] <- trapz(time, fn[,i]/(time[M]-time[1]))
   }
-
-  # amplitude median
-  median_y <- fmedian
 
   # compute amplitude distances
   dy <- rep(0, N)
@@ -137,69 +138,23 @@ AmplitudeBoxplot <- function(fn, fmedian, qn, qmedian, time, alpha=.05, ka=1,
   minn <- fn[,min_index]
   maxx <- fn[,max_index]
 
+
+  out <- list(median_y=median_y,Q1=Q1,Q3=Q3,Q1a=Q1a,Q3a=Q3a,minn=minn,maxx=maxx,
+              outlier_index=outlier_index)
+  out$fmedian <- median_y
+  out$time <- time
+  out$qmedian <- qmedian
+  out$Q1_q <- Q1_q
+  out$Q1a_q <- Q1a_q
+  out$Q3_q <- Q3_q
+  out$Q3a_q <- Q3a_q
+  out$min_q <- min_q
+  out$max_q <- max_q
+  class(out) <- 'ampbox'
+
   if (showplot){
-    ymin <- min(c(min(fmedian),min(Q1),min(Q3),min(maxx),min(minn)))
-    ymax <- max(c(max(fmedian),max(Q1),max(Q3),max(maxx),max(minn)))
-    plot(time, fmedian, col="black",xlab="Time",main="Amplitude Boxplot", type="l", ylim=c(ymin, ymax))
-    lines(time, Q1, col="blue")
-    lines(time, Q3, col="blue")
-    lines(time, Q1a, col="green")
-    lines(time, Q3a, col="green")
-    lines(time, maxx, col="red")
-    lines(time, minn, col="red")
-
-    s <- seq(0,1,length.out=100)
-    Fs2 <- matrix(0,length(time), 595)
-    Fs2[,1] <- (1-s[1]) * minn + s[1] * Q1
-    for (j in 2:100){
-      Fs2[,j] <- (1-s[j]) * minn + s[j] * Q1a
-      Fs2[,99+j] <- (1-s[j]) * Q1a + s[j] * Q1
-      Fs2[,198+j] <- (1-s[j]) * Q1 + s[j] * fmedian
-      Fs2[,297+j] <- (1-s[j]) * fmedian + s[j] * Q3
-      Fs2[,396+j] <- (1-s[j]) * Q3 + s[j] * Q3a
-      Fs2[,495+j] <- (1-s[j]) * Q3a + s[j] * maxx
-    }
-    d1<-sqrt(trapz(time,(qmedian-Q1_q)^2))
-    d1a<-sqrt(trapz(time,(Q1_q-Q1a_q)^2))
-    dl<-sqrt(trapz(time,(Q1a_q-min_q)^2))
-    d3<-sqrt(trapz(time,(qmedian-Q3_q)^2))
-    d3a<-sqrt(trapz(time,(Q3_q-Q3a_q)^2))
-    du<-sqrt(trapz(time,(Q3a_q-max_q)^2))
-    part1<-seq(-d1-d1a-dl,-d1-d1a,length.out=100)
-    part2<-seq(-d1-d1a,-d1,length.out=100)
-    part3<-seq(-d1,0,length.out=100)
-    part4<-seq(0,d3,length.out=100)
-    part5<-seq(d3,d3+d3a,length.out=100)
-    part6<-seq(d3+d3a,d3+d3a+du,length.out=100)
-    allparts<-c(part1,part2[2:100],part3[2:100],part4[2:100],part5[2:100],part6[2:100])
-
-    if (requireNamespace("plot3Drgl", quietly = TRUE)) {
-      p=plot3D::persp3D(x=time,y=allparts,z=Fs2,col=viridis(128),plot=F,main="Amplitude Surface Plot",ticktype="detailed",box=F)+
-        plot3D::lines3D(x=time,y=rep(0,M),z=fmedian,col="black",lwd=6,add=T,plot=F)+
-        plot3D::lines3D(x=time,y=rep(-d1,M),z=Q1,col="blue",lwd=6,add=T,plot=F)+
-        plot3D::lines3D(x=time,y=rep(-d1-d1a,M),z=Q1a,col="green",lwd=6,add=T,plot=F)+
-        plot3D::lines3D(x=time,y=rep(-d1-d1a-dl, M),z=minn,col="red",lwd=6,add=T,plot=F)+
-        plot3D::lines3D(x=time,y=rep(d3, M),z=Q3,col="blue",lwd=6,add=T,plot=F)+
-        plot3D::lines3D(x=time,y=rep(d3+d3a, M),z=Q3a,col="green",lwd=6,add=T,plot=F)+
-        plot3D::lines3D(x=time,y=rep(d3+d3a+du, M),z=maxx,col="red",lwd=6,add=T,plot=F)
-      plot3Drgl::plotrgl()
-      rgl::par3d("windowRect"= c(0,0,640,640))
-      rgl::grid3d(c("x", "y+", "z"))
-      rgl::axes3d(c('x--',"y--",'z'))
-      rgl::title3d(xlab="Time",ylab="Distance")
-    } else {
-      image(time, allparts, Fs2, main="Surface Plot", ylab="", col=viridis(128))
-      lines(time, rep(0, M), col="black", lwd=1)
-      lines(time, rep(-d1, M), col="blue", lwd=1)
-      lines(time, rep(-d1-d1a, M), col="green", lwd=1)
-      lines(time, rep(-d1-d1a-dl, M), col="red", lwd=1)
-      lines(time, rep(d3, M), col="blue", lwd=1)
-      lines(time, rep(d3+d3a, M), col="green", lwd=1)
-      lines(time, rep(d3+d3a+du, M), col="red", lwd=1)
-    }
-
+    plot(out)
   }
 
-  return(list(median_y=median_y,Q1=Q1,Q3=Q3,Q1a=Q1a,Q3a=Q3a,minn=minn,maxx=maxx,
-              outlier_index=outlier_index))
+  return(out)
 }
