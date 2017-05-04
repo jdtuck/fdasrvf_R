@@ -26,6 +26,11 @@ PhaseBoxplot <- function(warp_median, alpha=.05, kp=1, showplot=T){
   if (warp_median$method != 'median'){
       stop('need aligned to median, please rerun time_warping with method="median"')
   }
+
+  if (warp_median$rsamps){
+    gam <- warp_median$gams
+  }
+  
   M <- nrow(gam)
   N <- ncol(gam)
   lambda <- 0.5

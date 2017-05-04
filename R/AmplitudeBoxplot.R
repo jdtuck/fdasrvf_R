@@ -32,6 +32,12 @@ AmplitudeBoxplot <- function(warp_median, alpha=.05, ka=1, showplot=T){
   if (warp_median$method != 'median'){
       stop('need aligned to median, please rerun time_warping with method="median"')
   }
+
+  if (warp_median$rsamps){
+    fn <- warp_median$fs
+    qn <- warp_median$qs
+  }
+  
   M <- nrow(fn)
   N <- ncol(fn)
   lambda <- 0.5

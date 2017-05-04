@@ -14,7 +14,7 @@ gauss_model(warp_data, n = 1, sort_samples = FALSE)
 \item{sort_samples}{sort samples (default = F)}
 }
 \value{
-Returns a list containing \item{fs}{random aligned samples}
+Returns a fdawarp object containing \item{fs}{random aligned samples}
 \item{gams}{random warping function samples}
 \item{ft}{random function samples}
 }

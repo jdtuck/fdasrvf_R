@@ -6,7 +6,7 @@
 #' @param warp_data fdawarp objecet from \link{time_warping} of aligned data
 #' @param n number of random samples (n = 1)
 #' @param sort_samples sort samples (default = F)
-#' @return Returns a list containing \item{fs}{random aligned samples}
+#' @return Returns a fdawarp object containing \item{fs}{random aligned samples}
 #' \item{gams}{random warping function samples}
 #' \item{ft}{random function samples}
 #' @keywords pca
@@ -102,7 +102,11 @@ gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
         }
     }
 
-    samples = list(fs = fs, gams = rgam, ft = ft)
+    warp_data$fs = fs
+    warp_data$gams = rgam
+    warp_data$ft = ft
+    warp_data$qs = q_s[1:(end-1),]
+    warp_data$rsamps=T
 
-    return(samples)
+    return(warp_data)
 }

@@ -254,7 +254,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
 
     out <- list(f0=f[,,1],time=time,fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,gam=gam,
                 orig.var=orig.var,amp.var=amp.var,phase.var=phase.var,
-                qun=qun[1:r],lambda=lambda,method=method1,omethod=omethod)
+                qun=qun[1:r],lambda=lambda,method=method1,omethod=omethod,rsamps=F)
 
     class(out) <- 'fdawarp'
 
