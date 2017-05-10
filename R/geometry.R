@@ -53,15 +53,6 @@ randomGamma <- function(gam,num){
     return(rgam)
 }
 
-invertGamma <- function(gam){
-    N = length(gam)
-    x = (0:(N-1))/(N-1)
-    gamI = approx(gam,x,xout=x)$y
-    gamI[N] = 1
-    gamI = gamI/gamI[N]
-    return(gamI)
-}
-
 SqrtMeanInverse <- function(gam){
   TT = nrow(gam)
   n = ncol(gam)
