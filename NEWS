@@ -1,5 +1,10 @@
-fdasrv 1.8.1
+fdasrv 1.8.2
 --------------
+v1.8.2
+* added objects for outputs of time_warping, boxplot, and pca functions
+* added plot methods for the above objects
+* added summary methods for the above objects
+
 v1.8.1
 * fix boxplot functions documentation
 * added quantile option
