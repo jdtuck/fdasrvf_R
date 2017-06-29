@@ -2,7 +2,7 @@ fdasrv 1.8.1
 --------------
 v1.8.1
 * fix boxplot functions documentation
-* added quartile option
+* added quantile option
 * updated surface plot for boxplot functions
 
 v1.8.0
