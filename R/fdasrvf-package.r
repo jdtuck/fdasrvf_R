@@ -61,6 +61,17 @@ NULL
 #' @usage data("toy_data")
 #' @format A list which contains f and time
 NULL
+#' Berkley Growth Velocity Dataset
+#'
+#' Combination of both boys and girls growth velocity from the Berkley Dataset
+#'
+#'
+#' @docType data
+#' @keywords datasets
+#' @name growth_vel
+#' @usage data("growth_vel")
+#' @format A list which contains f and time
+NULL
 #' Aligned Distributed Gaussian Peak Dataset
 #'
 #' A functional dataset where the individual functions are given by a Gaussian
