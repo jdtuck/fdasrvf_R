@@ -19,7 +19,7 @@ plot.ampbox <- function(x, ...){
   lines(time, maxx, col="red")
   lines(time, minn, col="red")
 
-  s <- seq(0,1,length.x=100)
+  s <- seq(0,1,length.out=100)
   Fs2 <- matrix(0,length(time), 595)
   Fs2[,1] <- (1-s[1]) * minn + s[1] * Q1
   for (j in 2:100){
@@ -36,12 +36,12 @@ plot.ampbox <- function(x, ...){
   d3<-sqrt(trapz(time,(x$qmedian-x$Q3_q)^2))
   d3a<-sqrt(trapz(time,(x$Q3_q-x$Q3a_q)^2))
   du<-sqrt(trapz(time,(x$Q3a_q-x$max_q)^2))
-  part1<-seq(-d1-d1a-dl,-d1-d1a,length.x=100)
-  part2<-seq(-d1-d1a,-d1,length.x=100)
-  part3<-seq(-d1,0,length.x=100)
-  part4<-seq(0,d3,length.x=100)
-  part5<-seq(d3,d3+d3a,length.x=100)
-  part6<-seq(d3+d3a,d3+d3a+du,length.x=100)
+  part1<-seq(-d1-d1a-dl,-d1-d1a,length.out=100)
+  part2<-seq(-d1-d1a,-d1,length.out=100)
+  part3<-seq(-d1,0,length.out=100)
+  part4<-seq(0,d3,length.out=100)
+  part5<-seq(d3,d3+d3a,length.out=100)
+  part6<-seq(d3+d3a,d3+d3a+du,length.out=100)
   allparts<-c(part1,part2[2:100],part3[2:100],part4[2:100],part5[2:100],part6[2:100])
 
   if (requireNamespace("plot3Drgl", quietly = TRUE)) {

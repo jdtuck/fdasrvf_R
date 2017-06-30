@@ -13,6 +13,7 @@
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
 #'   \code{doParallel} pacakge (default=F)
+#' @param alignment wether to perform alignment (default = T)
 #' @param omethod optimization method (DP,DP2,RBFGS)
 #' @param MaxItr maximum number of iterations
 #' @param thresh cost function threshold
@@ -41,7 +42,7 @@
 #' out <- kmeans(growth_vel$f,growth_vel$time, K=2, MaxItr=1)
 kmeans <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
                    smooth_data = FALSE, sparam = 25, parallel = FALSE,
-                   omethod = "DP", MaxItr = 50, thresh = 0.01){
+                   alignment = TRUE, omethod = "DP", MaxItr = 50, thresh = 0.01){
   # Initialize --------------------------------------------------------------
   w <- 0.0
   if (parallel){
@@ -93,9 +94,9 @@ kmeans <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
     for (i in 1:K){
       outfor<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
         if (alignment){
-          gam_tmp <- optimum.reparam(templates.q[,i],time,q[,k],time,lambda,omethod,w,f[1,template.ind[i]],f[1,k])
+          gam_tmp <- optimum.reparam(templates.q[,i],time,q[,k],time,lambda,omethod,w,templates[1,i],f[1,k])
         } else {
-          gma_tmp <- seq(0,1,length.out=M)
+          gam_tmp <- seq(0,1,length.out=M)
         }
         fw <- approx(time,f[,k],xout=(time[length(time)]-time[1])*gam_tmp + time[1])$y
         qw <- f_to_srvf(fw,time)
@@ -125,11 +126,11 @@ kmeans <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
       gamtmp <- gam[[k]][,id]
       gamI <- SqrtMeanInverse(gamtmp)
       N1 <- length(id)
-      outfor<-foreach(l = 1:N1, .combine=cbind,.packages="fdasrvf") %dopar% {
-        fw <- approx(time,ftmp[,l],xout=(time[length(time)]-time[1])*gamI +
+      outfor<-foreach(j = 1:N1, .combine=cbind,.packages="fdasrvf") %dopar% {
+        fw <- approx(time,ftmp[,j],xout=(time[length(time)]-time[1])*gamI +
                        time[1])$y
         qw <- f_to_srvf(fw,time)
-        gamt1 <- approx(time,gamtmp[,l],xout=(time[length(time)]-time[1])*gamI +
+        gamt1 <- approx(time,gamtmp[,j],xout=(time[length(time)]-time[1])*gamI +
                         time[1])$y
         list(gamt1,fw,qw)
       }

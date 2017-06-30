@@ -5,8 +5,8 @@
 \title{K-Means Clustering and Alignment}
 \usage{
 kmeans(f, time, K, seeds = NULL, lambda = 0, showplot = TRUE,
-  smooth_data = FALSE, sparam = 25, parallel = FALSE, omethod = "DP",
-  MaxItr = 50, thresh = 0.01)
+  smooth_data = FALSE, sparam = 25, parallel = FALSE, alignment = TRUE,
+  omethod = "DP", MaxItr = 50, thresh = 0.01)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
@@ -27,6 +27,8 @@ kmeans(f, time, K, seeds = NULL, lambda = 0, showplot = TRUE,
 
 \item{parallel}{enable parallel mode using \code{\link{foreach}} and
 \code{doParallel} pacakge (default=F)}
+
+\item{alignment}{wether to perform alignment (default = T)}
 
 \item{omethod}{optimization method (DP,DP2,RBFGS)}
 
