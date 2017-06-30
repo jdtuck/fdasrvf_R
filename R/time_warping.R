@@ -61,7 +61,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     M = nrow(f)
     N = ncol(f)
     f0 = f
-    w = 0.0;
+    w = 0.0
 
     if (smooth_data){
         f = smooth.data(f,sparam)
