@@ -4,6 +4,7 @@ v1.8.2
 * added objects for outputs of time_warping, boxplot, and pca functions
 * added plot methods for the above objects
 * added summary methods for the above objects
+* added kmeans clustering and alignment based on Sangalli et. al.
 
 v1.8.1
 * fix boxplot functions documentation

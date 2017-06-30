@@ -45,6 +45,7 @@ kmeans <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
                    alignment = TRUE, omethod = "DP", MaxItr = 50, thresh = 0.01){
   # Initialize --------------------------------------------------------------
   w <- 0.0
+  k <- 1
   if (parallel){
     cores <- detectCores()
     cl <- makeCluster(cores)
@@ -92,7 +93,7 @@ kmeans <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
     qn <- list()
     fn <- list()
     for (i in 1:K){
-      outfor<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
+      outfor<-foreach(k = 1:N, .combine=cbind, .packages="fdasrvf") %dopar% {
         if (alignment){
           gam_tmp <- optimum.reparam(templates.q[,i],time,q[,k],time,lambda,omethod,w,templates[1,i],f[1,k])
         } else {
@@ -120,41 +121,41 @@ kmeans <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
 
 
     # Normalization -----------------------------------------------------------
-    for (k in 1:K){
-      id <- which(cluster.id==k)
-      ftmp <- fn[[k]][,id]
-      gamtmp <- gam[[k]][,id]
+    for (i in 1:K){
+      id <- which(cluster.id==i)
+      ftmp <- fn[[i]][,id]
+      gamtmp <- gam[[i]][,id]
       gamI <- SqrtMeanInverse(gamtmp)
       N1 <- length(id)
-      outfor<-foreach(j = 1:N1, .combine=cbind,.packages="fdasrvf") %dopar% {
-        fw <- approx(time,ftmp[,j],xout=(time[length(time)]-time[1])*gamI +
+      outfor<-foreach(k = 1:N1, .combine=cbind, .packages="fdasrvf") %dopar% {
+        fw <- approx(time,ftmp[,k],xout=(time[length(time)]-time[1])*gamI +
                        time[1])$y
         qw <- f_to_srvf(fw,time)
-        gamt1 <- approx(time,gamtmp[,j],xout=(time[length(time)]-time[1])*gamI +
+        gamt1 <- approx(time,gamtmp[,k],xout=(time[length(time)]-time[1])*gamI +
                         time[1])$y
         list(gamt1,fw,qw)
       }
       gamt <- unlist(outfor[1,]);
       dim(gamt) <- c(M,N1)
-      gam[[k]][,id] <- gamt
+      gam[[i]][,id] <- gamt
       f_temp <- unlist(outfor[2,]);
       dim(f_temp) <- c(M,N1)
       q_temp <- unlist(outfor[3,]);
       dim(q_temp) <- c(M,N1)
-      qn[[k]][,id] <- q_temp
-      fn[[k]][,id] <- f_temp
+      qn[[i]][,id] <- q_temp
+      fn[[i]][,id] <- f_temp
     }
 
 
     # Template Identification -------------------------------------------------
     qun.t <- rep(0,K)
-    for (k in 1:K){
-      id <- which(cluster.id==k)
+    for (i in 1:K){
+      id <- which(cluster.id==i)
       old.templates.q <- templates.q
-      templates.q[,k] <- rowMeans(qn[[k]][,id])
-      templates[,k] <- rowMeans(fn[[k]][,id])
+      templates.q[,i] <- rowMeans(qn[[i]][,id])
+      templates[,i] <- rowMeans(fn[[i]][,id])
 
-      qun.t[k] <- pvecnorm(templates.q[,k]-old.templates.q[,k],2)/pvecnorm(old.templates.q[,k],2)
+      qun.t[i] <- pvecnorm(templates.q[,i]-old.templates.q[,i],2)/pvecnorm(old.templates.q[,i],2)
     }
     qun[itr] <- mean(qun.t)
 
@@ -165,11 +166,11 @@ kmeans <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
 
   # Output ------------------------------------------------------------------
   ftmp <- qtmp <- gamtmp <- list()
-  for (k in 1:K){
-    id <- which(cluster.id==k)
-    ftmp[[k]] <- fn[[k]][,id]
-    qtmp[[k]] <- qn[[k]][,id]
-    gamtmp[[k]] <- gam[[k]][,id]
+  for (i in 1:K){
+    id <- which(cluster.id==i)
+    ftmp[[i]] <- fn[[i]][,id]
+    qtmp[[i]] <- qn[[i]][,id]
+    gamtmp[[i]] <- gam[[i]][,id]
   }
 
   out <- list(f0=f,q0=q,time=time,fn=ftmp,qn=qtmp,gam=gamtmp,labels=cluster.id,
