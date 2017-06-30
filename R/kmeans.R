@@ -39,8 +39,8 @@
 #' @examples
 #' data("growth_vel")
 #' # use more iterations for accuracy
-#' out <- kmeans(growth_vel$f,growth_vel$time, K=2, MaxItr=1)
-kmeans <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
+#' out <- kmeans_align(growth_vel$f,growth_vel$time, K=2, MaxItr=1)
+kmeans_align <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
                    smooth_data = FALSE, sparam = 25, parallel = FALSE,
                    alignment = TRUE, omethod = "DP", MaxItr = 50, thresh = 0.01){
   # Initialize --------------------------------------------------------------
