@@ -19,19 +19,18 @@
 #' @export
 #' @examples
 #' data("simu_data")
-#' distances = elastic.distance(simu_data$f[,1],simu_data$f[,2],simu_data$time)
+#' distances <- elastic.distance(simu_data$f[,1],simu_data$f[,2],simu_data$time)
 elastic.distance <- function(f1,f2,time,lambda = 0){
-    q1 = f_to_srvf(f1,time)
-    q2 = f_to_srvf(f2,time)
-    gam = optimum.reparam(q1,time,q2,time,lambda)
-    fw = approx(time,f2,xout=(time[length(time)]-time[1])*gam + time[1])$y
-    qw = f_to_srvf(fw,time)
-    Dy = sqrt(sum(trapz(time, (qw-q1)^2)))
-
-    M = length(time)
-    psi =  sqrt(diff(gam)*(M-1))
-    mu = rep(1,M-1)
-    Dx  = Re(acos(sum(mu*psi)/(M-1)))
+    q1 <- f_to_srvf(f1,time)
+    q2 <- f_to_srvf(f2,time)
+    gam <- optimum.reparam(q1,time,q2,time,lambda)
+    fw <- approx(time,f2,xout=(time[length(time)]-time[1])*gam + time[1])$y
+    qw <- f_to_srvf(fw,time)
+    Dy <- sqrt(trapz(time, (q1-qw)^2))
+    
+    binsize <- mean(diff(time))
+    psi <- sqrt(gradient(gam,binsize))
+    Dx <- Re(acos(trapz(time, psi)))
+    
     return(list(Dy=Dy,Dx=Dx))
-
 }
