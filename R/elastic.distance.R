@@ -28,9 +28,10 @@ elastic.distance <- function(f1,f2,time,lambda = 0){
     qw <- f_to_srvf(fw,time)
     Dy <- sqrt(trapz(time, (q1-qw)^2))
     
-    binsize <- mean(diff(time))
+    time1 <- seq(0,1,length.out=length(time))
+    binsize <- mean(diff(time1))
     psi <- sqrt(gradient(gam,binsize))
-    Dx <- Re(acos(trapz(time, psi)))
+    Dx <- Re(acos(trapz(time1, psi)))
     
     return(list(Dy=Dy,Dx=Dx))
 }
