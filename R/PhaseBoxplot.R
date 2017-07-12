@@ -49,7 +49,7 @@ PhaseBoxplot <- function(warp_median, alpha=.05, kp=1, showplot=T){
   for (i in 1:N){
     psi[,i] <- sqrt(gradient(gam[,i],binsize))
     v[,i] <- inv_exp_map(psi_median, psi[,i])
-    dx[i] = sqrt(trapz(time, v[,i]^2))
+    dx[i] <- sqrt(trapz(time, v[,i]^2))
   }
   dx_ordering <- sort(dx, index.return = T)$ix
   CR_50 <- dx_ordering[1:round(N/2)]  # 50% central region

@@ -15,11 +15,12 @@
 #' @export
 #' @examples
 #' data("simu_data")
-#' q = f_to_srvf(simu_data$f,simu_data$time)
+#' q <- f_to_srvf(simu_data$f,simu_data$time)
 f_to_srvf <- function(f,time){
-    binsize = mean(diff(time))
-    eps = .Machine$double.eps
-    tmp = gradient.spline(f,binsize)
-    q = tmp$g/sqrt(abs(tmp$g)+eps)
+    binsize <- mean(diff(time))
+    eps <- .Machine$double.eps
+    tmp <- gradient.spline(f,binsize)
+    q <- tmp$g/sqrt(abs(tmp$g)+eps)
+    q <- q/pvecnorm(q,2)
     return(q)
 }
