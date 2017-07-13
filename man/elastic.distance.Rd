@@ -25,7 +25,7 @@ This functions calculates the distances between functions,
 }
 \examples{
 data("simu_data")
-distances = elastic.distance(simu_data$f[,1],simu_data$f[,2],simu_data$time)
+distances <- elastic.distance(simu_data$f[,1],simu_data$f[,2],simu_data$time)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
