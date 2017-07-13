@@ -31,7 +31,8 @@ elastic.distance <- function(f1,f2,time,lambda = 0){
     time1 <- seq(0,1,length.out=length(time))
     binsize <- mean(diff(time1))
     psi <- sqrt(gradient(gam,binsize))
-    Dx <- Re(acos(trapz(time1, psi)))
+    v <- inv_exp_map(rep(1,length(gam)), psi)
+    Dx <- sqrt(trapz(time1, v^2)) 
     
     return(list(Dy=Dy,Dx=Dx))
 }
