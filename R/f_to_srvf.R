@@ -21,6 +21,6 @@ f_to_srvf <- function(f,time){
     eps <- .Machine$double.eps
     tmp <- gradient.spline(f,binsize)
     q <- tmp$g/sqrt(abs(tmp$g)+eps)
-    q <- q/pvecnorm(q,2)
+    # q <- q/pvecnorm(q,2)
     return(q)
 }
