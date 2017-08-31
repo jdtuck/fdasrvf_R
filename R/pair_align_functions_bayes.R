@@ -11,11 +11,16 @@
 #' @param tau standard deviation of Normal prior for increment (default ceil(times*.4))
 #' @param powera Dirchelet prior parameter (default 1)
 #' @param showplot shows plots of functions (default = T)
+#' @param extrainfo T/F whether additional information is returned
 #' @return Returns a list containing \item{f1}{function 1}
 #' \item{f2_q}{registered function using quotient space}
 #' \item{gam_q}{warping function quotient space}
 #' \item{f2_a}{registered fucntion using ambient space}
 #' \item{q2_a}{warping function ambient space}
+#' \item{match_collect}{posterior samples from warping function (returned if extrainfo=TRUE)}
+#' \item{dist_collect}{posterior samples from the distances (returned if extrainfo=TRUE)}
+#' \item{kappa_collect}{posterior samples from kappa (returned if extrainfo=TRUE)}
+#' \item{log_collect}{log-likelihood of each sample (returned if extrainfo=TRUE)}
 #' @keywords srsf alignment, bayesian
 #' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
 #' registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
@@ -25,7 +30,7 @@
 #' out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2], simu_data$time)
 pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
                                        tau = ceiling(times*.4), powera=1,
-                                       showplot = TRUE){
+                                       showplot = TRUE, extrainfo = FALSE){
 
   # Default setting shall work for many situations. If convergence issues arise then adjust proposal variance tau.
   if(times == 2) {warning("Small times may lead to convergence issues.")}
@@ -81,9 +86,9 @@ pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
   best_match <- res$best_match
   match_collect <- res$match_collect
   dist_min <- res$dist_min
-  log.posterior <- res$log.posterior
-  dist_collect <- res$dist_collect
-  kappafamily <- res$kappafamily
+  log_collect <- c(res$log_collect)
+  dist_collect[-1] <- c(res$dist_collect)
+  kappa_collect <- c(res$kappa_collect)
   bestidy <- approx(c(row,p+1),best_match,method="linear",xout=1:p)$y
   bestidy[bestidy > p] <- p
   burnin <- round(0.5*iter/thin)
@@ -141,13 +146,23 @@ pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
     legend("topleft",c("function 1","function 2*"),col=c("black","blue"),lty=c(1,1))
     title("Registration by Bayesian estimate")
 
-    traceplot(mcmc(kappafamily[burnin:iter]))
+    traceplot(mcmc(kappa_collect[burnin:iter]))
     title("Traceplot of kappa after burn-in")
 
-    traceplot(mcmc(log.posterior[burnin:iter]))
+    traceplot(mcmc(dist_collect[(burnin:iter)+1]))
+    title("Traceplot of dist after burn-in")
+
+    traceplot(mcmc(log_collect[burnin:iter]))
     title("Traceplot of log posterior after burn-in")
   }
 
-  return(list(f1 = f1, f2_q = reg_q, gam_q = (bestidy-1)/p,
-              f2_a = reg_a, gam_a = (Meanidy-1)/p))
+  retVal <- list(f1 = f1, f2_q = reg_q, gam_q = (bestidy-1)/p,
+              f2_a = reg_a, gam_a = (Meanidy-1)/p)
+  if (extrainfo) {
+    retVal$match_collect <- match_collect
+    retVal$dist_collect <- dist_collect
+    retVal$kappa_collect <- kappa_collect
+    retVal$log_collect <- log_collect
+  }
+  return(retVal)
 }

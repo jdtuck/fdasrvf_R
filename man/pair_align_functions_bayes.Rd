@@ -5,7 +5,8 @@
 \title{Align two functions}
 \usage{
 pair_align_functions_bayes(f1, f2, timet, iter = 15000, times = 5,
-  tau = ceiling(times * 0.4), powera = 1, showplot = TRUE)
+  tau = ceiling(times * 0.4), powera = 1, showplot = TRUE,
+  extrainfo = FALSE)
 }
 \arguments{
 \item{f1}{function 1}
@@ -23,6 +24,8 @@ pair_align_functions_bayes(f1, f2, timet, iter = 15000, times = 5,
 \item{powera}{Dirchelet prior parameter (default 1)}
 
 \item{showplot}{shows plots of functions (default = T)}
+
+\item{extrainfo}{T/F whether additional information is returned}
 }
 \value{
 Returns a list containing \item{f1}{function 1}
@@ -30,6 +33,10 @@ Returns a list containing \item{f1}{function 1}
 \item{gam_q}{warping function quotient space}
 \item{f2_a}{registered fucntion using ambient space}
 \item{q2_a}{warping function ambient space}
+\item{match_collect}{posterior samples from warping function (returned if extrainfo=TRUE)}
+\item{dist_collect}{posterior samples from the distances (returned if extrainfo=TRUE)}
+\item{kappa_collect}{posterior samples from kappa (returned if extrainfo=TRUE)}
+\item{log_collect}{log-likelihood of each sample (returned if extrainfo=TRUE)}
 }
 \description{
 This function aligns two functions using Bayesian SRSF framework. It will align f2

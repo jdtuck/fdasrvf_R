@@ -276,8 +276,8 @@ RcppExport SEXP simucode(SEXP R_iter, SEXP R_p, SEXP R_qt1_5, SEXP R_qt2_5,
   return (List::create(Named("best_match")=Rr_best_match,
                        Named("match_collect")=Rr_match_collect,
                        Named("dist_collect")=dist_collect,
-                       Named("kappafamily")=kappa_collect,
-                       Named("log.posterior")=log_collect,
+                       Named("kappa_collect")=kappa_collect,
+                       Named("log_collect")=log_collect,
                        Named("dist_min")=dist_min));
 }
 
