@@ -21,6 +21,7 @@
 #' \item{dist_collect}{posterior samples from the distances (returned if extrainfo=TRUE)}
 #' \item{kappa_collect}{posterior samples from kappa (returned if extrainfo=TRUE)}
 #' \item{log_collect}{log-likelihood of each sample (returned if extrainfo=TRUE)}
+#' \item{pct_accept}{vector of acceptance ratios for the warping function (returned if extrainfo=TRUE)}
 #' @keywords srsf alignment, bayesian
 #' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
 #' registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
@@ -163,6 +164,7 @@ pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
     retVal$dist_collect <- dist_collect
     retVal$kappa_collect <- kappa_collect
     retVal$log_collect <- log_collect
+    retVal$pct_accept <- res$pct_accept
   }
   return(retVal)
 }

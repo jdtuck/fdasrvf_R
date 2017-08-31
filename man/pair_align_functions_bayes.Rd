@@ -37,6 +37,7 @@ Returns a list containing \item{f1}{function 1}
 \item{dist_collect}{posterior samples from the distances (returned if extrainfo=TRUE)}
 \item{kappa_collect}{posterior samples from kappa (returned if extrainfo=TRUE)}
 \item{log_collect}{log-likelihood of each sample (returned if extrainfo=TRUE)}
+\item{pct_accept}{vector of acceptance ratios for the warping function (returned if extrainfo=TRUE)}
 }
 \description{
 This function aligns two functions using Bayesian SRSF framework. It will align f2

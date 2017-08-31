@@ -164,6 +164,7 @@ RcppExport SEXP simucode(SEXP R_iter, SEXP R_p, SEXP R_qt1_5, SEXP R_qt2_5,
   vec qt2_5 = as<vec>(R_qt2_5);
 
   IntegerVector Ixout(2*times),Ioriginal(L+1);
+  IntegerVector numaccept = rep(0, L-1);
   float increment,n_dist,o_dist,adjustcon,ratio,prob,u,logpost;
   int increment_int,newj,tempnew,tempold,tempx;
   vec newmatchvec(3),oldmatchvec(3),idenmatchvec(3),pnewvec(2),poldvec(2);
@@ -242,7 +243,11 @@ RcppExport SEXP simucode(SEXP R_iter, SEXP R_p, SEXP R_qt1_5, SEXP R_qt2_5,
           ratio = adjustcon*exp(kappa*o_dist-kappa*n_dist);
           prob = (ratio < 1)?(ratio):(1);
           u =  as<float>(runif(1));
-          match[i] = (u < prob)?(newj):(match[i]);
+          if (u < prob)
+          {
+            match[i] = newj;
+            numaccept[i-1] += 1;
+          }
         }
       }
     }
@@ -270,6 +275,8 @@ RcppExport SEXP simucode(SEXP R_iter, SEXP R_p, SEXP R_qt1_5, SEXP R_qt2_5,
     logpost = (p/2+alpha)*log(kappa)-kappa*(beta+dist);
     log_collect[j] = logpost;
   }
+  
+  NumericVector pctaccept = as<NumericVector>(numaccept) / iter;
   vec Rr_best_match = best_match+1;
   mat Rr_match_collect = match_collect+1;
 
@@ -278,7 +285,8 @@ RcppExport SEXP simucode(SEXP R_iter, SEXP R_p, SEXP R_qt1_5, SEXP R_qt2_5,
                        Named("dist_collect")=dist_collect,
                        Named("kappa_collect")=kappa_collect,
                        Named("log_collect")=log_collect,
-                       Named("dist_min")=dist_min));
+                       Named("dist_min")=dist_min,
+                       Named("pct_accept")=pctaccept));
 }
 
 RcppExport SEXP itercode(SEXP R_iter, SEXP R_n, SEXP R_m, SEXP R_mu_5, SEXP R_match_matrix,
