@@ -37,7 +37,7 @@ AmplitudeBoxplot <- function(warp_median, alpha=.05, ka=1, showplot=T){
     fn <- warp_median$fs
     qn <- warp_median$qs
   }
-  
+
   M <- nrow(fn)
   N <- ncol(fn)
   lambda <- 0.5
