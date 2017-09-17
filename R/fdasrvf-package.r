@@ -129,7 +129,18 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name beta
+#' @name mpeg7
 #' @usage data("mpeg7")
 #' @format an array of shape (2,100,65,20)
+NULL
+#' Example Image Data set
+#'
+#' Contains two simulated images for registration
+#'
+#'
+#' @docType data
+#' @keywords datasets
+#' @name image
+#' @usage data("image")
+#' @format a list containing two images of dimension  (64,64)
 NULL
