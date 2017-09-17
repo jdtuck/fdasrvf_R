@@ -6,7 +6,7 @@
 This function aligns to images using the q-map framework}
 \usage{
 pair_align_image(I1, I2, M = 5, ortho = TRUE, basis_type = "t",
-  resizei = TRUE, N = 64, stepsize = 1e-05, itermax = 1000)
+  resizei = FALSE, N = 64, stepsize = 1e-05, itermax = 1000)
 }
 \arguments{
 \item{I1}{reference image}
@@ -34,6 +34,11 @@ Returns a list containing \item{Inew}{aligned I2}
 \description{
 Pairwise align two images
 This function aligns to images using the q-map framework
+}
+\examples{
+\dontrun{
+data("image")
+out <- pair_align_image(im$I1, im$I2)}
 }
 \references{
 Q. Xie, S. Kurtek, E. Klassen, G. E. Christensen and A. Srivastava. Metric-based pairwise and multiple image registration. IEEE European Conference on Computer Vision (ECCV), September, 2014

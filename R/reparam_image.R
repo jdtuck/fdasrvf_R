@@ -65,12 +65,12 @@ reparam_image <- function(It, Im, gam, b, stepsize=1e-5, itermax=1000, lmark=FAL
                 hstop = hstop*(H[iter]>=H[iter-1])
             }
             if (hstop!=0){
-                cat("Warning: energy constantly increasing")
+                cat("Warning: energy constantly increasing\n")
             }
         }
 
         if ((iter>4) && (H[iter]>=H[iter-1]) && (H[iter-1]>=H[iter-2]) && (H[iter-2] >= H[iter-3])) {
-            cat("Warning: energy is not changing")
+            cat("Warning: energy is not changing\n")
         }
 
         if (((iter>1) && (H[iter]>H[iter-1])) || ((iter>3) && ((H[iter-1]<=H[iter-2]) && (H[iter-2]>H[iter-3])))) {

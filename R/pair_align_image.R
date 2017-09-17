@@ -16,7 +16,11 @@
 #' @keywords image alignment
 #' @references Q. Xie, S. Kurtek, E. Klassen, G. E. Christensen and A. Srivastava. Metric-based pairwise and multiple image registration. IEEE European Conference on Computer Vision (ECCV), September, 2014
 #' @export
-pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=TRUE, N=64, stepsize=1e-5, itermax=1000){
+#' @examples
+#' \dontrun{
+#' data("image")
+#' out <- pair_align_image(im$I1, im$I2)}
+pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FALSE, N=64, stepsize=1e-5, itermax=1000){
     m = dim(I1)[1]
     n = dim(I1)[2]
     F1 = array(0,dim=c(m,n,2))
@@ -43,8 +47,8 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=TR
             dy = (n-1)/(N-1)
             F1a = array(0,dim=c(N,N,2))
             if (requireNamespace("akima", quietly = TRUE)) {
-                F1a[,,1] = akima::bicubic.grid(1:m,1:n,F1[,,1],xlim,ylim,dx,dy)$z
-                F1a[,,2] = akima::bicubic.grid(1:m,1:n,F1[,,2],xlim,ylim,dx,dy)$z
+                F1a[,,1] = akima::bicubic.grid(1:m,1:n,F1[,,1],xlim,ylim,dx=dx,dy=dy)$z
+                F1a[,,2] = akima::bicubic.grid(1:m,1:n,F1[,,2],xlim,ylim,dx=dx,dy=dy)$z
             } else {
                 grid.list<- list(x=seq(1,m,length.out=N), y=seq(1,n,length.out=N))
                 obj<-list(x=1:m, y=1:n, z=F1[,,1])
@@ -60,8 +64,8 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=TR
             dy = (n1-1)/(N-1)
             F2a = array(0,dim=c(N,N,2))
             if (requireNamespace("akima", quietly = TRUE)) {
-              F2a[,,1] = akima::bicubic.grid(1:m1,1:n1,F2[,,1],xlim,ylim,dx,dy)$z
-              F2a[,,2] = akima::bicubic.grid(1:m1,1:n1,F2[,,2],xlim,ylim,dx,dy)$z
+              F2a[,,1] = akima::bicubic.grid(1:m1,1:n1,F2[,,1],xlim,ylim,dx=dx,dy=dy)$z
+              F2a[,,2] = akima::bicubic.grid(1:m1,1:n1,F2[,,2],xlim,ylim,dx=dx,dy=dy)$z
             } else {
               grid.list<- list(x=seq(1,m1,length.out=N), y=seq(1,n1,length.out=N))
               obj<-list(x=1:m1, y=1:n1, z=F2[,,1])
