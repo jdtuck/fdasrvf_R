@@ -18,8 +18,8 @@ apply_gam_to_gam <- function(gamnew, gam){
     gam_new_tmp = array(0, dim=c(mt,nt,D))
     for (i in 1:D) {
         if (requireNamespace("akima", quietly = TRUE)) {
-            gam_tmp[,,i] = akima::bicubic.grid(U,V,gam[,,i],xlim,ylim,dx,dy)$z
-            gam_new_tmp[,,i] = akima::bicubic.grid(U,V,gamnew[,,i],xlim,ylim,dx,dy)$z
+            gam_tmp[,,i] = akima::bicubic.grid(U,V,gam[,,i],xlim,ylim,dx=dx,dy=dy)$z
+            gam_new_tmp[,,i] = akima::bicubic.grid(U,V,gamnew[,,i],xlim,ylim,dx=dx,dy=dy)$z
         } else {
             grid.list<- list(x=Ut, y=Vt)
             obj<-list(x=U, y=V, z=gam[,,i])
@@ -47,7 +47,7 @@ apply_gam_to_gam <- function(gamnew, gam){
     gam_cum = array(0,dim=c(m,n,D))
     for (i in 1:D) {
         if (requireNamespace("akima", quietly = TRUE)) {
-            gam_cum[,,i] = akima::bicubic.grid(Ut,Vt,gam_cum_tmp[,,i],xlim,ylim,dx1,dy1)$z
+            gam_cum[,,i] = akima::bicubic.grid(Ut,Vt,gam_cum_tmp[,,i],xlim,ylim,dx=dx1,dy=dy1)$z
         } else {
             grid.list<- list(x=U, y=V)
             obj<-list(x=Ut, y=Vt, z=gam_cum_tmp[,,i])
