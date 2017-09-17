@@ -129,7 +129,7 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name mpeg7
+#' @name beta
 #' @usage data("mpeg7")
 #' @format an array of shape (2,100,65,20)
 NULL
@@ -140,7 +140,7 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name image
+#' @name im
 #' @usage data("image")
 #' @format a list containing two images of dimension  (64,64)
 NULL
