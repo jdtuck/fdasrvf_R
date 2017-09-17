@@ -18,6 +18,7 @@
 #' @export
 #' @examples
 #' \dontrun{
+#' # This is a gradient descent algorithm and takes a long time to run
 #' data("image")
 #' out <- pair_align_image(im$I1, im$I2)}
 pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FALSE, N=64, stepsize=1e-5, itermax=1000){

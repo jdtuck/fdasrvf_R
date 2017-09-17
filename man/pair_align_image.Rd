@@ -37,6 +37,7 @@ This function aligns to images using the q-map framework
 }
 \examples{
 \dontrun{
+# This is a gradient descent algorithm and takes a long time to run
 data("image")
 out <- pair_align_image(im$I1, im$I2)}
 }
