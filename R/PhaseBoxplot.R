@@ -21,7 +21,7 @@
 #' @examples
 #' data("simu_warp_median")
 #' out <- PhaseBoxplot(simu_warp_median)
-PhaseBoxplot <- function(warp_median, alpha=.05, kp=1, showplot=T){
+PhaseBoxplot <- function(warp_median, alpha=.05, kp=1, showplot=TRUE){
   gam <- warp_median$gam
   if (warp_median$method != 'median'){
       stop('need aligned to median, please rerun time_warping with method="median"')

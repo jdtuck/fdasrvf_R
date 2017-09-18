@@ -54,7 +54,7 @@ slope (srsf) framework.
 \examples{
 data("growth_vel")
 # use more iterations for accuracy
-out <- kmeans_align(growth_vel$f,growth_vel$time, K=2, MaxItr=1)
+out <- kmeans_align(growth_vel$f,growth_vel$time, K=2, MaxItr=1, showplot=FALSE)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

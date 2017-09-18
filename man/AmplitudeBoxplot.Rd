@@ -4,7 +4,7 @@
 \alias{AmplitudeBoxplot}
 \title{Amplitude Boxplot}
 \usage{
-AmplitudeBoxplot(warp_median, alpha = 0.05, ka = 1, showplot = T)
+AmplitudeBoxplot(warp_median, alpha = 0.05, ka = 1, showplot = TRUE)
 }
 \arguments{
 \item{warp_median}{fdawarp object from \link{time_warping} of aligned data using the median}
@@ -31,7 +31,7 @@ This function constructs the amplitude boxplot
 }
 \examples{
 data("simu_warp_median")
-out <- AmplitudeBoxplot(simu_warp_median)
+out <- AmplitudeBoxplot(simu_warp_median, showplot=FALSE)
 }
 \references{
 Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization

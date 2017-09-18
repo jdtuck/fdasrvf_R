@@ -4,7 +4,7 @@
 \alias{PhaseBoxplot}
 \title{Phase Boxplot}
 \usage{
-PhaseBoxplot(warp_median, alpha = 0.05, kp = 1, showplot = T)
+PhaseBoxplot(warp_median, alpha = 0.05, kp = 1, showplot = TRUE)
 }
 \arguments{
 \item{warp_median}{fdawarp object from \link{time_warping} of aligned data using the median}

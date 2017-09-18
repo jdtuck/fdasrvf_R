@@ -21,8 +21,8 @@
 #' @export
 #' @examples
 #' data("simu_warp_median")
-#' out <- AmplitudeBoxplot(simu_warp_median)
-AmplitudeBoxplot <- function(warp_median, alpha=.05, ka=1, showplot=T){
+#' out <- AmplitudeBoxplot(simu_warp_median, showplot=FALSE)
+AmplitudeBoxplot <- function(warp_median, alpha=.05, ka=1, showplot=TRUE){
 
   fn <- warp_median$fn
   median_y <- warp_median$fmean
