@@ -1,4 +1,4 @@
-fdasrv 1.8.2
+fdasrvf 1.8.2
 --------------
 v1.8.2
 * added objects for outputs of time_warping, boxplot, and pca functions
@@ -52,7 +52,7 @@ v1.4.1
 
 v1.4
 * Fixed memory leak in Dynamic Programming algorithm
-* Updated random gamma generation to use a fourier basis on the tangent space
+* Updated random gamma generation to use a Fourier basis on the tangent space
 * Changed over parallel support to doParallel
 * Fixed documentation error
 
