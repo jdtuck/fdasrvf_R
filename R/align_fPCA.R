@@ -18,7 +18,7 @@
 #' \item{qn}{aligned srvfs - similar structure to fn}
 #' \item{q0}{original srvfs - similar structure to fn}
 #' \item{mqn}{srvf mean - vector of length \eqn{N}}
-#' \item{gam}{warping functions - vecotr of length \eqn{N}}
+#' \item{gam}{warping functions - vector of length \eqn{N}}
 #' \item{Dx}{cost function}
 #' \item{vfpca}{list containing}
 #' \item{q_pca}{srvf principal directions}

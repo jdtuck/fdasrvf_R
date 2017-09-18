@@ -1,4 +1,4 @@
-#' Gradient using finite diferences
+#' Gradient using finite differences
 #'
 #' This function takes the gradient of f using finite differences
 #'

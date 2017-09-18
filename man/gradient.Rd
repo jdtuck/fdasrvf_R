@@ -2,7 +2,7 @@
 % Please edit documentation in R/gradient.R
 \name{gradient}
 \alias{gradient}
-\title{Gradient using finite diferences}
+\title{Gradient using finite differences}
 \usage{
 gradient(f, binsize)
 }
