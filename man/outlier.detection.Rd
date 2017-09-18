@@ -12,7 +12,7 @@ samples}
 
 \item{time}{vector of size \eqn{N} describing the sample points}
 
-\item{mq}{median calcuated using \code{\link{time_warping}}}
+\item{mq}{median calculated using \code{\link{time_warping}}}
 
 \item{k}{cutoff threshold (default = 1.5)}
 }

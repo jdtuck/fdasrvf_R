@@ -6,13 +6,13 @@
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param lambda controls the elasticity (default = 0)
-#' @param method warp and caluclate to Karcher Mean or Median (options = "mean"
+#' @param method warp and calculate to Karcher Mean or Median (options = "mean"
 #' or "median", default = "mean")
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
-#'   \code{doParallel} pacakge (default=F)
+#'   \code{doParallel} package (default=F)
 #' @param omethod optimization method (DP,DP2,RBFGS)
 #' @param MaxItr maximum number of iterations
 #' @return Returns a fdawarp object containing \item{f0}{original functions}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/curve_geodesic.R
 \name{curve_geodesic}
 \alias{curve_geodesic}
-\title{Form geodesic between two curvese}
+\title{Form geodesic between two curves}
 \usage{
 curve_geodesic(beta1, beta2, k = 5)
 }

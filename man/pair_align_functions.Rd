@@ -16,7 +16,7 @@ pair_align_functions(f1, f2, time, lambda = 0, method = "DP", w = 0.01,
 
 \item{lambda}{controls amount of warping (default = 0)}
 
-\item{method}{controls which optmization method (default="DP") options are
+\item{method}{controls which optimization method (default="DP") options are
 Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 ("RBFGS") and Simultaneous Alignment ("SIMUL")}
 

@@ -14,13 +14,13 @@ reparam_curve(beta1, beta2, lambda = 0, method = "DP", w = 0.01,
 
 \item{lambda}{controls amount of warping (default = 0)}
 
-\item{method}{controls which optmization method (default="DP") options are
+\item{method}{controls which optimization method (default="DP") options are
 Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 ("RBFGS")}
 
 \item{w}{controls LRBFGS (default = 0.01)}
 
-\item{rotated}{boolean if rotation is desireid}
+\item{rotated}{boolean if rotation is desired}
 
 \item{isclosed}{boolean if curve is closed}
 }

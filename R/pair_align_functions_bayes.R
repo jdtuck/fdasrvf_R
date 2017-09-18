@@ -15,7 +15,7 @@
 #' @return Returns a list containing \item{f1}{function 1}
 #' \item{f2_q}{registered function using quotient space}
 #' \item{gam_q}{warping function quotient space}
-#' \item{f2_a}{registered fucntion using ambient space}
+#' \item{f2_a}{registered function using ambient space}
 #' \item{q2_a}{warping function ambient space}
 #' \item{match_collect}{posterior samples from warping function (returned if extrainfo=TRUE)}
 #' \item{dist_collect}{posterior samples from the distances (returned if extrainfo=TRUE)}

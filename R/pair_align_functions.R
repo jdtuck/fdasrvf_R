@@ -7,7 +7,7 @@
 #' @param f2 function 2
 #' @param time sample points of functions
 #' @param lambda controls amount of warping (default = 0)
-#' @param method controls which optmization method (default="DP") options are
+#' @param method controls which optimization method (default="DP") options are
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 #' ("RBFGS") and Simultaneous Alignment ("SIMUL")
 #' @param w controls LRBFGS (default = 0.01)

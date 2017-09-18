@@ -1,6 +1,6 @@
 #' Bayesian Karcher Mean Calculation
 #'
-#' This function calculates karcher mean of functions using DP fast for bayes method
+#' This function calculates karcher mean of functions using Bayesian method
 #'
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time sample points of functions

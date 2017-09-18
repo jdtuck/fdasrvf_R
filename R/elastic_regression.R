@@ -1,6 +1,6 @@
 #' Elastic Linear Regression
 #'
-#' This function identifies a regression model with phase-variablity
+#' This function identifies a regression model with phase-variability
 #' using elastic methods
 #'
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
@@ -8,12 +8,12 @@
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param B matrix defining basis functions (default = NULL)
 #' @param lam scalar regularization parameter (default=0)
-#' @param df scalar controling degrees of freedom if B=NULL (default=20)
+#' @param df scalar controlling degrees of freedom if B=NULL (default=20)
 #' @param max_itr scalar number of iterations (default=20)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
-#'   \code{doParallel} pacakge
+#'   \code{doParallel} package
 #' @param cores set number of cores to use with \code{doParallel} (default = 2)
 #' @return Returns a list containing
 #' \item{alpha}{model intercept}

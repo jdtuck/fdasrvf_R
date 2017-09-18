@@ -31,7 +31,7 @@ Returns a list containing \item{distfamily}{dist matrix}
 \item{regfuncs}{registered functions}
 }
 \description{
-This function calculates karcher mean of functions using DP fast for bayes method
+This function calculates karcher mean of functions using Bayesian method
 }
 \examples{
 \dontrun{

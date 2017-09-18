@@ -18,7 +18,7 @@ elastic.regression(f, y, time, B = NULL, lam = 0, df = 20, max_itr = 20,
 
 \item{lam}{scalar regularization parameter (default=0)}
 
-\item{df}{scalar controling degrees of freedom if B=NULL (default=20)}
+\item{df}{scalar controlling degrees of freedom if B=NULL (default=20)}
 
 \item{max_itr}{scalar number of iterations (default=20)}
 
@@ -27,7 +27,7 @@ elastic.regression(f, y, time, B = NULL, lam = 0, df = 20, max_itr = 20,
 \item{sparam}{number of times to apply box filter (default = 25)}
 
 \item{parallel}{enable parallel mode using \code{\link{foreach}} and
-\code{doParallel} pacakge}
+\code{doParallel} package}
 
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
 }
@@ -45,7 +45,7 @@ Returns a list containing
 \item{type}{model type ('linear')}
 }
 \description{
-This function identifies a regression model with phase-variablity
+This function identifies a regression model with phase-variability
 using elastic methods
 }
 \references{

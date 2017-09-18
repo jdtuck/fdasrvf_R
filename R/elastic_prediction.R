@@ -1,7 +1,7 @@
-#' Elastic Predicition from Regression Models
+#' Elastic Prediction from Regression Models
 #'
 #' This function performs prediction from an elastic regression model
-#'  with phase-variablity
+#'  with phase-variability
 #'
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
@@ -10,7 +10,7 @@
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
 #' @return Returns a list containing
-#' \item{y_pred}{predicited values of f or probabilities depending on model}
+#' \item{y_pred}{predicted values of f or probabilities depending on model}
 #' \item{SSE}{sum of squared errors if linear}
 #' \item{y_labels}{labels if logistic model}
 #' \item{PC}{probability of classification if logistic}

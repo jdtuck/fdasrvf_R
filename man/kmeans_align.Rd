@@ -26,9 +26,9 @@ kmeans_align(f, time, K, seeds = NULL, lambda = 0, showplot = TRUE,
 \item{sparam}{number of times to apply box filter (default = 25)}
 
 \item{parallel}{enable parallel mode using \code{\link{foreach}} and
-\code{doParallel} pacakge (default=F)}
+\code{doParallel} package (default=F)}
 
-\item{alignment}{wether to perform alignment (default = T)}
+\item{alignment}{whether to perform alignment (default = T)}
 
 \item{omethod}{optimization method (DP,DP2,RBFGS)}
 

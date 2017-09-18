@@ -1,6 +1,6 @@
 #' Group-wise function alignment and PCA Extractions
 #'
-#' This function aligns a collection of functions while extracting pincipal
+#' This function aligns a collection of functions while extracting principal
 #' components.
 #'
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
@@ -10,14 +10,14 @@
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
-#'   \code{doParallel} pacakge
+#'   \code{doParallel} package
 #' @param cores set number of cores to use with \code{doParallel} (default = 2)
 #' @param MaxItr maximum number of iterations
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 #' \item{qn}{aligned srvfs - similar structure to fn}
 #' \item{q0}{original srvfs - similar structure to fn}
-#' \item{mqn}{srvf mean - vecotr of length \eqn{N}}
+#' \item{mqn}{srvf mean - vector of length \eqn{N}}
 #' \item{gam}{warping functions - vecotr of length \eqn{N}}
 #' \item{Dx}{cost function}
 #' \item{vfpca}{list containing}

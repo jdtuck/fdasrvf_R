@@ -12,7 +12,7 @@ gradient(f, binsize)
 \item{binsize}{scalar of time samples}
 }
 \value{
-g vecotr with \eqn{N} samples which is the gradient of f
+g vector with \eqn{N} samples which is the gradient of f
 }
 \description{
 This function takes the gradient of f using finite differences

@@ -15,7 +15,7 @@ time_warping(f, time, lambda = 0, method = "mean", showplot = TRUE,
 
 \item{lambda}{controls the elasticity (default = 0)}
 
-\item{method}{warp and caluclate to Karcher Mean or Median (options = "mean"
+\item{method}{warp and calculate to Karcher Mean or Median (options = "mean"
 or "median", default = "mean")}
 
 \item{showplot}{shows plots of functions (default = T)}
@@ -25,7 +25,7 @@ or "median", default = "mean")}
 \item{sparam}{number of times to apply box filter (default = 25)}
 
 \item{parallel}{enable parallel mode using \code{\link{foreach}} and
-\code{doParallel} pacakge (default=F)}
+\code{doParallel} package (default=F)}
 
 \item{omethod}{optimization method (DP,DP2,RBFGS)}
 

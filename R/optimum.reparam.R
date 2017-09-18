@@ -7,7 +7,7 @@
 #' @param Q2 srsf of function 2
 #' @param T2 sample points of function 2
 #' @param lambda controls amount of warping (default = 0)
-#' @param method controls which optmization method (default="DP") options are
+#' @param method controls which optimizationation method (default="DP") options are
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), and Riemannian BFGS
 #' ("RBFGS")
 #' @param w controls LRBFGS (default = 0.01)

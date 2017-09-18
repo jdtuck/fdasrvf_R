@@ -5,11 +5,11 @@
 #' @param beta1 array defining curve 1
 #' @param beta2 array defining curve 1
 #' @param lambda controls amount of warping (default = 0)
-#' @param method controls which optmization method (default="DP") options are
+#' @param method controls which optimization method (default="DP") options are
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 #' ("RBFGS")
 #' @param w controls LRBFGS (default = 0.01)
-#' @param rotated boolean if rotation is desireid
+#' @param rotated boolean if rotation is desired
 #' @param isclosed boolean if curve is closed
 #' @return return a List containing \item{gam}{warping function}
 #' \item{R}{rotation matrix}

@@ -7,7 +7,7 @@
 gauss_model(warp_data, n = 1, sort_samples = FALSE)
 }
 \arguments{
-\item{warp_data}{fdawarp objecet from \link{time_warping} of aligned data}
+\item{warp_data}{fdawarp object from \link{time_warping} of aligned data}
 
 \item{n}{number of random samples (n = 1)}
 

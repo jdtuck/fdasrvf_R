@@ -16,7 +16,7 @@ elastic.logistic(f, y, time, B = NULL, df = 20, max_itr = 20,
 
 \item{B}{matrix defining basis functions (default = NULL)}
 
-\item{df}{scalar controling degrees of freedom if B=NULL (default=20)}
+\item{df}{scalar controlling degrees of freedom if B=NULL (default=20)}
 
 \item{max_itr}{scalar number of iterations (default=20)}
 
@@ -25,7 +25,7 @@ elastic.logistic(f, y, time, B = NULL, df = 20, max_itr = 20,
 \item{sparam}{number of times to apply box filter (default = 25)}
 
 \item{parallel}{enable parallel mode using \code{\link{foreach}} and
-\code{doParallel} pacakge}
+\code{doParallel} package}
 
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
 }
@@ -44,7 +44,7 @@ Returns a list containing
 }
 \description{
 This function identifies a logistic regression model with
-phase-variablity using elastic methods
+phase-variability using elastic methods
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/elastic_prediction.R
 \name{elastic.prediction}
 \alias{elastic.prediction}
-\title{Elastic Predicition from Regression Models}
+\title{Elastic Prediction from Regression Models}
 \usage{
 elastic.prediction(f, time, model, y = NULL, smooth_data = FALSE,
   sparam = 25)
@@ -22,14 +22,14 @@ elastic.prediction(f, time, model, y = NULL, smooth_data = FALSE,
 }
 \value{
 Returns a list containing
-\item{y_pred}{predicited values of f or probabilities depending on model}
+\item{y_pred}{predicted values of f or probabilities depending on model}
 \item{SSE}{sum of squared errors if linear}
 \item{y_labels}{labels if logistic model}
 \item{PC}{probability of classification if logistic}
 }
 \description{
 This function performs prediction from an elastic regression model
- with phase-variablity
+ with phase-variability
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,

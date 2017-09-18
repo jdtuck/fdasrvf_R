@@ -1,4 +1,4 @@
-#' Form geodesic between two curvese
+#' Form geodesic between two curves
 #'
 #' Form geodesic between two curves using Elastic Method
 #'
