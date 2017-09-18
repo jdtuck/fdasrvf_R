@@ -16,8 +16,7 @@ SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/P
 	gropt/src/L2SphereVariable.cpp gropt/src/OrthGroupVector.cpp gropt/src/SmartSpace.cpp gropt/src/Timer.cpp \
 	gropt/src/L2SphereVector.cpp gropt/src/Problem.cpp gropt/src/Solvers.cpp gropt/src/WeightedLowRank.cpp \
 	gropt/src/LinearOPE.cpp gropt/src/ProductElement.cpp gropt/src/SolversLS.cpp
-
-SOURCE3 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
+SOURCES3 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
 
 OBJECTS = wrapper.o
 OBJS1 = $(SOURCES1:.cpp=.o)
