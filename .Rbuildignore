@@ -8,3 +8,4 @@ appveyor.yml
 fdasrvf.Rproj
 cran-comments.md
 ^.*\.Rproj$
+^revdep$
