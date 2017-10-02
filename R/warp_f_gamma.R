@@ -5,6 +5,7 @@
 #' @param f vector function
 #' @param time time
 #' @param gamma vector warping function
+#' @param spl.int use spline interpolation (default F)
 #' @return fnew warped function
 #' @keywords srvf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
@@ -17,7 +18,12 @@
 #' @examples
 #' data("simu_data")
 #' fnew = warp_f_gamma(simu_data$f[,1],simu_data$time,seq(0,1,length.out=101))
-warp_f_gamma <- function(f,time,gamma){
-    fnew = approx(time,f,xout=(time[length(time)]-time[1])*gamma + time[1])$y
+warp_f_gamma <- function(f, time, gamma, spl.int=FALSE){
+    if (spl.int){
+      fnew <- spline(time,f,xout=(time[length(time)]-time[1])*gamma + time[1])$y
+    } else {
+      fnew <- approx(time,f,xout=(time[length(time)]-time[1])*gamma + time[1])$y
+    }
+
     return(fnew)
 }

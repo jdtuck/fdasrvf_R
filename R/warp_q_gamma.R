@@ -5,6 +5,7 @@
 #' @param q vector
 #' @param time time
 #' @param gamma vector warping function
+#' @param spl.int use spline interpolation (default F)
 #' @return qnew warped function
 #' @keywords srvf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
@@ -18,10 +19,16 @@
 #' data("simu_data")
 #' q = f_to_srvf(simu_data$f,simu_data$time)
 #' qnew = warp_q_gamma(q[,1],simu_data$time,seq(0,1,length.out=101))
-warp_q_gamma <- function(q,time,gamma){
-    M = length(gamma);
-    gam_dev = gradient(gamma, 1/(M-1))
-    qnew=approx(time,q,xout=(time[length(time)]-time[1])*gamma +
-        time[1])$y*sqrt(gam_dev)
+warp_q_gamma <- function(q, time, gamma, spl.int=FALSE){
+    M <- length(gamma);
+    gam_dev <- gradient(gamma, 1/(M-1))
+    if (spl.int){
+      qnew <- spline(time,q,xout=(time[length(time)]-time[1])*gamma +
+                    time[1])$y*sqrt(gam_dev)
+    } else {
+      qnew <- approx(time,q,xout=(time[length(time)]-time[1])*gamma +
+                    time[1])$y*sqrt(gam_dev)
+    }
+
     return(qnew)
 }

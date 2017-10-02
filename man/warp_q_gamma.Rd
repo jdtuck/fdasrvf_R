@@ -4,7 +4,7 @@
 \alias{warp_q_gamma}
 \title{Warp SRSF}
 \usage{
-warp_q_gamma(q, time, gamma)
+warp_q_gamma(q, time, gamma, spl.int = FALSE)
 }
 \arguments{
 \item{q}{vector}
@@ -12,6 +12,8 @@ warp_q_gamma(q, time, gamma)
 \item{time}{time}
 
 \item{gamma}{vector warping function}
+
+\item{spl.int}{use spline interpolation (default F)}
 }
 \value{
 qnew warped function

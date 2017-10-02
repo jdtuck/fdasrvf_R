@@ -4,7 +4,7 @@
 \alias{warp_f_gamma}
 \title{Warp Function}
 \usage{
-warp_f_gamma(f, time, gamma)
+warp_f_gamma(f, time, gamma, spl.int = FALSE)
 }
 \arguments{
 \item{f}{vector function}
@@ -12,6 +12,8 @@ warp_f_gamma(f, time, gamma)
 \item{time}{time}
 
 \item{gamma}{vector warping function}
+
+\item{spl.int}{use spline interpolation (default F)}
 }
 \value{
 fnew warped function
