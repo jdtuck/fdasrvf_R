@@ -1,4 +1,8 @@
-library(testthat)
-library(fdasrvf)
+if (requireNamespace("testthat", quietly = TRUE)){
+  library(fdasrvf)
 
-test_check("fdasrvf")
+  testthat::test_check("fdasrvf")
+} else{
+  stop("Need testthat to run checks")
+}
+
