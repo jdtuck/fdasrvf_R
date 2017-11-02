@@ -773,3 +773,7 @@ inner_product<-function(psi1, psi2, time=seq(0,1,length.out=length(psi1))){
   ip <- trapz(time,psi1*psi2)
   return(ip)
 }
+
+rinvgamma <- function(n, shape, scale = 1) {
+    return(1 / rgamma(n=n, shape=shape, rate=scale))
+}
