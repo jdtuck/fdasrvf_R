@@ -1,10 +1,6 @@
 
-# Critical TODO:
+# TODO:
 # objects don't need to pass around lists with time (x), only the function values (y); in fact, can get rid of most of time references
-# Rcpp matrix calcs after MCMC: don't bother returning g or psi; just calculate gamma_mat directly from g's
-
-# Non-critical TODO:
-# one large for loop for MCMC sampling instead of passing lists around
 # don't order all the time! sort f1, f2 once at the outset
 # integrate with fdasrvf functions
 # spacing & formatting
