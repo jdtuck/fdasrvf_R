@@ -24,7 +24,8 @@ Imports:
     parallel,
     fields,
     doParallel,
-    viridisLite
+    viridisLite,
+    MCMCpack
 Suggests: akima,
           plot3D,
           plot3Drgl, 

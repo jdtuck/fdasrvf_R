@@ -1,7 +1,7 @@
 library(fdasrvf)
 context("Pair align functions bayes Cheng")
 
-test_that("pair_align_functions_bayes() works as intended", {
+test_that("Verify pair_align_functions_bayes() works as intended", {
   set.seed(1)
   data('simu_data')
   out <- pair_align_functions_bayes(f1 = simu_data$f[,1], f2 = simu_data$f[,2],

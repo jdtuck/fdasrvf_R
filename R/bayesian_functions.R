@@ -27,3 +27,23 @@ itercode <- function(iter, n, m, mu_5, match_matrix, qt_matrix, qt_fitted_matrix
 
   return(output)
 }
+
+calcY <- function(area, gy) {
+  output = .Call('calcY', PACKAGE = 'fdasrvf', area, gy)
+  return(output)
+}
+
+cuL2norm2 <- function(x, y) {
+  output = .Call('cuL2norm2', PACKAGE = 'fdasrvf', x, y)
+  return(output)
+}
+
+trapzCpp <- function(x, y) {
+  output = .Call('trapzCpp', PACKAGE = 'fdasrvf', x, y)
+  return(output)
+}
+
+order_l2norm <- function(x, y) {
+  output = .Call('order_l2norm', PACKAGE = 'fdasrvf', x, y)
+  return(output)
+}
