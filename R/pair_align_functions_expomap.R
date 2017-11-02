@@ -85,7 +85,6 @@ f.SSEg.pw <- function(g,q1,q2){
   obs.domain=q1$x
   exp1g.temp=f.predictfunction(f=f.exp1(g),at=obs.domain)
   pt <- c(0, cuL2norm2(x = obs.domain, y = exp1g.temp$y))
-  pt[1]=0
   vec=(q1$y - f.predictfunction(f=q2,at=pt)$y * (exp1g.temp$y))^2
   return(sum(vec)) 
 }
@@ -331,12 +330,15 @@ f.phi <- function(gamma){
 
 f.phiinv <- function(psi){
   f.domain=psi$x
-  result=rep(NA,length(f.domain))
-  result[1]=0
-  for(i in 2:length(result)){
-    #i=2
-    result[i]=f.L2norm( list(x=f.domain[1:i],y=psi$y[1:i]) )^2
-  }
+
+  result <- c(0, cuL2norm2(x = f.domain, y = psi$y))
+
+#  result=rep(NA,length(f.domain))
+#  result[1]=0
+#  for(i in 2:length(result)){
+#    result[i]=f.L2norm( list(x=f.domain[1:i],y=psi$y[1:i]) )^2
+#  }
+
   return(list(x=f.domain,y=result))
 }
 
@@ -576,7 +578,7 @@ pair_align_functions_expomap <- function(f1, f2, timet, iter = 2e4,
       }
     )
  
-    # gamma stats
+    # gamma stats: can add other stats of interest here...
     statsFun <- function(vec) {
       return(c(
         quantile(vec, probs = 0.025),
