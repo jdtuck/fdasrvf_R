@@ -24,12 +24,12 @@ Imports:
     parallel,
     fields,
     doParallel,
-    viridisLite
+    viridisLite,
+    testthat
 Suggests: akima,
           plot3D,
           plot3Drgl, 
-          rgl,
-          testthat
+          rgl
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
     R (>= 3.1.0),
