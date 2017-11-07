@@ -22,8 +22,8 @@ pair_align_functions_expomap(f1, f2, timet, iter = 20000, burnin = min(5000,
 
 \item{alpha0, beta0}{IG parameters for the prior of sigma1}
 
-\item{zpcn}{list of mixture coefficients and prior probabilities for 
-Z-mixture pCN algorithm of the form list(betas, probs), where betas and 
+\item{zpcn}{list of mixture coefficients and prior probabilities for
+Z-mixture pCN algorithm of the form list(betas, probs), where betas and
 probs are numeric vectors of equal length}
 
 \item{propvar}{variance of proposal distribution}
@@ -36,7 +36,7 @@ length must be even}
 \item{extrainfo}{T/F whether additional information is returned}
 }
 \value{
-Returns a list containing 
+Returns a list containing
 \item{f2_warped}{f2 aligned to f1}
 \item{gamma}{Posterior mean gamma function}
 \item{g.coef}{matrix with iter columns, posterior draws of g.coef}
