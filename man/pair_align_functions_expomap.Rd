@@ -50,6 +50,8 @@ Returns a list containing
 \item{gamma_q975}{Upper 0.975 quantile of gamma (if extrainfo=TRUE)}
 \item{sigma_eff_size}{Effective sample size of sigma (if extrainfo=TRUE)}
 \item{psi_eff_size}{Vector of effective sample sizes of psi (if extrainfo=TRUE)}
+\item{xdist}{Vector of posterior draws from xdist between registered functions (if extrainfo=TRUE)}
+\item{ydist}{Vector of posterior draws from ydist between registered functions (if extrainfo=TRUE)}
 }
 \description{
 This function aligns two functions using Bayesian framework. It will align
@@ -80,4 +82,8 @@ with(out, tapply(accept, myzpcn$betas[betas.ind], mean))
 Lu, Y., Herbei, R., and Kurtek, S. (2017). Bayesian registration
 of functions with a Gaussian process prior. Journal of Computational and
 Graphical Statistics, DOI: 10.1080/10618600.2017.1336444.
+
+Tucker, J. D., Wu, W., Srivastava, A.,
+ Generative Models for Function Data using Phase and Amplitude Separation,
+ Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
