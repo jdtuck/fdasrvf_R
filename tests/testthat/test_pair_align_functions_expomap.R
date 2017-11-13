@@ -18,6 +18,8 @@ testthat::test_that("Verify pair_align_functions_expomap() works as intended", {
   testthat::expect_equal(mean(out$gamma_q025), 0.5047645723)
   testthat::expect_equal(mean(out$gamma_q975), 0.5121841722)
   testthat::expect_equal(mean(out$gamma_mat), 0.5083537445)
+  testthat::expect_equal(sd(out$xdist), 0.0032652812)
+  testthat::expect_equal(sd(out$ydist), 0.0028818982)
   # verify functions match approximately
   testthat::expect_equal(sum(simu_data$f[,1] - out$f2_warped), -10.32011970467)
   # verify acceptance rate
@@ -43,6 +45,10 @@ testthat::test_that("Verify pair_align_functions_expomap() works as intended", {
   testthat::expect_false(is.null(out$sigma_eff_size))
   testthat::expect_true(is.null(outSmall$psi_eff_size))
   testthat::expect_false(is.null(out$psi_eff_size))
+  testthat::expect_true(is.null(outSmall$xdist))
+  testthat::expect_false(is.null(out$xdist))
+  testthat::expect_true(is.null(outSmall$ydist))
+  testthat::expect_false(is.null(out$ydist))
 })
 
 testthat::test_that("Verify init.coef arguments work correctly", {

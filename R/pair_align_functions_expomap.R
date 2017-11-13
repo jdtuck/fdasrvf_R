@@ -495,9 +495,14 @@ f.phiinv <- function(psi) {
 #' \item{gamma_q975}{Upper 0.975 quantile of gamma (if extrainfo=TRUE)}
 #' \item{sigma_eff_size}{Effective sample size of sigma (if extrainfo=TRUE)}
 #' \item{psi_eff_size}{Vector of effective sample sizes of psi (if extrainfo=TRUE)}
+#' \item{xdist}{Vector of posterior draws from xdist between registered functions (if extrainfo=TRUE)}
+#' \item{ydist}{Vector of posterior draws from ydist between registered functions (if extrainfo=TRUE)}
 #' @references Lu, Y., Herbei, R., and Kurtek, S. (2017). Bayesian registration
 #' of functions with a Gaussian process prior. Journal of Computational and
 #' Graphical Statistics, DOI: 10.1080/10618600.2017.1336444.
+#' @references Tucker, J. D., Wu, W., Srivastava, A.,
+#'  Generative Models for Function Data using Phase and Amplitude Separation,
+#'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @importFrom coda effectiveSize
 #' @examples
@@ -600,10 +605,10 @@ pair_align_functions_expomap <- function(f1,
   }
 
   ## results objects
-  result.g.coef = matrix(NA, ncol = iter, nrow = length(g.coef.ini))
-  result.sigma1 = rep(NA, iter)
-  result.logl = rep(NA, iter)
-  result.SSE = rep(NA, iter)
+  result.g.coef <- matrix(NA, ncol = iter, nrow = length(g.coef.ini))
+  result.sigma1 <- rep(NA, iter)
+  result.logl <- rep(NA, iter)
+  result.SSE <- rep(NA, iter)
   result.accept <- rep(NA, iter)
   result.accept.betas <- rep(NA, iter)
   # matrix(0, nrow = length(zpcn$betas), ncol = 2,
@@ -676,7 +681,7 @@ pair_align_functions_expomap <- function(f1,
     result.sigma1[m] = sigma1.curr
     result.SSE[m] = SSE.curr
     if (extrainfo) {
-      result.logl[m] = logl.curr
+      result.logl[m] <- logl.curr
       result.accept[m] <- a$accept
       result.accept.betas[m] <- a$zpcnInd
     }
@@ -734,6 +739,23 @@ pair_align_functions_expomap <- function(f1,
                          with(resamp, f.phiinv(list(x = x, y = y)))$y
                        })
 
+    # x-distance, adapted from fdasrvf::elastic.distance
+    ones <- rep(1, nrow(pw.sim.est.psi.matrix))
+    Dx <- apply(pw.sim.est.psi.matrix,
+                2,
+                function(psi) {
+                  v <- inv_exp_map(ones, psi)
+                  sqrt(trapz(pw.sim.global.domain.par, v^2))
+                })
+
+    # y-distance, adapted from fdasrvf::elastic.distance
+    Dy <- apply(gamma_mat,
+                2,
+                function(gam) {
+                  q2warp <- warp_q_gamma(q2$y, q2$x, gam)
+                  sqrt(trapz(q2$x, (q1$y - q2warp)^2))
+                })
+
     # gamma stats: can add other stats of interest here...
     statsFun <- function(vec) {
       return(c(quantile(vec, probs = 0.025),
@@ -767,6 +789,8 @@ pair_align_functions_expomap <- function(f1,
     retVal$sigma_eff_size <- sig.eff
     psi.eff <- apply(pw.sim.est.psi.matrix, 1, effectiveSize)
     retVal$psi_eff_size <- psi.eff
+    retVal$xdist <- Dx
+    retVal$ydist <- Dy
   }
 
   return(retVal)
