@@ -26,12 +26,11 @@
 #' @examples
 #' data("simu_data")
 #' out = pair_align_functions(simu_data$f[,1],simu_data$f[,2],simu_data$time)
-pair_align_functions <- function(f1, f2, time,lambda=0,method="DP",w=0.01,
-                                 f1o=0.0, f2o=0.0){
+pair_align_functions <- function(f1, f2, time,lambda=0,method="DP",w=0.01){
 
   q1 = f_to_srvf(f1, time)
   q2 = f_to_srvf(f2, time)
-  gam = optimum.reparam(q1, time, q2, time, lambda, method, w, f1o, f2o)
+  gam = optimum.reparam(q1, time, q2, time, lambda, method, w, f1o=f1[1], f2o=f2[1])
   f2_aligned = warp_f_gamma(f2, time, gam)
 
   return(list(f2tilde=f2_aligned, gam=gam))
