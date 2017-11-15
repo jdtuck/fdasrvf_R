@@ -5,12 +5,14 @@
 #'
 #' @param warp_data fdawarp object from \link{time_warping} of aligned data
 #' @param no number of principal components to extract
+#' @param id point to use for f(0) (default = midpoint)
 #' @param showplot show plots of principal directions (default = T)
 #' @return Returns a vfpca object containing \item{q_pca}{srvf principal directions}
 #' \item{f_pca}{f principal directions}
 #' \item{latent}{latent values}
 #' \item{coef}{coefficients}
 #' \item{U}{eigenvectors}
+#' \item{id}{point used for f(0)}
 #' @keywords srvf alignment
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
@@ -19,7 +21,7 @@
 #' @examples
 #' data("simu_warp")
 #' vfpca = vertFPCA(simu_warp,no = 3)
-vertFPCA <- function(warp_data,no,showplot = TRUE){
+vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),showplot = TRUE){
     # Parameters
     fn <- warp_data$fn
     time <- warp_data$time
@@ -30,7 +32,6 @@ vertFPCA <- function(warp_data,no,showplot = TRUE){
 
     # FPCA
     mq_new = rowMeans(qn)
-    id = round(length(time)/2)
     m_new = sign(fn[id,])*sqrt(abs(fn[id,]))  # scaled version
     mqn = c(mq_new,mean(m_new))
     K = cov(t(rbind(qn,m_new))) #out$sigma
@@ -52,9 +53,15 @@ vertFPCA <- function(warp_data,no,showplot = TRUE){
     f_pca = array(0,dim=c((length(mq_new)),Nstd,no))
     for (k in NP){
         for (i in 1:Nstd){
-            f_pca[,i,k] = cumtrapzmid(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*
-                abs(q_pca[1:(dim(q_pca)[1]-1),i,k]),sign(q_pca[dim(q_pca)[1],i,k])*
-                (q_pca[dim(q_pca)[1],i,k]^2), id)
+            if (id == 1){
+              f_pca[,i,k] <- cumtrapz(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*
+                                      abs(q_pca[1:(dim(q_pca)[1]-1),i,k]))+(sign(q_pca[dim(q_pca)[1],i,k])*(q_pca[dim(q_pca)[1],i,k]^2))
+
+            } else {
+              f_pca[,i,k] <- cumtrapzmid(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*
+                                          abs(q_pca[1:(dim(q_pca)[1]-1),i,k]),sign(q_pca[dim(q_pca)[1],i,k])*
+                                          (q_pca[dim(q_pca)[1],i,k]^2), id)
+            }
         }
         fbar = rowMeans(fn)
         fsbar = rowMeans(f_pca[,,k])
@@ -70,13 +77,14 @@ vertFPCA <- function(warp_data,no,showplot = TRUE){
         }
     }
 
-    vfpca = list()
-    vfpca$q_pca = q_pca
-    vfpca$f_pca = f_pca
-    vfpca$latent = s[NP]
-    vfpca$coef = c[,NP]
-    vfpca$U = U[,NP]
-    vfpca$time = time
+    vfpca <- list()
+    vfpca$q_pca <- q_pca
+    vfpca$f_pca <- f_pca
+    vfpca$latent <- s[NP]
+    vfpca$coef <- c[,NP]
+    vfpca$U <- U[,NP]
+    vfpca$id <- id
+    vfpca$time <- time
 
     class(vfpca) <- "vfpca"
 
