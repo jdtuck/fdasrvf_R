@@ -73,9 +73,9 @@ vertFPCA <- function(warp_data,no,showplot = TRUE){
     vfpca = list()
     vfpca$q_pca = q_pca
     vfpca$f_pca = f_pca
-    vfpca$latent = s
-    vfpca$coef = c
-    vfpca$U = U
+    vfpca$latent = s[NP]
+    vfpca$coef = c[,NP]
+    vfpca$U = U[,NP]
     vfpca$time = time
 
     class(vfpca) <- "vfpca"
