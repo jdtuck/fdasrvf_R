@@ -4,8 +4,7 @@
 \alias{pair_align_functions}
 \title{Align two functions}
 \usage{
-pair_align_functions(f1, f2, time, lambda = 0, method = "DP", w = 0.01,
-  f1o = 0, f2o = 0)
+pair_align_functions(f1, f2, time, lambda = 0, method = "DP", w = 0.01)
 }
 \arguments{
 \item{f1}{function 1}
