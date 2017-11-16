@@ -542,6 +542,9 @@ pair_align_functions_expomap <- function(f1,
     stop('Length of init.coef must be even')
   }
 
+  # Number of sig figs to report in gamma_mat
+  SIG_GAM <- 13
+
   # for now, back to list format of Yi's software
   f1 <- list(x = timet, y = f1)
   f2 <- list(x = timet, y = f2)
@@ -736,7 +739,8 @@ pair_align_functions_expomap <- function(f1,
                            xout = f1$x,
                            rule = 2
                          )
-                         with(resamp, f.phiinv(list(x = x, y = y)))$y
+                         rawgam <- with(resamp, f.phiinv(list(x = x, y = y)))$y
+                         round(rawgam, SIG_GAM)
                        })
 
     # x-distance, adapted from fdasrvf::elastic.distance
