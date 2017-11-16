@@ -57,11 +57,20 @@ horizFPCA <- function(warp_data,no,showplot = TRUE){
         }
     }
 
+    N2 = dim(gam)[2]
+    c = matrix(0,N2,no)
+    for (k in no_pca){
+      for (i in 1:N2){
+        c[i,k] = sum((vec[,i]-vm)*U[,k])
+      }
+    }
+
     hfpca = list()
     hfpca$gam_pca = gam_pca
     hfpca$psi_pca = psi_pca
-    hfpca$latent = s
-    hfpca$U = U
+    hfpca$latent = s[no_pca]
+    hfpca$U = U[,no_pca]
+    hfpca$coef = c[,no_pca]
     hfpca$vec = vec
     hfpca$mu = mu
 

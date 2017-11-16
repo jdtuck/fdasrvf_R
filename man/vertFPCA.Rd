@@ -4,12 +4,15 @@
 \alias{vertFPCA}
 \title{Vertical Functional Principal Component Analysis}
 \usage{
-vertFPCA(warp_data, no, showplot = TRUE)
+vertFPCA(warp_data, no, id = round(length(warp_data$time)/2),
+  showplot = TRUE)
 }
 \arguments{
 \item{warp_data}{fdawarp object from \link{time_warping} of aligned data}
 
 \item{no}{number of principal components to extract}
+
+\item{id}{point to use for f(0) (default = midpoint)}
 
 \item{showplot}{show plots of principal directions (default = T)}
 }
@@ -19,6 +22,7 @@ Returns a vfpca object containing \item{q_pca}{srvf principal directions}
 \item{latent}{latent values}
 \item{coef}{coefficients}
 \item{U}{eigenvectors}
+\item{id}{point used for f(0)}
 }
 \description{
 This function calculates vertical functional principal component analysis
