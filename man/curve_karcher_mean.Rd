@@ -4,12 +4,14 @@
 \alias{curve_karcher_mean}
 \title{Karcher Mean of Curves}
 \usage{
-curve_karcher_mean(beta, mode = "O", maxit = 20)
+curve_karcher_mean(beta, mode = "O", rotated = T, maxit = 20)
 }
 \arguments{
 \item{beta}{array (n,T,N) for N number of curves}
 
 \item{mode}{Open ("O") or Closed ("C") curves}
+
+\item{rotated}{Optimize over rotation (default = T)}
 
 \item{maxit}{maximum number of iterations}
 }

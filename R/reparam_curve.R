@@ -29,36 +29,63 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
     skipm = 4
     auto = 2
     tau = 0
-    if (method=="DP"){
-        # Optimze over SO(n) x Gamma
+    if (method=="DPo"){
+        # Optimize over SO(n) x Gamma
         q1 = curve_to_q(beta1)
 
-        # Optimzie over SO(n)
-        out = find_rotation_seed_coord(beta1, beta2);
-        beta2 = out$beta2
-        R = out$O_hat
-        tau = out$tau
+        # Optimize over SO(n)
+        if (rotated){
+          out = find_rotation_seed_coord(beta1, beta2);
+          beta2 = out$beta2
+          R = out$O_hat
+          tau = out$tau
+        } else{
+          R = diag(n1)
+          tau = 0
+        }
         q2 = curve_to_q(beta2)
 
-        # Optimzie over Gamma
+        # Optimize over Gamma
         q1i = q1
         dim(q1i) = c(M*n1)
         q2i = q2
         dim(q2i) = c(M*n1)
         G = rep(0,M)
         T1 = rep(0,M)
-        size = 0;
+        size = 0
         ret = .Call('DPQ2', PACKAGE = 'fdasrvf', q1i, timet, q2i, timet, n1, M, M, timet, timet, M, M, G, T1, size, lambda);
 
         G = ret$G[1:ret$size]
         Tf = ret$T[1:ret$size]
         gam0 = approx(Tf,G,xout=timet)$y
+    } else if (method=="DP") {
+      # Optimize over SO(n) x Gamma
+      q1 = curve_to_q(beta1)
+
+      # Optimize over SO(n)
+      if (rotated){
+        out = find_rotation_seed_coord(beta1, beta2);
+        beta2 = out$beta2
+        R = out$O_hat
+        tau = out$tau
+      } else{
+        R = diag(n1)
+        tau = 0
+      }
+      q2 = curve_to_q(beta2)
+
+      # Optimize over Gamma
+      q1i = q1
+      dim(q1i) = c(M*n1)
+      q2i = q2
+      dim(q2i) = c(M*n1)
+      gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n1, M, lambda, 0, rep(0,M))
     } else if (method=="DP2") {
         c1 = t(beta1)
         dim(c1) = c(M*n1)
         c2 = t(beta2)
         dim(c2) = c(M*n1)
-        opt = rep(0,M+n1*n1+1);
+        opt = rep(0,M+n1*n1+1)
         swap = FALSE
         fopts = rep(0,5)
         comtime = rep(0,5)
@@ -71,7 +98,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
         R = matrix(out$opt[(tmp-4):(tmp-1)],nrow=2)
 
         if (out$swap){
-            gam0 = invertGamma(gam0);
+            gam0 = invertGamma(gam0)
             R = t(R)
         }
 
@@ -80,7 +107,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
         dim(c1) = c(M*n1)
         c2 = t(beta2)
         dim(c2) = c(M*n1)
-        opt = rep(0,M+n1*n1+1);
+        opt = rep(0,M+n1*n1+1)
         swap = FALSE
         fopts = rep(0,5)
         comtime = rep(0,5)

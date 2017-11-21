@@ -4,6 +4,7 @@
 #'
 #' @param beta array (n,T,N) for N number of curves
 #' @param mode Open ("O") or Closed ("C") curves
+#' @param rotated Optimize over rotation (default = T)
 #' @param maxit maximum number of iterations
 #' @return Returns a list containing \item{mu}{mean srvf}
 #' \item{betamean}{mean curve}
@@ -15,7 +16,7 @@
 #' @examples
 #' data("mpeg7")
 #' out = curve_karcher_mean(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-curve_karcher_mean <- function(beta, mode="O", maxit=20){
+curve_karcher_mean <- function(beta, mode="O", rotated=T, maxit=20){
     tmp = dim(beta)
     n = tmp[1]
     T1 = tmp[2]
@@ -50,7 +51,7 @@ curve_karcher_mean <- function(beta, mode="O", maxit=20){
 
         # TODO: parallelize
         for (i in 1:N){
-            out = karcher_calc(beta[,,i], q[,,i], betamean, mu, mode)
+            out = karcher_calc(beta[,,i], q[,,i], betamean, mu, rotated, mode)
             v[,,i] = out$v
             sumd[itr+1] = sumd[itr+1] + out$d^2
         }
