@@ -11,6 +11,7 @@
 #' @param w controls LRBFGS (default = 0.01)
 #' @param rotated boolean if rotation is desired
 #' @param isclosed boolean if curve is closed
+#' @param mode Open ("O") or Closed ("C") curves
 #' @return return a List containing \item{gam}{warping function}
 #' \item{R}{rotation matrix}
 #' \item{tau}{seed point}
@@ -21,8 +22,7 @@
 #' data("mpeg7")
 #' gam = reparam_curve(beta[,,1,1],beta[,,1,5])$gam
 reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
-                          isclosed=F){
-
+                          isclosed=F, mode="O"){
     n1 = nrow(beta2)
     M = ncol(beta2)
     timet = seq(0,1,length.out=M)
@@ -35,7 +35,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
 
         # Optimize over SO(n)
         if (rotated){
-          out = find_rotation_seed_coord(beta1, beta2);
+          out = find_rotation_seed_coord(beta1, beta2, mode)
           beta2 = out$beta2
           R = out$O_hat
           tau = out$tau

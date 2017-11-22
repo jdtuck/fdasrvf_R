@@ -147,7 +147,7 @@ shift_f <- function(f, tau){
 }
 
 
-find_rotation_seed_coord <- function(beta1, beta2){
+find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
     n = nrow(beta1)
     T1 = ncol(beta1)
     q1 = curve_to_q(beta1)
@@ -163,7 +163,11 @@ find_rotation_seed_coord <- function(beta1, beta2){
 
     tau = which.min(Ltwo)
     O_hat = Rlist[,,tau]
-    beta2new = shift_f(beta2,tau)
+    if (mode=="C")
+      beta2new = shift_f(beta2,tau)
+    else
+      beta2new = beta2
+
     beta2new = O_hat %*% beta2new
 
     return(list(beta2new=beta2new,O_hat=O_hat,tau=tau))
@@ -323,15 +327,20 @@ inverse_exp_coord <- function(beta1, beta2, mode="O", rotated=T){
     }
 
     # Iteratively optimize over SO(n) x Gamma using old DP
-    out = reparam_curve(beta1, beta2, rotated=rotated, isclosed=isclosed)
+    out = reparam_curve(beta1, beta2, rotated=rotated, isclosed=isclosed, mode=mode)
     if (mode=="C")
       beta2 = shift_f(beta2, out$tau)
 
     beta2 = out$R %*% beta2
     gamI = invertGamma(out$gam)
     beta2 = group_action_by_gamma_coord(beta2, gamI)
-    out = find_rotation_seed_coord(beta1, beta2)
-    q2n = curve_to_q(out$beta2new)
+    if (rotated){
+      out = find_rotation_seed_coord(beta1, beta2, mode)
+      q2n = curve_to_q(out$beta2new)
+    } else {
+      q2n = curve_to_q(beta2)
+    }
+
 
     if (mode=="C"){
       q2n = project_curve(q2n)
