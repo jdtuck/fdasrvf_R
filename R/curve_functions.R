@@ -348,11 +348,11 @@ inverse_exp_coord <- function(beta1, beta2, mode="O", rotated=T){
 
     # Compute geodesic distance
     q1dotq2 = innerprod_q2(q1, q2n)
-    dist = acos(q1dotq2)
-
     if (q1dotq2>1){
-        q1dotq2 = 1.
+      q1dotq2 = 1.
     }
+    
+    dist = acos(q1dotq2)
 
     u = q2n - q1dotq2 * q1
     normu = sqrt(innerprod_q2(u,u))
@@ -393,11 +393,11 @@ inverse_exp <- function(q1, q2, beta2){
 
     # compute geodesic distance
     q1dotq2 = innerprod_q2(q1, q2)
-    dist = acos(q1dotq2)
-
     if (q1dotq2>1){
         q1dotq2 = 1.
     }
+    
+    dist = acos(q1dotq2)
 
     u = q2 - q1dotq2 * q1
     normu = sqrt(innerprod_q2(u,u))
