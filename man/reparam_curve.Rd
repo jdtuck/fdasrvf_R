@@ -5,7 +5,7 @@
 \title{Align two curves}
 \usage{
 reparam_curve(beta1, beta2, lambda = 0, method = "DP", w = 0.01,
-  rotated = T, isclosed = F)
+  rotated = T, isclosed = F, mode = "O")
 }
 \arguments{
 \item{beta1}{array defining curve 1}
@@ -23,6 +23,8 @@ Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 \item{rotated}{boolean if rotation is desired}
 
 \item{isclosed}{boolean if curve is closed}
+
+\item{mode}{Open ("O") or Closed ("C") curves}
 }
 \value{
 return a List containing \item{gam}{warping function}
