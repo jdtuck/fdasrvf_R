@@ -25,11 +25,11 @@
 #' @docType package
 #' @useDynLib fdasrvf, .registration=TRUE
 #' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields
-#' @importFrom graphics layout legend matplot plot title lines image
+#' @importFrom graphics layout legend matplot plot title lines image plot.new
 #' @importFrom grDevices rainbow
 #' @importFrom coda traceplot mcmc
 #' @importFrom viridisLite viridis
-#' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var spline median
+#' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var spline median rgamma
 #' @aliases fdasrvf fdasrvf-package
 NULL
 #' Simulated two Gaussian Dataset

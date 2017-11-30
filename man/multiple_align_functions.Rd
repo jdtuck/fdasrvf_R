@@ -13,6 +13,8 @@ multiple_align_functions(f, time, mu, lambda = 0, showplot = TRUE,
 
 \item{time}{vector of size \eqn{N} describing the sample points}
 
+\item{mu}{vector of size \eqn{N} that f is aligned to}
+
 \item{lambda}{controls the elasticity (default = 0)}
 
 \item{showplot}{shows plots of functions (default = T)}
@@ -27,6 +29,8 @@ multiple_align_functions(f, time, mu, lambda = 0, showplot = TRUE,
 \item{omethod}{optimization method (DP,DP2,RBFGS,bayesian)}
 
 \item{MaxItr}{maximum number of iterations}
+
+\item{iter}{bayesian number of mcmc samples (default 2000)}
 }
 \value{
 Returns a fdawarp object containing \item{f0}{original functions}

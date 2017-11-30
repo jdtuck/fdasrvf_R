@@ -506,6 +506,8 @@ f.phiinv <- function(psi) {
 #' @export
 #' @importFrom coda effectiveSize
 #' @examples
+#' \dontrun{
+#' # This is a mcmc algorithm and takes a long time to run
 #' data("simu_data")
 #' myzpcn <- list(betas = c(0.1, 0.01, 0.005, 0.0001),
 #'   probs = c(0.2, 0.2, 0.4, 0.2))
@@ -514,7 +516,7 @@ f.phiinv <- function(psi) {
 #' # overall acceptance ratio
 #' mean(out$accept)
 #' # acceptance ratio by zpcn coefficient
-#' with(out, tapply(accept, myzpcn$betas[betas.ind], mean))
+#' with(out, tapply(accept, myzpcn$betas[betas.ind], mean))}
 pair_align_functions_expomap <- function(f1,
                                          f2,
                                          timet,

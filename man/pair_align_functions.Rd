@@ -20,10 +20,6 @@ Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 ("RBFGS") and Simultaneous Alignment ("SIMUL")}
 
 \item{w}{controls LRBFGS (default = 0.01)}
-
-\item{f1o}{initial value of f1, vector or scalar depending on q1, defaults to zero}
-
-\item{f2o}{initial value of f2, vector or scalar depending on q1, defaults to zero}
 }
 \value{
 Returns a list containing \item{f2tilde}{aligned f2}

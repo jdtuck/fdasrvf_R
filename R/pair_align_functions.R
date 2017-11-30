@@ -11,8 +11,6 @@
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 #' ("RBFGS") and Simultaneous Alignment ("SIMUL")
 #' @param w controls LRBFGS (default = 0.01)
-#' @param f1o initial value of f1, vector or scalar depending on q1, defaults to zero
-#' @param f2o initial value of f2, vector or scalar depending on q1, defaults to zero
 #' @return Returns a list containing \item{f2tilde}{aligned f2}
 #' \item{gam}{warping function}
 #' @keywords srsf alignment

@@ -5,6 +5,7 @@
 #'
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
+#' @param mu vector of size \eqn{N} that f is aligned to
 #' @param lambda controls the elasticity (default = 0)
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
@@ -13,6 +14,7 @@
 #'   \code{doParallel} package (default=F)
 #' @param omethod optimization method (DP,DP2,RBFGS,bayesian)
 #' @param MaxItr maximum number of iterations
+#' @param iter bayesian number of mcmc samples (default 2000)
 #' @return Returns a fdawarp object containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 #' \item{qn}{aligned SRSFs - similar structure to fn}
@@ -70,6 +72,7 @@ multiple_align_functions <- function(f, time, mu, lambda = 0,
   tmp = gradient.spline(mu,binsize,smooth_data)
   mf = tmp$f
   mq = tmp$g/sqrt(abs(tmp$g)+eps)
+  k <- 1
 
   cat(sprintf("Aligning %d functions in SRSF space...\n",N))
   outfor<-foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
