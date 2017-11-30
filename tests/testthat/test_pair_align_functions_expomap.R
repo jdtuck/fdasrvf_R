@@ -21,7 +21,7 @@ testthat::test_that("Verify pair_align_functions_expomap() works as intended", {
   testthat::expect_equal(sd(out$xdist), 0.0032652812)
   testthat::expect_equal(sd(out$ydist), 0.0028818982)
   # verify functions match approximately
-  testthat::expect_equal(sum(simu_data$f[,1] - out$f2_warped), -10.32011970467)
+  testthat::expect_equal(sum(simu_data$f[,1] - out$f2_warped), -10.11917)
   # verify acceptance rate
   testthat::expect_equal(mean(out$accept), 0.1701170117)
   testthat::expect_equal(prod(log(table(out$betas.ind))), 1832.14013976635)
