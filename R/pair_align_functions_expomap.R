@@ -718,6 +718,8 @@ pair_align_functions_expomap <- function(f1,
   # transform posterior mean of psi to gamma
   ### aim to replace this by gamma mean below
   result.posterior.gamma <- f.phiinv(result.posterior.psi)
+  gam0 <- result.posterior.gamma$y
+  result.posterior.gamma$y <- (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])
 
   # warped f2
   f2.warped <-

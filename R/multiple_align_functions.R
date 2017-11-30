@@ -11,7 +11,7 @@
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
 #'   \code{doParallel} package (default=F)
-#' @param omethod optimization method (DP,DP2,RBFGS)
+#' @param omethod optimization method (DP,DP2,RBFGS,bayesian)
 #' @param MaxItr maximum number of iterations
 #' @return Returns a fdawarp object containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
@@ -34,7 +34,7 @@
 #' @export
 multiple_align_functions <- function(f, time, mu, lambda = 0,
                                      showplot = TRUE, smooth_data = FALSE, sparam = 25,
-                                     parallel = FALSE, omethod = "DP", MaxItr = 20){
+                                     parallel = FALSE, omethod = "DP", MaxItr = 20, iter=2000){
   if (parallel){
     cores = detectCores()-1
     cl = makeCluster(cores)
@@ -43,37 +43,42 @@ multiple_align_functions <- function(f, time, mu, lambda = 0,
   {
     registerDoSEQ()
   }
-  
+
   cat(sprintf("lambda = %5.1f \n",lambda))
-  
+
   binsize = mean(diff(time))
   eps = .Machine$double.eps
   M = nrow(f)
   N = ncol(f)
   f0 = f
   w = 0.0
-  
+
   if (smooth_data){
     f = smooth.data(f,sparam)
   }
-  
+
   if (showplot){
     matplot(time,f,type="l")
     title(main="Original data")
   }
-  
+
   # Compute q-function of the functional data
   tmp = gradient.spline(f,binsize,smooth_data)
   f = tmp$f
   q = tmp$g/sqrt(abs(tmp$g)+eps)
-  
+
   tmp = gradient.spline(mu,binsize,smooth_data)
   mf = tmp$f
   mq = tmp$g/sqrt(abs(tmp$g)+eps)
-  
+
   cat(sprintf("Aligning %d functions in SRSF space...\n",N))
   outfor<-foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
-    gam = optimum.reparam(mq,time,q[,k],time,lambda,omethod,w,mf[1],f[1,k])
+    if (omethod=="bayesian"){
+      gam = pair_align_functions_expomap(mu, f[,k], time, iter=iter)$gamma
+    } else {
+      gam = optimum.reparam(mq,time,q[,k],time,lambda,omethod,w,mf[1],f[1,k])
+    }
+
     gam_dev = gradient(gam,1/(M-1))
     f_temp = approx(time,f[,k],xout=(time[length(time)]-time[1])*gam +
                       time[1])$y
@@ -82,10 +87,10 @@ multiple_align_functions <- function(f, time, mu, lambda = 0,
     d <- sqrt(trapz(time,v*v))
     vtil <- v/d
     dtil <- 1/d
-    
+
     list(gam,gam_dev,q_temp,f_temp,vtil,dtil)
   }
-  
+
   gam = unlist(outfor[1,])
   dim(gam)=c(M,N)
   gam = t(gam)
@@ -103,9 +108,9 @@ multiple_align_functions <- function(f, time, mu, lambda = 0,
   dim(vtil)=c(M,N)
   dtil = unlist(outfor[6,]);
   dim(dtil)=c(1,N)
- 
 
-  
+
+
   # Aligned data & stats
   q0 = q
   mean_f0 = rowMeans(f)
@@ -116,33 +121,33 @@ multiple_align_functions <- function(f, time, mu, lambda = 0,
   fmean = mean(f0[1,])+cumtrapz(time,mqn*abs(mqn))
   gam = t(gam)
   gamI = SqrtMeanInverse(gam)
-  
-  
+
+
   fgam = matrix(0,M,N)
   for (ii in 1:N){
     fgam[,ii] = approx(time,fmean,xout=(time[length(time)]-time[1])*gam[,ii] +
                          time[1])$y
   }
   var_fgam = apply(fgam,1,var)
-  
+
   orig.var = trapz(time,std_f0^2)
   amp.var = trapz(time,std_fn^2)
   phase.var = trapz(time,var_fgam)
-  
+
   out <- list(f0=f,time=time,fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,gam=gam,
               orig.var=orig.var,amp.var=amp.var,phase.var=phase.var,
               qun=0,lambda=lambda,method="mean",omethod=omethod,gamI=gamI,rsamps=F)
-  
+
   class(out) <- 'fdawarp'
-  
+
   if (showplot){
     plot(out)
   }
-  
+
   if (parallel){
     stopCluster(cl)
   }
-  
+
   return(out)
-  
+
 }

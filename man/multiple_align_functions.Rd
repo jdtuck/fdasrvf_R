@@ -6,7 +6,7 @@
 \usage{
 multiple_align_functions(f, time, mu, lambda = 0, showplot = TRUE,
   smooth_data = FALSE, sparam = 25, parallel = FALSE, omethod = "DP",
-  MaxItr = 20)
+  MaxItr = 20, iter = 2000)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
@@ -24,7 +24,7 @@ multiple_align_functions(f, time, mu, lambda = 0, showplot = TRUE,
 \item{parallel}{enable parallel mode using \code{\link{foreach}} and
 \code{doParallel} package (default=F)}
 
-\item{omethod}{optimization method (DP,DP2,RBFGS)}
+\item{omethod}{optimization method (DP,DP2,RBFGS,bayesian)}
 
 \item{MaxItr}{maximum number of iterations}
 }
