@@ -11,17 +11,17 @@ testthat::test_that("Verify pair_align_functions_expomap() works as intended", {
   out <- pair_align_functions_expomap(myf1, myf2, timet = mytime, iter = 1e4,
     alpha0 = 0.1, beta0 = 0.1, zpcn = myzpcn, extrainfo = TRUE)
   # verify function hasn't been changed
-  testthat::expect_equal(mean(out$gamma$y), 0.5083758020)
-  testthat::expect_equal(mean(out$g.coef), 0.0009790850)
+  testthat::expect_equal(mean(out$gamma$y), 0.50838069293)
+  testthat::expect_equal(mean(out$g.coef), 0.0009790850138)
   testthat::expect_equal(mean(out$psi$y), 0.9994264515)
-  testthat::expect_equal(mean(out$sigma1), 0.1190701553)
-  testthat::expect_equal(mean(out$gamma_q025), 0.5047645723)
+  testthat::expect_equal(mean(out$sigma1), 0.1190701554)
+  testthat::expect_equal(mean(out$gamma_q025), 0.5047645724)
   testthat::expect_equal(mean(out$gamma_q975), 0.5121841722)
   testthat::expect_equal(mean(out$gamma_mat), 0.5083537445)
   testthat::expect_equal(sd(out$xdist), 0.0032652812)
   testthat::expect_equal(sd(out$ydist), 0.0028818982)
   # verify functions match approximately
-  testthat::expect_equal(sum(simu_data$f[,1] - out$f2_warped), -10.11917)
+  testthat::expect_equal(sum(simu_data$f[,1] - out$f2_warped), -10.31959727)
   # verify acceptance rate
   testthat::expect_equal(mean(out$accept), 0.1701170117)
   testthat::expect_equal(prod(log(table(out$betas.ind))), 1832.14013976635)
