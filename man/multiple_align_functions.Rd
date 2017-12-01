@@ -26,7 +26,7 @@ multiple_align_functions(f, time, mu, lambda = 0, showplot = TRUE,
 \item{parallel}{enable parallel mode using \code{\link{foreach}} and
 \code{doParallel} package (default=F)}
 
-\item{omethod}{optimization method (DP,DP2,RBFGS,bayesian)}
+\item{omethod}{optimization method (DP,DP2,RBFGS,dBayes,expBayes)}
 
 \item{MaxItr}{maximum number of iterations}
 

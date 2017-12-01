@@ -12,7 +12,7 @@
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
 #'   \code{doParallel} package (default=F)
-#' @param omethod optimization method (DP,DP2,RBFGS,bayesian)
+#' @param omethod optimization method (DP,DP2,RBFGS,dBayes,expBayes)
 #' @param MaxItr maximum number of iterations
 #' @param iter bayesian number of mcmc samples (default 2000)
 #' @return Returns a fdawarp object containing \item{f0}{original functions}
@@ -76,10 +76,12 @@ multiple_align_functions <- function(f, time, mu, lambda = 0,
 
   cat(sprintf("Aligning %d functions in SRSF space...\n",N))
   outfor<-foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
-    if (omethod=="bayesian"){
-      gam = pair_align_functions_expomap(mu, f[,k], time, iter=iter)$gamma
+    if (omethod=="expBayes"){
+      gam <- pair_align_functions_expomap(mu, f[,k], time, iter=iter)$gamma
+    } else if (omethod=="dBayes") {
+      gam <- pair_align_functions_bayes(mu, f[,k], time)$gam_a
     } else {
-      gam = optimum.reparam(mq,time,q[,k],time,lambda,omethod,w,mf[1],f[1,k])
+      gam <- optimum.reparam(mq,time,q[,k],time,lambda,omethod,w,mf[1],f[1,k])
     }
 
     gam_dev = gradient(gam,1/(M-1))

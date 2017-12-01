@@ -4,7 +4,8 @@
 \alias{pair_align_functions}
 \title{Align two functions}
 \usage{
-pair_align_functions(f1, f2, time, lambda = 0, method = "DP", w = 0.01)
+pair_align_functions(f1, f2, time, lambda = 0, method = "DP", w = 0.01,
+  iter = 2000)
 }
 \arguments{
 \item{f1}{function 1}
@@ -17,9 +18,12 @@ pair_align_functions(f1, f2, time, lambda = 0, method = "DP", w = 0.01)
 
 \item{method}{controls which optimization method (default="DP") options are
 Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-("RBFGS") and Simultaneous Alignment ("SIMUL")}
+("RBFGS"), Simultaneous Alignment ("SIMUL"), Dirchelet Bayesian ("dBayes"),
+and Expo-Map Bayesian ("expBayes")}
 
 \item{w}{controls LRBFGS (default = 0.01)}
+
+\item{iter}{number of mcmc iterations for mcmc method (default 2000)}
 }
 \value{
 Returns a list containing \item{f2tilde}{aligned f2}
@@ -41,6 +45,13 @@ Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 Tucker, J. D., Wu, W., Srivastava, A.,
  Generative Models for Function Data using Phase and Amplitude Separation,
  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+
+Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
+ registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
+
+Lu, Y., Herbei, R., and Kurtek, S. (2017). Bayesian registration
+ of functions with a Gaussian process prior. Journal of Computational and
+ Graphical Statistics, DOI: 10.1080/10618600.2017.1336444.
 }
 \keyword{alignment}
 \keyword{srsf}

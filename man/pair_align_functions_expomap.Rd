@@ -84,8 +84,4 @@ with(out, tapply(accept, myzpcn$betas[betas.ind], mean))}
 Lu, Y., Herbei, R., and Kurtek, S. (2017). Bayesian registration
 of functions with a Gaussian process prior. Journal of Computational and
 Graphical Statistics, DOI: 10.1080/10618600.2017.1336444.
-
-Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
