@@ -94,7 +94,7 @@ multiple_align_functions <- function(f, time, mu, lambda = 0,
     vtil <- v/d
     dtil <- 1/d
 
-    outfor<-cbind(outfor,list(gam,gam_dev,q_temp,f_temp,vtil,dtil))
+    list(gam,gam_dev,q_temp,f_temp,vtil,dtil)
   }
 
   gam = unlist(outfor[1,])
