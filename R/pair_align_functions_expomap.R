@@ -450,6 +450,10 @@ f.phiinv <- function(psi) {
 }
 
 
+# Normalize gamma to [0,1]
+norm_gam <- function(gam) {
+  (gam-gam[1]) / (gam[length(gam)]-gam[1])
+}
 
 
 #' Align two functions using geometric properties of warping functions
@@ -718,7 +722,7 @@ pair_align_functions_expomap <- function(f1,
   ### aim to replace this by gamma mean below
   result.posterior.gamma <- f.phiinv(result.posterior.psi)
   gam0 <- result.posterior.gamma$y
-  result.posterior.gamma$y <- (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])
+  result.posterior.gamma$y <- norm_gam(gam0)
 
   # warped f2
   f2.warped <-
@@ -741,6 +745,7 @@ pair_align_functions_expomap <- function(f1,
                            rule = 2
                          )
                          rawgam <- with(resamp, f.phiinv(list(x = x, y = y)))$y
+                         rawgam <- norm_gam(rawgam)
                          round(rawgam, SIG_GAM)
                        })
 
