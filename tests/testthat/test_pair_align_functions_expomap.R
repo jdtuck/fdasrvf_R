@@ -15,11 +15,11 @@ testthat::test_that("Verify pair_align_functions_expomap() works as intended", {
   testthat::expect_equal(mean(out$g.coef), 0.0009790850138)
   testthat::expect_equal(mean(out$psi$y), 0.9994264515)
   testthat::expect_equal(mean(out$sigma1), 0.1190701554)
-  testthat::expect_equal(mean(out$gamma_q025), 0.5047645724)
-  testthat::expect_equal(mean(out$gamma_q975), 0.5121841722)
-  testthat::expect_equal(mean(out$gamma_mat), 0.5083537445)
-  testthat::expect_equal(sd(out$xdist), 0.0032652812)
-  testthat::expect_equal(sd(out$ydist), 0.0028818982)
+  testthat::expect_equal(mean(out$gamma_q025), 0.5047707865)
+  testthat::expect_equal(mean(out$gamma_q975), 0.5121903483)
+  testthat::expect_equal(mean(out$gamma_mat), 0.5083599893)
+  testthat::expect_equal(sd(out$xdist), 0.003265281265)
+  testthat::expect_equal(sd(out$ydist), 0.002882380796)
   # verify functions match approximately
   testthat::expect_equal(sum(simu_data$f[,1] - out$f2_warped), -10.31959727)
   # verify acceptance rate
