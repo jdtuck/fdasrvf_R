@@ -84,6 +84,7 @@ vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),showplot = 
     vfpca$coef <- c[,NP]
     vfpca$U <- U[,NP]
     vfpca$id <- id
+    vfpca$mqn <- mqn
     vfpca$time <- time
 
     class(vfpca) <- "vfpca"
