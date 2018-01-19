@@ -2,7 +2,7 @@
 #define DP_NBHD_H 1
 
 #ifndef DP_NBHD_DIM
-#define DP_NBHD_DIM 10
+#define DP_NBHD_DIM 12
 #endif
 
 #if DP_NBHD_DIM == 17
@@ -74,4 +74,3 @@ int dp_nbhd[][2] = {
 #endif  /* DP_NBHD_DIM */
 
 #endif  /* DP_NBHD_H */
-
