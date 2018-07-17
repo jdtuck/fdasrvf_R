@@ -20,7 +20,7 @@ calculatecentroid <- function(beta){
 
 innerprod_q2 <- function(q1, q2){
     T1 = ncol(q1)
-    val = sum(sum(q1*q2))/T1
+    val = trapz(seq(0,1,length.out=T1),sum(q1*q2))
 
     return(val)
 }
@@ -324,6 +324,8 @@ inverse_exp_coord <- function(beta1, beta2, mode="O", rotated=T){
 
     if (mode=="C"){
       isclosed = TRUE
+    } else {
+      isclosed = FALSE
     }
 
     # Iteratively optimize over SO(n) x Gamma using old DP

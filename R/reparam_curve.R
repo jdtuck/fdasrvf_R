@@ -75,6 +75,8 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
       q2 = curve_to_q(beta2)
 
       # Optimize over Gamma
+      q1 = q1/sqrt(innerprod_q2(q1, q1))
+      q2 = q2/sqrt(innerprod_q2(q2, q2))
       q1i = q1
       dim(q1i) = c(M*n1)
       q2i = q2

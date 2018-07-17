@@ -13,7 +13,7 @@
 curve_to_q <- function(beta){
     n = nrow(beta)
     T1 = ncol(beta)
-    v = apply(beta,1,gradient, 1.0/(T1-1))
+    v = apply(beta,1,gradient, 1.0/T1)
     v = t(v)
 
     q = matrix(0,n,T1)
@@ -26,7 +26,7 @@ curve_to_q <- function(beta){
         }
     }
 
-    q = q/sqrt(innerprod_q2(q, q))
+    #q = q/sqrt(innerprod_q2(q, q))
 
     return(q)
 }

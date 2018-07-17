@@ -15,5 +15,5 @@
 calc_shape_dist <- function(beta1, beta2, mode="O"){
     out = inverse_exp_coord(beta1, beta2, mode)
 
-    return(out$d)
+    return(out$dist)
 }
