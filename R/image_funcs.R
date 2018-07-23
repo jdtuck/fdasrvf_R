@@ -27,7 +27,7 @@ apply_gam_to_gam <- function(gamnew, gam){
             obj<-list(x=U, y=V, z=gamnew[,,i])
             gam_new_tmp[,,i] = interp.surface.grid(obj, grid.list)$z
         }
-        
+
     }
 
     gam_cum_tmp = array(0,dim=c(mt,nt,D))
@@ -183,12 +183,12 @@ jacob_imag <- function(F1){
     out = compgrad2D(F1)
     mult_factor = matrix(0,m,n)
     if (d==2){
-        mult_factor = out$dfdu[,,1]%*%out$dfdv[,,2] - out$dfdu[,,2]%*%out$dfdv[,,1]
+        mult_factor = out$dfdu[,,1]*out$dfdv[,,2] - out$dfdu[,,2]*out$dfdv[,,1]
         mult_factor = abs(mult_factor)
     } else if (d==3){
-        mult_factor = (out$dfdu[,,2]%*%out$dfdv[,,3] - out$dfdu[,,3]%*%out$dfdv[,,2])^2
-            + (out$dfdu[,,1]%*%out$dfdv[,,3] - out$dfdu[,,3]%*%out$dfdv[,,1])^2
-            + (out$dfdu[,,1]%*%out$dfdv[,,2] - out$dfdu[,,2]%*%out$dfdv[,,1])^2
+        mult_factor = (out$dfdu[,,2]*out$dfdv[,,3] - out$dfdu[,,3]*out$dfdv[,,2])^2
+            + (out$dfdu[,,1]*out$dfdv[,,3] - out$dfdu[,,3]*out$dfdv[,,1])^2
+            + (out$dfdu[,,1]*out$dfdv[,,2] - out$dfdu[,,2]*out$dfdv[,,1])^2
         mult_factor = sqrt(mult_factor)
     }
 
