@@ -5,8 +5,8 @@
 \title{Group-wise function alignment}
 \usage{
 time_warping(f, time, lambda = 0, method = "mean", showplot = TRUE,
-  smooth_data = FALSE, sparam = 25, parallel = FALSE, omethod = "DP",
-  MaxItr = 20)
+  smooth_data = FALSE, sparam = 25, parallel = FALSE,
+  omethod = "DP", MaxItr = 20)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

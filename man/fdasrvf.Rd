@@ -4,7 +4,6 @@
 \name{fdasrvf}
 \alias{fdasrvf}
 \alias{fdasrvf-package}
-\alias{fdasrvf-package}
 \title{Elastic Functional Data Analysis}
 \description{
 A library for functional data analysis using the square root

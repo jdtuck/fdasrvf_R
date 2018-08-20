@@ -4,8 +4,9 @@
 \alias{elastic.regression}
 \title{Elastic Linear Regression}
 \usage{
-elastic.regression(f, y, time, B = NULL, lam = 0, df = 20, max_itr = 20,
-  smooth_data = FALSE, sparam = 25, parallel = FALSE, cores = 2)
+elastic.regression(f, y, time, B = NULL, lam = 0, df = 20,
+  max_itr = 20, smooth_data = FALSE, sparam = 25, parallel = FALSE,
+  cores = 2)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

@@ -4,8 +4,9 @@
 \alias{function_group_warp_bayes}
 \title{Bayesian Group Warping}
 \usage{
-function_group_warp_bayes(f, time, iter = 50000, powera = 1, times = 5,
-  tau = ceiling(times * 0.04), gp = seq(dim(f)[2]), showplot = TRUE)
+function_group_warp_bayes(f, time, iter = 50000, powera = 1,
+  times = 5, tau = ceiling(times * 0.04), gp = seq(dim(f)[2]),
+  showplot = TRUE)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
