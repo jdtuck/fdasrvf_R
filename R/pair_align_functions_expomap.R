@@ -1,6 +1,4 @@
-
-
-# TODO:
+# @todo
 # objects don't need to pass around lists with time (x), only the function values (y); in fact, can get rid of most of time references
 # don't order all the time! sort f1, f2 once at the outset
 # integrate with fdasrvf functions
