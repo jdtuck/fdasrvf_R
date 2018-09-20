@@ -23,12 +23,12 @@ rgam <- function(N, sigma, num){
     TT = N - 1
     time = seq(0,1,length.out=TT)
     mu = sqrt(rep(1,N-1)*TT/(N-1))
-    omega = (2*pi)/TT
+    omega = 2*pi
     for (k in 1:num){
         alpha_i = rnorm(1,sd=sigma)
         v = alpha_i * rep(1,TT)
         cnt = 1
-        for (l in 2:10){
+        for (l in 2:3){
             alpha_i = rnorm(1,sd=sigma)
             if (l %% 2 !=0){#odd
                 v = v + alpha_i*sqrt(2)*cos(cnt*omega*time)
