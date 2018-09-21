@@ -45,5 +45,13 @@ rgam <- function(N, sigma, num){
 
     }
 
+    gamI = SqrtMeanInverse(t(gam))
+
+    for (k in 1:num){
+        gam0 = approx(time,gam[k,],xout=(time[length(time)]-time[1])*gamI +
+            time[1])$y
+        gam[k,] = (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])
+    }
+
     return(gam)
 }
