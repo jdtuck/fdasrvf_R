@@ -47,7 +47,6 @@ curve_karcher_mean <- function(beta, mode="O", rotated=T, maxit=20){
         mu = mu / sqrt(innerprod_q2(mu,mu))
 
         sumv = matrix(0,2,T1)
-        sumd[itr] = 0.
 
         # TODO: parallelize
         for (i in 1:N){
