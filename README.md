@@ -44,7 +44,7 @@ Tucker, J. D., Wu, W. and Srivastava, A. (2013). Generative models for
 functional data using phase and amplitude separation. Computational Statistics
 and Data Analysis 61, 50-66.
 
-J. D. Tucker, W. Wu, and A. Srivastava, ``Phase-Amplitude Separation of
+J. D. Tucker, W. Wu, and A. Srivastava, "Phase-Amplitude Separation of
 Proteomics Data Using Extended Fisher-Rao Metric," Electronic Journal of
 Statistics, Vol 8, no. 2. pp 1724-1733, 2014.
 
