@@ -30,6 +30,7 @@
 #' @importFrom coda traceplot mcmc
 #' @importFrom viridisLite viridis
 #' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var spline median rgamma
+#' @importFrom testthat test_check
 #' @aliases fdasrvf fdasrvf-package
 NULL
 #' Simulated two Gaussian Dataset
