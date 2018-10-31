@@ -1,5 +1,9 @@
-fdasrvf 1.8.3
+fdasrvf 1.8.4
 --------------
+v1.8.4
+* centered rgam calculation
+* fix bug in curve functions and image registration
+
 v1.8.3
 * added bayesian alignment method by Y. Lu et. al
 * added multiple functional alignment function
