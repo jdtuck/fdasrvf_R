@@ -30,8 +30,7 @@
 #' @examples
 #' data("simu_warp")
 #' data("simu_data")
-#' jfpca = jointFPCA(simu_warp$fn,simu_data$time,simu_warp$qn,
-#'                   simu_warp$gam, no = 3)
+#' jfpca = jointFPCA(simu_warp, no = 3)
 jointFPCA <- function(warp_data, no, id=round(length(warp_data$time)/2), C=NULL, showplot=T){
     fn <- warp_data$fn
     time <- warp_data$time
