@@ -15,6 +15,16 @@ inv_exp_map<-function(Psi, psi){
   return(exp_inv)
 }
 
+l2_norm<-function(psi, time=seq(0,1,length.out=length(psi))){
+    l2norm <- sqrt(trapz(time,psi*psi))
+    return(l2norm)
+}
+
+inner_product<-function(psi1, psi2, time=seq(0,1,length.out=length(psi1))){
+    ip <- trapz(time,psi1*psi2)
+    return(ip)
+}
+
 warp_q_gamma <- function(time, q, gam){
   M = length(gam)
   gam_dev = gradient(gam, 1/(M-1))

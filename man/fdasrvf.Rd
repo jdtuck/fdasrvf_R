@@ -39,4 +39,8 @@ Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian registration of functio
 Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
 
 Y. Lu, R. Herbei and S. Kurtek (2017). "Bayesian Registration of Functions with a Gaussian Process Prior." Journal of Computational and Graphical Statistics: in press: 1-34
+
+J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic 
+ Functional Principal Component Regression,” Statistical Analysis and Data #'
+ Mining, 10.1002/sam.11399, 2018.
 }

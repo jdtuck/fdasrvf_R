@@ -22,6 +22,9 @@
 #' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @references Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
 #' @references Y. Lu, R. Herbei and S. Kurtek (2017). "Bayesian Registration of Functions with a Gaussian Process Prior." Journal of Computational and Graphical Statistics: in press: 1-34
+#' @references J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic 
+#'  Functional Principal Component Regression,” Statistical Analysis and Data #'
+#'  Mining, 10.1002/sam.11399, 2018.
 #' @docType package
 #' @useDynLib fdasrvf, .registration=TRUE
 #' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields
