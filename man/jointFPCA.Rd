@@ -36,8 +36,7 @@ analysis on aligned data
 \examples{
 data("simu_warp")
 data("simu_data")
-jfpca = jointFPCA(simu_warp$fn,simu_data$time,simu_warp$qn,
-                  simu_warp$gam, no = 3)
+jfpca = jointFPCA(simu_warp, no = 3)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

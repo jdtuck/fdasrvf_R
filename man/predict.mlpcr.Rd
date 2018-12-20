@@ -4,7 +4,7 @@
 \alias{predict.mlpcr}
 \title{Elastic Prediction for functional multinomial logisitc PCR Model}
 \usage{
-\method{predict}{mlpcr}(object, newdata, y)
+\method{predict}{mlpcr}(object, newdata = NULL, y = NULL, ...)
 }
 \arguments{
 \item{object}{Object of class inheriting from "elastic.pcr.regression"}
@@ -12,6 +12,8 @@
 \item{newdata}{An optional matrix in which to look for variables with which to predict. If omitted, the fitted values are used.}
 
 \item{y}{An optional vector of labels to calculate PC. If omitted, PC is NULL}
+
+\item{...}{additional arguments affecting the predictions produced}
 }
 \value{
 Returns a list containing
@@ -25,8 +27,8 @@ This function performs prediction from an elastic multinomial logistic fPCR regr
  with phase-variability
 }
 \references{
-J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic 
- Functional Principal Component Regression,” Statistical Analysis and Data #'
+J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic
+ Functional Principal Component Regression,” Statistical Analysis and Data
  Mining, 10.1002/sam.11399, 2018.
 }
 \keyword{alignment}

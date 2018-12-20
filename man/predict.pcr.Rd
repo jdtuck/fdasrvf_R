@@ -4,7 +4,7 @@
 \alias{predict.pcr}
 \title{Elastic Prediction for functional PCR Model}
 \usage{
-\method{predict}{pcr}(object, newdata, y)
+\method{predict}{pcr}(object, newdata = NULL, y = NULL, ...)
 }
 \arguments{
 \item{object}{Object of class inheriting from "elastic.pcr.regression"}
@@ -12,6 +12,8 @@
 \item{newdata}{An optional matrix in which to look for variables with which to predict. If omitted, the fitted values are used.}
 
 \item{y}{An optional vector of responses to calculate SSE. If omitted, SSE is NULL}
+
+\item{...}{additional arguments affecting the predictions produced}
 }
 \value{
 Returns a list containing
@@ -23,8 +25,8 @@ This function performs prediction from an elastic pcr regression model
  with phase-variability
 }
 \references{
-J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic 
- Functional Principal Component Regression,” Statistical Analysis and Data #'
+J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic
+ Functional Principal Component Regression,” Statistical Analysis and Data
  Mining, 10.1002/sam.11399, 2018.
 }
 \keyword{alignment}

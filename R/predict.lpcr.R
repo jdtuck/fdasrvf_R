@@ -6,17 +6,18 @@
 #' @param object Object of class inheriting from "elastic.pcr.regression"
 #' @param newdata An optional matrix in which to look for variables with which to predict. If omitted, the fitted values are used.
 #' @param y An optional vector of labels to calculate PC. If omitted, PC is NULL
+#' @param ... additional arguments affecting the predictions produced
 #' @return Returns a list containing
 #' \item{y_pred}{predicted probabilites of the class of newdata}
 #' \item{y_labels}{class labels of newdata}
 #' \item{PC}{probability of classification}
 #' @keywords srvf alignment regression
-#' @references J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic 
-#'  Functional Principal Component Regression,” Statistical Analysis and Data #'
+#' @references J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic
+#'  Functional Principal Component Regression,” Statistical Analysis and Data
 #'  Mining, 10.1002/sam.11399, 2018.
 #' @export
-predict.lpcr <- function(object, newdata, y){
-    if (missing(newdata)){
+predict.lpcr <- function(object, newdata=NULL, y=NULL, ...){
+    if (is.null(newdata)){
         n <- nrow(object$pca$coef)
         y_pred <- rep(0,n)
         for (ii in 1:n){

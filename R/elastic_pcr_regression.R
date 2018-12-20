@@ -22,8 +22,8 @@
 #' \item{SSE}{sum of squared errors}
 #' \item{pca.method}{string specifing pca method used}
 #' @keywords srvf alignment regression
-#' @references J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic 
-#'  Functional Principal Component Regression,” Statistical Analysis and Data #'
+#' @references J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic
+#'  Functional Principal Component Regression,” Statistical Analysis and Data
 #'  Mining, 10.1002/sam.11399, 2018.
 #' @export
 elastic.pcr.regression <- function(f, y, time, pca.method="combined", no=5,

@@ -38,8 +38,8 @@ This function identifies a logistic regression model with phase-variability
 using elastic pca
 }
 \references{
-J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic 
- Functional Principal Component Regression,” Statistical Analysis and Data #'
+J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic
+ Functional Principal Component Regression,” Statistical Analysis and Data
  Mining, 10.1002/sam.11399, 2018.
 }
 \keyword{alignment}
