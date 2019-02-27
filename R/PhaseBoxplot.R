@@ -62,8 +62,10 @@ PhaseBoxplot <- function(warp_median, alpha=.05, kp=1, showplot=TRUE){
     for (j in (i+1):length(CR_50)){
       q1 <- v[,CR_50[i]]
       q3 <- v[,CR_50[j]]
-      q1 <- q1/sqrt(trapz(time,q1*q1))
-      q3 <- q3/sqrt(trapz(time,q3*q3))
+      if (sum(q1)>0)
+        q1 <- q1/sqrt(trapz(time,q1*q1))
+      if (sum(q3)>0)
+        q3 <- q3/sqrt(trapz(time,q3*q3))
       angle[i,j] <- trapz(time,q1*q3)
       energy[i,j] <- (1-lambda) * (dx[CR_50[i]]/m + dx[CR_50[j]]/m) - lambda * (angle[i,j]+1)
     }
@@ -87,8 +89,10 @@ PhaseBoxplot <- function(warp_median, alpha=.05, kp=1, showplot=TRUE){
     for (j in (i+1):length(CR_alpha)){
       q1 <- v[,CR_alpha[i]]
       q3 <- v[,CR_alpha[j]]
-      q1 <- q1/sqrt(trapz(time,q1*q1))
-      q3 <- q3/sqrt(trapz(time,q3*q3))
+      if (sum(q1)>0)
+        q1 <- q1/sqrt(trapz(time,q1*q1))
+      if (sum(q3)>0)
+        q3 <- q3/sqrt(trapz(time,q3*q3))
       angle[i,j] <- trapz(time,q1*q3)
       energy[i,j] <- (1-lambda) * (dx[CR_alpha[i]]/m + dx[CR_alpha[j]]/m) - lambda * (angle[i,j]+1)
     }
