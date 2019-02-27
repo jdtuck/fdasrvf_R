@@ -65,6 +65,8 @@ SqrtMedian <- function(gam){
       }
       vbar <- rowSums(vtil) * sum(dtil)^(-1)
       lvm[iter] <- l2_norm(vbar)
+      if (is.nan(lvm[iter]))
+        break
     }
 
     gam_median = cumtrapz(time, mu*mu)
