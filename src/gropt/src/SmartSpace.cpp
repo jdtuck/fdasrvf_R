@@ -139,7 +139,7 @@ void SmartSpace::NewMemory(void)
 	try{
 		Space = new double[length];
 	}
-	catch (std::bad_alloc& exception)
+	catch (const std::bad_alloc& exception)
 	{
 		Rcpp::Rcout << "Catch exception:" << exception.what() << std::endl;
 	}
