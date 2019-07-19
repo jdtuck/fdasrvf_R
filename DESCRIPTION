@@ -25,6 +25,7 @@ Imports:
     fields,
     doParallel,
     viridisLite,
+    tolerance,
     testthat
 Suggests: akima,
           plot3D,
