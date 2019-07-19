@@ -37,9 +37,10 @@
 #'  Computational Statistics & Data Analysis 54(5): 1219-1233.
 #' @export
 #' @examples
+#' \dontrun{
 #' data("growth_vel")
-#' # use more iterations for accuracy
-#' out <- kmeans_align(growth_vel$f,growth_vel$time, K=2, MaxItr=1, showplot=FALSE)
+#' out <- kmeans_align(growth_vel$f,growth_vel$time, K=2)
+#' }
 kmeans_align <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
                    smooth_data = FALSE, sparam = 25, parallel = FALSE,
                    alignment = TRUE, omethod = "DP", MaxItr = 50, thresh = 0.01){

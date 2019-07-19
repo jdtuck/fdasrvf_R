@@ -35,9 +35,10 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
+#' \dontrun{
 #' data("simu_data")
-#' # use more iterations for accuracy
-#' out = time_warping(simu_data$f,simu_data$time, MaxItr=1)
+#' out = time_warping(simu_data$f,simu_data$time)
+#' }
 time_warping <- function(f, time, lambda = 0, method = "mean",
                          showplot = TRUE, smooth_data = FALSE, sparam = 25,
                          parallel = FALSE, omethod = "DP", MaxItr = 20){
