@@ -49,9 +49,10 @@ This function aligns a collection of functions using the elastic square-root
 slope (srsf) framework.
 }
 \examples{
+\dontrun{
 data("simu_data")
-# use more iterations for accuracy
-out = time_warping(simu_data$f,simu_data$time, MaxItr=1)
+out = time_warping(simu_data$f,simu_data$time)
+}
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

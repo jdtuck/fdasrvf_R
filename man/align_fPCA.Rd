@@ -47,8 +47,10 @@ This function aligns a collection of functions while extracting principal
 components.
 }
 \examples{
+\dontrun{
 data("simu_data")
-out = align_fPCA(simu_data$f,simu_data$time,MaxItr = 1)  # use more iterations for accuracy
+out = align_fPCA(simu_data$f,simu_data$time)
+}
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,

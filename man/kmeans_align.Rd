@@ -52,9 +52,10 @@ This function clusters functions and aligns using the elastic square-root
 slope (srsf) framework.
 }
 \examples{
+\dontrun{
 data("growth_vel")
-# use more iterations for accuracy
-out <- kmeans_align(growth_vel$f,growth_vel$time, K=2, MaxItr=1, showplot=FALSE)
+out <- kmeans_align(growth_vel$f,growth_vel$time, K=2)
+}
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
