@@ -39,7 +39,6 @@ joint_gauss_model <- function(warp_data, n=1, no=5){
   mqn <- c(mq_new,mean(m_new))
 
   # Generate Random Samples -------------------------------------------------
-  try(setMKLthreads(1), silent=T)
   if (length(s)>1){
     vals <- rmvnorm(n, sigma = diag(s))
   } else {

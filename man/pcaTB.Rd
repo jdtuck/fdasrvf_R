@@ -28,9 +28,10 @@ This function computes tolerance bounds for functional data containing
 phase and amplitude variation using principal component anlaysis
 }
 \examples{
-\\notrun{
-data("simu_data")
-out1 = pcaTB(simu_data$f,simu_data$time)}
+\dontrun{
+  data("simu_data")
+  out1 = pcaTB(simu_data$f,simu_data$time)
+}
 }
 \references{
 J. D. Tucker, J. R. Lewis, C. King, and S. Kurtek,

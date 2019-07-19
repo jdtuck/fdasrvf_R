@@ -29,7 +29,7 @@ Imports:
     testthat
 Suggests: akima,
           plot3D,
-          plot3Drgl, 
+          plot3Drgl,
           rgl
 LinkingTo: Rcpp, RcppArmadillo
 Depends:

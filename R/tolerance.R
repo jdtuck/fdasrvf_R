@@ -24,8 +24,9 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' data("simu_data")
-#' out1 = bootTB(simu_data$f,simu_data$time)}
+#'   data("simu_data")
+#'   out1 = bootTB(simu_data$f,simu_data$time)
+#' }
 bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, parallel=T){
 
   M <- nrow(f)
@@ -40,7 +41,6 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, parallel=T){
     }
     cl <- makeCluster(cores, outfile = "")
     registerDoParallel(cl)
-    try(setMKLthreads(1), silent=T)
   } else {
     registerDoSEQ()
   }
@@ -48,11 +48,9 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, parallel=T){
   # Caclculate CI -----------------------------------------------------------
   # a% tolerance bound with p% coverage
   cat("Bootstrap Sampling\n")
+  k = 1
   pb <- txtProgressBar(0, B, style = 3)
-  outfor <- foreach(k=1:B, .combine=cbind,.packages=c('fdasrvf','mvtnorm')) %dopar% {
-  source("Code/geometry.R")
-  source("Code/jointfPCA.R")
-  source("Code/joint_gauss_model.R")
+  outfor <- foreach(k=1:B, .combine=cbind, .packages=c('fdasrvf','mvtnorm')) %dopar% {
     samples <- joint_gauss_model(out.med, 100, no)
     amp <- AmplitudeBoxplot(samples, alpha=1-p, showplot=F)
     ph <- PhaseBoxplot(samples, alpha=1-p, showplot=F)
@@ -111,9 +109,10 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, parallel=T){
 #'        	arXiv:1603.01775 [stat.ME].
 #' @export
 #' @examples
-#' \notrun{
-#' data("simu_data")
-#' out1 = pcaTB(simu_data$f,simu_data$time)}
+#' \dontrun{
+#'   data("simu_data")
+#'   out1 = pcaTB(simu_data$f,simu_data$time)
+#' }
 pcaTB <- function(f, time, m = 4, B = 100000, a = 0.05, p = 0.99){
   # Align Data --------------------------------------------------------------
   out <- time_warping(f, time, parallel = T, showplot = F)

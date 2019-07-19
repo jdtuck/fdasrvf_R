@@ -33,6 +33,7 @@
 #' @importFrom coda traceplot mcmc
 #' @importFrom viridisLite viridis
 #' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var spline median rgamma optimize
+#' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom tolerance mvtol.region
 #' @importFrom testthat test_check
 #' @aliases fdasrvf fdasrvf-package
