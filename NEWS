@@ -1,5 +1,8 @@
-fdasrvf 1.9.0
+fdasrvf 1.9.1
 --------------
+v1.9.1
+* Added tolerance bound functions
+
 v1.9.0
 * Added elastic principal component regression functions
 
