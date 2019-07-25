@@ -1,5 +1,8 @@
-fdasrvf 1.9.1
+fdasrvf 1.9.2
 --------------
+v1.9.2
+* update gropt library
+
 v1.9.1
 * Added tolerance bound functions
 
