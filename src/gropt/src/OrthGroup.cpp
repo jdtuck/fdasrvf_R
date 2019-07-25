@@ -1,17 +1,19 @@
 
 #include "OrthGroup.h"
 
-OrthGroup::OrthGroup(integer inn) :Stiefel(inn, inn)
-{
-	name.assign("OrthGroup");
-	delete EMPTYEXTR;
-	delete EMPTYINTR;
-	EMPTYEXTR = new OrthGroupVector(n, n);
-//	Rcpp::Rcout << "n:" << n << std::endl;//---
-//	Rcpp::Rcout << "IntrinsicDim:" << IntrinsicDim << std::endl;//---
-	EMPTYINTR = new OrthGroupVector(IntrinsicDim);
-};
+/*Define the namespace*/
+namespace ROPTLIB{
 
-OrthGroup::~OrthGroup(void)
-{
-};
+	OrthGroup::OrthGroup(integer inn) :Stiefel(inn, inn)
+	{
+		name.assign("OrthGroup");
+		delete EMPTYEXTR;
+		delete EMPTYINTR;
+		EMPTYEXTR = new OrthGroupVector(n, n);
+		EMPTYINTR = new OrthGroupVector(IntrinsicDim);
+	};
+
+	OrthGroup::~OrthGroup(void)
+	{
+	};
+}; /*end of ROPTLIB namespace*/

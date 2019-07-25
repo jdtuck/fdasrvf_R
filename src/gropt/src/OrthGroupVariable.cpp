@@ -1,11 +1,15 @@
 
 #include "OrthGroupVariable.h"
 
-OrthGroupVariable::OrthGroupVariable(integer n) :StieVariable(n, n)
-{
-};
+/*Define the namespace*/
+namespace ROPTLIB{
 
-OrthGroupVariable *OrthGroupVariable::ConstructEmpty(void) const
-{
-	return new OrthGroupVariable(size[0]);
-};
+	OrthGroupVariable::OrthGroupVariable(integer n) :StieVariable(n, n)
+	{
+	};
+
+	OrthGroupVariable *OrthGroupVariable::ConstructEmpty(void) const
+	{
+		return new OrthGroupVariable(size[0]);
+	};
+}; /*end of ROPTLIB namespace*/

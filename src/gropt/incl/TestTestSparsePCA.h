@@ -1,46 +1,44 @@
+/*
+This is the test file to run the problem defined in ObliqueTestSparsePCA.h and ObliqueTestSparsePCA.cpp.
+
+---- WH
+*/
+
 #ifndef TESTTESTSPARSEPCA_H
 #define TESTTESTSPARSEPCA_H
 
 
-#include "ForDebug.h"
 #include <iostream>
-#include "randgen.h"
-#include "Manifold.h"
-#include "Problem.h"
-#include "SolversLS.h"
+#include "Others/randgen.h"
+#include "Manifolds/Manifold.h"
+#include "Problems/Problem.h"
+#include "Solvers/SolversLS.h"
 #include <ctime>
 
-#include "EucVariable.h"
-#include "EucVector.h"
-#include "EucFrechetMean.h"
-#include "EucQuadratic.h"
+#include "Problems/ObliqueTestSparsePCA/ObliqueTestSparsePCA.h"
+#include "Manifolds/Oblique/Oblique.h"
+#include "Manifolds/Oblique/ObliqueVariable.h"
+#include "Manifolds/Oblique/ObliqueVector.h"
 
-#include "StieBrockett.h"
-#include "StieVector.h"
-#include "StieVariable.h"
-#include "Stiefel.h"
+#include "Solvers/RSD.h"
+#include "Solvers/RNewton.h"
+#include "Solvers/RCG.h"
+#include "Solvers/RBroydenFamily.h"
+#include "Solvers/RWRBFGS.h"
+#include "Solvers/RBFGS.h"
+#include "Solvers/LRBFGS.h"
 
-#include <ObliqueTestSparsePCA.h>
-#include <Oblique.h>
-#include <ObliqueVariable.h>
-#include <ObliqueVector.h>
+#include "Solvers/SolversTR.h"
+#include "Solvers/RTRSD.h"
+#include "Solvers/RTRNewton.h"
+#include "Solvers/RTRSR1.h"
+#include "Solvers/LRTRSR1.h"
 
-#include "RSD.h"
-#include "RNewton.h"
-#include "RCG.h"
-#include "RBroydenFamily.h"
-#include "RWRBFGS.h"
-#include "RBFGS.h"
-#include "LRBFGS.h"
+#include "Others/def.h"
 
-#include "SolversTR.h"
-#include "RTRSD.h"
-#include "RTRNewton.h"
-#include "RTRSR1.h"
-#include "LRTRSR1.h"
+using namespace ROPTLIB;
 
-#include "def.h"
-
+void testTestSparsePCA(void);
 integer GetNumBetweenC1andC2(const Element *x, double c1, double c2);
 void testTestSparsePCA(double *B, double *Dsq, integer p, integer n, integer r, double epsilon, double mu, double *X = nullptr, double *Xopt = nullptr);
 

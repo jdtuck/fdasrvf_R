@@ -1,42 +1,62 @@
+/*
+This is the test file for the Brocokett problem defined in StieBrockett.h and StieBrockett.cpp.
+
+---- WH
+*/
 
 #ifndef TESTSTIEBROCKETT_H
 #define TESTSTIEBROCKETT_H
 
-#include "ForDebug.h"
+/*Output to console*/
 #include <iostream>
-#include "randgen.h"
-#include "Manifold.h"
-#include "Problem.h"
-#include "SolversLS.h"
+
+/*Generate random number*/
+#include "Others/randgen.h"
+
+/*Computational time*/
 #include <ctime>
-#include <DriverMexProb.h>
 
-#include "EucVariable.h"
-#include "EucVector.h"
-#include "EucFrechetMean.h"
-#include "EucQuadratic.h"
+/*If this test file is called from Matlab, then functions in DriverMexProb.h are used.*/
+#include "test/DriverMexProb.h"
 
-#include "StieBrockett.h"
-#include "StieVector.h"
-#include "StieVariable.h"
-#include "Stiefel.h"
+/*Problem related classes*/
+#include "Problems/Problem.h"
+#include "Problems/StieBrockett/StieBrockett.h"
+#include "Problems/SphereTxRQ/SphereTxRQ.h"
 
-#include "RSD.h"
-#include "RNewton.h"
-#include "RCG.h"
-#include "RBroydenFamily.h"
-#include "RWRBFGS.h"
-#include "RBFGS.h"
-#include "LRBFGS.h"
+/*Manifold related classes*/
+#include "Manifolds/Manifold.h"
+#include "Manifolds/Stiefel/StieVector.h"
+#include "Manifolds/Stiefel/StieVariable.h"
+#include "Manifolds/Stiefel/Stiefel.h"
+#include "Manifolds/SphereTx/SphereTx.h"
 
-#include "SolversTR.h"
-#include "RTRSD.h"
-#include "RTRNewton.h"
-#include "RTRSR1.h"
-#include "LRTRSR1.h"
+/*Linesearch based solvers*/
+#include "Solvers/SolversLS.h"
+#include "Solvers/RSD.h"
+#include "Solvers/RNewton.h"
+#include "Solvers/RCG.h"
+#include "Solvers/RBroydenFamily.h"
+#include "Solvers/RWRBFGS.h"
+#include "Solvers/RBFGS.h"
+#include "Solvers/LRBFGS.h"
+#include "Solvers/RBFGSLPSub.h"
 
-#include "def.h"
+/*Trust-region based solvers*/
+#include "Solvers/SolversTR.h"
+#include "Solvers/RTRSD.h"
+#include "Solvers/RTRNewton.h"
+#include "Solvers/RTRSR1.h"
+#include "Solvers/LRTRSR1.h"
 
+/*The global head file*/
+#include "Others/def.h"
+
+using namespace ROPTLIB;
+
+/*The main test function*/
+void testStieBrockettMore(void);
+void testStieBrockett(void);
 void testStieBrockett(double *B, double *D, integer n, integer p, double *X = nullptr, double *Xopt = nullptr);
 
 #endif // end of TESTSTIEBROCKETT_H

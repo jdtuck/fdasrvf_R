@@ -1,22 +1,31 @@
 
 #include "RTRSD.h"
 
-RTRSD::RTRSD(const Problem *prob, const Variable *initialx)
-{
-	const Vector *EMPTYETA;
-	if (prob->GetDomain()->GetIsIntrinsic())
-		EMPTYETA = prob->GetDomain()->GetEMPTYINTR();
-	else
-		EMPTYETA = prob->GetDomain()->GetEMPTYEXTR();
-	SolversTR::Initialization(prob, initialx, EMPTYETA);
-	theta = 0.1;
-	kappa = 0.9;
-	SolverName.assign("RTRSD");
-	prob->SetUseGrad(true);
-	prob->SetUseHess(false);
-};
+/*Define the namespace*/
+namespace ROPTLIB{
 
-void RTRSD::HessianEta(Vector *Eta, Vector *result)
-{
-	Eta->CopyTo(result);
-};
+	RTRSD::RTRSD(const Problem *prob, const Variable *initialx, const Variable *insoln)
+	{
+		Initialization(prob, initialx, insoln);
+	};
+
+	void RTRSD::SetProbX(const Problem *prob, const Variable *initialx, const Variable *insoln)
+	{
+		SolversTR::SetProbX(prob, initialx, insoln);
+		prob->SetUseGrad(true);
+		prob->SetUseHess(false);
+	};
+
+	void RTRSD::SetDefaultParams()
+	{
+		SolversTR::SetDefaultParams();
+		theta = 0.1;
+		kappa = 0.9;
+		SolverName.assign("RTRSD");
+	};
+
+	void RTRSD::HessianEta(Vector *Eta, Vector *result)
+	{
+		Eta->CopyTo(result);
+	};
+}; /*end of ROPTLIB namespace*/

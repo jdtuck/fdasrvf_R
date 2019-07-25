@@ -3,6 +3,10 @@
 
 #include <ctime>
 
+#ifdef MATLAB_MEX_FILE
+#include <mex.h>
+#endif
+
 #ifdef _WIN64
 #undef VOID
 #include <windows.h>
@@ -22,9 +26,14 @@
 #include <netinet/in.h>
 #endif // end of checking platforms
 
-#define CLK_PS 1000
+//#include "def.h"
+
+#define CLK_PS 1000000
 //#define CLK_PS CLOCKS_PER_SEC
 
-unsigned long getTickCount();
+/*Define the namespace*/
+namespace ROPTLIB{
 
+	unsigned long getTickCount();
+}; /*end of ROPTLIB namespace*/
 #endif

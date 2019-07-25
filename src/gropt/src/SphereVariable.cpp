@@ -1,11 +1,15 @@
 
-#include <SphereVariable.h>
+#include "SphereVariable.h"
 
-SphereVariable::SphereVariable(integer n) :StieVariable(n)
-{
-};
+/*Define the namespace*/
+namespace ROPTLIB{
 
-SphereVariable *SphereVariable::ConstructEmpty(void) const
-{
-	return new SphereVariable(length);
-};
+	SphereVariable::SphereVariable(integer n) :StieVariable(n)
+	{
+	};
+
+	SphereVariable *SphereVariable::ConstructEmpty(void) const
+	{
+		return new SphereVariable(length);
+	};
+}; /*end of ROPTLIB namespace*/

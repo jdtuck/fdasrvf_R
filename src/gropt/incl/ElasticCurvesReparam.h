@@ -11,4 +11,4 @@ void optimum_reparam(double *C1, double *C2, int n, int d, double w,
                      int autoselectC, double *opt, bool swap, double *fopts,
                      double *comtime);
 
-#endif // end of ELASTICCURVESREPARAM_H
+#endif // end of TESTELASTICCURVESRO_H
