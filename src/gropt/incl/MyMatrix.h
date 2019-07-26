@@ -37,18 +37,18 @@ namespace ROPTLIB{
 
 		friend std::ostream &operator<<(std::ostream &output, const Matrix &mat)
 		{
-			printf("{(%d, %d)\n", mat.row, mat.col);
-			for (int i = 0; i < mat.row; i++)
-			{
-				for (int j = 0; j < mat.col; j++)
-					if (j != mat.col - 1)
-						printf("%f, ", mat.matrix[i + j * mat.inc]);
-					else
-						printf("%f", mat.matrix[i + j * mat.inc]);
-				if (i != mat.row - 1)
-					printf("\n");
-			}
-			printf("\n}\n");
+			// printf("{(%d, %d)\n", mat.row, mat.col);
+			// for (int i = 0; i < mat.row; i++)
+			// {
+			// 	for (int j = 0; j < mat.col; j++)
+			// 		if (j != mat.col - 1)
+			// 			printf("%f, ", mat.matrix[i + j * mat.inc]);
+			// 		else
+			// 			printf("%f", mat.matrix[i + j * mat.inc]);
+			// 	if (i != mat.row - 1)
+			// 		printf("\n");
+			// }
+			// printf("\n}\n");
 
 			return output;
 		};
