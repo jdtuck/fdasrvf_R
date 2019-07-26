@@ -149,7 +149,7 @@ namespace ROPTLIB{
 		try{
 			Space = new double[length];
 		}
-		catch (std::bad_alloc exception)
+		catch (const std::bad_alloc& exception)
 		{
 			Rprintf("Catch exception:%s\n", exception.what());
 		}
