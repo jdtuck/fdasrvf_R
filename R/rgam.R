@@ -6,7 +6,8 @@
 #' @param sigma variance of warping functions
 #' @param num number of warping functions
 #' @return gam warping functions
-#' @keywords diffeomorphism, warping function
+#' @keywords warping function
+#' @concept diffeomorphism
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
 #'  arXiv:1103.3817v2 [math.ST].

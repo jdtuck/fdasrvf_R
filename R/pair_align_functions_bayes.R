@@ -22,7 +22,8 @@
 #' \item{kappa_collect}{posterior samples from kappa (returned if extrainfo=TRUE)}
 #' \item{log_collect}{log-likelihood of each sample (returned if extrainfo=TRUE)}
 #' \item{pct_accept}{vector of acceptance ratios for the warping function (returned if extrainfo=TRUE)}
-#' @keywords srsf alignment, bayesian
+#' @keywords bayesian
+#' @concept srsf alignment
 #' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
 #' registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @export

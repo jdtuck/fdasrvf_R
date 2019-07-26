@@ -51,6 +51,5 @@ out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2], simu_data$tim
 Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
 registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 }
-\keyword{alignment,}
+\concept{srsf alignment}
 \keyword{bayesian}
-\keyword{srsf}

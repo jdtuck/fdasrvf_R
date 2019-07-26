@@ -9,7 +9,8 @@
 #' @param lambda controls amount of warping (default = 0)
 #' @return Returns a list containing \item{Dy}{amplitude distance}
 #' \item{Dx}{phase distance}
-#' @keywords srvf alignment, distances
+#' @keywords distances
+#' @concept srvf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
 #'  arXiv:1103.3817v2 [math.ST].
@@ -27,12 +28,12 @@ elastic.distance <- function(f1,f2,time,lambda = 0){
     fw <- approx(time,f2,xout=(time[length(time)]-time[1])*gam + time[1])$y
     qw <- f_to_srvf(fw,time)
     Dy <- sqrt(trapz(time, (q1-qw)^2))
-    
+
     time1 <- seq(0,1,length.out=length(time))
     binsize <- mean(diff(time1))
     psi <- sqrt(gradient(gam,binsize))
     v <- inv_exp_map(rep(1,length(gam)), psi)
-    Dx <- sqrt(trapz(time1, v^2)) 
-    
+    Dx <- sqrt(trapz(time1, v^2))
+
     return(list(Dy=Dy,Dx=Dx))
 }

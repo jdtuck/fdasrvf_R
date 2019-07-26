@@ -17,7 +17,8 @@
 #' \item{estimator}{estimator}
 #' \item{estimator2}{estimator2}
 #' \item{regfuncs}{registered functions}
-#' @keywords srsf alignment, bayesian
+#' @keywords bayesian
+#' @concept srsf alignment
 #' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
 #' registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @examples

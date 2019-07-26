@@ -46,6 +46,5 @@ out = function_group_warp_bayes(simu_data$f, simu_data$time)
 Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
 registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 }
-\keyword{alignment,}
+\concept{srsf alignment}
 \keyword{bayesian}
-\keyword{srsf}

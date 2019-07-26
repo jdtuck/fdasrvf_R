@@ -12,7 +12,8 @@
 #' @param parallel enable parallel processing (default = T)
 #' @return Returns a list containing \item{amp}{amplitude tolerance bounds}
 #' \item{ph}{phase tolerance bounds}
-#' @keywords tolerance bounds, bootstrap
+#' @keywords tolerance bootstrap
+#' @concept bounds
 #' @references J. D. Tucker, J. R. Lewis, C. King, and S. Kurtek,
 #'   “A Geometric Approach for Computing Tolerance Bounds for Elastic Functional Data,”
 #'    Journal of Applied Statistics, 10.1080/02664763.2019.1645818, 2019.
@@ -98,7 +99,7 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, parallel=T){
 #' @param p coverage level of tolerance bound (default = 0.99)
 #' @return Returns a list containing \item{pca}{pca output}
 #' \item{tol}{tolerance factor}
-#' @keywords pca, tolerance bounds
+#' @concept pca tolerance bounds
 #' @references J. D. Tucker, J. R. Lewis, C. King, and S. Kurtek,
 #'   “A Geometric Approach for Computing Tolerance Bounds for Elastic Functional Data,”
 #'    Journal of Applied Statistics, 10.1080/02664763.2019.1645818, 2019.

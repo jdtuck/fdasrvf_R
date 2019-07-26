@@ -48,6 +48,6 @@ Tucker, J. D., Wu, W., Srivastava, A.,
 Jung, S. L. a. S. (2016). "Combined Analysis of Amplitude and Phase Variations in Functional Data."
        	arXiv:1603.01775 [stat.ME].
 }
+\concept{bounds}
 \keyword{bootstrap}
-\keyword{bounds,}
 \keyword{tolerance}
