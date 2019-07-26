@@ -190,7 +190,7 @@ namespace ROPTLIB{
 					y->CopyTo(Y[beginidx]);
 					s->CopyTo(S[beginidx]);
 					RHO[beginidx] = rho;
-					beginidx = (++beginidx) % LengthSY;
+					beginidx = (beginidx+1) % LengthSY;
 					for (integer i = beginidx; i < beginidx + LengthSY - 1; i++)
 					{
 						idx = i % LengthSY;
@@ -294,7 +294,7 @@ namespace ROPTLIB{
 					y->CopyTo(Y[beginidx]);
 					s->CopyTo(S[beginidx]);
 					RHO[beginidx] = rho;
-					beginidx = (++beginidx) % LengthSY;
+					beginidx = (beginidx+1) % LengthSY;
 					for (integer i = beginidx; i < beginidx + LengthSY - 1; i++)
 					{
 						idx = i % LengthSY;
@@ -477,7 +477,7 @@ namespace ROPTLIB{
 					SY[i + (LengthSY - 1) * LengthSY] = Mani->Metric(x1, Y[idx], S[beginidx]);
 					SY[LengthSY - 1 + i * LengthSY] = SY[i + (LengthSY - 1) * LengthSY];
 				}
-				beginidx = (++beginidx) % LengthSY;
+				beginidx = (beginidx+1) % LengthSY;
 			}
 
 			isupdated = true;

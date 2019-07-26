@@ -112,7 +112,7 @@ namespace ROPTLIB{
 				else
 				{
 					gf2->CopyTo(gfs[idxgfs]);
-					idxgfs = (++idxgfs) % Lengthgfs;
+					idxgfs = (idxgfs+1) % Lengthgfs;
 					integer idx;
 					for (integer i = idxgfs; i < idxgfs + Lengthgfs - 1; i++)
 					{
