@@ -8,3 +8,5 @@ There were no ERRORs and no WARNINGs:
 
 ## Downstream dependencies
 There are no downstream dependencies issues
+
+LTO issues have been fixed
