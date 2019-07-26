@@ -76,8 +76,8 @@ namespace ROPTLIB{
 
 	void LRBFGSLPSub::PrintInfo(void)
 	{
-		printf("\n\tbetay:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", betay, inpss, inpsy, inpyy, isupdated);
-		printf("\n");
+		Rprintf("\n\tbetay:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", betay, inpss, inpsy, inpyy, isupdated);
+		Rprintf("\n");
 	};
 
 	void LRBFGSLPSub::CheckParams(void)
@@ -87,15 +87,15 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("LRBFGSLPSub METHOD PARAMETERS:\n");
+		Rprintf("LRBFGSLPSub METHOD PARAMETERS:\n");
 		status = (lambdaLower > 0 && lambdaLower < lambdaUpper) ? YES : NO;
-		printf("lambdaLower   :%15g[%s],\t", lambdaLower, status);
+		Rprintf("lambdaLower   :%15g[%s],\t", lambdaLower, status);
 		status = (lambdaUpper >= lambdaLower) ? YES : NO;
-		printf("lambdaUpper   :%15g[%s]\n", lambdaUpper, status);
+		Rprintf("lambdaUpper   :%15g[%s]\n", lambdaUpper, status);
 		status = YES;
-		printf("isconvex      :%15d[%s],\t", isconvex, status);
+		Rprintf("isconvex      :%15d[%s],\t", isconvex, status);
 		status = (LengthSY >= 0) ? YES : NO;
-		printf("LengthSY      :%15d[%s]\n", LengthSY, status);
+		Rprintf("LengthSY      :%15d[%s]\n", LengthSY, status);
 	};
 
 	void LRBFGSLPSub::UpdateData(void)

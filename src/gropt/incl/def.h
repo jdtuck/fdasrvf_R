@@ -57,6 +57,8 @@ If all the test files are included in a project, then only uncomment one of them
 
 /*For obtaining the lower bound, upper bound of numbers of double precision*/
 #include <climits>
+#include <Rcpp.h>
+#include <R.h>
 #include <limits>
 /*If ROPTLIB is not compiled in Matlab, then the following wrapper functions of blas and lapack
 are included.*/

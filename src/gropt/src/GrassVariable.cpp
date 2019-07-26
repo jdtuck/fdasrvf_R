@@ -29,12 +29,12 @@ namespace ROPTLIB{
 		// details: http://www.netlib.org/lapack/explore-html/db/de5/dgeqp3_8f.html
 		dgeqp3_(&n, &p, xU, &n, jpvt, tau, work, &lwork, &info);
 		if (info < 0)
-			printf("Error in qr decomposition!\n");
+			Rprintf("Error in qr decomposition!\n");
 		// Compute the orthonormal matrix by using the reflectors defined in xU and tau
 		// details: http://www.netlib.org/lapack/explore-html/d9/d1d/dorgqr_8f.html
 		dorgqr_(&n, &p, &p, xU, &n, tau, work, &lwork, &info);
 		if (info < 0)
-			printf("Error in forming Q matrix!\n");
+			Rprintf("Error in forming Q matrix!\n");
 		delete[] jpvt;
 		delete[] tau;
 	};

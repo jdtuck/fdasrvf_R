@@ -3,15 +3,19 @@
 #define RANDGEN_CPP
 
 #include "randgen.h"
+#include "def.h"
 
-void genrandseed(unsigned int s)
-{
-    srand(s);
+void genrandseed(unsigned int s) {
+  Rcpp::Environment base_env("package:base");
+  Rcpp::Function set_seed_r = base_env["set.seed"];
+  set_seed_r(std::floor(s));
 }
 
 double genrandreal(void)
 {
-    return static_cast<double> (rand()) / RAND_MAX;
+    Rcpp::NumericVector X(1);
+    X = Rcpp::runif(1);
+    return static_cast<double> (X[0]) / RAND_MAX;
 }
 
 double genrandnormal(void)

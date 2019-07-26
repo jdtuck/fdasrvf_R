@@ -36,20 +36,20 @@ namespace ROPTLIB{
 		//delete exxix;
 		if (IsIntrApproach)
 			return Manifold::Metric(x, etax, xix);
-		printf("Warning: Metric for extrinsic representation has not been done!\n");
+		Rprintf("Warning: Metric for extrinsic representation has not been done!\n");
 		return 0;
 	};
 
 	void CpxNStQOrth::CheckParams(void) const
 	{
 		Manifold::CheckParams();
-		printf("%s PARAMETERS:\n", name.c_str());
+		Rprintf("%s PARAMETERS:\n", name.c_str());
 		if (p == 1)
-			printf("n           :%15d\n", n);
+			Rprintf("n           :%15d\n", n);
 		else
 		{
-			printf("n           :%15d,\t", n);
-			printf("p           :%15d\n", p);
+			Rprintf("n           :%15d,\t", n);
+			Rprintf("p           :%15d\n", p);
 		}
 	};
 
@@ -132,7 +132,7 @@ namespace ROPTLIB{
 
 	void CpxNStQOrth::coTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
 	{
-		printf("TODO\n");//----
+		Rprintf("TODO\n");//----
 		xiy->CopyTo(result);
 	};
 
@@ -192,11 +192,11 @@ namespace ROPTLIB{
 		x->AddToTempData("HHR", HouseHolderResult);
 		x->AddToTempData("HHRTau", HHRTau);
 		if (info < 0)
-			printf("Error in qr decomposition!\n");
+			Rprintf("Error in qr decomposition!\n");
 		for (integer i = 0; i < P; i++)
 		{
 			if (jpvt[i] != (i + 1))
-				printf("Error in qf retraction!\n");
+				Rprintf("Error in qf retraction!\n");
 		}
 		delete[] jpvt;
 		delete[] work;
@@ -476,7 +476,7 @@ namespace ROPTLIB{
 
 		if(info != 0)
 		{
-			printf("warning: zpotrs failed in CpxNStQOrth::ExtrProjection with info:%d!\n", info);
+			Rprintf("warning: zpotrs failed in CpxNStQOrth::ExtrProjection with info:%d!\n", info);
 		}
 
 		// XHV <- (XHV - XHV^H)/2

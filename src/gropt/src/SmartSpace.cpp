@@ -151,7 +151,7 @@ namespace ROPTLIB{
 		}
 		catch (std::bad_alloc exception)
 		{
-			printf("Catch exception:%s\n", exception.what());
+			Rprintf("Catch exception:%s\n", exception.what());
 		}
 	};
 
@@ -201,34 +201,34 @@ namespace ROPTLIB{
 		{
 			if (size == nullptr)
 			{
-				printf("%s is an empty data with size 0", name);
+				Rprintf("%s is an empty data with size 0", name);
 			}
 			else
 			{
-				printf("%s is an empty data with size %d", name, size[0]);
+				Rprintf("%s is an empty data with size %d", name, size[0]);
 			}
 			for (integer i = 1; i < ls; i++)
-				printf(" x %d", size[i]);
-			printf("\n");
+				Rprintf(" x %d", size[i]);
+			Rprintf("\n");
 		}
 		else
 			if (ls == 1 || (ls > 1 && size[1] * product == 1))
 			{
-				printf("%s , shared times:%d, shared times address:%p\n", name, *sharedtimes, sharedtimes);
+				Rprintf("%s , shared times:%d, shared times address:%p\n", name, *sharedtimes, sharedtimes);
 				for (integer i = 0; i < length; i++)
-					printf("%.10e\n", Space[i]);
+					Rprintf("%.10e\n", Space[i]);
 			}
 			else
 				if (ls == 2 || product == 1)
 				{
-					printf("%s , shared times:%d, shared times address:%p\n", name, *sharedtimes, sharedtimes);
+					Rprintf("%s , shared times:%d, shared times address:%p\n", name, *sharedtimes, sharedtimes);
 					for (integer j = 0; j < size[0]; j++)
 					{
 						for (integer k = 0; k < size[1]; k++)
 						{
-							printf("%.10e\t", Space[j + size[0] * k]);
+							Rprintf("%.10e\t", Space[j + size[0] * k]);
 						}
-						printf("\n");
+						Rprintf("\n");
 					}
 				}
 				else
@@ -240,17 +240,17 @@ namespace ROPTLIB{
 						idices[i] = 0;
 					while (1)
 					{
-						printf("%s(:,:", name);
+						Rprintf("%s(:,:", name);
 						for (integer i = 2; i < ls; i++)
-							printf(",%d", idices[i]);
-						printf("), shared times:%d\n", *sharedtimes);
+							Rprintf(",%d", idices[i]);
+						Rprintf("), shared times:%d\n", *sharedtimes);
 						for (integer j = 0; j < row; j++)
 						{
 							for (integer k = 0; k < col; k++)
 							{
-								printf("%.10e\t", ptr[j + row * k]);
+								Rprintf("%.10e\t", ptr[j + row * k]);
 							}
-							printf("\n");
+							Rprintf("\n");
 						}
 						ptr += row * col;
 						idices[2]++;

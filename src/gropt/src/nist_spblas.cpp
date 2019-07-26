@@ -916,26 +916,6 @@ class TSp_mat : public Sp_mat
   }
 
 
-
-  void print() const
-  {
-    Sp_mat::print();  /* print matrix header info */
-
-    /* if there is actual data, print out contents */
-    for (int i=0; i<num_rows(); i++)
-      for (unsigned int j=0; j< S[i].size(); j++)
-        std::cout << i << "    " << col_index(S[i][j]) <<
-              "        "  << val(S[i][j]) << "\n";
-
-    /* if matrix is triangular, print out diagonals */
-    if (is_upper_triangular() || is_lower_triangular())
-    {
-      for (unsigned int i=0; i< diag.size(); i++)
-        std::cout << i << "    " << i << "     " << diag[i] << "\n";
-    }
-  }
-
-
 };
 
 
@@ -1007,62 +987,6 @@ int Table_remove(unsigned int i)
     return -1;
 }
 
-
-
-void Sp_mat::print() const
-{
-
-
-  std::cout << "State : " <<
-    (is_void() ? "void" :
-     is_new()  ? "new" :
-     is_open() ? "open" :
-     is_valid() ? "valid" : "unknown") << "\n";
-
-  std::cout << "M = " <<  num_rows() <<  "  N = " << num_cols() <<
-        "  nz = " << num_nonzeros() << "\n";
-
-#define yesno(exp) ( (exp) ? "yes" : "no" )
-
-  std::cout << "real: "     << yesno(is_real()) << "\n";
-  std::cout << "complex: "  << yesno(is_complex()) << "\n";
-  std::cout << "double "    << yesno(is_double_precision()) << "\n";
-  std::cout << "single "    << yesno(is_single_precision()) << "\n";
-
-  std::cout << "upper_triangular: " << yesno(is_upper_triangular()) << "\n";
-  std::cout << "lower_triangular: " << yesno(is_lower_triangular()) << "\n";
-
-  std::cout << "regular:    " << yesno(is_opt_regular()) << "\n";
-  std::cout << "irregular:  " << yesno(is_opt_irregular()) << "\n";
-  std::cout << "block:      " << yesno(is_opt_block()) << "\n";
-  std::cout << "unassembled:" << yesno(is_opt_unassembled()) << "\n";
-
-#undef yesno
-}
-
-void table_print()
-{
-  std::cout << "Table has " << Table.size() << " element(s). \n";
-  for (unsigned int i=0; i< Table.size(); i++)
-  {
-    if (Table[i] != 0)
-    {
-      std::cout << "***** Table[" << i << "]: \n";
-      Table[i]->print();
-      std::cout << "\n\n";
-    }
-  }
-}
-
-void print(int A)
-{
-  std::cout << "\n";
-  Table[A]->print();
-  std::cout << "\n";
-}
-
-
-
 }
 /* namespace NIST_SPBLAS */
 
@@ -1083,6 +1007,37 @@ typedef double   DOUBLE;
 typedef std::complex<float> COMPLEX_FLOAT;
 typedef std::complex<double> COMPLEX_DOUBLE;
 
+
+void Sp_mat::print() const
+{
+
+
+  Rcpp::Rcout << "State : " <<
+    (is_void() ? "void" :
+       is_new()  ? "new" :
+       is_open() ? "open" :
+       is_valid() ? "valid" : "unknown") << "\n";
+
+  Rcpp::Rcout << "M = " <<  num_rows() <<  "  N = " << num_cols() <<
+    "  nz = " << num_nonzeros() << "\n";
+
+#define yesno(exp) ( (exp) ? "yes" : "no" )
+
+  Rcpp::Rcout << "real: "     << yesno(is_real()) << "\n";
+  Rcpp::Rcout << "complex: "  << yesno(is_complex()) << "\n";
+  Rcpp::Rcout << "double "    << yesno(is_double_precision()) << "\n";
+  Rcpp::Rcout << "single "    << yesno(is_single_precision()) << "\n";
+
+  Rcpp::Rcout << "upper_triangular: " << yesno(is_upper_triangular()) << "\n";
+  Rcpp::Rcout << "lower_triangular: " << yesno(is_lower_triangular()) << "\n";
+
+  Rcpp::Rcout << "regular:    " << yesno(is_opt_regular()) << "\n";
+  Rcpp::Rcout << "irregular:  " << yesno(is_opt_irregular()) << "\n";
+  Rcpp::Rcout << "block:      " << yesno(is_opt_block()) << "\n";
+  Rcpp::Rcout << "unassembled:" << yesno(is_opt_unassembled()) << "\n";
+
+#undef yesno
+}
 
 
 typedef float          SPBLAS_FLOAT_IN;

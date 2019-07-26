@@ -32,20 +32,20 @@ namespace ROPTLIB{
 	void PreShapeCurves::CheckParams(void) const
 	{
 		Manifold::CheckParams();
-		printf("%s PARAMETERS:\n", name.c_str());
+		Rprintf("%s PARAMETERS:\n", name.c_str());
 		if (dim == 1 && numC == 1)
-			printf("numP          :%15d\n", numP);
+			Rprintf("numP          :%15d\n", numP);
 		else
 		if (numC == 1)
 		{
-			printf("numP          :%15d,\t", numP);
-			printf("dim           :%15d\n", dim);
+			Rprintf("numP          :%15d,\t", numP);
+			Rprintf("dim           :%15d\n", dim);
 		}
 		else
 		{
-			printf("numP          :%15d,\t", numP);
-			printf("dim           :%15d\n", dim);
-			printf("numC          :%15d\n", numC);
+			Rprintf("numP          :%15d,\t", numP);
+			Rprintf("dim           :%15d\n", dim);
+			Rprintf("numC          :%15d\n", numC);
 		}
 	};
 

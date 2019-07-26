@@ -22,7 +22,7 @@ namespace ROPTLIB{
 		iter = 0;
 		if (Debug >= ITERRESULT)
 		{
-			printf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
+			Rprintf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
 			timeSeries[iter] = static_cast<double>(getTickCount() - starttime) / CLK_PS;
 			funSeries[iter] = f1; gradSeries[iter] = ngf;
 			distSeries[iter] = ((soln == nullptr) ? 0 : Mani->Dist(x1, soln));
@@ -49,7 +49,7 @@ namespace ROPTLIB{
 				{
 					if (Debug >= FINALRESULT)
 					{
-						printf("reach the maximum of radius\n");
+						Rprintf("reach the maximum of radius\n");
 					}
 					Delta = maximum_Delta;
 				}
@@ -62,7 +62,7 @@ namespace ROPTLIB{
 				{
 					if (Debug >= FINALRESULT)
 					{
-						printf("reach the minimum of radius\n");
+						Rprintf("reach the minimum of radius\n");
 					}
 					break;
 				}
@@ -87,7 +87,7 @@ namespace ROPTLIB{
 				iter++;
 				if (Debug >= ITERRESULT && iter % OutputGap == 0)
 				{
-					printf("X_{%d} WAS REJECTED.\n", iter);
+					Rprintf("X_{%d} WAS REJECTED.\n", iter);
 					PrintGenInfo();
 					PrintInfo(); // Output information specific to Algorithms
 				}
@@ -106,21 +106,21 @@ namespace ROPTLIB{
 
 		if (Debug >= FINALRESULT)
 		{
-			printf("Iter:%d,f:%.3e,", iter, f2);
+			Rprintf("Iter:%d,f:%.3e,", iter, f2);
 			if (nsubgf != -1)
 			{
-				printf("nsubgf:%.3e,", nsubgf);
+				Rprintf("nsubgf:%.3e,", nsubgf);
 			}
-			printf("|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,", ngf, ngf / ngf0, ComTime, nf, ng, nR);
+			Rprintf("|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,", ngf, ngf / ngf0, ComTime, nf, ng, nR);
 			if (nH != 0)
 			{
-				printf("nH:%d,", nH);
+				Rprintf("nH:%d,", nH);
 			}
 			if (nV != 0)
 			{
-				printf("nV(nVp):%d(%d),", nV, nVp);
+				Rprintf("nV(nVp):%d(%d),", nV, nVp);
 			}
-			printf("\n");
+			Rprintf("\n");
 		}
 	};
 
@@ -221,7 +221,7 @@ namespace ROPTLIB{
 	void SolversTR::PrintGenInfo(void)
 	{
 		Solvers::PrintGenInfo();
-		printf("nH:%d,rho:%.2e,radius:%.3e,tCGstatus:%s,innerIter:%d,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str(), innerIter);
+		Rprintf("nH:%d,rho:%.2e,radius:%.3e,tCGstatus:%s,innerIter:%d,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str(), innerIter);
 	};
 
 	void SolversTR::CheckParams(void)
@@ -232,29 +232,29 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("TRUST REGION TYPE METHODS PARAMETERS:\n");
+		Rprintf("TRUST REGION TYPE METHODS PARAMETERS:\n");
 		status = (initial_Delta > 0) ? YES : NO;
-		printf("initial_Delta :%15g[%s],\t", initial_Delta, status);
+		Rprintf("initial_Delta :%15g[%s],\t", initial_Delta, status);
 		status = (Acceptence_Rho > 0 && Acceptence_Rho < 0.25) ? YES : NO;
-		printf("Acceptence_Rho:%15g[%s]\n", Acceptence_Rho, status);
+		Rprintf("Acceptence_Rho:%15g[%s]\n", Acceptence_Rho, status);
 		status = (Shrinked_tau > 0 && Shrinked_tau < 1) ? YES : NO;
-		printf("Shrinked_tau  :%15g[%s],\t", Shrinked_tau, status);
+		Rprintf("Shrinked_tau  :%15g[%s],\t", Shrinked_tau, status);
 		status = (Magnified_tau > 1) ? YES : NO;
-		printf("Magnified tau :%15g[%s]\n", Magnified_tau, status);
+		Rprintf("Magnified tau :%15g[%s]\n", Magnified_tau, status);
 		status = (minimum_Delta > 0 && minimum_Delta <= maximum_Delta) ? YES : NO;
-		printf("minimum_Delta :%15g[%s],\t", minimum_Delta, status);
+		Rprintf("minimum_Delta :%15g[%s],\t", minimum_Delta, status);
 		status = (maximum_Delta > 0 && maximum_Delta >= minimum_Delta) ? YES : NO;
-		printf("maximum_Delta :%15g[%s]\n", maximum_Delta, status);
+		Rprintf("maximum_Delta :%15g[%s]\n", maximum_Delta, status);
 		status = (Min_Inner_Iter >= 0 && Min_Inner_Iter <= Max_Inner_Iter) ? YES : NO;
-		printf("Min_Inner_Iter:%15d[%s],\t", Min_Inner_Iter, status);
+		Rprintf("Min_Inner_Iter:%15d[%s],\t", Min_Inner_Iter, status);
 		status = (Max_Inner_Iter >= 0 && Max_Inner_Iter >= Min_Inner_Iter) ? YES : NO;
-		printf("Max_Inner_Iter:%15d[%s],\n", Max_Inner_Iter, status);
+		Rprintf("Max_Inner_Iter:%15d[%s],\n", Max_Inner_Iter, status);
 		status = (theta >= 0) ? YES : NO;
-		printf("theta         :%15g[%s],\t", theta, status);
+		Rprintf("theta         :%15g[%s],\t", theta, status);
 		status = (kappa > 0 && kappa < 1) ? YES : NO;
-		printf("kappa         :%15g[%s]\n", kappa, status);
+		Rprintf("kappa         :%15g[%s]\n", kappa, status);
 		status = YES;
-		printf("useRand       :%15d[%s]\n", useRand, status);
+		Rprintf("useRand       :%15d[%s]\n", useRand, status);
 	};
 
 	void SolversTR::UpdateData(void)

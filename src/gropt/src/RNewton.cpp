@@ -53,16 +53,16 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("RNEWTON METHOD PARAMETERS:\n");
+		Rprintf("RNEWTON METHOD PARAMETERS:\n");
 		status = (Min_Inner_Iter >= 0 && Min_Inner_Iter <= Max_Inner_Iter) ? YES : NO;
-		printf("Min_Inner_Iter:%15d[%s],\t", Min_Inner_Iter, status);
+		Rprintf("Min_Inner_Iter:%15d[%s],\t", Min_Inner_Iter, status);
 		status = (Max_Inner_Iter >= 0 && Max_Inner_Iter >= Min_Inner_Iter) ? YES : NO;
-		printf("Max_Inner_Iter:%15d[%s],\t", Max_Inner_Iter, status);
+		Rprintf("Max_Inner_Iter:%15d[%s],\t", Max_Inner_Iter, status);
 		status = (theta >= 1) ? YES : NO;
-		printf("theta         :%15g[%s],\t", theta, status);
+		Rprintf("theta         :%15g[%s],\t", theta, status);
 		status = (kappa > 0 && kappa < 1) ? YES : NO;
-		printf("kappa         :%15g[%s]\n", kappa, status);
-		printf("useRand       :%15d[%s]\n", useRand, status);
+		Rprintf("kappa         :%15g[%s]\n", kappa, status);
+		Rprintf("useRand       :%15d[%s]\n", useRand, status);
 	};
 
 	RNewton::~RNewton(void)
@@ -87,8 +87,8 @@ namespace ROPTLIB{
 
 	void RNewton::PrintInfo(void)
 	{
-		printf("\n\tnH:%d,tCGstatus:%s,innerIter:%d,", nH, tCGLSstatusSetnames[tCGLSstatus].c_str(), innerIter);
-		printf("\n");
+		Rprintf("\n\tnH:%d,tCGstatus:%s,innerIter:%d,", nH, tCGLSstatusSetnames[tCGLSstatus].c_str(), innerIter);
+		Rprintf("\n");
 	};
 
 	void RNewton::tCG_LS(void)

@@ -73,15 +73,15 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("LRBFGS METHOD PARAMETERS:\n");
+		Rprintf("LRBFGS METHOD PARAMETERS:\n");
 		status = (nu >= 0 && nu < 1) ? YES : NO;
-		printf("nu            :%15g[%s],\t", nu, status);
+		Rprintf("nu            :%15g[%s],\t", nu, status);
 		status = (mu >= 0) ? YES : NO;
-		printf("mu            :%15g[%s]\n", mu, status);
+		Rprintf("mu            :%15g[%s]\n", mu, status);
 		status = YES;
-		printf("isconvex      :%15d[%s],\t", isconvex, status);
+		Rprintf("isconvex      :%15d[%s],\t", isconvex, status);
 		status = (LengthSY >= 0) ? YES : NO;
-		printf("LengthSY      :%15d[%s]\n", LengthSY, status);
+		Rprintf("LengthSY      :%15d[%s]\n", LengthSY, status);
 	};
 
 	void LRBFGS::GetSearchDir(void)
@@ -97,7 +97,7 @@ namespace ROPTLIB{
 
 	void LRBFGS::PrintInfo(void)
 	{
-		printf("\n\tbetay:%.3e,rho:%.3e,gamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", betay, rho, gamma, inpss, inpsy, inpyy, isupdated);
-		printf("\n");
+		Rprintf("\n\tbetay:%.3e,rho:%.3e,gamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", betay, rho, gamma, inpss, inpsy, inpyy, isupdated);
+		Rprintf("\n");
 	};
 }; /*end of ROPTLIB namespace*/

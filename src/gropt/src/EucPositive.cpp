@@ -28,20 +28,20 @@ namespace ROPTLIB{
 	void EucPositive::CheckParams(void) const
 	{
 		Manifold::CheckParams();
-		printf("%s PARAMETERS:\n", name.c_str());
+		Rprintf("%s PARAMETERS:\n", name.c_str());
 		if (col == 1 && num == 1)
-			printf("row           :%15d\n", row);
+			Rprintf("row           :%15d\n", row);
 		else
 		if (num == 1)
 		{
-			printf("row           :%15d,\t", row);
-			printf("col           :%15d\n", col);
+			Rprintf("row           :%15d,\t", row);
+			Rprintf("col           :%15d\n", col);
 		}
 		else
 		{
-			printf("row           :%15d,\t", row);
-			printf("col           :%15d\n", col);
-			printf("num           :%15d\n", num);
+			Rprintf("row           :%15d,\t", row);
+			Rprintf("col           :%15d\n", col);
+			Rprintf("num           :%15d\n", num);
 		}
 	};
 

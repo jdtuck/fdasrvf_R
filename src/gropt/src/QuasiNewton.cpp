@@ -256,7 +256,7 @@ namespace ROPTLIB{
 				beginidx = 0;
 				if(Debug >= ITERRESULT && iter % OutputGap == 0)
 				{
-					printf("%d: Restart LRBFGS.\n", iter);
+					Rprintf("%d: Restart LRBFGS.\n", iter);
 				}
 				return;
 			}

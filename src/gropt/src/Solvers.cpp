@@ -15,25 +15,25 @@ namespace ROPTLIB{
 
 	void Solvers::PrintGenInfo(void)
 	{
-		printf("i:%d,f:%.3e,df/f:%.3e,", iter, f2, ((f1 - f2) / f2));
+		Rprintf("i:%d,f:%.3e,df/f:%.3e,", iter, f2, ((f1 - f2) / f2));
 
 		if (nsubgf != -1)
-			printf("nsubgf:%.3e,", nsubgf);
+			Rprintf("nsubgf:%.3e,", nsubgf);
 
-		printf("|gf|:%.3e,time:%.2e,", ngf, static_cast<double>(getTickCount() - starttime) / CLK_PS);
+		Rprintf("|gf|:%.3e,time:%.2e,", ngf, static_cast<double>(getTickCount() - starttime) / CLK_PS);
 
 		if (subprobtimes != 0)
-			printf("nsubprob:%d,", subprobtimes);
+			Rprintf("nsubprob:%d,", subprobtimes);
 
-		printf("nf:%d,ng:%d,nR:%d,", nf, ng, nR);
+		Rprintf("nf:%d,ng:%d,nR:%d,", nf, ng, nR);
 
 		if (nV != 0)
-			printf("nV(nVp):%d(%d),", nV, nVp);
+			Rprintf("nV(nVp):%d(%d),", nV, nVp);
 	};
 
 	void Solvers::PrintInfo(void)
 	{
-		printf("\n");
+		Rprintf("\n");
 	};
 
 	void Solvers::PreConditioner(Variable *x, Vector *eta, Vector *result)
@@ -131,7 +131,7 @@ namespace ROPTLIB{
 			return fabs(nsubgf) < Tolerance;
 		}
 
-		printf("Error: Stopping Criterion is not specefic!\n");
+		Rprintf("Error: Stopping Criterion is not specefic!\n");
 		return true;
 	};
 
@@ -142,23 +142,23 @@ namespace ROPTLIB{
 		char YES[] = "YES";
 		char NO[] = "NO";
 		char *status;
-		printf("GENERAL PARAMETERS:\n");
+		Rprintf("GENERAL PARAMETERS:\n");
 		status = (Stop_Criterion >= 0 && Stop_Criterion < STOPCRITLENGTH) ? YES : NO;
-		printf("Stop_Criterion:%15s[%s],\t", STOPCRITnames[Stop_Criterion].c_str(), status);
+		Rprintf("Stop_Criterion:%15s[%s],\t", STOPCRITnames[Stop_Criterion].c_str(), status);
 		status = (Tolerance > 0) ? YES : NO;
-		printf("Tolerance     :%15g[%s]\n", Tolerance, status);
+		Rprintf("Tolerance     :%15g[%s]\n", Tolerance, status);
 		status = (Max_Iteration > 0 && Max_Iteration >= Min_Iteration) ? YES : NO;
-		printf("Max_Iteration :%15d[%s],\t", Max_Iteration, status);
+		Rprintf("Max_Iteration :%15d[%s],\t", Max_Iteration, status);
 		status = (Min_Iteration >= 0 && Min_Iteration <= Max_Iteration) ? YES : NO;
-		printf("Min_Iteration :%15d[%s]\n", Min_Iteration, status);
+		Rprintf("Min_Iteration :%15d[%s]\n", Min_Iteration, status);
 		status = (OutputGap > 0) ? YES : NO;
-		printf("OutputGap     :%15d[%s],\t", OutputGap, status);
+		Rprintf("OutputGap     :%15d[%s],\t", OutputGap, status);
 		status = (Debug >= 0 && Debug < DEBUGLENGTH) ? YES : NO;
-		printf("DEBUG         :%15s[%s]\n", DEBUGnames[Debug].c_str(), status);
+		Rprintf("DEBUG         :%15s[%s]\n", DEBUGnames[Debug].c_str(), status);
 		status = (Diffx > 0) ? YES : NO;
-		printf("Diffx         :%15g[%s],\t", Diffx, status);
+		Rprintf("Diffx         :%15g[%s],\t", Diffx, status);
 		status = (NumExtraGF > 0) ? YES : NO;
-		printf("NumExtraGF    :%15d[%s]\n", NumExtraGF, status);
+		Rprintf("NumExtraGF    :%15d[%s]\n", NumExtraGF, status);
 	};
 
 	void Solvers::Run(void)
@@ -199,7 +199,7 @@ namespace ROPTLIB{
 			distSeries = new double[1 + Max_Iteration];
 		}
 		if (Debug >= FINALRESULT)
-			printf("=========================%s=========================\n", SolverName.c_str());
+			Rprintf("=========================%s=========================\n", SolverName.c_str());
 	};
 
 	void Solvers::Initialization(const Problem *prob, const Variable *initialx, const Variable *insoln)

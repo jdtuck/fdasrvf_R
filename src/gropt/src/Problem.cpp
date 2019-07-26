@@ -25,7 +25,7 @@ namespace ROPTLIB{
 		Vector *Hv = etax->ConstructEmpty();
         Variable *y = x->ConstructEmpty();
         fx = f(x);
-		printf("f:%f\n", fx);
+		Rprintf("f:%f\n", fx);
 		Grad(x, gfx);
         //gfx->Print("gfx:");//---
 		gfx->CopyTo(etax);//--
@@ -57,33 +57,33 @@ namespace ROPTLIB{
 			HessianEta(x, xi, Hv);
 			Y[i] = log(fabs(fy - fx - Domain->Metric(x, gfx, xi) - 0.5 * Domain->Metric(x, xi, Hv)));
 			X[i] = 0.5 * log(Domain->Metric(x, xi, xi));
-			printf("i:%d,|eta|:%.3e,(fy-fx)/<gfx,eta>:%.3e,(fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>:%.3e\n", i,
+			Rprintf("i:%d,|eta|:%.3e,(fy-fx)/<gfx,eta>:%.3e,(fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>:%.3e\n", i,
 				sqrt(Domain->Metric(x, xi, xi)), (fy - fx) / Domain->Metric(x, gfx, xi),
 				(fy - fx - Domain->Metric(x, gfx, xi)) / (0.5 * Domain->Metric(x, xi, Hv)));
 			Domain->ScaleTimesVector(x, 0.5, xi, xi);
 		}
 
-		printf("CHECK GRADIENT:\n");
-		printf("\tSuppose the point is not a critical point.\n");
-		printf("\tIf there exists an interval of |eta| such that (fy - fx) / <gfx, eta>\n");
-		printf("\tapproximates ONE, then the gradient is probably correct!\n");
+		Rprintf("CHECK GRADIENT:\n");
+		Rprintf("\tSuppose the point is not a critical point.\n");
+		Rprintf("\tIf there exists an interval of |eta| such that (fy - fx) / <gfx, eta>\n");
+		Rprintf("\tapproximates ONE, then the gradient is probably correct!\n");
 
-		printf("CHECK THE ACTION OF THE HESSIAN (PRESUME GRADIENT IS CORRECT):\n");
-		printf("\tSuppose the retraction is second order or the point is a critical point.\n");
-		printf("\tIf there exists an interval of |eta| such that (fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>\n");
-		printf("\tapproximates ONE, then the action of Hessian is probably correct.\n");
+		Rprintf("CHECK THE ACTION OF THE HESSIAN (PRESUME GRADIENT IS CORRECT):\n");
+		Rprintf("\tSuppose the retraction is second order or the point is a critical point.\n");
+		Rprintf("\tIf there exists an interval of |eta| such that (fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>\n");
+		Rprintf("\tapproximates ONE, then the action of Hessian is probably correct.\n");
 
 		////TEST IDEA2:
 		//for (integer i = 1; i < length - 1; i++)
-		//	printf("log(|eta|):%.3e, slope:%.3e\n", X[i], (Y[i + 1] - Y[i - 1]) / (X[i + 1] - X[i - 1]));
-		//printf("CHECK GRADIENT:\n");
-		//printf("\tIf there exists an interval of |eta| such that the slopes \n");
-		//printf("\tapproximate TWO, then the gradient is probably correct!\n");
+		//	Rprintf("log(|eta|):%.3e, slope:%.3e\n", X[i], (Y[i + 1] - Y[i - 1]) / (X[i + 1] - X[i - 1]));
+		//Rprintf("CHECK GRADIENT:\n");
+		//Rprintf("\tIf there exists an interval of |eta| such that the slopes \n");
+		//Rprintf("\tapproximate TWO, then the gradient is probably correct!\n");
 
-		//printf("CHECK THE ACTION OF THE HESSIAN (PRESUME GRADIENT IS CORRECT AND\n");
-		//printf("THE COST FUNCTION IS NOT ONLY QUADRATIC):\n");
-		//printf("\tIf there exists an interval of |eta| such that the slopes\n");
-		//printf("\tapproximate THREE, then the action of Hessian is probably correct.\n");
+		//Rprintf("CHECK THE ACTION OF THE HESSIAN (PRESUME GRADIENT IS CORRECT AND\n");
+		//Rprintf("THE COST FUNCTION IS NOT ONLY QUADRATIC):\n");
+		//Rprintf("\tIf there exists an interval of |eta| such that the slopes\n");
+		//Rprintf("\tapproximate THREE, then the action of Hessian is probably correct.\n");
 
 		//x->Print("1, x:", false);//---
 		delete xi;
@@ -162,7 +162,7 @@ namespace ROPTLIB{
 
 	void Problem::EucGrad(Variable *x, Vector *egf) const
 	{
-		printf("Euclidean Gradient has not been done!\n");
+		Rprintf("Euclidean Gradient has not been done!\n");
 	};
 
 	void Problem::EucHessianEta(Variable *x, Vector *etax, Vector *exix) const

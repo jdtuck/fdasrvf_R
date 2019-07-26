@@ -47,20 +47,20 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("RCG METHOD PARAMETERS:\n");
+		Rprintf("RCG METHOD PARAMETERS:\n");
 		status = (ManDim >= 0 && ManDim <= std::numeric_limits<integer>::max()) ? YES : NO;
-		printf("ManDim        :%15d[%s],\t", ManDim, status);
+		Rprintf("ManDim        :%15d[%s],\t", ManDim, status);
 		status = (RCGmethod >= 0 && RCGmethod <= RCGMETHODSLENGTH) ? YES : NO;
-		printf("RCGmethod     :%15s[%s]\n", RCGmethodSetnames[RCGmethod].c_str(), status);
+		Rprintf("RCGmethod     :%15s[%s]\n", RCGmethodSetnames[RCGmethod].c_str(), status);
 	};
 
 	void RCG::PrintInfo(void)
 	{
 		if (iter % ManDim == 0 || Mani->Metric(x1, eta1, gf1) >= -std::numeric_limits<double>::epsilon()) // restart and safeguard
-			printf("\n\tsigma:%.3e,Reset search direction to the negative gradient,", sigma);
+			Rprintf("\n\tsigma:%.3e,Reset search direction to the negative gradient,", sigma);
 		else
-			printf("\n\tsigma:%.3e,", sigma);
-		printf("\n");
+			Rprintf("\n\tsigma:%.3e,", sigma);
+		Rprintf("\n");
 	};
 
 	void RCG::GetSearchDir(void)

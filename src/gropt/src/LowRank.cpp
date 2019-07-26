@@ -432,7 +432,7 @@ namespace ROPTLIB{
 		{
 			if (EucRep->Getlength() != 1 + n * m)
 			{
-				printf("Error: The format of a dense matrix in LowRank::EucHvToHv is not correct!");
+				Rprintf("Error: The format of a dense matrix in LowRank::EucHvToHv is not correct!");
 			}
 			M = EucRepptr + 1;
 		}
@@ -506,7 +506,7 @@ namespace ROPTLIB{
 			for (integer j = 0; j < r; j++)
 				MdV[i + j * m] = tmp[r * r + j + i * r];
 		if (info != 0)
-			printf("Warning: dgetrs in LowRank::MTdUMdVtoExtr failed!\n");
+			Rprintf("Warning: dgetrs in LowRank::MTdUMdVtoExtr failed!\n");
 		/*dU_xix = dU_xix + dU_R*/
 		LowRankVector *LRxix = dynamic_cast<LowRankVector *> (xix);
 		LRxix->CopyOnWrite();
@@ -537,7 +537,7 @@ namespace ROPTLIB{
 			for (integer j = 0; j < r; j++)
 				MTdU[i + j * n] = tmp[r * r + j + i * r];
 		if (info != 0)
-			printf("Warning: dgetrs in LowRank::MTdUMdVtoExtr failed!\n");
+			Rprintf("Warning: dgetrs in LowRank::MTdUMdVtoExtr failed!\n");
 
 		/*dV_xix = dV_xix + dV_R*/
 		daxpy_(&length, &GLOBAL::DONE, MTdU, &GLOBAL::IONE, dV_xix, &GLOBAL::IONE);
@@ -561,7 +561,7 @@ namespace ROPTLIB{
 		nzmax = static_cast<integer> (EucRepptr[1]);
 		if (EucRep->Getlength() != 2 + 3 * nzmax)
 		{
-			printf("Error: The format of a sparse matrix in LowRank::ConstructSparseMatrix is not correct!");
+			Rprintf("Error: The format of a sparse matrix in LowRank::ConstructSparseMatrix is not correct!");
 			return -1;
 		}
 
@@ -602,7 +602,7 @@ namespace ROPTLIB{
 		{
 			if (EucRep->Getlength() != 1 + n * m)
 			{
-				printf("Error: The format of a dense matrix in LowRank::EucRepToExtr is not correct!");
+				Rprintf("Error: The format of a dense matrix in LowRank::EucRepToExtr is not correct!");
 			}
 			M = EucRepptr + 1;
 		}
@@ -698,7 +698,7 @@ namespace ROPTLIB{
 				dotU[i + j * m] = tmpM[j + i * r];
 
 		if (info != 0)
-			printf("Warning: dgetrs in LowRank::MTUMVtoExtr failed!\n");
+			Rprintf("Warning: dgetrs in LowRank::MTUMVtoExtr failed!\n");
 
 		/*Compute dotV = (MTU - V dotD) D^{-T} by solving the linear system
 		D X^T = (MTU - V dotD)^T */
@@ -715,7 +715,7 @@ namespace ROPTLIB{
 				dotV[i + j * n] = tmpM[j + i * r];
 
 		if (info != 0)
-			printf("Warning: dgetrs in LowRank::MTUMVtoExtr failed!\n");
+			Rprintf("Warning: dgetrs in LowRank::MTUMVtoExtr failed!\n");
 
 		delete[] tmpM;
 		delete[] P;
@@ -741,7 +741,7 @@ namespace ROPTLIB{
 			for (integer i = 0; i < r; i++)
 				tmp[r * r + i] = static_cast<double> (P[i]);
 			if (info != 0)
-				printf("Warning: dgetrs in LowRank::LUofDinx failed!\n");
+				Rprintf("Warning: dgetrs in LowRank::LUofDinx failed!\n");
 			delete[] P;
 			x->AddToTempData("LUofD", SharedSpacetmp);
 		}

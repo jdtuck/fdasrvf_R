@@ -465,7 +465,7 @@ namespace ROPTLIB{
 	void CFixedRank2Factors::coTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
 	{
 		xiy->CopyTo(result);
-		printf("Warning: CFixedRank2Factors::coTangentVector has not been done!\n");
+		Rprintf("Warning: CFixedRank2Factors::coTangentVector has not been done!\n");
 	};
 
 	void CFixedRank2Factors::DiffRetraction(Variable *x, Vector *etax, Variable *y, Vector *xix, Vector *result, bool IsEtaXiSameDir) const
@@ -507,7 +507,7 @@ namespace ROPTLIB{
 #endif
 		if (info != 0)
 		{
-			printf("warning: zpotrs failed in CFixedRank2Factors::ExtrProjection with info:%d!\n", info);
+			Rprintf("warning: zpotrs failed in CFixedRank2Factors::ExtrProjection with info:%d!\n", info);
 		}
 
 		/*Compute (G^*G)^{-1} G^* eta_G */
@@ -528,7 +528,7 @@ namespace ROPTLIB{
 #endif
 		if (info != 0)
 		{
-			printf("warning: zpotrs failed in CFixedRank2Factors::ExtrProjection with info:%d!\n", info);
+			Rprintf("warning: zpotrs failed in CFixedRank2Factors::ExtrProjection with info:%d!\n", info);
 		}
 
 		/*GV = (- HV^* + GV)/2 */

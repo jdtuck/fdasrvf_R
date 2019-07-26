@@ -172,7 +172,7 @@ namespace ROPTLIB{
 
 	void ProductElement::Print(const char *name, bool isonlymain) const
 	{
-		printf("=================Product data: %s=========================\n", name);
+		Rprintf("=================Product data: %s=========================\n", name);
 		for (integer i = 0; i < numofelements; i++)
 		{
 			//std::string s = std::to_string(i);
@@ -186,10 +186,10 @@ namespace ROPTLIB{
 			MAP::const_iterator thisiter;
 			for (thisiter = TempData.begin(); thisiter != TempData.end(); thisiter++)
 			{
-				printf("=================Temp data in %s ================\n", name);
+				Rprintf("=================Temp data in %s ================\n", name);
 				thisiter->second->Print(thisiter->first.c_str());
 			}
-			printf("=================end of output: %s=========================\n", name);
+			Rprintf("=================end of output: %s=========================\n", name);
 		}
 	};
 
@@ -227,7 +227,7 @@ namespace ROPTLIB{
 			{
 				if (Space > elements[j]->GetSpace() || Space + length <= elements[j]->GetSpace())
 				{
-					printf("Error: Memory of space in elements does not use that of Space in ProductElement in %s!\n", info);
+					Rprintf("Error: Memory of space in elements does not use that of Space in ProductElement in %s!\n", info);
 				}
 			}
 		}

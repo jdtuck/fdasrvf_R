@@ -102,7 +102,7 @@ namespace ROPTLIB{
 	void Element::Print(const char *name, bool isonlymain) const
 	{
 		if (TempData.size() > 0 && !isonlymain)
-			printf("=================Main data: %s=========================\n", name);
+			Rprintf("=================Main data: %s=========================\n", name);
 		SmartSpace::Print(name);
 
 		if (TempData.size() > 0 && !isonlymain)
@@ -110,16 +110,16 @@ namespace ROPTLIB{
 			MAP::const_iterator thisiter;
 			for (thisiter = TempData.begin(); thisiter != TempData.end(); thisiter++)
 			{
-				printf("=================Temp data in %s ================\n", name);
+				Rprintf("=================Temp data in %s ================\n", name);
 				thisiter->second->Print(thisiter->first.c_str());
 			}
-			printf("=================end of output: %s=========================\n", name);
+			Rprintf("=================end of output: %s=========================\n", name);
 		}
 	};
 
 	void Element::RandInManifold(void)
 	{
-		printf("Warning: RandInManifold has not been overloaded!\n");
+		Rprintf("Warning: RandInManifold has not been overloaded!\n");
 	};
 
 	void Element::AddToTempData(std::string name, SharedSpace * &Temp)
@@ -144,7 +144,7 @@ namespace ROPTLIB{
 		thisiter = TempData.find(name);
 		if (thisiter == TempData.end())
 		{
-			printf("Error: TempData %s does not exist!\n", name.c_str());
+			Rprintf("Error: TempData %s does not exist!\n", name.c_str());
 			return nullptr;
 		}
 
@@ -157,7 +157,7 @@ namespace ROPTLIB{
 		thisiter = TempData.find(name);
 		if (thisiter == TempData.end())
 		{
-			printf("Error: TempData %s does not exist!\n", name.c_str());
+			Rprintf("Error: TempData %s does not exist!\n", name.c_str());
 			return nullptr;
 		}
 

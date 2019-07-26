@@ -36,9 +36,9 @@ namespace ROPTLIB{
 	void Grassmann::CheckParams(void) const
 	{
 		Manifold::CheckParams();
-		printf("%s PARAMETERS:\n", name.c_str());
-		printf("n             :%15d,\t", n);
-		printf("p             :%15d\n", p);
+		Rprintf("%s PARAMETERS:\n", name.c_str());
+		Rprintf("n             :%15d,\t", n);
+		Rprintf("p             :%15d\n", p);
 	};
 
 	void Grassmann::ExtrProjection(Variable *x, Vector *v, Vector *result) const
@@ -103,11 +103,11 @@ namespace ROPTLIB{
 		// details: http://www.netlib.org/lapack/explore-html/db/de5/dgeqp3_8f.html
 		dgeqp3_(&N, &P, ptrHHR, &N, jpvt, tau, work, &lwork, &info);
 		if (info < 0)
-			printf("Error in qr decomposition!\n");
+			Rprintf("Error in qr decomposition!\n");
 		for (integer i = 0; i < P; i++)
 		{
 			if (jpvt[i] != (i + 1))
-				printf("Error in qf retraction!\n");
+				Rprintf("Error in qf retraction!\n");
 		}
 		double *signs = new double[P];
 		for (integer i = 0; i < P; i++)
@@ -118,7 +118,7 @@ namespace ROPTLIB{
 		// details: http://www.netlib.org/lapack/explore-html/d9/d1d/dorgqr_8f.html
 		dorgqr_(&N, &P, &P, resultM, &N, tau, work, &lwork, &info);
 		if (info < 0)
-			printf("Error in forming Q matrix!\n");
+			Rprintf("Error in forming Q matrix!\n");
 		for (integer i = 0; i < P; i++)
 			// resultM(:, i) <- signs(i) * resultM(:, i), details: http://www.netlib.org/lapack/explore-html/d4/dd0/dscal_8f.html
 			dscal_(&N, signs + i, resultM + i * N, &inc);
@@ -379,11 +379,11 @@ namespace ROPTLIB{
 			x->AddToTempData("HHR", HouseHolderResult);
 			x->AddToTempData("HHRTau", HHRTau);
 			if (info < 0)
-				printf("Error in qr decomposition!\n");
+				Rprintf("Error in qr decomposition!\n");
 			for (integer i = 0; i < P; i++)
 			{
 				if (jpvt[i] != (i + 1))
-					printf("Error in qf retraction!\n");
+					Rprintf("Error in qf retraction!\n");
 			}
 			delete[] jpvt;
 			delete[] work;
@@ -453,11 +453,11 @@ namespace ROPTLIB{
 			x->AddToTempData("HHR", HouseHolderResult);
 			x->AddToTempData("HHRTau", HHRTau);
 			if (info < 0)
-				printf("Error in qr decomposition!\n");
+				Rprintf("Error in qr decomposition!\n");
 			for (integer i = 0; i < P; i++)
 			{
 				if (jpvt[i] != (i + 1))
-					printf("Error in qf retraction!\n");
+					Rprintf("Error in qf retraction!\n");
 			}
 			delete[] jpvt;
 			delete[] work;

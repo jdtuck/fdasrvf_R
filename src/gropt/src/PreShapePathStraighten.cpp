@@ -160,7 +160,7 @@ namespace ROPTLIB{
 		}
 
 		if (iter >= 100) {
-			printf("Item_1: Iterations exceeded 100\n");
+			Rprintf("Item_1: Iterations exceeded 100\n");
 		}
 
 		delete[] qnorm;

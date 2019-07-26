@@ -27,9 +27,9 @@ namespace ROPTLIB{
 	void SPDManifold::CheckParams(void) const
 	{
 		Manifold::CheckParams();
-		printf("%s PARAMETERS:\n", name.c_str());
-		printf("row           :%15d,\t", n);
-		printf("col           :%15d\n", n);
+		Rprintf("%s PARAMETERS:\n", name.c_str());
+		Rprintf("row           :%15d,\t", n);
+		Rprintf("col           :%15d\n", n);
 	};
 
 	void SPDManifold::EucGradToGrad(Variable *x, Vector *egf, Vector *gf, const Problem *prob) const
@@ -48,7 +48,7 @@ namespace ROPTLIB{
 
 	void SPDManifold::EucHvToHv(Variable *x, Vector *etax, Vector *exix, Vector* xix, const Problem *prob) const
 	{
-		printf("warning:SPDManifold::EucHvToHv has not been done!\n");
+		Rprintf("warning:SPDManifold::EucHvToHv has not been done!\n");
 		exix->CopyTo(xix);
 	};
 
@@ -72,7 +72,7 @@ namespace ROPTLIB{
 		x->AddToTempData("L", SharedL);
 		if (info != 0)
 		{
-			printf("Warning: SPDManifold::CholeskyRepresentation fails with info:%d!\n", info);
+			Rprintf("Warning: SPDManifold::CholeskyRepresentation fails with info:%d!\n", info);
 		}
 	};
 
@@ -108,7 +108,7 @@ namespace ROPTLIB{
 		dtrtrs_(GLOBAL::L, GLOBAL::N, GLOBAL::N, &N, &N, const_cast<double *> (L), &N, E, &N, &info);
 		if (info != 0)
 		{
-			printf("warning: SPDManifold::ObtainIntr fails with info:%d!\n", info);
+			Rprintf("warning: SPDManifold::ObtainIntr fails with info:%d!\n", info);
 		}
 
 		/*E <-- E^T*/
@@ -127,7 +127,7 @@ namespace ROPTLIB{
 		dtrtrs_(GLOBAL::L, GLOBAL::N, GLOBAL::N, &N, &N, const_cast<double *> (L), &N, E, &N, &info);
 		if (info != 0)
 		{
-			printf("warning: SPDManifold::ObtainIntr fails with info:%d!\n", info);
+			Rprintf("warning: SPDManifold::ObtainIntr fails with info:%d!\n", info);
 		}
 		/*We don't have to do: E <-- E^T, since E is symmetric*/
 		double *resultTV = result->ObtainWriteEntireData();
@@ -277,7 +277,7 @@ namespace ROPTLIB{
 		dtrtrs_(GLOBAL::L, GLOBAL::N, GLOBAL::N, &N, &N, const_cast<double *> (L), &N, LiE, &N, &info);
 		if (info != 0)
 		{
-			printf("warning: SPDManifold::Retraction fails with info:%d!\n", info);
+			Rprintf("warning: SPDManifold::Retraction fails with info:%d!\n", info);
 		}
 		double *resultTV = result->ObtainWriteEntireData();
 		/*Compute result = LiE^T LiE = E L^{-T} L^{-1} E*/
@@ -377,7 +377,7 @@ namespace ROPTLIB{
 
 	void SPDManifold::coTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
 	{
-		printf("SPDManifold::coTangentVector has not been done!\n");
+		Rprintf("SPDManifold::coTangentVector has not been done!\n");
 		xiy->CopyTo(result);
 	};
 

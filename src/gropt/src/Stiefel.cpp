@@ -100,12 +100,12 @@ namespace ROPTLIB{
 		std::string StieRetractionnames[STIERETRACTIONLENGTH] = { "QF", "POLAR", "EXP", "CONSTRUCTED", "CAYLEYR", "PROXSTIE" };
 		std::string StieVectorTransportnames[STIEVECTORTRANSPORTLENGTH] = { "PARALLELIZATION", "RIGGING", "PARALLELTRANSLATION", "PROJECTION", "CAYLEYVT" };
 		Manifold::CheckParams();
-		printf("%s PARAMETERS:\n", name.c_str());
-		printf("n             :%15d,\t", n);
-		printf("p             :%15d\n", p);
-		printf("metric        :%15s,\t", StieMetricnames[metric].c_str());
-		printf("retraction    :%15s\n", StieRetractionnames[retraction].c_str());
-		printf("VecTran       :%15s\n", StieVectorTransportnames[VecTran].c_str());
+		Rprintf("%s PARAMETERS:\n", name.c_str());
+		Rprintf("n             :%15d,\t", n);
+		Rprintf("p             :%15d\n", p);
+		Rprintf("metric        :%15s,\t", StieMetricnames[metric].c_str());
+		Rprintf("retraction    :%15s\n", StieRetractionnames[retraction].c_str());
+		Rprintf("VecTran       :%15s\n", StieVectorTransportnames[VecTran].c_str());
 	};
 
 	void Stiefel::IntrProjection(Variable *x, Vector *etax, Vector *result) const
@@ -148,7 +148,7 @@ namespace ROPTLIB{
 	{
 		if (metric == EUCLIDEAN)
 			return Manifold::Metric(x, etax, xix);
-		printf("Error: Metric has not been done!\n");
+		Rprintf("Error: Metric has not been done!\n");
 		return 0;
 	};
 
@@ -174,7 +174,7 @@ namespace ROPTLIB{
 		if (retraction == CAYLEYR)
 			return CayleyRetraction(x, etax, result, stepsize);
 
-		printf("Error: Retraction has not been done!\n");
+		Rprintf("Error: Retraction has not been done!\n");
 	};
 
 	void Stiefel::coTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
@@ -191,7 +191,7 @@ namespace ROPTLIB{
 		if (retraction == CAYLEYR)
 			return CayleycoTangentVector(x, etax, y, xiy, result);
 
-		printf("Error: coTangentVector has not been done!\n");
+		Rprintf("Error: coTangentVector has not been done!\n");
 	};
 
 	void Stiefel::DiffRetraction(Variable *x, Vector *etax, Variable *y, Vector *xix, Vector *result, bool IsEtaXiSameDir) const
@@ -208,7 +208,7 @@ namespace ROPTLIB{
 		if (retraction == CAYLEYR)
 			return DiffCayleyRetraction(x, etax, y, xix, result, IsEtaXiSameDir);
 
-		printf("Error: DiffRetraction has not been done!\n");
+		Rprintf("Error: DiffRetraction has not been done!\n");
 	};
 
 	double Stiefel::Beta(Variable *x, Vector *etax) const
@@ -249,7 +249,7 @@ namespace ROPTLIB{
 		if (HasHHR)
 			return LCVectorTransport(x, etax, y, xix, result);
 
-		printf("Error: VectorTransport has not been done!\n");
+		Rprintf("Error: VectorTransport has not been done!\n");
 	};
 
 	void Stiefel::InverseVectorTransport(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
@@ -259,7 +259,7 @@ namespace ROPTLIB{
 
 		if (VecTran == PROJECTION && !HasHHR)
 		{
-			printf("Stiefel::InverseVectorTransport: inverse vector transport by projection has not been done!\n");
+			Rprintf("Stiefel::InverseVectorTransport: inverse vector transport by projection has not been done!\n");
 			return Manifold::InverseVectorTransport(x, etax, y, xiy, result);
 		}
 
@@ -269,7 +269,7 @@ namespace ROPTLIB{
 		if (HasHHR)
 			return LCInverseVectorTransport(x, etax, y, xiy, result);
 
-		printf("Error: InverseVectorTransport has not been done!\n");
+		Rprintf("Error: InverseVectorTransport has not been done!\n");
 	};
 
 	void Stiefel::HInvTran(Variable *x, Vector *etax, Variable *y, LinearOPE *Hx, integer start, integer end, LinearOPE *result) const
@@ -279,20 +279,20 @@ namespace ROPTLIB{
 
 		if (VecTran == PROJECTION && !HasHHR)
 		{
-			printf("Stiefel::HInvTran for vector transport by projection has not been done!\n");
+			Rprintf("Stiefel::HInvTran for vector transport by projection has not been done!\n");
 			return Manifold::HInvTran(x, etax, y, Hx, start, end, result);
 		}
 
 		if (VecTran == CAYLEYVT && !HasHHR)
 		{
-			printf("Stiefel::HInvTran for Cayley vector transport has not been done!\n");
+			Rprintf("Stiefel::HInvTran for Cayley vector transport has not been done!\n");
 			return Manifold::HInvTran(x, etax, y, Hx, start, end, result);
 		}
 
 		if (HasHHR)
 			return LCHInvTran(x, etax, y, Hx, start, end, result);
 
-		printf("Error: HInvTran has not been done!\n");
+		Rprintf("Error: HInvTran has not been done!\n");
 	};
 
 	void Stiefel::TranH(Variable *x, Vector *etax, Variable *y, LinearOPE *Hx, integer start, integer end, LinearOPE *result) const
@@ -302,20 +302,20 @@ namespace ROPTLIB{
 
 		if (VecTran == PROJECTION && !HasHHR)
 		{
-			printf("Stiefel::TranH for vector transport by projection has not been done!\n");
+			Rprintf("Stiefel::TranH for vector transport by projection has not been done!\n");
 			return Manifold::TranH(x, etax, y, Hx, start, end, result);
 		}
 
 		if (VecTran == CAYLEYVT && !HasHHR)
 		{
-			printf("Stiefel::TranH for Cayley vector transport has not been done!\n");
+			Rprintf("Stiefel::TranH for Cayley vector transport has not been done!\n");
 			return Manifold::TranH(x, etax, y, Hx, start, end, result);
 		}
 
 		if (HasHHR)
 			return LCTranH(x, etax, y, Hx, start, end, result);
 
-		printf("Error: TranH has not been done!\n");
+		Rprintf("Error: TranH has not been done!\n");
 	};
 
 	void Stiefel::TranHInvTran(Variable *x, Vector *etax, Variable *y, LinearOPE *Hx, LinearOPE *result) const
@@ -325,20 +325,20 @@ namespace ROPTLIB{
 
 		if (VecTran == PROJECTION && !HasHHR)
 		{
-			printf("Stiefel::TranHInvTran for vector transport by projection has not been done!\n");
+			Rprintf("Stiefel::TranHInvTran for vector transport by projection has not been done!\n");
 			return Manifold::TranHInvTran(x, etax, y, Hx, result);
 		}
 
 		if (VecTran == CAYLEYVT && !HasHHR)
 		{
-			printf("Stiefel::TranHInvTran for Cayley vector transport has not been done!\n");
+			Rprintf("Stiefel::TranHInvTran for Cayley vector transport has not been done!\n");
 			return Manifold::TranHInvTran(x, etax, y, Hx, result);
 		}
 
 		if (HasHHR)
 			return LCTranHInvTran(x, etax, y, Hx, result);
 
-		printf("Error: TranHInvTran has not been done!\n");
+		Rprintf("Error: TranHInvTran has not been done!\n");
 	};
 
 	void Stiefel::EucGradToGrad(Variable *x, Vector *egf, Vector *gf, const Problem *prob) const
@@ -356,7 +356,7 @@ namespace ROPTLIB{
 			ExtrProjection(x, egf, gf);
 			return;
 		}
-		printf("Warning:The function converting Eucidean Gradient to Riemannian Gradient has not been done!\n");
+		Rprintf("Warning:The function converting Eucidean Gradient to Riemannian Gradient has not been done!\n");
 	};
 
 	void Stiefel::EucHvToHv(Variable *x, Vector *etax, Vector *exix, Vector *xix, const Problem *prob) const
@@ -408,7 +408,7 @@ namespace ROPTLIB{
 			}
 			return;
 		}
-		printf("Warning:The function converting action of Eucidean Hessian to action of Riemannian Hessian has not been done!\n");
+		Rprintf("Warning:The function converting action of Eucidean Hessian to action of Riemannian Hessian has not been done!\n");
 	};
 
 	void Stiefel::ObtainIntr(Variable *x, Vector *etax, Vector *result) const
@@ -419,7 +419,7 @@ namespace ROPTLIB{
 			if (retraction == CONSTRUCTED)
 				ObtainIntrSquare(x, etax, result);
 			else
-				printf("Warning: computing intrinsic representation from extrinsic has not been implemented!\n");
+				Rprintf("Warning: computing intrinsic representation from extrinsic has not been implemented!\n");
 	};
 
 	void Stiefel::ObtainExtr(Variable *x, Vector *intretax, Vector *result) const
@@ -430,7 +430,7 @@ namespace ROPTLIB{
 			if (retraction == CONSTRUCTED)
 				ObtainExtrSquare(x, intretax, result);
 			else
-				printf("Warning: computing extrinsic representation from intrinsic has not been implemented!\n");
+				Rprintf("Warning: computing extrinsic representation from intrinsic has not been implemented!\n");
 	};
 
 	void Stiefel::qfRetraction(Variable *x, Vector *etax, Variable *result, double stepsize) const
@@ -474,11 +474,11 @@ namespace ROPTLIB{
 		// details: http://www.netlib.org/lapack/explore-html/db/de5/dgeqp3_8f.html
 		dgeqp3_(&N, &P, ptrHHR, &N, jpvt, tau, work, &lwork, &info);
 		if (info < 0)
-			printf("Error in qr decomposition!\n");
+			Rprintf("Error in qr decomposition!\n");
 		for (integer i = 0; i < P; i++)
 		{
 			if (jpvt[i] != (i + 1))
-				printf("Error in qf retraction!\n");
+				Rprintf("Error in qf retraction!\n");
 		}
 		double *signs = new double[P];
 		for (integer i = 0; i < P; i++)
@@ -489,7 +489,7 @@ namespace ROPTLIB{
 		// details: http://www.netlib.org/lapack/explore-html/d9/d1d/dorgqr_8f.html
 		dorgqr_(&N, &P, &P, resultM, &N, tau, work, &lwork, &info);
 		if (info < 0)
-			printf("Error in forming Q matrix!\n");
+			Rprintf("Error in forming Q matrix!\n");
 
 		///*for debug*/
 		//double *FullOrth = new double[N * N];
@@ -706,7 +706,7 @@ namespace ROPTLIB{
 	void Stiefel::PolarcoTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
 	{
 		xiy->CopyTo(result);
-		printf("The cotangent vector for the polar retraction has not been implemented!\n");
+		Rprintf("The cotangent vector for the polar retraction has not been implemented!\n");
 	};
 
 	void Stiefel::DiffPolarRetraction(Variable *x, Vector *etax, Variable *y, Vector *xix, Vector *result, bool IsEtaXiSameDir) const
@@ -729,7 +729,7 @@ namespace ROPTLIB{
 
 			const SharedSpace *SharedSPD = x->ObtainReadTempData("SPD");
 			if (SharedSPD == nullptr)
-				printf("Error: SharedSPD in void Stiefel::DiffPolarRetraction does not exist!\n");
+				Rprintf("Error: SharedSPD in void Stiefel::DiffPolarRetraction does not exist!\n");
 			const double *S = SharedSPD->ObtainReadData();
 			const double *VT = S + p;
 			double *tmp = new double[n * p + p * p];
@@ -784,7 +784,7 @@ namespace ROPTLIB{
 			delete extempx;
 			return;
 		}
-		printf("Warning: The differentiated retraction of the polar retraction has not been implemented!\n");
+		Rprintf("Warning: The differentiated retraction of the polar retraction has not been implemented!\n");
 		xix->CopyTo(result);
 	};
 
@@ -818,11 +818,11 @@ namespace ROPTLIB{
 			x->AddToTempData("HHR", HouseHolderResult);
 			x->AddToTempData("HHRTau", HHRTau);
 			if (info < 0)
-				printf("Error in qr decomposition!\n");
+				Rprintf("Error in qr decomposition!\n");
 			for (integer i = 0; i < P; i++)
 			{
 				if (jpvt[i] != (i + 1))
-					printf("Error in qf retraction!\n");
+					Rprintf("Error in qf retraction!\n");
 			}
 			delete[] jpvt;
 			delete[] work;
@@ -912,11 +912,11 @@ namespace ROPTLIB{
 			x->AddToTempData("HHR", HouseHolderResult);
 			x->AddToTempData("HHRTau", HHRTau);
 			if (info < 0)
-				printf("Error in qr decomposition!\n");
+				Rprintf("Error in qr decomposition!\n");
 			for (integer i = 0; i < P; i++)
 			{
 				if (jpvt[i] != (i + 1))
-					printf("Error in qf retraction!\n");
+					Rprintf("Error in qf retraction!\n");
 			}
 			delete[] jpvt;
 			delete[] work;
@@ -1111,7 +1111,7 @@ namespace ROPTLIB{
 	void Stiefel::ConcoTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
 	{
 		xiy->CopyTo(result);
-		printf("The cotangent vector for the constructed retraction has not been implemented!\n");
+		Rprintf("The cotangent vector for the constructed retraction has not been implemented!\n");
 	};
 
 	void Stiefel::DiffConRetraction(Variable *x, Vector *etax, Variable *y, Vector *xix, Vector *result, bool IsEtaXiSameDir) const
@@ -1143,7 +1143,7 @@ namespace ROPTLIB{
 			}
 			return;
 		}
-		printf("Warning: The differentiated retraction of the constructed retraction has not been implemented!\n");
+		Rprintf("Warning: The differentiated retraction of the constructed retraction has not been implemented!\n");
 		xix->CopyTo(result);
 	};
 
@@ -1208,7 +1208,7 @@ namespace ROPTLIB{
 		/*Solve the linear system*/
 		dgetrs_(GLOBAL::N, &P2, &P, LUPptr, &P2, Perm, Mk3ptr, &P2, &info);
 		if (info != 0)
-			printf("Warning: dgetrs in Stiefel::CayleyRetraction failed!\n");
+			Rprintf("Warning: dgetrs in Stiefel::CayleyRetraction failed!\n");
 		delete[] Perm;
 		/*Compute U*/
 		length = n * p;
@@ -1229,7 +1229,7 @@ namespace ROPTLIB{
 	void Stiefel::CayleycoTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
 	{
 		xiy->CopyTo(result);
-		printf("The cotangent vector for the Cayley retraction has not been implemented!\n");
+		Rprintf("The cotangent vector for the Cayley retraction has not been implemented!\n");
 	};
 
 	void Stiefel::DiffCayleyRetraction(Variable *x, Vector *etax, Variable *y, Vector *xix, Vector *result, bool IsEtaXiSameDir) const
@@ -1265,7 +1265,7 @@ namespace ROPTLIB{
 			/*Solve the linear system*/
 			dgetrs_(GLOBAL::N, &P2, &P, const_cast<double *>(LUPptr), &P2, perm, Mk2Mk3, &P2, &info);
 			if (info != 0)
-				printf("Warning: dgetrs in Stiefel::DiffCayleyRetraction failed!\n");
+				Rprintf("Warning: dgetrs in Stiefel::DiffCayleyRetraction failed!\n");
 			delete[] perm;
 			/*tmp <--Mk1 + 0.5 * Mk2 * Mk3 + 0.5 (1 - 0.5Mk2)^{-1} Mk2Mk3 */
 			daxpy_(&length, &half, Mk2Mk3, &GLOBAL::IONE, tmp, &GLOBAL::IONE);
@@ -1299,7 +1299,7 @@ namespace ROPTLIB{
 			}
 			return;
 		}
-		printf("Warning: The differentiated retraction of the constructed retraction has not been implemented!\n");
+		Rprintf("Warning: The differentiated retraction of the constructed retraction has not been implemented!\n");
 		xix->CopyTo(result);
 	};
 
@@ -1327,7 +1327,7 @@ namespace ROPTLIB{
 		/*Solve the linear system*/
 		dgetrs_(GLOBAL::N, &P2, &P, const_cast<double *>(LUPptr), &P2, Perm, Vtxix, &P2, &info);
 		if (info != 0)
-			printf("Warning: dgetrs in Stiefel::DiffCayleyRetraction failed!\n");
+			Rprintf("Warning: dgetrs in Stiefel::DiffCayleyRetraction failed!\n");
 		delete[] Perm;
 
 		xix->CopyTo(result);
@@ -1360,7 +1360,7 @@ namespace ROPTLIB{
 		/*Solve the linear system*/
 		dgetrs_(GLOBAL::T, &P2, &P, const_cast<double *>(LUPptr), &P2, Perm, Utxiy, &P2, &info);
 		if (info != 0)
-			printf("Warning: dgetrs in Stiefel::DiffCayleyRetraction failed!\n");
+			Rprintf("Warning: dgetrs in Stiefel::DiffCayleyRetraction failed!\n");
 		delete[] Perm;
 
 		xiy->CopyTo(result);
@@ -1396,12 +1396,12 @@ namespace ROPTLIB{
 		// details: http://www.netlib.org/lapack/explore-html/db/de5/dgeqp3_8f.html
 		dgeqp3_(&N, &NmP, Perp, &N, jpvt, tau, work, &lwork, &info);
 		if (info < 0)
-			printf("Error in qr decomposition!\n");
+			Rprintf("Error in qr decomposition!\n");
 		// Generate an orthonormal matrix by using the Householder refections in Perp, output is stored in Perp,
 		// details: http://www.netlib.org/lapack/explore-html/d9/d1d/dorgqr_8f.html
 		dorgqr_(&N, &NmP, &NmP, Perp, &N, tau, work, &lwork, &info);
 		if (info < 0)
-			printf("Error in forming Q matrix!\n");
+			Rprintf("Error in forming Q matrix!\n");
 		delete[] jpvt;
 		delete[] tau;
 

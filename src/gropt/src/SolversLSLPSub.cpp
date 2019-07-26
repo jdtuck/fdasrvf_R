@@ -21,7 +21,7 @@ namespace ROPTLIB{
 		iter = 0;
 		if (Debug >= ITERRESULT)
 		{
-			printf("i:%d,f:%.3e,\n", iter, f1);
+			Rprintf("i:%d,f:%.3e,\n", iter, f1);
 			timeSeries[iter] = static_cast<double>(getTickCount() - starttime) / CLK_PS;
 			funSeries[iter] = f1;
 			gradSeries[iter] = ngf;
@@ -62,7 +62,7 @@ namespace ROPTLIB{
 					}
 				}
 				if (Debug >= ITERRESULT)
-					printf("Shinking Epsilon and Delta to %g and %g respectively, |gf|:%g.\n", Eps, Del, ngf);
+					Rprintf("Shinking Epsilon and Delta to %g and %g respectively, |gf|:%g.\n", Eps, Del, ngf);
 				continue;
 			}
 
@@ -114,7 +114,7 @@ namespace ROPTLIB{
 			/*Output debug information if necessary.*/
 			if (LSstatus < SUCCESS && Debug >= FINALRESULT)
 			{
-				printf("Linesearch fails! LSstatus:%s\n", LSstatusSetnames[LSstatus].c_str());
+				Rprintf("Linesearch fails! LSstatus:%s\n", LSstatusSetnames[LSstatus].c_str());
 			}
 
 			iter++;
@@ -157,17 +157,17 @@ namespace ROPTLIB{
 			lengthSeries = iter + 1;
 		if (Debug >= FINALRESULT)
 		{
-			printf("Iter:%d,f:%.3e,|gf|:%.3e,time:%.2e,nsubprob:%d,nf:%d,ng:%d,nR:%d,", iter, f2, ngf, ComTime, subprobtimes, nf, ng, nR);
+			Rprintf("Iter:%d,f:%.3e,|gf|:%.3e,time:%.2e,nsubprob:%d,nf:%d,ng:%d,nR:%d,", iter, f2, ngf, ComTime, subprobtimes, nf, ng, nR);
 			if (nH != 0)
 			{
-				printf("nH:%d,", nH);
+				Rprintf("nH:%d,", nH);
 			}
 			if (nV != 0)
 			{
-				printf("nV(nVp):%d(%d),", nV, nVp);
+				Rprintf("nV(nVp):%d(%d),", nV, nVp);
 			}
-			printf("Eps:%.3e,", Eps);
-			printf("\n");
+			Rprintf("Eps:%.3e,", Eps);
+			Rprintf("\n");
 		}
 	};
 
@@ -225,17 +225,17 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("SolversLSLPSub METHOD PARAMETERS:\n");
+		Rprintf("SolversLSLPSub METHOD PARAMETERS:\n");
 		status = (Eps > 0) ? YES : NO;
-		printf("Eps           :%15g[%s],\t", Eps, status);
+		Rprintf("Eps           :%15g[%s],\t", Eps, status);
 		status = (Theta_eps > 0 && Theta_eps < 1) ? YES : NO;
-		printf("Theta_eps     :%15g[%s]\n", Theta_eps, status);
+		Rprintf("Theta_eps     :%15g[%s]\n", Theta_eps, status);
 		status = (Min_Eps > 0 && Min_Eps < 1) ? YES : NO;
-		printf("Min_Eps       :%15g[%s],\t", Min_Eps, status);
+		Rprintf("Min_Eps       :%15g[%s],\t", Min_Eps, status);
 		status = (Del > 0) ? YES : NO;
-		printf("Del           :%15g[%s]\n", Del, status);
+		Rprintf("Del           :%15g[%s]\n", Del, status);
 		status = (Theta_del > 0 && Theta_del < 1) ? YES : NO;
-		printf("Theta_del     :%15g[%s]\n", Theta_del, status);
+		Rprintf("Theta_del     :%15g[%s]\n", Theta_del, status);
 	};
 
 	void SolversLSLPSub::GetSearchDir(void)
@@ -294,7 +294,7 @@ namespace ROPTLIB{
 			Currentlengthgfs++;
 			if (Currentlengthgfs == Lengthgfs && Debug >= ITERRESULT)
 			{
-				printf("Warning: the number of W reaches its upper-bound: %d!\n", Currentlengthgfs);
+				Rprintf("Warning: the number of W reaches its upper-bound: %d!\n", Currentlengthgfs);
 			}
 		}
 		//if (Mani->Metric(x1, gf1, eta1) > -std::numeric_limits<double>::epsilon())
@@ -333,7 +333,7 @@ namespace ROPTLIB{
 		}
 		if (times == 10 && Debug >= ITERRESULT)
 		{
-			printf("warning: the loop in SolversLSLPSub::Increasing reaches the upperbound!\n");
+			Rprintf("warning: the loop in SolversLSLPSub::Increasing reaches the upperbound!\n");
 		}
 	};
 

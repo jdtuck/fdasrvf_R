@@ -805,7 +805,7 @@ namespace ROPTLIB{
 			Manifold::CheckParams();
 			for (integer i = 0; i < numofmani; i++)
 			{
-				printf("%d-th manifold parameters (the number is %d):\n", i, powsinterval[i + 1] - powsinterval[i]);
+				Rprintf("%d-th manifold parameters (the number is %d):\n", i, powsinterval[i + 1] - powsinterval[i]);
 				manifolds[i]->CheckParams();
 			}
 		}

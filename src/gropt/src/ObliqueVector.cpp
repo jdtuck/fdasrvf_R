@@ -40,27 +40,27 @@ namespace ROPTLIB{
 			{
 				if (size == nullptr)
 				{
-					printf("%s is an empty data with size 0", name);
+					Rprintf("%s is an empty data with size 0", name);
 				}
 				else
 				{
-					printf("%s is an empty data with size %d", name, size[0]);
+					Rprintf("%s is an empty data with size %d", name, size[0]);
 				}
 				for (integer i = 1; i < ls; i++)
-					printf(" x %d", size[i]);
-				printf("\n");
+					Rprintf(" x %d", size[i]);
+				Rprintf("\n");
 				return;
 			}
-			printf("%s , shared times:%d, shared times address:%p\n", name, *sharedtimes, sharedtimes);
+			Rprintf("%s , shared times:%d, shared times address:%p\n", name, *sharedtimes, sharedtimes);
 			integer n = elements[0]->Getlength();
 			integer num = numofelements;
 			for (integer i = 0; i < n; i++)
 			{
 				for (integer j = 0; j < num; j++)
 				{
-					printf("%f\t", elements[j]->GetSpace()[i]);
+					Rprintf("%f\t", elements[j]->GetSpace()[i]);
 				}
-				printf("\n");
+				Rprintf("\n");
 			}
 			return;
 		}

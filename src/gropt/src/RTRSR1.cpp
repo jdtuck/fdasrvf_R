@@ -88,14 +88,14 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("RTRSR1 METHOD PARAMETERS:\n");
+		Rprintf("RTRSR1 METHOD PARAMETERS:\n");
 		status = YES;
-		printf("isconvex      :%15d[%s]\n", isconvex, status);
+		Rprintf("isconvex      :%15d[%s]\n", isconvex, status);
 	};
 
 	void RTRSR1::PrintInfo(void)
 	{
-		printf("\n\tinpss:%.3e,IsUpdateHessian:%d,", inpss, isupdated);
-		printf("\n");
+		Rprintf("\n\tinpss:%.3e,IsUpdateHessian:%d,", inpss, isupdated);
+		Rprintf("\n");
 	};
 }; /*end of ROPTLIB namespace*/

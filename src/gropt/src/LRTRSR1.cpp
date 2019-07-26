@@ -179,11 +179,11 @@ namespace ROPTLIB{
 			// details: http://www.netlib.org/lapack/explore-html/db/de5/dgeqp3_8f.html
 			dgeqp3_(&n, &k, Q, &n, jpvt, tau, work, &lwork, &info);
 			if (info < 0)
-				printf("Error in qr decomposition!\n");
+				Rprintf("Error in qr decomposition!\n");
 			for (integer i = 0; i < k; i++)
 			{
 				if (jpvt[i] != (i + 1))
-					printf("Error in qf tCG in LRTRSR1!\n");
+					Rprintf("Error in qf tCG in LRTRSR1!\n");
 			}
 
 			for (integer i = 0; i < k; i++)
@@ -200,7 +200,7 @@ namespace ROPTLIB{
 			// details: http://www.netlib.org/lapack/explore-html/d9/d1d/dorgqr_8f.html
 			dorgqr_(&n, &k, &k, Q, &n, tau, work, &lwork, &info);
 			if (info < 0)
-				printf("Error in dorgqr of LRTRSR1::tCG_TR(void)!\n");
+				Rprintf("Error in dorgqr of LRTRSR1::tCG_TR(void)!\n");
 
 			delete[] work;
 			delete[] jpvt;
@@ -216,7 +216,7 @@ namespace ROPTLIB{
 			// details: http://www.netlib.org/lapack/explore-html/d3/d6a/dgetrf_8f.html
 			dgetrf_(&k, &k, LU_PMGQ, &k, P, &info);
 			if (info < 0)
-				printf("Error in forming Q matrix!\n");
+				Rprintf("Error in forming Q matrix!\n");
 
 			// solve linear system: PMGQ * X = v using the LU decomposition results from dgetrf, then solution is stored in v.
 			// details: http://www.netlib.org/lapack/explore-html/d6/d49/dgetrs_8f.html
@@ -400,14 +400,14 @@ namespace ROPTLIB{
 			// details: http://www.netlib.org/lapack/explore-html/d3/d6a/dgetrf_8f.html
 			dgetrf_(&k, &k, vw, &k, Ptmp, &info);
 			if (info < 0)
-				printf("Error in dgetrf of LRTRSR1::ComputeSBySMW\n");
+				Rprintf("Error in dgetrf of LRTRSR1::ComputeSBySMW\n");
 
 			dcopy_(&k, Psig, &GLOBAL::IONE, tmp, &GLOBAL::IONE);
 			// solve linear system: vw * X = tmp using the LU decomposition results from dgetrf, then solution is stored in tmp.
 			// details: http://www.netlib.org/lapack/explore-html/d6/d49/dgetrs_8f.html
 			dgetrs_(GLOBAL::N, &k, &GLOBAL::IONE, vw, &k, Ptmp, tmp, &k, &info);
 			if (info < 0)
-				printf("Error in dgetrs of LRTRSR1::ComputeSBySMW\n");
+				Rprintf("Error in dgetrs of LRTRSR1::ComputeSBySMW\n");
 
 			dgemm_(GLOBAL::N, GLOBAL::N, &n, &GLOBAL::IONE, &k, &GLOBAL::DONE, Psi, &n, tmp, &k, &GLOBAL::DZERO, pStar, &n);
 			daxpy_(&n, &coef, const_cast<double *> (gf1->ObtainReadData()), &GLOBAL::IONE, pStar, &GLOBAL::IONE);
@@ -504,11 +504,11 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("LRTRSR1 METHOD PARAMETERS:\n");
+		Rprintf("LRTRSR1 METHOD PARAMETERS:\n");
 		status = YES;
-		printf("isconvex      :%15d[%s],\t", isconvex, status);
+		Rprintf("isconvex      :%15d[%s],\t", isconvex, status);
 		status = (LengthSY >= 0) ? YES : NO;
-		printf("LengthSY      :%15d[%s]\n", LengthSY, status);
+		Rprintf("LengthSY      :%15d[%s]\n", LengthSY, status);
 	};
 
 	void LRTRSR1::HessianEta(Vector *Eta, Vector *result)
@@ -533,12 +533,12 @@ namespace ROPTLIB{
 	void LRTRSR1::PrintGenInfo(void)
 	{
 		Solvers::PrintGenInfo();
-		printf("nH:%d,rho:%.2e,radius:%.3e,tCGstatus:%s,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str());
+		Rprintf("nH:%d,rho:%.2e,radius:%.3e,tCGstatus:%s,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str());
 	};
 
 	void LRTRSR1::PrintInfo(void)
 	{
-		printf("\n\tgamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", gamma, inpss, inpsy, inpyy, isupdated);
-		printf("\n");
+		Rprintf("\n\tgamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", gamma, inpss, inpsy, inpyy, isupdated);
+		Rprintf("\n");
 	};
 }; /*end of ROPTLIB namespace*/

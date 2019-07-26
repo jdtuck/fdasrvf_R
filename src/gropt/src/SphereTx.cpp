@@ -81,7 +81,7 @@ namespace ROPTLIB{
 	void SphereTx::coTangentVector(Variable *x, Vector *etax, Variable *y, Vector *xiy, Vector *result) const
 	{
 		xiy->CopyTo(result);
-		printf("The cotangent vector has not been implemented!\n");
+		Rprintf("The cotangent vector has not been implemented!\n");
 	};
 
 	void SphereTx::DiffRetraction(Variable *x, Vector *etax, Variable *y, Vector *xix, Vector *result, bool IsEtaXiSameDir) const
@@ -113,7 +113,7 @@ namespace ROPTLIB{
 			}
 			return;
 		}
-		printf("Warning: The differentiated retraction has not been implemented!\n");
+		Rprintf("Warning: The differentiated retraction has not been implemented!\n");
 		xix->CopyTo(result);
 	};
 
@@ -154,13 +154,13 @@ namespace ROPTLIB{
 
 	void SphereTx::ObtainIntr(Variable *x, Vector *etax, Vector *result) const
 	{
-		printf("Routine of obtaining intrinsic representations has not been done!\n");
+		Rprintf("Routine of obtaining intrinsic representations has not been done!\n");
 		etax->CopyTo(result);
 	};
 
 	void SphereTx::ObtainExtr(Variable *x, Vector *intretax, Vector *result) const
 	{
-		printf("Routine of obtaining extrinsic representations has not been done!\n");
+		Rprintf("Routine of obtaining extrinsic representations has not been done!\n");
 		intretax->CopyTo(result);
 	};
 
@@ -179,8 +179,8 @@ namespace ROPTLIB{
 	void SphereTx::CheckParams(void) const
 	{
 		Manifold::CheckParams();
-		printf("%s PARAMETERS:\n", name.c_str());
-		printf("Tangent space :%15s,\n", mani->GetName().c_str());
+		Rprintf("%s PARAMETERS:\n", name.c_str());
+		Rprintf("Tangent space :%15s,\n", mani->GetName().c_str());
 	};
 
 	void SphereTx::EucGradToGrad(Variable *x, Vector *egf, Vector *gf, const Problem *prob) const

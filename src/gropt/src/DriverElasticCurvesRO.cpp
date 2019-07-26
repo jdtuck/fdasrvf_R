@@ -197,7 +197,7 @@ namespace ROPTLIB{
 			GetCurveSmall(C1, C1s, d, n, ns, isclosed);
 			CurveToQ(C1s, d, ns, q1s, isclosed);
 		}
-		// printf("lms:%d, ns:%d\n", lms, ns);
+		// Rprintf("lms:%d, ns:%d\n", lms, ns);
 
 		double *Xoptptr = Xopt->ObtainWriteEntireData();
 		Xoptptr[n + d * d] = 0;
@@ -210,7 +210,7 @@ namespace ROPTLIB{
 
 		for (integer i = 0; i < lms; i++) //lms
 		{
-			// printf("%d, ", ms[i]);
+			// Rprintf("%d, ", ms[i]);
 			starttime = getTickCount();
 			// obtain initial reparameterization
 			ShiftC(C2, d, n, C2shift, ms[i]);
@@ -261,7 +261,7 @@ namespace ROPTLIB{
 						}
 						ECRO = new ElasticCurvesRO(q1, Rotq2shift, d, n, w, rotated, isclosed);
 						ECRO->SetDomain(Domain);
-						// printf("CD1 func:%g\n", ECRO->f(InitialX));
+						// Rprintf("CD1 func:%g\n", ECRO->f(InitialX));
 					}
 
 					if (isclosed)
@@ -313,7 +313,7 @@ namespace ROPTLIB{
 			{ // if only DP is used, then output the CD1H cost function
 				ECRO->w = 0;
 				msV[i] = ECRO->f(InitialX);
-				// printf("CD1H func:%g\n", msV[i]);
+				// Rprintf("CD1H func:%g\n", msV[i]);
 			}
 			if (!onlyDP)
 			{ // if a Riemannian method is used, then Xinitial is the initial iterate and a method is used.
@@ -361,7 +361,7 @@ namespace ROPTLIB{
 				}
 				else
 				{
-					printf("This solver is not used in this problem!\n");
+					Rprintf("This solver is not used in this problem!\n");
 					delete ECRO;
 					delete solver;
 					delete[] C2shift;
@@ -387,7 +387,7 @@ namespace ROPTLIB{
 				ECRO->w = 0;
 				//--Xopt->RemoveAllFromTempData();
 				msV[i] = ECRO->f(const_cast<Element *> (solver->GetXopt()));
-				// printf("%s func:%g, num of iter:%d\n", solverstr.c_str(), msV[i], solver->GetIter());
+				// Rprintf("%s func:%g, num of iter:%d\n", solverstr.c_str(), msV[i], solver->GetIter());
 			}
 			delete ECRO;
 
@@ -463,8 +463,8 @@ namespace ROPTLIB{
 			}
 		}
 
-		// printf("min f:%3.2e\n", minmsV);
-		// printf("time:%3.2e\n", comtime[0]);
+		// Rprintf("min f:%3.2e\n", minmsV);
+		// Rprintf("time:%3.2e\n", comtime[0]);
 		delete[] C2shift;
 		if (C2_coefs != nullptr)
 		{
@@ -509,8 +509,7 @@ namespace ROPTLIB{
 			}
 			if (!splinestatus)
 			{
-				printf("Error in computing spline!\n");
-				exit(EXIT_FAILURE);
+			  Rcpp::stop("Error in computing spline!\n");
 			}
 			for (integer j = 0; j < m; j++)
 			{
@@ -757,7 +756,7 @@ namespace ROPTLIB{
 		ratio = 0;
 		for (integer i = 1; i < n - 1; i++)
 		{
-			//        printf("%f, %f\n", temppt[i + 0 * 2 * n + rand_shift], temppt[i + 1 * 2 * n + rand_shift]);//---
+			//        Rprintf("%f, %f\n", temppt[i + 0 * 2 * n + rand_shift], temppt[i + 1 * 2 * n + rand_shift]);//---
 			temp1 = 0;
 			temp2 = 0;
 			for (integer j = 0; j < d; j++)
@@ -782,10 +781,10 @@ namespace ROPTLIB{
 				theta += angle;
 				total_theta += angle;
 			}
-			//        printf("angle: %f, theta: %f\n", angle, theta);//---
+			//        Rprintf("angle: %f, theta: %f\n", angle, theta);//---
 			/*        if((dx1 * dy2 - dx2 * dy1 < - sin_angle && dir > 0) || (dx1 * dy2 - dx2 * dy1 > sin_angle && dir < 0))
 			threshold = thresholdsmall;*/
-			/*        printf("%f, dir: %d, theta: %f, threshold: %f\n", dx1 * dy2 - dx2 * dy1, dir, theta, threshold);*/
+			/*        Rprintf("%f, dir: %d, theta: %f, threshold: %f\n", dx1 * dy2 - dx2 * dy1, dir, theta, threshold);*/
 			if (theta > thresholdsmall && i + rand_shift - sind >= minSkip)
 			{
 				theta = 0;
@@ -795,7 +794,7 @@ namespace ROPTLIB{
 				Lms++;
 			}
 		}
-		printf("total theta:%g, %f PI\n", total_theta, total_theta / PI);
+		Rprintf("total theta:%g, %f PI\n", total_theta, total_theta / PI);
 		Ns = static_cast<int> (static_cast<double> (n) / 3);
 		Ns = (Ns > 30) ? 30 : Ns;
 		Ns += static_cast<int> (total_theta / PI * 2.0);
@@ -951,7 +950,7 @@ namespace ROPTLIB{
 		dgesvd_(joba, joba, &d, &d, M, &d, S, U, &d, Vt, &d, work, &lwork, &info);
 		if (info != 0)
 		{
-			printf("Error:singular value decomposition failed!\n");
+			Rprintf("Error:singular value decomposition failed!\n");
 		}
 		delete[] M;
 		delete[] work;
@@ -972,7 +971,7 @@ namespace ROPTLIB{
 		dgetrf_(&d, &d, O2, &d, IPIV, &info);
 		if (info != 0)
 		{
-			printf("Error:LU decomposition failed!\n");
+			Rprintf("Error:LU decomposition failed!\n");
 		}
 
 		double det = 1;

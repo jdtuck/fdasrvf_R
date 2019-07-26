@@ -74,13 +74,13 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("RWRBFGS METHOD PARAMETERS:\n");
+		Rprintf("RWRBFGS METHOD PARAMETERS:\n");
 		status = (nu >= 0 && nu < 1) ? YES : NO;
-		printf("nu            :%15g[%s],\t", nu, status);
+		Rprintf("nu            :%15g[%s],\t", nu, status);
 		status = (mu >= 0) ? YES : NO;
-		printf("mu            :%15g[%s]\n", mu, status);
+		Rprintf("mu            :%15g[%s]\n", mu, status);
 		status = YES;
-		printf("isconvex      :%15d[%s]\n", isconvex, status);
+		Rprintf("isconvex      :%15d[%s]\n", isconvex, status);
 	};
 
 	void RWRBFGS::GetSearchDir(void)
@@ -96,7 +96,7 @@ namespace ROPTLIB{
 
 	void RWRBFGS::PrintInfo(void)
 	{
-		printf("\n\tinpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", inpss, inpsy, isupdated);
-		printf("\n");
+		Rprintf("\n\tinpss:%.3e,inpsy:%.3e,IsUpdateHessian:%d,", inpss, inpsy, isupdated);
+		Rprintf("\n");
 	};
 }; /*end of ROPTLIB namespace*/

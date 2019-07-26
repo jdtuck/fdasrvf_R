@@ -24,7 +24,7 @@ namespace ROPTLIB{
 		iter = 0;
 		if (Debug >= ITERRESULT)
 		{
-			printf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
+			Rprintf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
 			timeSeries[iter] = static_cast<double>(getTickCount() - starttime) / CLK_PS;
 			funSeries[iter] = f1;
 			gradSeries[iter] = ngf;
@@ -97,7 +97,7 @@ namespace ROPTLIB{
 			/*Output debug information if necessary.*/
 			if (LSstatus < SUCCESS && Debug >= FINALRESULT)
 			{
-				printf("Linesearch fails! LSstatus:%s\n", LSstatusSetnames[LSstatus].c_str());
+				Rprintf("Linesearch fails! LSstatus:%s\n", LSstatusSetnames[LSstatus].c_str());
 			}
 
 			iter++;
@@ -145,27 +145,27 @@ namespace ROPTLIB{
 			lengthSeries = iter + 1;
 		if (Debug >= FINALRESULT)
 		{
-			printf("Iter:%d,f:%.3e,", iter, f2);
+			Rprintf("Iter:%d,f:%.3e,", iter, f2);
 			if (nsubgf != -1)
 			{
-				printf("nsubgf:%.3e,", nsubgf);
+				Rprintf("nsubgf:%.3e,", nsubgf);
 			}
-			printf("|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,", ngf, ngf / ngf0, ComTime);
+			Rprintf("|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,", ngf, ngf / ngf0, ComTime);
 			if (subprobtimes != 0)
 			{
-				printf("nsubprob:%d,", subprobtimes);
+				Rprintf("nsubprob:%d,", subprobtimes);
 			}
-			printf("nf:%d,ng:%d,nR:%d,", nf, ng, nR);
+			Rprintf("nf:%d,ng:%d,nR:%d,", nf, ng, nR);
 
 			if (nH != 0)
 			{
-				printf("nH:%d,", nH);
+				Rprintf("nH:%d,", nH);
 			}
 			if (nV != 0)
 			{
-				printf("nV(nVp):%d(%d),", nV, nVp);
+				Rprintf("nV(nVp):%d(%d),", nV, nVp);
 			}
-			printf("\n");
+			Rprintf("\n");
 		}
 		if (nsubgf != -1)
 		{
@@ -182,7 +182,7 @@ namespace ROPTLIB{
 		SIAM on Journal Optimization, (25)3, 1660-1685, 2015 */
 		if (LineSearch_LS != ARMIJO && !Prob->GetDomain()->GetHasLockCon() && !Prob->GetDomain()->GetHasHHR() && Debug >= FINALRESULT)
 		{
-			printf("Warning: The locking condition is not satisfied. Line search may fail!\n");
+			Rprintf("Warning: The locking condition is not satisfied. Line search may fail!\n");
 		}
 
 		/*Choose the linesearch algorithm used in the algorithm*/
@@ -205,7 +205,7 @@ namespace ROPTLIB{
 		{
 			if (LinesearchInput == nullptr)
 			{
-				printf("Error: linesearch function pointer does not exist!\n");
+				Rprintf("Error: linesearch function pointer does not exist!\n");
 				return;
 			}
 		}
@@ -214,8 +214,8 @@ namespace ROPTLIB{
 			/*If the line search algorithm is not specified, then use the Armijo-Goldstein condition.*/
 			if (Debug >= FINALRESULT)
 			{
-				printf("Warning: linesearch algorithm does not exist!\n");
-				printf("Use linesearch algorithm with Armijo-Goldstein conditions!\n");
+				Rprintf("Warning: linesearch algorithm does not exist!\n");
+				Rprintf("Use linesearch algorithm with Armijo-Goldstein conditions!\n");
 			}
 			Linesearch = &SolversLS::LinesearchArmijo;
 		}
@@ -358,7 +358,7 @@ namespace ROPTLIB{
 				stepsize = 2.0 * (f1 - pre_funs.front()) / initialslope;
 				break;
 			default:
-				printf("InitSteptype is incorrect. Use one instead.\n");
+				Rprintf("InitSteptype is incorrect. Use one instead.\n");
 				stepsize = 1;
 			};
 			/*Safeguard for the initial stepsize*/
@@ -411,7 +411,7 @@ namespace ROPTLIB{
 			{
 				if (Debug >= FINALRESULT)
 				{
-					printf("Warning: step size reaches the minimum: %3.2e!\n", Minstepsize);
+					Rprintf("Warning: step size reaches the minimum: %3.2e!\n", Minstepsize);
 				}
 				LSstatus = MINSTEPSIZE;
 				break;
@@ -435,7 +435,7 @@ namespace ROPTLIB{
 					{
 						if (Debug >= FINALRESULT)
 						{
-							printf("warning: line search algorithm reaches upper bound iterations when finding curvature condition.\n");
+							Rprintf("warning: line search algorithm reaches upper bound iterations when finding curvature condition.\n");
 						}
 						//LSstatus = NOCURVATURE;
 						break;
@@ -469,7 +469,7 @@ namespace ROPTLIB{
 				{
 					if (Debug >= FINALRESULT)
 					{
-						printf("Warning: step size reaches the minimum: %3.2e!\n", Minstepsize);
+						Rprintf("Warning: step size reaches the minimum: %3.2e!\n", Minstepsize);
 					}
 					LSstatus = MINSTEPSIZE;
 					break;
@@ -512,7 +512,7 @@ namespace ROPTLIB{
 			{
 				if (Debug >= FINALRESULT)
 				{
-					printf("Warning: step size reaches the minimum: %3.2e!\n", Minstepsize);
+					Rprintf("Warning: step size reaches the minimum: %3.2e!\n", Minstepsize);
 				}
 				LSstatus = MINSTEPSIZE;
 				break;
@@ -691,12 +691,12 @@ namespace ROPTLIB{
 	void SolversLS::PrintGenInfo(void)
 	{
 		Solvers::PrintGenInfo();
-		printf("LSstatus:%s,initslope:%.3e,", LSstatusSetnames[LSstatus].c_str(), initialslope);
+		Rprintf("LSstatus:%s,initslope:%.3e,", LSstatusSetnames[LSstatus].c_str(), initialslope);
 		if (newslope != 0)
 		{
-			printf("newslope:%.3e,", newslope);
+			Rprintf("newslope:%.3e,", newslope);
 		}
-		printf("initstepsize:%.3e,stepsize:%.3e,", initiallength, stepsize);
+		Rprintf("initstepsize:%.3e,stepsize:%.3e,", initiallength, stepsize);
 	};
 
 	void SolversLS::CheckParams(void)
@@ -710,45 +710,45 @@ namespace ROPTLIB{
 		char NO[] = "NO";
 		char *status;
 
-		printf("LINE SEARCH TYPE METHODS PARAMETERS:\n");
+		Rprintf("LINE SEARCH TYPE METHODS PARAMETERS:\n");
 		status = (LineSearch_LS >= 0 && LineSearch_LS < LSALGOLENGTH) ? YES : NO;
-		printf("LineSearch_LS :%15s[%s],\t", LSALGOnames[LineSearch_LS].c_str(), status);
+		Rprintf("LineSearch_LS :%15s[%s],\t", LSALGOnames[LineSearch_LS].c_str(), status);
 		status = (LS_alpha > 0 && LS_alpha < 0.5) ? YES : NO;
-		printf("LS_alpha      :%15g[%s]\n", LS_alpha, status);
+		Rprintf("LS_alpha      :%15g[%s]\n", LS_alpha, status);
 		if (LineSearch_LS == WOLFE || LineSearch_LS == STRONGWOLFE || LineSearch_LS == WOLFELP)
 		{
 			status = (LS_beta > 0 && LS_beta < 1) ? YES : NO;
-			printf("LS_beta       :%15g[%s],\t", LS_beta, status);
+			Rprintf("LS_beta       :%15g[%s],\t", LS_beta, status);
 		}
 		else
 		{
 			status = (LS_ratio1 > 0 && LS_ratio1 <= LS_ratio2) ? YES : NO;
-			printf("LS_ratio1     :%15g[%s],\t", LS_ratio1, status);
+			Rprintf("LS_ratio1     :%15g[%s],\t", LS_ratio1, status);
 			status = (LS_ratio2 >= LS_ratio1 && LS_ratio2 < 1) ? YES : NO;
-			printf("LS_ratio2     :%15g[%s]\n", LS_ratio2, status);
+			Rprintf("LS_ratio2     :%15g[%s]\n", LS_ratio2, status);
 		}
 		status = (Initstepsize > 0) ? YES : NO;
-		printf("Initstepsize  :%15g[%s]\n", Initstepsize, status);
+		Rprintf("Initstepsize  :%15g[%s]\n", Initstepsize, status);
 		status = (Minstepsize > 0 && Minstepsize <= Maxstepsize) ? YES : NO;
-		printf("Minstepsize   :%15g[%s],\t", Minstepsize, status);
+		Rprintf("Minstepsize   :%15g[%s],\t", Minstepsize, status);
 		status = (Maxstepsize > 0 && Maxstepsize >= Minstepsize) ? YES : NO;
-		printf("Maxstepsize   :%15g[%s]\n", Maxstepsize, status);
+		Rprintf("Maxstepsize   :%15g[%s]\n", Maxstepsize, status);
 		status = (Accuracy >= 0 && Accuracy <= 1) ? YES : NO;
-		printf("Accuracy      :%15g[%s],\t", Accuracy, status);
+		Rprintf("Accuracy      :%15g[%s],\t", Accuracy, status);
 		status = YES;
-		printf("Finalstepsize :%15g[%s]\n", Finalstepsize, status);
+		Rprintf("Finalstepsize :%15g[%s]\n", Finalstepsize, status);
 		status = (Num_pre_funs >= 0) ? YES : NO;
-		printf("Num_pre_funs  :%15d[%s],\t", Num_pre_funs, status);
+		Rprintf("Num_pre_funs  :%15d[%s],\t", Num_pre_funs, status);
 		status = (InitSteptype >= 0 && InitSteptype < INITSTEPSIZESETLENGTH) ? YES : NO;
-		printf("InitSteptype  :%15s[%s]\n", INITSTEPnames[InitSteptype].c_str(), status);
+		Rprintf("InitSteptype  :%15s[%s]\n", INITSTEPnames[InitSteptype].c_str(), status);
 		status = (Num_pre_BB >= 0) ? YES : NO;
-		printf("Num_pre_BB    :%15d[%s],\t", Num_pre_BB, status);
+		Rprintf("Num_pre_BB    :%15d[%s],\t", Num_pre_BB, status);
 		status = (BBratio >= 0 && BBratio <= 1) ? YES : NO;
-		printf("BBratio       :%15g[%s]\n", BBratio, status);
+		Rprintf("BBratio       :%15g[%s]\n", BBratio, status);
 		if (LineSearch_LS == INPUTFUN)
 		{
 			status = YES;
-			printf("IsPureLSInput :%15d[%s]\n", IsPureLSInput, status);
+			Rprintf("IsPureLSInput :%15d[%s]\n", IsPureLSInput, status);
 		}
 	};
 

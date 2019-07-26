@@ -47,12 +47,12 @@ void optimum_reparam(double *C1, double *C2, int n, int d, double w,
 	dcopy_(&sizex, const_cast<double *> (Xoptptr), &inc, opt, &inc);
 
 	delete Xopt;
-	
+
 	std::map<integer *, integer>::iterator iter = CheckMemoryDeleted->begin();
 	for (iter = CheckMemoryDeleted->begin(); iter != CheckMemoryDeleted->end(); iter++)
 	{
 		if (iter->second != 1)
-			printf("Global address: %p, sharedtimes: %d\n", iter->first, iter->second);
+			Rprintf("Global address: %p, sharedtimes: %d\n", iter->first, iter->second);
 	}
 	delete CheckMemoryDeleted;
 	return;
