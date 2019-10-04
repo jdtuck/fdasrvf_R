@@ -155,6 +155,11 @@ AmplitudeBoxplot <- function(warp_median, alpha=.05, ka=1, showplot=TRUE){
   out$Q3a_q <- Q3a_q
   out$min_q <- min_q
   out$max_q <- max_q
+  out$dist <- dy
+  out$Q1a_index <- Q1a_index
+  out$Q1_index <- Q1_index
+  out$Q3a_index <- Q3a_index
+  out$Q3_index <- Q3_index
   class(out) <- 'ampbox'
 
   if (showplot){

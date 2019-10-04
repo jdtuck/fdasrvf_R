@@ -164,6 +164,11 @@ PhaseBoxplot <- function(warp_median, alpha=.05, kp=1, showplot=TRUE){
   out$Q3a_psi <- Q3a_psi
   out$max_psi <- max_psi
   out$min_psi <- min_psi
+  out$dist <- dx
+  out$Q1a_index <- Q1a_index
+  out$Q1_index <- Q1_index
+  out$Q3a_index <- Q3a_index
+  out$Q3_index <- Q3_index
   class(out) <- 'phbox'
 
   if (showplot){
