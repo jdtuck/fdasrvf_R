@@ -169,8 +169,8 @@ namespace ROPTLIB{
 		double one = 1, zero = 0;
 		integer inc = 1, N = ell;
 		// Hxpy <- M(:, start : start + length - 1) * xdydn2TV,
-		// details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv_8f.html
-		dgemv_(transn, &N, &length, &one, const_cast<double *> (M + start * N), &N, const_cast<double *> (xdydn2TV), &inc, &zero, Hxpy, &inc, 1);
+		// details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv1_8f.html
+		dgemv1_(transn, &N, &length, &one, const_cast<double *> (M + start * N), &N, const_cast<double *> (xdydn2TV), &inc, &zero, Hxpy, &inc, 1);
 
 		double scalar = -2.0;
 		Hx->CopyTo(result);
@@ -222,8 +222,8 @@ namespace ROPTLIB{
 		double one = 1, zero = 0;
 		integer inc = 1, N = ell;
 		// Hty <- M(start : start + length - 1, :)^T * yflatptr
-		// details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv_8f.html
-		dgemv_(transt, &length, &N, &one, const_cast<double *> (M + start), &N, yflatptr, &inc, &zero, Hty, &inc, 1);
+		// details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv1_8f.html
+		dgemv1_(transt, &length, &N, &one, const_cast<double *> (M + start), &N, yflatptr, &inc, &zero, Hty, &inc, 1);
 
 		double scalar = -2.0;
 		Hx->CopyTo(result);

@@ -184,8 +184,8 @@ namespace ROPTLIB{
 		char *transn = const_cast<char *> ("n");
 		double one = 1, zero = 0;
 		integer inc = 1, N = ell;
-		// Hxpy <- M(: start : start + length - 1) * xpyTV, details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv_8f.html
-		dgemv_(transn, &N, &length, &one, const_cast<double *> (M + start * N), &N, const_cast<double *> (xpyTV), &inc, &zero, Hxpy, &inc, 1);
+		// Hxpy <- M(: start : start + length - 1) * xpyTV, details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv1_8f.html
+		dgemv1_(transn, &N, &length, &one, const_cast<double *> (M + start * N), &N, const_cast<double *> (xpyTV), &inc, &zero, Hxpy, &inc, 1);
 
 		double scalar = -2.0 / Metric(x, xpy, xpy);
 		Hx->CopyTo(result);
@@ -212,8 +212,8 @@ namespace ROPTLIB{
 		char *transt = const_cast<char *> ("t");
 		double one = 1, zero = 0;
 		integer inc = 1, N = ell;
-		// Hty <- M(start : start + length - 1, :)^T * yv, details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv_8f.html
-		dgemv_(transt, &length, &N, &one, const_cast<double *> (M + start), &N, const_cast<double *> (yv), &inc, &zero, Hty, &inc, 1);
+		// Hty <- M(start : start + length - 1, :)^T * yv, details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv1_8f.html
+		dgemv1_(transt, &length, &N, &one, const_cast<double *> (M + start), &N, const_cast<double *> (yv), &inc, &zero, Hty, &inc, 1);
 
 		double scalar = -2.0 / Metric(x, xpy, xpy);
 		const double *xpyTV = xpy->ObtainReadData();

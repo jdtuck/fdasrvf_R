@@ -32,8 +32,8 @@ namespace ROPTLIB{
 		char *transn = const_cast<char *> ("n");
 		double one = 1, zero = 0;
 		integer inc = 1, N = ell;
-		// resultTV <- M * v; details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv_8f.html
-		dgemv_(transn, &N, &N, &one, const_cast<double *> (M), &N, const_cast<double *> (v), &inc, &zero, resultTV, &inc, 1);
+		// resultTV <- M * v; details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv1_8f.html
+		dgemv1_(transn, &N, &N, &one, const_cast<double *> (M), &N, const_cast<double *> (v), &inc, &zero, resultTV, &inc, 1);
 	};
 
 	void Manifold::ScaleTimesVector(Variable *x, double scalar, Vector *etax, Vector *result) const
