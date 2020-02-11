@@ -4,11 +4,20 @@
 \alias{pair_align_functions_expomap}
 \title{Align two functions using geometric properties of warping functions}
 \usage{
-pair_align_functions_expomap(f1, f2, timet, iter = 20000,
-  burnin = min(5000, iter/2), alpha0 = 0.1, beta0 = 0.1,
-  zpcn = list(betas = c(0.5, 0.05, 0.005, 1e-04), probs = c(0.1, 0.1,
-  0.7, 0.1)), propvar = 1, init.coef = rep(0, 2 * 10), npoints = 200,
-  extrainfo = FALSE)
+pair_align_functions_expomap(
+  f1,
+  f2,
+  timet,
+  iter = 20000,
+  burnin = min(5000, iter/2),
+  alpha0 = 0.1,
+  beta0 = 0.1,
+  zpcn = list(betas = c(0.5, 0.05, 0.005, 1e-04), probs = c(0.1, 0.1, 0.7, 0.1)),
+  propvar = 1,
+  init.coef = rep(0, 2 * 10),
+  npoints = 200,
+  extrainfo = FALSE
+)
 }
 \arguments{
 \item{f1}{observed data, numeric vector}

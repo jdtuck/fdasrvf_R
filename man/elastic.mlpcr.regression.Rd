@@ -4,8 +4,15 @@
 \alias{elastic.mlpcr.regression}
 \title{Elastic Multinomial Logisitc Prinipcal Component Regression}
 \usage{
-elastic.mlpcr.regression(f, y, time, pca.method = "combined", no = 5,
-  smooth_data = FALSE, sparam = 25)
+elastic.mlpcr.regression(
+  f,
+  y,
+  time,
+  pca.method = "combined",
+  no = 5,
+  smooth_data = FALSE,
+  sparam = 25
+)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

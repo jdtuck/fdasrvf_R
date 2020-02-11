@@ -1,5 +1,8 @@
-fdasrvf 1.9.2
+fdasrvf 1.9.3
 --------------
+v1.9.3
+* fix gfortran issues
+
 v1.9.2
 * update gropt library
 

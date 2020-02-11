@@ -1,8 +1,8 @@
 Package: fdasrvf
 Type: Package
 Title: Elastic Functional Data Analysis
-Version: 1.9.2
-Date: 2019-07-25
+Version: 1.9.3
+Date: 2020-02-11
 Author: J. Derek Tucker <jdtuck@sandia.gov>
 Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
 Description: Performs alignment, PCA, and modeling of multidimensional and
@@ -33,6 +33,6 @@ Suggests: akima,
           rgl
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
-    R (>= 3.1.0),
-RoxygenNote: 6.1.1
+    R (>= 3.5.0),
+RoxygenNote: 7.0.2
 Encoding: UTF-8

@@ -4,8 +4,16 @@
 \alias{reparam_curve}
 \title{Align two curves}
 \usage{
-reparam_curve(beta1, beta2, lambda = 0, method = "DP", w = 0.01,
-  rotated = T, isclosed = F, mode = "O")
+reparam_curve(
+  beta1,
+  beta2,
+  lambda = 0,
+  method = "DP",
+  w = 0.01,
+  rotated = T,
+  isclosed = F,
+  mode = "O"
+)
 }
 \arguments{
 \item{beta1}{array defining curve 1}

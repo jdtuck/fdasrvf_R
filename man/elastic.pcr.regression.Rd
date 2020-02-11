@@ -4,8 +4,17 @@
 \alias{elastic.pcr.regression}
 \title{Elastic Linear Prinipcal Component Regression}
 \usage{
-elastic.pcr.regression(f, y, time, pca.method = "combined", no = 5,
-  smooth_data = FALSE, sparam = 25, parallel = F, C = NULL)
+elastic.pcr.regression(
+  f,
+  y,
+  time,
+  pca.method = "combined",
+  no = 5,
+  smooth_data = FALSE,
+  sparam = 25,
+  parallel = F,
+  C = NULL
+)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

@@ -4,8 +4,7 @@
 \alias{elastic.prediction}
 \title{Elastic Prediction from Regression Models}
 \usage{
-elastic.prediction(f, time, model, y = NULL, smooth_data = FALSE,
-  sparam = 25)
+elastic.prediction(f, time, model, y = NULL, smooth_data = FALSE, sparam = 25)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

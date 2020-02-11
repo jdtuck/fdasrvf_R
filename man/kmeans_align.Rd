@@ -4,9 +4,21 @@
 \alias{kmeans_align}
 \title{K-Means Clustering and Alignment}
 \usage{
-kmeans_align(f, time, K, seeds = NULL, lambda = 0, showplot = TRUE,
-  smooth_data = FALSE, sparam = 25, parallel = FALSE,
-  alignment = TRUE, omethod = "DP", MaxItr = 50, thresh = 0.01)
+kmeans_align(
+  f,
+  time,
+  K,
+  seeds = NULL,
+  lambda = 0,
+  showplot = TRUE,
+  smooth_data = FALSE,
+  sparam = 25,
+  parallel = FALSE,
+  alignment = TRUE,
+  omethod = "DP",
+  MaxItr = 50,
+  thresh = 0.01
+)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

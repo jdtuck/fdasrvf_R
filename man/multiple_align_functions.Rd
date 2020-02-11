@@ -4,9 +4,19 @@
 \alias{multiple_align_functions}
 \title{Group-wise function alignment to specified mean}
 \usage{
-multiple_align_functions(f, time, mu, lambda = 0, showplot = TRUE,
-  smooth_data = FALSE, sparam = 25, parallel = FALSE,
-  omethod = "DP", MaxItr = 20, iter = 2000)
+multiple_align_functions(
+  f,
+  time,
+  mu,
+  lambda = 0,
+  showplot = TRUE,
+  smooth_data = FALSE,
+  sparam = 25,
+  parallel = FALSE,
+  omethod = "DP",
+  MaxItr = 20,
+  iter = 2000
+)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

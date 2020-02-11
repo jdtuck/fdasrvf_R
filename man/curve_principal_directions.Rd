@@ -4,8 +4,7 @@
 \alias{curve_principal_directions}
 \title{Curve PCA}
 \usage{
-curve_principal_directions(betamean, mu, K, mode = "O", no = 3,
-  N = 5)
+curve_principal_directions(betamean, mu, K, mode = "O", no = 3, N = 5)
 }
 \arguments{
 \item{betamean}{array (n,T) of mean curve}

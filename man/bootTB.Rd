@@ -4,8 +4,7 @@
 \alias{bootTB}
 \title{Tolerance Bound Calculation using Bootstrap Sampling}
 \usage{
-bootTB(f, time, a = 0.05, p = 0.99, B = 500, no = 5,
-  parallel = T)
+bootTB(f, time, a = 0.05, p = 0.99, B = 500, no = 5, parallel = T)
 }
 \arguments{
 \item{f}{matrix of functions}

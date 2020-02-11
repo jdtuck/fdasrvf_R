@@ -5,8 +5,17 @@
 \title{Pairwise align two images
 This function aligns to images using the q-map framework}
 \usage{
-pair_align_image(I1, I2, M = 5, ortho = TRUE, basis_type = "t",
-  resizei = FALSE, N = 64, stepsize = 1e-05, itermax = 1000)
+pair_align_image(
+  I1,
+  I2,
+  M = 5,
+  ortho = TRUE,
+  basis_type = "t",
+  resizei = FALSE,
+  N = 64,
+  stepsize = 1e-05,
+  itermax = 1000
+)
 }
 \arguments{
 \item{I1}{reference image}

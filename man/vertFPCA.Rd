@@ -4,8 +4,7 @@
 \alias{vertFPCA}
 \title{Vertical Functional Principal Component Analysis}
 \usage{
-vertFPCA(warp_data, no, id = round(length(warp_data$time)/2),
-  showplot = TRUE)
+vertFPCA(warp_data, no, id = round(length(warp_data$time)/2), showplot = TRUE)
 }
 \arguments{
 \item{warp_data}{fdawarp object from \link{time_warping} of aligned data}

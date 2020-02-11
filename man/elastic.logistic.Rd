@@ -4,8 +4,18 @@
 \alias{elastic.logistic}
 \title{Elastic Logistic Regression}
 \usage{
-elastic.logistic(f, y, time, B = NULL, df = 20, max_itr = 20,
-  smooth_data = FALSE, sparam = 25, parallel = FALSE, cores = 2)
+elastic.logistic(
+  f,
+  y,
+  time,
+  B = NULL,
+  df = 20,
+  max_itr = 20,
+  smooth_data = FALSE,
+  sparam = 25,
+  parallel = FALSE,
+  cores = 2
+)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

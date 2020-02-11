@@ -4,8 +4,7 @@
 \alias{function_mean_bayes}
 \title{Bayesian Karcher Mean Calculation}
 \usage{
-function_mean_bayes(f, time, times = 5, group = 1:dim(f)[2],
-  showplot = TRUE)
+function_mean_bayes(f, time, times = 5, group = 1:dim(f)[2], showplot = TRUE)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

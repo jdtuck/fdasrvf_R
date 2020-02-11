@@ -4,8 +4,13 @@
 \alias{jointFPCA}
 \title{Joint Vertical and Horizontal Functional Principal Component Analysis}
 \usage{
-jointFPCA(warp_data, no, id = round(length(warp_data$time)/2),
-  C = NULL, showplot = T)
+jointFPCA(
+  warp_data,
+  no,
+  id = round(length(warp_data$time)/2),
+  C = NULL,
+  showplot = T
+)
 }
 \arguments{
 \item{warp_data}{fdawarp objecet from \link{time_warping} of aligned data}

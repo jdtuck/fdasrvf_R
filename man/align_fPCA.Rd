@@ -4,8 +4,17 @@
 \alias{align_fPCA}
 \title{Group-wise function alignment and PCA Extractions}
 \usage{
-align_fPCA(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
-  sparam = 25, parallel = FALSE, cores = 8, MaxItr = 51)
+align_fPCA(
+  f,
+  time,
+  num_comp = 3,
+  showplot = T,
+  smooth_data = FALSE,
+  sparam = 25,
+  parallel = FALSE,
+  cores = 8,
+  MaxItr = 51
+)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

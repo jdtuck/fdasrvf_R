@@ -4,8 +4,18 @@
 \alias{elastic.mlogistic}
 \title{Elastic Multinomial Logistic Regression}
 \usage{
-elastic.mlogistic(f, y, time, B = NULL, df = 20, max_itr = 20,
-  smooth_data = FALSE, sparam = 25, parallel = FALSE, cores = 2)
+elastic.mlogistic(
+  f,
+  y,
+  time,
+  B = NULL,
+  df = 20,
+  max_itr = 20,
+  smooth_data = FALSE,
+  sparam = 25,
+  parallel = FALSE,
+  cores = 2
+)
 }
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}

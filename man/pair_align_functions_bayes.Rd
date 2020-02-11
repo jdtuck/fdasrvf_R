@@ -4,9 +4,17 @@
 \alias{pair_align_functions_bayes}
 \title{Align two functions}
 \usage{
-pair_align_functions_bayes(f1, f2, timet, iter = 15000, times = 5,
-  tau = ceiling(times * 0.4), powera = 1, showplot = TRUE,
-  extrainfo = FALSE)
+pair_align_functions_bayes(
+  f1,
+  f2,
+  timet,
+  iter = 15000,
+  times = 5,
+  tau = ceiling(times * 0.4),
+  powera = 1,
+  showplot = TRUE,
+  extrainfo = FALSE
+)
 }
 \arguments{
 \item{f1}{function 1}

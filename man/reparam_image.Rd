@@ -4,8 +4,7 @@
 \alias{reparam_image}
 \title{Find optimum reparameterization between two images}
 \usage{
-reparam_image(It, Im, gam, b, stepsize = 1e-05, itermax = 1000,
-  lmark = FALSE)
+reparam_image(It, Im, gam, b, stepsize = 1e-05, itermax = 1000, lmark = FALSE)
 }
 \arguments{
 \item{It}{template image matrix}

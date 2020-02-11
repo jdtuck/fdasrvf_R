@@ -4,8 +4,17 @@
 \alias{optimum.reparam}
 \title{Align two functions}
 \usage{
-optimum.reparam(Q1, T1, Q2, T2, lambda = 0, method = "DP", w = 0.01,
-  f1o = 0, f2o = 0)
+optimum.reparam(
+  Q1,
+  T1,
+  Q2,
+  T2,
+  lambda = 0,
+  method = "DP",
+  w = 0.01,
+  f1o = 0,
+  f2o = 0
+)
 }
 \arguments{
 \item{Q1}{srsf of function 1}
