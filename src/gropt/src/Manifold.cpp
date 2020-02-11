@@ -33,7 +33,7 @@ namespace ROPTLIB{
 		double one = 1, zero = 0;
 		integer inc = 1, N = ell;
 		// resultTV <- M * v; details: http://www.netlib.org/lapack/explore-html/dc/da8/dgemv_8f.html
-		dgemv_(transn, &N, &N, &one, const_cast<double *> (M), &N, const_cast<double *> (v), &inc, &zero, resultTV, &inc);
+		dgemv_(transn, &N, &N, &one, const_cast<double *> (M), &N, const_cast<double *> (v), &inc, &zero, resultTV, &inc, 1);
 	};
 
 	void Manifold::ScaleTimesVector(Variable *x, double scalar, Vector *etax, Vector *result) const
