@@ -2,6 +2,7 @@ fdasrvf 1.9.3
 --------------
 v1.9.3
 * fix gfortran issues
+* CRAN version no longer has gropt library (RBFGS) if that is required install from github
 
 v1.9.2
 * update gropt library
