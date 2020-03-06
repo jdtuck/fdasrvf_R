@@ -9,3 +9,4 @@
 .Rproj.user
 revdep/
 CRAN-RELEASE
+*.dll
