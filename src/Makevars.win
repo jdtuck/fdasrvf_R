@@ -1,7 +1,7 @@
 ##split sources to ensure the commands for linking are not too long!
 SOURCES1 = registerDynamicSymbol.cpp wrapper.cpp fdasrsf/DP.cpp fdasrsf/dp_grid.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp \
   fdasrsf/bayesian.cpp fdasrsf/pair_align_functions_expomap.cpp
-SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/ProductManifold.cpp gropt/src/SolversTR.cpp \
+#SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/ProductManifold.cpp gropt/src/SolversTR.cpp \
 	gropt/src/LowRankVariable.cpp gropt/src/randgen.cpp gropt/src/Sphere.cpp \
 	gropt/src/ElasticCurvesReparam.cpp gropt/src/LowRankVector.cpp gropt/src/RBFGS.cpp gropt/src/SphereVariable.cpp \
 	gropt/src/ElasticCurvesRO.cpp gropt/src/LRBFGS.cpp gropt/src/RBroydenFamily.cpp gropt/src/SphereVector.cpp \
@@ -20,21 +20,19 @@ SOURCES3 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
 
 OBJECTS = wrapper.o
 OBJS1 = $(SOURCES1:.cpp=.o)
-OBJS2 = $(SOURCES2:.cpp=.o)
+#OBJS2 = $(SOURCES2:.cpp=.o)
 OBJS3 = $(SOURCES3:.cpp=.o)
 PKG_CPPFLAGS= -I. -Igropt/incl/ -Ifdaqmap/incl/
 CXX_STD = CXX11
-PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) libfdasrvf1.a libfdasrvf2.a libfdasrvf3.a
+PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) libfdasrvf1.a libfdasrvf3.a
 
-all: libfdasrvf1.a libfdasrvf2.a libfdasrvf3.a $(SHLIB)
+all: libfdasrvf1.a libfdasrvf3.a $(SHLIB)
 
-$(SHLIB): libfdasrvf1.a libfdasrvf2.a libfdasrvf3.a $(OBJECTS)
+$(SHLIB): libfdasrvf1.a libfdasrvf3.a $(OBJECTS)
 libfdasrvf1.a: $(OBJS1)
-libfdasrvf2.a: $(OBJS2)
 libfdasrvf3.a: $(OBJS3)
 
 clean:
 	@rm -f $(SHLIB) $(OBJECTS)
 	@rm -f $(OBJS1)
-	@rm -f $(OBJS2)
 	@rm -f $(OBJS3)

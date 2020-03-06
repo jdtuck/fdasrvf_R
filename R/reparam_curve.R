@@ -83,6 +83,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
       dim(q2i) = c(M*n1)
       gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n1, M, lambda, 0, rep(0,M))
     } else if (method=="DP2") {
+      stop("Not implemented in CRAN version: please download and install from Github (https://github.com/jdtuck/fdasrvf_R)")
         c1 = t(beta1)
         dim(c1) = c(M*n1)
         c2 = t(beta2)
@@ -104,7 +105,8 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
             R = t(R)
         }
 
-    } else {
+    } else if (method=="RBFGS") {
+        stop("Not implemented in CRAN version: please download and install from Github (https://github.com/jdtuck/fdasrvf_R)")
         c1 = t(beta1)
         dim(c1) = c(M*n1)
         c2 = t(beta2)
@@ -130,6 +132,8 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
             gam0 = invertGamma(gam0);
             R = t(R)
         }
+    } else {
+      stop("Invalid method chosen")
     }
 
     gam = (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])  # slight change on scale

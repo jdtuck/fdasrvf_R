@@ -1,6 +1,6 @@
 SOURCES1 = registerDynamicSymbol.cpp wrapper.cpp fdasrsf/DP.cpp fdasrsf/dp_grid.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp \
   fdasrsf/bayesian.cpp fdasrsf/pair_align_functions_expomap.cpp
-SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/ProductManifold.cpp gropt/src/SolversTR.cpp \
+#SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/ProductManifold.cpp gropt/src/SolversTR.cpp \
 	gropt/src/LowRankVariable.cpp gropt/src/randgen.cpp gropt/src/Sphere.cpp \
 	gropt/src/ElasticCurvesReparam.cpp gropt/src/LowRankVector.cpp gropt/src/RBFGS.cpp gropt/src/SphereVariable.cpp \
 	gropt/src/ElasticCurvesRO.cpp gropt/src/LRBFGS.cpp gropt/src/RBroydenFamily.cpp gropt/src/SphereVector.cpp \
@@ -18,7 +18,7 @@ SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/P
 
 SOURCES3 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
 
-SOURCES = $(SOURCES1) $(SOURCES2) $(SOURCES3)
+SOURCES = $(SOURCES1) $(SOURCES3)
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

@@ -59,6 +59,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
         timet2 = (timet2-tmin)/(tmax-tmin)
         gam0 = simul_gam(u,out$g1,out$g2,timet2,out$s1,out$s2,timet2)
     } else if (method=="DP2") {
+        stop("Not implemented in CRAN version: please download and install from Github (https://github.com/jdtuck/fdasrvf_R)")
         opt = rep(0,n+1+1);
         swap = FALSE
         fopts = rep(0,5)
@@ -72,7 +73,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
         if (out$swap){
             gam0 = invertGamma(gam0);
         }
-    } else {
+    } else if (method == "RBFGS") {
+        stop("Not implemented in CRAN version: please download and install from Github (https://github.com/jdtuck/fdasrvf_R)")
         opt = rep(0,n+1+1);
         swap = FALSE
         fopts = rep(0,5)
@@ -92,6 +94,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
         if (out$swap){
             gam0 = invertGamma(gam0);
         }
+    } else {
+      stop("Invalid method chosen")
     }
 
     gam = (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])  # slight change on scale
