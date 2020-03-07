@@ -12,15 +12,16 @@ analysis
 
 ### Installation
 ------------------------------------------------------------------------------
-v1.9.2 is on [CRAN](https://cran.r-project.org/package=fdasrvf)
+v1.9.3 is on [CRAN](https://cran.r-project.org/package=fdasrvf)
 and can be installed as
 > `install.packages("fdasrvf")`
 
 
-For a more up to date, but may not be stable version from git repository
+For a more up to date, but may not be stable version from git repository.
+This version has RBFGS while CRAN does not.
 
 1. Download zip or tar.gz of package or clone repository
-2. Install into R (> 3.1.0)
+2. Install into R (> 3.5.0)
 
 > `install.packages("fdasrvf.tar.gz", repos = NULL)`
 
