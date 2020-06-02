@@ -4,7 +4,9 @@
 \name{simu_warp}
 \alias{simu_warp}
 \title{Aligned Simulated two Gaussian Dataset}
-\format{A list which contains the outputs of the time_warping function}
+\format{
+A list which contains the outputs of the time_warping function
+}
 \usage{
 data("simu_warp")
 }

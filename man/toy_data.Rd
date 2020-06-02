@@ -4,7 +4,9 @@
 \name{toy_data}
 \alias{toy_data}
 \title{Distributed Gaussian Peak Dataset}
-\format{A list which contains f and time}
+\format{
+A list which contains f and time
+}
 \usage{
 data("toy_data")
 }

@@ -4,7 +4,9 @@
 \name{im}
 \alias{im}
 \title{Example Image Data set}
-\format{a list containing two images of dimension  (64,64)}
+\format{
+a list containing two images of dimension  (64,64)
+}
 \usage{
 data("image")
 }

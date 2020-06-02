@@ -4,7 +4,9 @@
 \name{beta}
 \alias{beta}
 \title{MPEG7 Curve Dataset}
-\format{an array of shape (2,100,65,20)}
+\format{
+an array of shape (2,100,65,20)
+}
 \usage{
 data("mpeg7")
 }
