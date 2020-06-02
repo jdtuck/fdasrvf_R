@@ -4,7 +4,9 @@
 \name{simu_data}
 \alias{simu_data}
 \title{Simulated two Gaussian Dataset}
-\format{A list which contains f and time}
+\format{
+A list which contains f and time
+}
 \usage{
 data("simu_data")
 }

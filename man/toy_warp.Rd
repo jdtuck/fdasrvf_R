@@ -4,7 +4,9 @@
 \name{toy_warp}
 \alias{toy_warp}
 \title{Aligned Distributed Gaussian Peak Dataset}
-\format{A list which contains the outputs of the time_warping function}
+\format{
+A list which contains the outputs of the time_warping function
+}
 \usage{
 data("toy_warp")
 }

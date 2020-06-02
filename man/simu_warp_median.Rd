@@ -4,7 +4,9 @@
 \name{simu_warp_median}
 \alias{simu_warp_median}
 \title{Aligned Simulated two Gaussian Dataset using Median}
-\format{A list which contains the outputs of the time_warping function finding the median}
+\format{
+A list which contains the outputs of the time_warping function finding the median
+}
 \usage{
 data("simu_warp_median")
 }
