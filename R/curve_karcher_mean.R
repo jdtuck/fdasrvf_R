@@ -6,17 +6,28 @@
 #' @param mode Open ("O") or Closed ("C") curves
 #' @param rotated Optimize over rotation (default = T)
 #' @param maxit maximum number of iterations
+#' @param parallel enable parallel mode using \code{\link{foreach}} and
+#'   \code{doParallel} package (default=F)
 #' @return Returns a list containing \item{mu}{mean srvf}
 #' \item{betamean}{mean curve}
 #' \item{v}{shooting vectors}
 #' \item{q}{array of srvfs}
+#' \item{gam}{array of warping functions}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
 #' data("mpeg7")
 #' out = curve_karcher_mean(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-curve_karcher_mean <- function(beta, mode="O", rotated=T, maxit=20){
+curve_karcher_mean <- function(beta, mode="O", rotated=T, maxit=20, parallel=F){
+    if (parallel){
+        cores = detectCores()-1
+        cl = makeCluster(cores)
+        registerDoParallel(cl)
+    } else
+    {
+        registerDoSEQ()
+    }
     tmp = dim(beta)
     n = tmp[1]
     T1 = tmp[2]
@@ -47,14 +58,21 @@ curve_karcher_mean <- function(beta, mode="O", rotated=T, maxit=20){
         mu = mu / sqrt(innerprod_q2(mu,mu))
 
         sumv = matrix(0,2,T1)
-
-        # TODO: parallelize
-        for (i in 1:N){
+    
+        outfor<-foreach(i = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
             out = karcher_calc(beta[,,i], q[,,i], betamean, mu, rotated, mode)
-            v[,,i] = out$v
-            sumd[itr+1] = sumd[itr+1] + out$d^2
-        }
 
+            list(out$v,out$d^2,out$gam)
+        }
+        v = unlist(outfor[1,])
+        dim(v)=c(n,T1,N)
+        tmpd = unlist(outfor[2,])
+        dim(tmpd)=c(1,N)
+        sumd[itr+1] = sumd[itr+1] + sum(tmpd)
+        gam = unlist(outfor[3,])
+        dim(gam)=c(T1,N)    
+
+        
         sumv = rowSums(v,dims=2)
 
         # compute average direction of tangent vectors v_i
@@ -82,5 +100,5 @@ curve_karcher_mean <- function(beta, mode="O", rotated=T, maxit=20){
         itr = itr + 1
     }
 
-    return(list(mu=mu,betamean=betamean,v=v,q=q))
+    return(list(mu=mu,betamean=betamean,v=v,q=q,gam=gam))
 }
