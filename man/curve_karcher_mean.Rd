@@ -4,7 +4,7 @@
 \alias{curve_karcher_mean}
 \title{Karcher Mean of Curves}
 \usage{
-curve_karcher_mean(beta, mode = "O", rotated = T, maxit = 20)
+curve_karcher_mean(beta, mode = "O", rotated = T, maxit = 20, parallel = F)
 }
 \arguments{
 \item{beta}{array (n,T,N) for N number of curves}
@@ -14,12 +14,16 @@ curve_karcher_mean(beta, mode = "O", rotated = T, maxit = 20)
 \item{rotated}{Optimize over rotation (default = T)}
 
 \item{maxit}{maximum number of iterations}
+
+\item{parallel}{enable parallel mode using \code{\link{foreach}} and
+\code{doParallel} package (default=F)}
 }
 \value{
 Returns a list containing \item{mu}{mean srvf}
 \item{betamean}{mean curve}
 \item{v}{shooting vectors}
 \item{q}{array of srvfs}
+\item{gam}{array of warping functions}
 }
 \description{
 Calculates Karcher mean of a collection of curves using the elastic square-root velocity (srvf) framework.

@@ -365,7 +365,7 @@ inverse_exp_coord <- function(beta1, beta2, mode="O", rotated=T){
         v = matrix(0, nrow(beta1), T1)
     }
 
-    return(list(v=v,dist=dist))
+    return(list(v=v,dist=dist,gam=gamI))
 }
 
 
@@ -500,5 +500,5 @@ karcher_calc <- function(beta, q, betamean, mu, rotated=T, mode="O"){
         v = project_tangent(out$v, q, basis)
     }
 
-    return(list(v=v,d=out$dist))
+    return(list(v=v,d=out$dist,gam=out$gam))
 }
