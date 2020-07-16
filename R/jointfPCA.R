@@ -7,6 +7,7 @@
 #' @param no number of prinicpal components to extract
 #' @param id integration point for f0 (default = midpoint)
 #' @param C balance value (default = NULL)
+#' @param ci geodesic standard deviations (default = c(-1,0,1))
 #' @param showplot show plots of prinipal directions (default = T)
 #' @return Returns a list containing \item{q_pca}{srvf principal directions}
 #' \item{f_pca}{f principal directions}
@@ -31,7 +32,7 @@
 #' data("simu_warp")
 #' data("simu_data")
 #' jfpca = jointFPCA(simu_warp, no = 3)
-jointFPCA <- function(warp_data, no, id=round(length(warp_data$time)/2), C=NULL, showplot=T){
+jointFPCA <- function(warp_data, no, id=round(length(warp_data$time)/2), C=NULL, ci=c(-1,0,1), showplot=T){
     fn <- warp_data$fn
     time <- warp_data$time
     qn <- warp_data$qn
@@ -107,7 +108,6 @@ jointFPCA <- function(warp_data, no, id=round(length(warp_data$time)/2), C=NULL,
     out.pca <- jointfPCAd(qn1, vec, C, m=m)
 
     # geodesic paths
-    ci <- c(-1,0,1)
     q_pca <- array(0,dim=c(M,length(ci),m))
     f_pca <- array(0,dim=c(M,length(ci),m))
     N1 <- nrow(out.pca$U)
