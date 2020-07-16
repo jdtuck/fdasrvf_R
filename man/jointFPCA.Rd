@@ -9,6 +9,7 @@ jointFPCA(
   no,
   id = round(length(warp_data$time)/2),
   C = NULL,
+  ci = c(-1, 0, 1),
   showplot = T
 )
 }
@@ -20,6 +21,8 @@ jointFPCA(
 \item{id}{integration point for f0 (default = midpoint)}
 
 \item{C}{balance value (default = NULL)}
+
+\item{ci}{geodesic standard deviations (default = c(-1,0,1))}
 
 \item{showplot}{show plots of prinipal directions (default = T)}
 }
