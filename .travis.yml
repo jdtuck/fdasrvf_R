@@ -1,4 +1,8 @@
 language: r
+
+r_packages:
+  - covr
+
 cache: packages
 r:
   - oldrel
@@ -18,3 +22,6 @@ warnings_are_errors: false
 # up a not-yet-released bugfix)
 r_github_packages:
  - jdtuck/fdasrvf_R
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
