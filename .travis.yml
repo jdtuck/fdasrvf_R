@@ -19,10 +19,5 @@ dist: bionic
 # Be strict when checking our package
 warnings_are_errors: false
 
-# Install the bleeding edge version of a package from github (eg to pick
-# up a not-yet-released bugfix)
-r_github_packages:
- - jdtuck/fdasrvf_R
-
 after_success:
   - Rscript -e 'library(covr); codecov()'
