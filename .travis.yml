@@ -4,6 +4,7 @@ r_packages:
   - covr
 
 cache: packages
+
 r:
   - oldrel
   - release
@@ -13,7 +14,7 @@ matrix:
   allow_failures:
       - r: devel
 
-dist: trusty
+dist: bionic
 
 # Be strict when checking our package
 warnings_are_errors: false
