@@ -15,7 +15,7 @@
 #' @examples
 #' data("simu_data")
 #' depths <- elastic.depth(simu_data$f[,1:4],simu_data$time)
-elastic.depth <- function(f,time,lambda = 0, parallel = T){
+elastic.depth <- function(f,time,lambda = 0, parallel = FALSE){
     if (parallel){
         cores = detectCores()-1
         cl = makeCluster(cores)
@@ -30,6 +30,7 @@ elastic.depth <- function(f,time,lambda = 0, parallel = T){
     
     amp_dist = matrix(0, fns, fns)
     phs_dist = matrix(0, fns, fns)
+    k = 0
     
     for (f1 in 1:(fns-1)) {
         
