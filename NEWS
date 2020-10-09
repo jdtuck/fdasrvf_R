@@ -1,5 +1,8 @@
-fdasrvf 1.9.3
+fdasrvf 1.9.4
 --------------
+v1.9.4
+* add elastic depth functions
+
 v1.9.3
 * fix gfortran issues
 * CRAN version no longer has gropt library (RBFGS) if that is required install from github
