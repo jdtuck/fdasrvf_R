@@ -4,7 +4,7 @@
 \alias{elastic.depth}
 \title{Calculates elastic depth}
 \usage{
-elastic.depth(f, time, lambda = 0, parallel = T)
+elastic.depth(f, time, lambda = 0, parallel = FALSE)
 }
 \arguments{
 \item{f}{matrix of N function of M time points (MxN)}

@@ -59,8 +59,8 @@ curve_karcher_mean <- function(beta, mode="O", rotated=T, maxit=20, parallel=F){
 
         sumv = matrix(0,2,T1)
     
-        outfor<-foreach(i = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
-            out = karcher_calc(beta[,,i], q[,,i], betamean, mu, rotated, mode)
+        outfor<-foreach(ii = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
+            out = karcher_calc(beta[,,ii], q[,,ii], betamean, mu, rotated, mode)
 
             list(out$v,out$d^2,out$gam)
         }
