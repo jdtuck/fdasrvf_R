@@ -55,6 +55,10 @@ elastic.depth <- function(f,time,lambda = 0, parallel = T){
     amp = 1 / (1 + apply(amp_dist, 1, median))
     phase = 1 / (1 + apply(phs_dist, 1, median))
     phase = ((2+pi)/pi) * (phase - 2/(2+pi))
+    
+    if (parallel){
+        stopCluster(cl)
+    }
 
     return(list(amp=amp,phase=phase))
 }
