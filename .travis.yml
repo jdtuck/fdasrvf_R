@@ -13,7 +13,6 @@ before_install:
 cache: packages
 
 r:
-  - oldrel
   - release
   - devel
 
