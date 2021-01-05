@@ -7,8 +7,6 @@
 #' @param rotated Optimize over rotation (default = T)
 #' @param maxit maximum number of iterations
 #' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
-#' @param parallel enable parallel mode using \code{\link{foreach}} and
-#'   \code{doParallel} package (default=F)
 #' @return Returns a list containing \item{mu}{mean srvf}
 #' \item{type}{string indicating whether mean or median is returned}
 #' \item{betamean}{mean or median curve}
@@ -21,7 +19,7 @@
 #' @examples
 #' data("mpeg7")
 #' out = curve_karcher_mean(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20,ms = "mean") 
+curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = "mean") 
 {
     if(ms!="mean"&ms!="median"){warning("ms must be either \"mean\" or \"median\". ms has been set to \"mean\"",immediate. = T)}
     if(ms!="median"){ms = "mean"}
