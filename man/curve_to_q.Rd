@@ -4,10 +4,12 @@
 \alias{curve_to_q}
 \title{Convert to SRVF space}
 \usage{
-curve_to_q(beta)
+curve_to_q(beta, scale = T)
 }
 \arguments{
 \item{beta}{array describing curve (n,T)}
+
+\item{scale}{scale curve to length 1 (default = T)}
 }
 \value{
 q array describing srvf

@@ -4,7 +4,7 @@
 \alias{curve_karcher_mean}
 \title{Karcher Mean of Curves}
 \usage{
-curve_karcher_mean(beta, mode = "O", rotated = T, maxit = 20, parallel = F)
+curve_karcher_mean(beta, mode = "O", rotated = T, maxit = 20, ms = "mean")
 }
 \arguments{
 \item{beta}{array (n,T,N) for N number of curves}
@@ -15,18 +15,18 @@ curve_karcher_mean(beta, mode = "O", rotated = T, maxit = 20, parallel = F)
 
 \item{maxit}{maximum number of iterations}
 
-\item{parallel}{enable parallel mode using \code{\link{foreach}} and
-\code{doParallel} package (default=F)}
+\item{ms}{string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")}
 }
 \value{
 Returns a list containing \item{mu}{mean srvf}
-\item{betamean}{mean curve}
+\item{type}{string indicating whether mean or median is returned}
+\item{betamean}{mean or median curve}
 \item{v}{shooting vectors}
 \item{q}{array of srvfs}
 \item{gam}{array of warping functions}
 }
 \description{
-Calculates Karcher mean of a collection of curves using the elastic square-root velocity (srvf) framework.
+Calculates Karcher mean or median of a collection of curves using the elastic square-root velocity (srvf) framework.
 }
 \examples{
 data("mpeg7")
