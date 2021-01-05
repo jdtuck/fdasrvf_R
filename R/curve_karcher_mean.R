@@ -1,15 +1,17 @@
 #' Karcher Mean of Curves
 #'
-#' Calculates Karcher mean of a collection of curves using the elastic square-root velocity (srvf) framework.
+#' Calculates Karcher mean or median of a collection of curves using the elastic square-root velocity (srvf) framework.
 #'
 #' @param beta array (n,T,N) for N number of curves
 #' @param mode Open ("O") or Closed ("C") curves
 #' @param rotated Optimize over rotation (default = T)
 #' @param maxit maximum number of iterations
+#' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
 #' @param parallel enable parallel mode using \code{\link{foreach}} and
 #'   \code{doParallel} package (default=F)
 #' @return Returns a list containing \item{mu}{mean srvf}
-#' \item{betamean}{mean curve}
+#' \item{type}{string indicating whether mean or median is returned}
+#' \item{betamean}{mean or median curve}
 #' \item{v}{shooting vectors}
 #' \item{q}{array of srvfs}
 #' \item{gam}{array of warping functions}
@@ -21,6 +23,8 @@
 #' out = curve_karcher_mean(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
 curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20,ms = "mean") 
 {
+    if(ms!="mean"&ms!="median"){warning("ms must be either \"mean\" or \"median\". ms has been set to \"mean\"",immediate. = T)}
+    if(ms!="median"){ms = "mean"}
     tmp = dim(beta)
     n = tmp[1]
     T1 = tmp[2]
@@ -41,26 +45,25 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20,ms = "
     sumd = rep(0, maxit + 1)
     v = array(0, c(n, T1, N))
     normvbar = rep(0, maxit + 1)
-    if(ms = "median"){ #run for median only, saves memory if getting mean
+    if(ms == "median"){ #run for median only, saves memory if getting mean
         d_i = rep(0,N) #include vector for norm calculations
         v_d = array(0, c(n, T1, N)) #include array to hold v_i / d_i
     }
     while (itr < maxit) {
         cat(sprintf("Iteration: %d\n", itr))
         mu = mu/sqrt(innerprod_q2(mu, mu))
-        sumv = matrix(0, 2, T1) #do we need to define this here? it's not being filled in the for loop, right?
         
         for (i in 1:N) {
             out = karcher_calc(beta[, , i], q[, , i], betamean, 
                                mu, rotated, mode)
             v[, , i] = out$v
-            if(ms = "median"){ #run for median only, saves computation time if getting mean
+            if(ms == "median"){ #run for median only, saves computation time if getting mean
                 d_i[i] = sqrt(innerprod_q2(v[,,i], v[,,i])) #calculate sqrt of norm of v_i
                 v_d[,,i] = v[,,i]/d_i[i] #normalize v_i
             }
             sumd[itr + 1] = sumd[itr + 1] + out$d^2
         }
-        if(ms = "median"){#run for median only
+        if(ms == "median"){#run for median only
             sumv = rowSums(v_d, dims = 2)
             sum_dinv = sum(1/d_i)
             vbar = sumv/sum_dinv
@@ -88,5 +91,6 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20,ms = "
         }
         itr = itr + 1
     }
-    return(list(mu = mu, betamean = betamean, v = v, q = q))
+    ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")
+    return(list(mu = mu, type = type, betamean = betamean, v = v, q = q))
 }
