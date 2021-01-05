@@ -19,86 +19,74 @@
 #' @examples
 #' data("mpeg7")
 #' out = curve_karcher_mean(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-curve_karcher_mean <- function(beta, mode="O", rotated=T, maxit=20, parallel=F){
-    if (parallel){
-        cores = detectCores()-1
-        cl = makeCluster(cores)
-        registerDoParallel(cl)
-    } else
-    {
-        registerDoSEQ()
-    }
+curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20,ms = "mean") 
+{
     tmp = dim(beta)
     n = tmp[1]
     T1 = tmp[2]
     N = tmp[3]
-    q = array(0, c(n,T1,N))
-    for (ii in 1:N){
-        q[,,ii] = curve_to_q(beta[,,ii])
+    q = array(0, c(n, T1, N))
+    for (ii in 1:N) {
+        q[, , ii] = curve_to_q(beta[, , ii])
     }
-
-    # Initialize mu as one of the shapes
-    mnq = rowMeans(q[1,,])
-    dqq = sqrt(colSums((q[1,,] - matrix(mnq,ncol=N,nrow=T1))^2))
+    mnq = rowMeans(q[1, , ])
+    dqq = sqrt(colSums((q[1, , ] - matrix(mnq, ncol = N, nrow = T1))^2))
     min_ind = which.min(dqq)
-    mu = q[,,min_ind]
-    betamean = beta[,,min_ind]
-
+    mu = q[, , min_ind]
+    betamean = beta[, , min_ind]
     delta = 0.5
-    tolv = 1e-4
-    told = 5*1e-3
+    tolv = 1e-04
+    told = 5 * 0.001
     itr = 1
-    sumd = rep(0,maxit+1)
-    v = array(0,c(n,T1,N))
-    normvbar = rep(0,maxit+1)
-
-    while (itr<maxit){
-        cat(sprintf("Iteration: %d\n",itr))
-
-        mu = mu / sqrt(innerprod_q2(mu,mu))
-
-        sumv = matrix(0,2,T1)
-    
-        outfor<-foreach(ii = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
-            out = karcher_calc(beta[,,ii], q[,,ii], betamean, mu, rotated, mode)
-
-            list(out$v,out$d^2,out$gam)
-        }
-        v = unlist(outfor[1,])
-        dim(v)=c(n,T1,N)
-        tmpd = unlist(outfor[2,])
-        dim(tmpd)=c(1,N)
-        sumd[itr+1] = sumd[itr+1] + sum(tmpd)
-        gam = unlist(outfor[3,])
-        dim(gam)=c(T1,N)    
-
+    sumd = rep(0, maxit + 1)
+    v = array(0, c(n, T1, N))
+    normvbar = rep(0, maxit + 1)
+    if(ms = "median"){ #run for median only, saves memory if getting mean
+        d_i = rep(0,N) #include vector for norm calculations
+        v_d = array(0, c(n, T1, N)) #include array to hold v_i / d_i
+    }
+    while (itr < maxit) {
+        cat(sprintf("Iteration: %d\n", itr))
+        mu = mu/sqrt(innerprod_q2(mu, mu))
+        sumv = matrix(0, 2, T1) #do we need to define this here? it's not being filled in the for loop, right?
         
-        sumv = rowSums(v,dims=2)
-
-        # compute average direction of tangent vectors v_i
-        vbar = sumv/N
-
-        normvbar[itr] = sqrt(innerprod_q2(vbar,vbar))
-        normv = normvbar[itr]
-
-        if ((normv>tolv) && (abs(sumd[itr+1]-sumd[itr])>told)){
-            # update mu in direction of vbar
-            mu = cos(delta*normvbar[itr])*mu + sin(delta*normvbar[itr])*vbar/normvbar[itr]
-
-            if (mode=="C"){
+        for (i in 1:N) {
+            out = karcher_calc(beta[, , i], q[, , i], betamean, 
+                               mu, rotated, mode)
+            v[, , i] = out$v
+            if(ms = "median"){ #run for median only, saves computation time if getting mean
+                d_i[i] = sqrt(innerprod_q2(v[,,i], v[,,i])) #calculate sqrt of norm of v_i
+                v_d[,,i] = v[,,i]/d_i[i] #normalize v_i
+            }
+            sumd[itr + 1] = sumd[itr + 1] + out$d^2
+        }
+        if(ms = "median"){#run for median only
+            sumv = rowSums(v_d, dims = 2)
+            sum_dinv = sum(1/d_i)
+            vbar = sumv/sum_dinv
+        }
+        else{ #run for mean only
+            sumv = rowSums(v, dims = 2)
+            vbar = sumv/N
+        }
+        normvbar[itr] = sqrt(innerprod_q2(vbar, vbar))
+        normv = normvbar[itr] 
+        if ((normv > tolv) && (abs(sumd[itr + 1] - sumd[itr]) > 
+                               told)) {
+            mu = cos(delta * normvbar[itr]) * mu + sin(delta * 
+                                                           normvbar[itr]) * vbar/normvbar[itr]
+            if (mode == "C") {
                 mu = project_curve(mu)
             }
-
             x = q_to_curve(mu)
             a = -1 * calculatecentroid(x)
-            dim(a) = c(length(a),1)
-            betamean = x + repmat(a,1,T1)
-        } else {
+            dim(a) = c(length(a), 1)
+            betamean = x + repmat(a, 1, T1)
+        }
+        else {
             break
         }
-
         itr = itr + 1
     }
-
-    return(list(mu=mu,betamean=betamean,v=v,q=q,gam=gam))
+    return(list(mu = mu, betamean = betamean, v = v, q = q))
 }
