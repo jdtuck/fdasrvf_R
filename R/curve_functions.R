@@ -142,6 +142,8 @@ shift_f <- function(f, tau){
     if (tau > 0){
         fn[,1:(T1-tau)] = f[,(tau+1):T1]
         fn[,(T1-tau+1):T1] = f[,1:tau]
+    } else if (tau ==0) {
+      fn = f
     } else {
         t = abs(tau)+1
         fn[,1:(T1-t+1)] = f[,(t):T1]
@@ -209,10 +211,11 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
             q2best = q2new
             gambest = gam
             minE = Ec
+            tau = scl*ctr
         }
     }
 
-    return(list(beta2best=beta2best,q2best=q2best,Rbest=Rbest,gambest=gambest))
+    return(list(beta2best=beta2best,q2best=q2best,Rbest=Rbest,gambest=gambest,tau=tau))
 }
 
 
