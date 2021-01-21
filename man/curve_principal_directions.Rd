@@ -4,32 +4,33 @@
 \alias{curve_principal_directions}
 \title{Curve PCA}
 \usage{
-curve_principal_directions(betamean, mu, K, mode = "O", no = 3, N = 5)
+curve_principal_directions(v, K, mu, no = 3, N = 5)
 }
 \arguments{
-\item{betamean}{array (n,T) of mean curve}
-
-\item{mu}{array (n,T) of mean srvf}
+\item{v}{array (n,T) of shooting vectors}
 
 \item{K}{array (2*T,2*T) covariance matrix}
 
-\item{mode}{Open ("O") or Closed ("C") curves}
+\item{mu}{array (n,T) of mean srvf}
 
 \item{no}{number of components}
 
 \item{N}{number of samples on each side of mean}
 }
 \value{
-pd list describing principal directions
+Returns a list containing \item{s}{singular values}
+\item{U}{singular vectors}
+\item{coef}{principal coefficients}
+\item{pd}{principal directions}
 }
 \description{
 Calculate principal directions of a set of curves
 }
 \examples{
 data("mpeg7")
-out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-K = curve_karcher_cov(out$betamean, beta[,,1,1:2])
-pd = curve_principal_directions(out$betamean, out$q_mu, K)
+out = curve_karcher_mean(beta[,,1,1:2], maxit=2) # note: use more shapes, small for speed
+K = curve_karcher_cov(out$betamean, out$v)
+out = curve_principal_directions(out$v, K, out$mu)
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
