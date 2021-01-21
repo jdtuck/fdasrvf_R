@@ -155,9 +155,9 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
     n = nrow(beta1)
     T1 = ncol(beta1)
     q1 = curve_to_q(beta1)
-    Ltwo = rep(0,T1)
-    Rlist = array(0,c(n,n,T1))
-    for (ctr in 1:T1){
+    Ltwo = rep(0,T1-1)
+    Rlist = array(0,c(n,n,T1-1))
+    for (ctr in 1:(T1-1)){
         beta2n = shift_f(beta2, ctr)
         out = find_best_rotation(beta1, beta2n)
         q2new = curve_to_q(out$q2new)
