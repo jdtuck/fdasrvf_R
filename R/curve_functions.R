@@ -516,7 +516,6 @@ inverse_exp <- function(q1, q2, beta2){
 }
 
 
-
 gram_schmidt <- function(basis){
     b1 = basis[[1]]
     b2 = basis[[2]]
@@ -603,4 +602,17 @@ karcher_calc <- function(beta, q, betamean, mu, rotated=T, mode="O"){
     }
 
     return(list(v=v,d=out$dist,gam=out$gam))
+}
+
+
+elastic_shooting <- function(q1, v){
+    d = sqrt(innerprod_q2(v,v))
+    if (d < 0.00001){
+        q2n = q1
+    } else {
+        q2n = cos(d)*q1 + (sin(d)/d)*v
+        q2n = project_curve(q2n)
+    }
+
+    return(q2n)
 }
