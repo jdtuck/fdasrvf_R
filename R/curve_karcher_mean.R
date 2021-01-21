@@ -34,10 +34,12 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = 
         centroid1 = calculatecentroid(beta1)
         dim(centroid1) = c(length(centroid1),1)
         beta1 = beta1 - repmat(centroid1,1,T1)
+        beta[,,ii] = beta1
         q[, , ii] = curve_to_q(beta1)
     }
 
     mu = q[, , 1]
+    bmu = beta[, , 1]
     delta = 0.5
     tolv = 1e-04
     told = 5 * 0.001
@@ -50,6 +52,21 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = 
         d_i = rep(0,N) #include vector for norm calculations
         v_d = array(0, c(n, T1, N)) #include array to hold v_i / d_i
     }
+    
+    
+    cat("\nInitializing...\n")
+    gam = matrix(0,T1,N)
+    for (k in 1:N) {
+        out = find_rotation_seed_unqiue(mu,q[, , k],mode)
+        gam[,k] = out$gambest
+    }
+    
+    gam = t(gam)
+    gamI = SqrtMeanInverse(t(gam))
+    bmu = group_action_by_gamma_coord(bmu, gamI)
+    mu = curve_to_q(bmu)
+    mu[is.nan(mu)] <- 0
+    
     while (itr < maxit) {
         cat(sprintf("Iteration: %d\n", itr))
         mu = mu/sqrt(innerprod_q2(mu, mu))
@@ -91,7 +108,12 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = 
 
             if(ms == "median"){ #run for median only, saves computation time if getting mean
                 d_i[i] = sqrt(innerprod_q2(v[,,i], v[,,i])) #calculate sqrt of norm of v_i
-                v_d[,,i] = v[,,i]/d_i[i] #normalize v_i
+                if (d_i[i]>0){
+                    v_d[,,i] = v[,,i]/d_i[i] #normalize v_i
+                } else{
+                    v_d[,,i] = v[,,i]
+                }
+                
             }
             sumd[itr + 1] = sumd[itr + 1] + dist^2
         }
