@@ -27,13 +27,9 @@ curve_geodesic <- function(beta1, beta2, k=5){
 
     q1 = curve_to_q(beta1)
 
-    # Iteratively optimize over SO(n) x Gamma using old DP
-    out = reparam_curve(beta1, beta2)
-    beta2n = out$R %*% shift_f(beta2, out$tau)
-    gamI = invertGamma(out$gam)
-    beta2n = group_action_by_gamma_coord(beta2n, gamI)
-    out = find_rotation_seed_coord(beta1, beta2n)
-    q2n = curve_to_q(out$beta2new)
+    # optimize over SO(n) x Gamma using old DP
+    out = find_rotation_seed_coord(beta1, beta2)
+    q2n = curve_to_q(out$beta2best)
 
     # form geodesic between the registered curves
     dist = acos(innerprod_q2(q1, q2n))
