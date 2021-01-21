@@ -20,8 +20,7 @@ calculatecentroid <- function(beta){
 
 innerprod_q2 <- function(q1, q2){
     T1 = ncol(q1)
-    val = trapz(seq(0,1,length.out=T1),colSums(q1*q2))
-
+    val = sum(q1*q2)/T1
     return(val)
 }
 
@@ -35,7 +34,7 @@ find_best_rotation <- function(q1, q2){
     s = out$d
     U = out$u
     V = out$v
-    if (abs(det(U)*det(V)-1) < (10*eps)){
+    if (det(A)>0){
         S = diag(1,n)
     } else {
         S = diag(1,n)
@@ -140,9 +139,14 @@ shift_f <- function(f, tau){
     n = nrow(f)
     T1 = ncol(f)
     fn = matrix(0, n, T1)
-    fn[,1:(T1-1)] = circshift(f[,1:(T1-1)], c(0,tau))
-    fn[,T1] = fn[,1]
-
+    if (tau > 0){
+        fn[,1:(T1-tau)] = f[,(tau+1):T1]
+        fn[,(T1-tau+1):T1] = f[,1:tau]
+    } else {
+        t = abs(tau)+1
+        fn[,1:(T1-t+1)] = f[,(t):T1]
+        fn[,(T1-t+2):T1] = f[,1:(t-1)]
+    }
     return(fn)
 }
 
@@ -151,9 +155,9 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
     n = nrow(beta1)
     T1 = ncol(beta1)
     q1 = curve_to_q(beta1)
-    Ltwo = rep(0,T1)
-    Rlist = array(0,c(n,n,T1))
-    for (ctr in 1:T1){
+    Ltwo = rep(0,T1-1)
+    Rlist = array(0,c(n,n,T1-1))
+    for (ctr in 1:(T1-1)){
         beta2n = shift_f(beta2, ctr)
         out = find_best_rotation(beta1, beta2n)
         q2new = curve_to_q(out$q2new)
@@ -171,6 +175,65 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
     beta2new = O_hat %*% beta2new
 
     return(list(beta2new=beta2new,O_hat=O_hat,tau=tau))
+}
+
+
+find_rotation_seed_unqiue <- function(q1, q2, mode="O"){
+    n1 = nrow(q1)
+    T1 = ncol(q1)
+    scl = 4
+    minE = 1000
+    if (mode=="C"){
+        end_idx = floor(T1/scl)
+    } else {
+        end_idx = 0
+    }
+
+    for (ctr in 0:end_idx){
+        if (mode=="C"){
+            q2n = shift_f(q2, scl*ctr)
+        } else {
+            q2n = q2
+        } 
+        out = find_best_rotation(q1, q2n)
+
+        if (norm(q1-q2n,'F') > 0.0001){
+            q1 = q1/sqrt(innerprod_q2(q1, q1))
+            q2n = q2n/sqrt(innerprod_q2(q2n, q2n))
+            q1i = q1
+            dim(q1i) = c(T1*n1)
+            q2i = q2n
+            dim(q2i) = c(T1*n1)
+            gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n1, T1, 0, 0, rep(0,T1))
+            gamI = invertGamma(gam0)
+            gam = (gamI-gamI[1])/(gamI[length(gamI)]-gamI[1])
+            beta2n = q_to_curve(q2n)
+            beta2new = group_action_by_gamma_coord(beta2n, gam)
+            q2new = curve_to_q(beta2new)
+            if (mode=="C"){
+                q2new = project_curve(q2new)
+            }
+        } else{
+            q2new = q2n
+            gam = seq(0,1,length.out=T1)
+        }
+        dist = innerprod_q2(q1,q2new)
+        if (dist<-1){
+            dist = -1
+        }
+        if (dist > 1){
+            dist = 1
+        }
+        Ec = acos(dist)
+        if (Ec < minE){
+            Rbest = out$R
+            q2best = q2new
+            gambest = gam
+            minE = Ec
+        }
+    }
+
+    return(list(q2best=q2best,Rbest=Rbest,gambest=gambest))
 }
 
 

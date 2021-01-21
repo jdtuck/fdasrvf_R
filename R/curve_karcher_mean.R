@@ -1,15 +1,15 @@
 #' Karcher Mean of Curves
 #'
-#' Calculates Karcher mean of a collection of curves using the elastic square-root velocity (srvf) framework.
+#' Calculates Karcher mean or median of a collection of curves using the elastic square-root velocity (srvf) framework.
 #'
 #' @param beta array (n,T,N) for N number of curves
 #' @param mode Open ("O") or Closed ("C") curves
 #' @param rotated Optimize over rotation (default = T)
 #' @param maxit maximum number of iterations
-#' @param parallel enable parallel mode using \code{\link{foreach}} and
-#'   \code{doParallel} package (default=F)
+#' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
 #' @return Returns a list containing \item{mu}{mean srvf}
-#' \item{betamean}{mean curve}
+#' \item{type}{string indicating whether mean or median is returned}
+#' \item{betamean}{mean or median curve}
 #' \item{v}{shooting vectors}
 #' \item{q}{array of srvfs}
 #' \item{gam}{array of warping functions}
@@ -19,86 +19,112 @@
 #' @examples
 #' data("mpeg7")
 #' out = curve_karcher_mean(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-curve_karcher_mean <- function(beta, mode="O", rotated=T, maxit=20, parallel=F){
-    if (parallel){
-        cores = detectCores()-1
-        cl = makeCluster(cores)
-        registerDoParallel(cl)
-    } else
-    {
-        registerDoSEQ()
-    }
+curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = "mean") 
+{
+    if(ms!="mean"&ms!="median"){warning("ms must be either \"mean\" or \"median\". ms has been set to \"mean\"",immediate. = T)}
+    if(ms!="median"){ms = "mean"}
+
     tmp = dim(beta)
     n = tmp[1]
     T1 = tmp[2]
     N = tmp[3]
-    q = array(0, c(n,T1,N))
-    for (ii in 1:N){
-        q[,,ii] = curve_to_q(beta[,,ii])
+    q = array(0, c(n, T1, N))
+    for (ii in 1:N) {
+        beta1 = beta[,,ii]
+        centroid1 = calculatecentroid(beta1)
+        dim(centroid1) = c(length(centroid1),1)
+        beta1 = beta1 - repmat(centroid1,1,T1)
+        q[, , ii] = curve_to_q(beta1)
     }
 
-    # Initialize mu as one of the shapes
-    mnq = rowMeans(q[1,,])
-    dqq = sqrt(colSums((q[1,,] - matrix(mnq,ncol=N,nrow=T1))^2))
-    min_ind = which.min(dqq)
-    mu = q[,,min_ind]
-    betamean = beta[,,min_ind]
-
+    mu = q[, , 1]
     delta = 0.5
-    tolv = 1e-4
-    told = 5*1e-3
+    tolv = 1e-04
+    told = 5 * 0.001
     itr = 1
-    sumd = rep(0,maxit+1)
-    v = array(0,c(n,T1,N))
-    normvbar = rep(0,maxit+1)
+    sumd = rep(0, maxit + 1)
+    sumd[1] = Inf
+    v = array(0, c(n, T1, N))
+    normvbar = rep(0, maxit + 1)
+    if(ms == "median"){ #run for median only, saves memory if getting mean
+        d_i = rep(0,N) #include vector for norm calculations
+        v_d = array(0, c(n, T1, N)) #include array to hold v_i / d_i
+    }
+    while (itr < maxit) {
+        cat(sprintf("Iteration: %d\n", itr))
+        mu = mu/sqrt(innerprod_q2(mu, mu))
 
-    while (itr<maxit){
-        cat(sprintf("Iteration: %d\n",itr))
-
-        mu = mu / sqrt(innerprod_q2(mu,mu))
-
-        sumv = matrix(0,2,T1)
-    
-        outfor<-foreach(ii = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
-            out = karcher_calc(beta[,,ii], q[,,ii], betamean, mu, rotated, mode)
-
-            list(out$v,out$d^2,out$gam)
+        if (mode=="C"){
+            basis = find_basis_normal(mu)
         }
-        v = unlist(outfor[1,])
-        dim(v)=c(n,T1,N)
-        tmpd = unlist(outfor[2,])
-        dim(tmpd)=c(1,N)
-        sumd[itr+1] = sumd[itr+1] + sum(tmpd)
-        gam = unlist(outfor[3,])
-        dim(gam)=c(T1,N)    
 
-        
-        sumv = rowSums(v,dims=2)
+        for (i in 1:N) {
+            q1 = q[, , i]
 
-        # compute average direction of tangent vectors v_i
-        vbar = sumv/N
+            out = find_rotation_seed_unqiue(mu,q1,mode)
+            qn_t = out$q2best/sqrt(innerprod_q2(out$q2best,out$q2best))
 
-        normvbar[itr] = sqrt(innerprod_q2(vbar,vbar))
-        normv = normvbar[itr]
+            q1dotq2 = innerprod_q2(mu,qn_t)
 
-        if ((normv>tolv) && (abs(sumd[itr+1]-sumd[itr])>told)){
-            # update mu in direction of vbar
-            mu = cos(delta*normvbar[itr])*mu + sin(delta*normvbar[itr])*vbar/normvbar[itr]
+            if (q1dotq2 > 1){
+                q1dotq2 = 1
+            }
+            if (q1dotq2 < -1){
+                q1dotq2 = -1
+            }
+                
+            dist = acos(q1dotq2)
 
-            if (mode=="C"){
-                mu = project_curve(mu)
+            u = qn_t - q1dotq2 * q1
+            normu = sqrt(innerprod_q2(u,u))
+            if (normu > 1e-4){
+                w = u*acos(q1dotq2)/normu
+            } else {
+                w = matrix(0, nrow(beta1), T1)
             }
 
-            x = q_to_curve(mu)
-            a = -1 * calculatecentroid(x)
-            dim(a) = c(length(a),1)
-            betamean = x + repmat(a,1,T1)
-        } else {
-            break
+            if (mode=="O"){
+                v[, , i] = w
+            } else {
+                v[, , i] = project_tangent(w, q1, basis)
+            }
+
+            if(ms == "median"){ #run for median only, saves computation time if getting mean
+                d_i[i] = sqrt(innerprod_q2(v[,,i], v[,,i])) #calculate sqrt of norm of v_i
+                v_d[,,i] = v[,,i]/d_i[i] #normalize v_i
+            }
+            sumd[itr + 1] = sumd[itr + 1] + dist^2
         }
 
+        if(ms == "median"){#run for median only
+            sumv = rowSums(v_d, dims = 2)
+            sum_dinv = sum(1/d_i)
+            vbar = sumv/sum_dinv
+        }
+        else{ #run for mean only
+            sumv = rowSums(v, dims = 2)
+            vbar = sumv/N
+        }
+
+        normvbar[itr] = sqrt(innerprod_q2(vbar, vbar))
+        normv = normvbar[itr] 
+        if ((normv > tolv) && (abs(sumd[itr + 1] - sumd[itr]) > 
+                               told)) {
+            mu = cos(delta * normvbar[itr]) * mu + sin(delta * 
+                     normvbar[itr]) * vbar/normvbar[itr]
+            if (mode == "C") {
+                mu = project_curve(mu)
+            }
+            x = q_to_curve(mu)
+            a = -1 * calculatecentroid(x)
+            dim(a) = c(length(a), 1)
+            betamean = x + repmat(a, 1, T1)
+        }
+        else {
+            break
+        }
         itr = itr + 1
     }
-
-    return(list(mu=mu,betamean=betamean,v=v,q=q,gam=gam))
+    ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")
+    return(list(mu = mu, type = type, betamean = betamean, v = v, q = q))
 }
