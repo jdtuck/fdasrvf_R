@@ -16,7 +16,6 @@
 #' @examples
 #' data("mpeg7")
 #' out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-#' K = curve_karcher_cov(out$betamean, beta[,,1,1:2])
 curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20){
     if (mode=="C"){
       isclosed = TRUE
@@ -25,6 +24,13 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20){
     n = tmp[1]
     T1 = tmp[2]
     N = tmp[3]
+    for (i in 1:N){
+      beta[,,i] = beta[,,i]/sqrt(innerprod_q2(beta[,,i],beta[,,i]))
+      beta1 = beta[,,i]
+      centroid1 = calculatecentroid(beta1)
+      dim(centroid1) = c(length(centroid1),1)
+      beta[,,i] = beta1 - repmat(centroid1,1,T1)
+    }
     out = curve_karcher_mean(beta, mode, rotated, maxit)
     mu = out$mu
     betamean = out$betamean
