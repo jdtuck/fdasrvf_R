@@ -27,7 +27,6 @@ Aligns a collection of curves using the elastic square-root velocity (srvf) fram
 \examples{
 data("mpeg7")
 out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-K = curve_karcher_cov(out$betamean, beta[,,1,1:2])
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
