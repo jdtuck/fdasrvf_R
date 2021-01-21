@@ -107,9 +107,10 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = 
         }
 
         normvbar[itr] = sqrt(innerprod_q2(vbar, vbar))
-        normv = normvbar[itr] 
-        if ((normv > tolv) && (abs(sumd[itr + 1] - sumd[itr]) > 
-                               told)) {
+        normv = normvbar[itr]
+        if ((sumd[itr]-sumd[itr+1]) < 0){
+            break
+        } else if ((normv > tolv) && (abs(sumd[itr + 1] - sumd[itr]) > told)) {
             mu = cos(delta * normvbar[itr]) * mu + sin(delta * 
                      normvbar[itr]) * vbar/normvbar[itr]
             if (mode == "C") {
@@ -126,5 +127,5 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = 
         itr = itr + 1
     }
     ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")
-    return(list(mu = mu, type = type, betamean = betamean, v = v, q = q))
+    return(list(mu = mu, type = type, betamean = betamean, v = v, q = q, E=normvbar[1:itr]))
 }
