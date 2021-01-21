@@ -155,26 +155,64 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
     n = nrow(beta1)
     T1 = ncol(beta1)
     q1 = curve_to_q(beta1)
-    Ltwo = rep(0,T1-1)
-    Rlist = array(0,c(n,n,T1-1))
-    for (ctr in 1:(T1-1)){
-        beta2n = shift_f(beta2, ctr)
-        out = find_best_rotation(beta1, beta2n)
-        q2new = curve_to_q(out$q2new)
-        Ltwo[ctr] = innerprod_q2(q1-q2new,q1-q2new)
-        Rlist[,,ctr] = out$R
+    
+    scl = 4
+    minE = 1000
+    if (mode=="C"){
+        end_idx = floor(T1/scl)
+    } else {
+        end_idx = 0
     }
 
-    tau = which.min(Ltwo)
-    O_hat = Rlist[,,tau]
-    if (mode=="C")
-      beta2new = shift_f(beta2,tau)
-    else
-      beta2new = beta2
+    for (ctr in 0:end_idx){
+        if (mode=="C"){
+            beta2n = shift_f(beta2, scl*ctr)
+        } else {
+            beta2n = beta2
+        } 
+        out = find_best_rotation(beta1, beta2n)
+        beta2n = out$q2new
+        q2n = curve_to_q(beta2n)
 
-    beta2new = O_hat %*% beta2new
+        if (norm(q1-q2n,'F') > 0.0001){
+            q1 = q1/sqrt(innerprod_q2(q1, q1))
+            q2n = q2n/sqrt(innerprod_q2(q2n, q2n))
+            q1i = q1
+            dim(q1i) = c(T1*n)
+            q2i = q2n
+            dim(q2i) = c(T1*n)
+            gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n, T1, 0, 0, rep(0,T1))
+            gamI = invertGamma(gam0)
+            gam = (gamI-gamI[1])/(gamI[length(gamI)]-gamI[1])
+            beta2n = q_to_curve(q2n)
+            beta2new = group_action_by_gamma_coord(beta2n, gam)
+            q2new = curve_to_q(beta2new)
+            if (mode=="C"){
+                q2new = project_curve(q2new)
+            }
+        } else{
+            q2new = q2n
+            beta2new = beta2n
+            gam = seq(0,1,length.out=T1)
+        }
+        dist = innerprod_q2(q1,q2new)
+        if (dist < -1){
+            dist = -1
+        }
+        if (dist > 1){
+            dist = 1
+        }
+        Ec = acos(dist)
+        if (Ec < minE){
+            Rbest = out$R
+            beta2best = beta2new
+            q2best = q2new
+            gambest = gam
+            minE = Ec
+        }
+    }
 
-    return(list(beta2new=beta2new,O_hat=O_hat,tau=tau))
+    return(list(beta2best=beta2best,q2best=q2best,Rbest=Rbest,gambest=gambest))
 }
 
 
@@ -196,6 +234,7 @@ find_rotation_seed_unqiue <- function(q1, q2, mode="O"){
             q2n = q2
         } 
         out = find_best_rotation(q1, q2n)
+        q2n = out$q2new
 
         if (norm(q1-q2n,'F') > 0.0001){
             q1 = q1/sqrt(innerprod_q2(q1, q1))
@@ -218,7 +257,7 @@ find_rotation_seed_unqiue <- function(q1, q2, mode="O"){
             gam = seq(0,1,length.out=T1)
         }
         dist = innerprod_q2(q1,q2new)
-        if (dist<-1){
+        if (dist < -1){
             dist = -1
         }
         if (dist > 1){
