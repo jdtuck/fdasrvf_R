@@ -31,7 +31,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
     tau = 0
     if (method=="DPo"){
         # Optimize over SO(n) x Gamma
-        q1 = curve_to_q(beta1)
+        q1 = curve_to_q(beta1)$q
 
         # Optimize over SO(n)
         if (rotated){
@@ -43,7 +43,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
           R = diag(n1)
           tau = 0
         }
-        q2 = curve_to_q(beta2)
+        q2 = curve_to_q(beta2)$q
 
         # Optimize over Gamma
         q1i = q1
@@ -60,7 +60,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
         gam0 = approx(Tf,G,xout=timet)$y
     } else if (method=="DP") {
       # Optimize over SO(n) x Gamma
-      q1 = curve_to_q(beta1)
+      q1 = curve_to_q(beta1)$q
 
       # Optimize over SO(n)
       if (rotated){
@@ -72,7 +72,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
         R = diag(n1)
         tau = 0
       }
-      q2 = curve_to_q(beta2)
+      q2 = curve_to_q(beta2)$q
 
       # Optimize over Gamma
       q1 = q1/sqrt(innerprod_q2(q1, q1))

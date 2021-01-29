@@ -31,7 +31,7 @@ resamplecurve <- function(x, N=100, mode="O"){
     }
     
     if (mode=="C"){
-      q = curve_to_q(xn)
+      q = curve_to_q(xn)$q
       qn = project_curve(q)
       xn = q_to_curve(qn)
     }
