@@ -3,21 +3,21 @@
 #' This function converts curves to SRVF
 #'
 #' @param beta array describing curve (n,T)
-#' @param scale scale curve to length 1 (default = T)
 #' @return q array describing srvf
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
 #' data("mpeg7")
-#' q = curve_to_q(beta[,,1,1])
-curve_to_q <- function(beta, scale=T){
+#' q = curve_to_q(beta[,,1,1])$q
+curve_to_q <- function(beta){
     n = nrow(beta)
     T1 = ncol(beta)
     v = apply(beta,1,gradient, 1.0/T1)
     v = t(v)
 
     q = matrix(0,n,T1)
+    len = sqrt(innerprod_q2(v, v))
     for (i in 1:T1){
         L = sqrt(pvecnorm(v[,i],2))
         if (L>0.0001){
@@ -27,8 +27,8 @@ curve_to_q <- function(beta, scale=T){
         }
     }
 
-    if (scale)
-        q = q/sqrt(innerprod_q2(q, q))
+    len_q = sqrt(innerprod_q2(q, q))
+    q = q/len_q
 
-    return(q)
+    return(list(q=q,len=len,lenq=len_q))
 }
