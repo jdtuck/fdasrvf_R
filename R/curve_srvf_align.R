@@ -31,9 +31,9 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20){
       dim(centroid1) = c(length(centroid1),1)
       beta[,,i] = beta1 - repmat(centroid1,1,T1)
     }
-    out = curve_karcher_mean(beta, mode, rotated, maxit)
+    out = curve_karcher_mean(beta, mode, rotated, T, maxit)
     mu = out$mu
-    betamean = out$betamean/sqrt(innerprod_q2(out$betamean,out$betamean))
+    betamean = out$betamean
     v = out$v
     q = out$q
 
@@ -48,12 +48,11 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20){
         out = find_rotation_seed_unqiue(mu,q1,mode)
         beta1 = out$Rbest%*%beta1
         beta1n = group_action_by_gamma_coord(beta1, out$gambest)
-        q1n = curve_to_q(beta1n)
+        q1n = curve_to_q(beta1n)$q
 
         out = find_best_rotation(mu, q1n)
         qn[,,ii] = out$q2new
-        btmp = out$R%*%beta1n
-        betan[,,ii] = btmp/sqrt(innerprod_q2(btmp,btmp))
+        betan[,,ii] = out$R%*%beta1n
 
     }
 
