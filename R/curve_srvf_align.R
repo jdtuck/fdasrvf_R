@@ -6,6 +6,7 @@
 #' @param mode Open ("O") or Closed ("C") curves
 #' @param rotated Optimize over rotation (default = T)
 #' @param maxit maximum number of iterations
+#' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
 #' @return Returns a list containing \item{betan}{aligned curves}
 #' \item{qn}{aligned srvfs}
 #' \item{betamean}{mean curve}
@@ -16,7 +17,7 @@
 #' @examples
 #' data("mpeg7")
 #' out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20){
+curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20,ms = "mean"){
     if (mode=="C"){
       isclosed = TRUE
     }
@@ -31,7 +32,7 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20){
       dim(centroid1) = c(length(centroid1),1)
       beta[,,i] = beta1 - repmat(centroid1,1,T1)
     }
-    out = curve_karcher_mean(beta, mode, rotated, T, maxit)
+    out = curve_karcher_mean(beta, mode, rotated, T, maxit, ms)
     mu = out$mu
     betamean = out$betamean
     v = out$v
