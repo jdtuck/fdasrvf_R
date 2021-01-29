@@ -19,7 +19,7 @@ This function converts SRVFs to curves
 }
 \examples{
 data("mpeg7")
-q = curve_to_q(beta[,,1,1])
+q = curve_to_q(beta[,,1,1])$q
 beta1 = q_to_curve(q)
 }
 \references{

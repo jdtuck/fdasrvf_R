@@ -10,7 +10,7 @@
 #' @export
 #' @examples
 #' data("mpeg7")
-#' q = curve_to_q(beta[,,1,1])
+#' q = curve_to_q(beta[,,1,1])$q
 #' beta1 = q_to_curve(q)
 q_to_curve <- function(q, scale=1){
   T1 = ncol(q)
