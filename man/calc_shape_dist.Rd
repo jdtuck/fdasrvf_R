@@ -4,7 +4,7 @@
 \alias{calc_shape_dist}
 \title{Elastic Shape Distance}
 \usage{
-calc_shape_dist(beta1, beta2, mode = "O")
+calc_shape_dist(beta1, beta2, mode = "O", scale = F)
 }
 \arguments{
 \item{beta1}{array describing curve1 (n,T)}
@@ -12,6 +12,8 @@ calc_shape_dist(beta1, beta2, mode = "O")
 \item{beta2}{array describing curve}
 
 \item{mode}{Open ("O") or Closed ("C") curves}
+
+\item{scale}{Include scale (default =F)}
 }
 \value{
 Returns a list containing \item{d}{geodesic distance}
