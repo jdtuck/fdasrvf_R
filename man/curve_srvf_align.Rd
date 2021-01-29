@@ -14,6 +14,8 @@ curve_srvf_align(beta, mode = "O", rotated = T, maxit = 20, ms = "mean")
 \item{rotated}{Optimize over rotation (default = T)}
 
 \item{maxit}{maximum number of iterations}
+
+\item{ms}{string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")}
 }
 \value{
 Returns a list containing \item{betan}{aligned curves}
