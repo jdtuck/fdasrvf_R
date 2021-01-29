@@ -5,6 +5,7 @@
 #' @param beta1 array describing curve1 (n,T)
 #' @param beta2 array describing curve
 #' @param mode Open ("O") or Closed ("C") curves
+#' @param scale Include scale (default =F)
 #' @return Returns a list containing \item{d}{geodesic distance}
 #' \item{dx}{phase distance}
 #' @keywords distances
@@ -13,12 +14,15 @@
 #' @examples
 #' data("mpeg7")
 #' out = calc_shape_dist(beta[,,1,1],beta[,,1,4])
-calc_shape_dist <- function(beta1, beta2, mode="O"){
+calc_shape_dist <- function(beta1, beta2, mode="O", scale=F){
     T1 = ncol(beta1)
     centroid1 = calculatecentroid(beta1)
     dim(centroid1) = c(length(centroid1),1)
     beta1 = beta1 - repmat(centroid1,1,T1)
-    q1 = curve_to_q(beta1)
+    out1 = curve_to_q(beta1)
+    q1 = out1$q
+    lenq1 = out1$lenq
+    lenq2 = curve_to_q(beta2)$lenq
 
     centroid1 = calculatecentroid(beta2)
     dim(centroid1) = c(length(centroid1),1)
@@ -31,8 +35,12 @@ calc_shape_dist <- function(beta1, beta2, mode="O"){
         q1dotq2 = 1
     }
 
-    d = acos(q1dotq2)
-
+    if (scale){
+        d = sqrt(acos(q1dotq2)^2+log(lenq1/lenq2)^2)
+    } else {
+        d = acos(q1dotq2)
+    }
+    
     gam = out$gambest
     time1 <- seq(0,1,length.out=T1)
     binsize <- mean(diff(time1))

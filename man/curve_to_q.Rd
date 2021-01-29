@@ -4,12 +4,10 @@
 \alias{curve_to_q}
 \title{Convert to SRVF space}
 \usage{
-curve_to_q(beta, scale = T)
+curve_to_q(beta)
 }
 \arguments{
 \item{beta}{array describing curve (n,T)}
-
-\item{scale}{scale curve to length 1 (default = T)}
 }
 \value{
 q array describing srvf
@@ -19,7 +17,7 @@ This function converts curves to SRVF
 }
 \examples{
 data("mpeg7")
-q = curve_to_q(beta[,,1,1])
+q = curve_to_q(beta[,,1,1])$q
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
