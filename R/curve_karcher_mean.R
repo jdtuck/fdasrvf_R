@@ -5,6 +5,7 @@
 #' @param beta array (n,T,N) for N number of curves
 #' @param mode Open ("O") or Closed ("C") curves
 #' @param rotated Optimize over rotation (default = T)
+#' @param scale Include scale (default = F)
 #' @param maxit maximum number of iterations
 #' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
 #' @return Returns a list containing \item{mu}{mean srvf}
@@ -13,29 +14,45 @@
 #' \item{v}{shooting vectors}
 #' \item{q}{array of srvfs}
 #' \item{gam}{array of warping functions}
+#' \item{cent}{centers of original curves}
+#' \item{len}{length of curves}
+#' \item{len_q}{length of srvfs}
+#' \item{mean_scale}{mean length}
+#' \item{mean_scale_q}{mean length srvf}
+#' \item{E}{energy}
+#' \item{qun}{cost function}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
 #' data("mpeg7")
-#' out = curve_karcher_mean(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = "mean") 
+#' out = curve_karcher_mean(beta[,,1,1:2],maxit=2)  # note: use more shapes, small for speed
+curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit = 20, ms = "mean") 
 {
     if(ms!="mean"&ms!="median"){warning("ms must be either \"mean\" or \"median\". ms has been set to \"mean\"",immediate. = T)}
     if(ms!="median"){ms = "mean"}
 
+    mean_scale=NA
+    mean_scale_q=NA
     tmp = dim(beta)
     n = tmp[1]
     T1 = tmp[2]
     N = tmp[3]
     q = array(0, c(n, T1, N))
+    len = rep(0,N)
+    len_q = rep(0,N)
+    cent = matrix(0,n,N)
     for (ii in 1:N) {
         beta1 = beta[,,ii]
         centroid1 = calculatecentroid(beta1)
+        cent[,ii] = -1*centroid1
         dim(centroid1) = c(length(centroid1),1)
         beta1 = beta1 - repmat(centroid1,1,T1)
         beta[,,ii] = beta1
-        q[, , ii] = curve_to_q(beta1)
+        out = curve_to_q(beta1)
+        q[, , ii] = out$q
+        len[ii] = out$len
+        len_q[ii] = out$lenq
     }
 
     mu = q[, , 1]
@@ -64,7 +81,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = 
     gam = t(gam)
     gamI = SqrtMeanInverse(t(gam))
     bmu = group_action_by_gamma_coord(bmu, gamI)
-    mu = curve_to_q(bmu)
+    mu = curve_to_q(bmu)$q
     mu[is.nan(mu)] <- 0
     
     while (itr < maxit) {
@@ -148,6 +165,15 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, maxit = 20, ms = 
         }
         itr = itr + 1
     }
+
+    if (scale){
+        mean_scale = prod(len)^(1/length(len))
+        mean_scale_q = prod(len_q)^(1/length(len))
+        betamean = mean_scale*betamean
+    }
+
     ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")
-    return(list(mu = mu, type = type, betamean = betamean, v = v, q = q, E=normvbar[1:itr]))
+    return(list(mu = mu, type = type, betamean = betamean, v = v, q = q, 
+                E=normvbar[1:itr], cent = cent, len = len, len_q = len_q,
+                qun = sumd[1:itr], mean_scale = mean_scale, mean_scale_q=mean_scale_q))
 }

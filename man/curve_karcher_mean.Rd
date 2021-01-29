@@ -4,7 +4,14 @@
 \alias{curve_karcher_mean}
 \title{Karcher Mean of Curves}
 \usage{
-curve_karcher_mean(beta, mode = "O", rotated = T, maxit = 20, ms = "mean")
+curve_karcher_mean(
+  beta,
+  mode = "O",
+  rotated = T,
+  scale = F,
+  maxit = 20,
+  ms = "mean"
+)
 }
 \arguments{
 \item{beta}{array (n,T,N) for N number of curves}
@@ -12,6 +19,8 @@ curve_karcher_mean(beta, mode = "O", rotated = T, maxit = 20, ms = "mean")
 \item{mode}{Open ("O") or Closed ("C") curves}
 
 \item{rotated}{Optimize over rotation (default = T)}
+
+\item{scale}{Include scale (default = F)}
 
 \item{maxit}{maximum number of iterations}
 
@@ -24,13 +33,20 @@ Returns a list containing \item{mu}{mean srvf}
 \item{v}{shooting vectors}
 \item{q}{array of srvfs}
 \item{gam}{array of warping functions}
+\item{cent}{centers of original curves}
+\item{len}{length of curves}
+\item{len_q}{length of srvfs}
+\item{mean_scale}{mean length}
+\item{mean_scale_q}{mean length srvf}
+\item{E}{energy}
+\item{qun}{cost function}
 }
 \description{
 Calculates Karcher mean or median of a collection of curves using the elastic square-root velocity (srvf) framework.
 }
 \examples{
 data("mpeg7")
-out = curve_karcher_mean(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
+out = curve_karcher_mean(beta[,,1,1:2],maxit=2)  # note: use more shapes, small for speed
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
