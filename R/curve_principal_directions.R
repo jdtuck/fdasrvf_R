@@ -5,6 +5,7 @@
 #' @param v array (n,T) of shooting vectors
 #' @param K array (2*T,2*T) covariance matrix
 #' @param mu array (n,T) of mean srvf
+#' @param len lenght of original curves (default NA)
 #' @param no number of components
 #' @param N number of samples on each side of mean
 #' @return Returns a list containing \item{s}{singular values}
@@ -17,9 +18,9 @@
 #' @examples
 #' data("mpeg7")
 #' out = curve_karcher_mean(beta[,,1,1:2], maxit=2) # note: use more shapes, small for speed
-#' K = curve_karcher_cov(out$betamean, out$v)
+#' K = curve_karcher_cov(out$v)
 #' out = curve_principal_directions(out$v, K, out$mu)
-curve_principal_directions <- function(v, K, mu, no=3, N=5){
+curve_principal_directions <- function(v, K, mu, len=NA, no=3, N=5){
     n = nrow(mu)
     T1 = ncol(mu)
 
@@ -28,26 +29,41 @@ curve_principal_directions <- function(v, K, mu, no=3, N=5){
     U = out$u[,1:no]
     s = out$d[1:no]
 
-    # express shapes as coefficients
     tmp = dim(v)
     N = tmp[3]
     VM = apply(v, c(1,2), mean)
     VM = c(VM)
-    x = matrix(0, no, N)
-    for (ii in 1:N){
-        tmpv = v[, , ii]
-        x[, ii] = t(U)%*%(c(tmpv)-VM)
+    if (!all(is.na(len))){
+        mean_scale = prod(len)^(1/length(len))
+        VM = c(VM, mean_scale)
     }
 
+    # express shapes as coefficients
+    x = matrix(0, no, N)
+    for (ii in 1:N){
+        tmpv = c(v[, , ii])
+        if (!all(is.na(len))){
+            tmpv = c(tmpv, len[ii])
+        }   
+        x[, ii] = t(U)%*%(tmpv-VM)
+    }
 
     pd = array(list(), c(no, N))
     for (m in 1:no){
         for (i in 1:N){
             tmp = VM + 0.5*(i-5)*sqrt(s[m])*U[,m]
-            v1 = tmp
+            if (!all(is.na(len))){
+                a = length(tmp)
+                v1 = tmp[1:(a-1)]
+                tmp_scale = tmp[a]
+            } else {
+                v1 = tmp
+                tmp_scale = 1
+            }
+            
             dim(v1) = c(n,T1)
             q2n = elastic_shooting(mu, v1)
-            p = q_to_curve(q2n)
+            p = q_to_curve(q2n, tmp_scale)
 
             pd[m, i][[1]] = p
 

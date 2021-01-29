@@ -4,7 +4,7 @@
 \alias{curve_principal_directions}
 \title{Curve PCA}
 \usage{
-curve_principal_directions(v, K, mu, no = 3, N = 5)
+curve_principal_directions(v, K, mu, len = NA, no = 3, N = 5)
 }
 \arguments{
 \item{v}{array (n,T) of shooting vectors}
@@ -12,6 +12,8 @@ curve_principal_directions(v, K, mu, no = 3, N = 5)
 \item{K}{array (2*T,2*T) covariance matrix}
 
 \item{mu}{array (n,T) of mean srvf}
+
+\item{len}{lenght of original curves (default NA)}
 
 \item{no}{number of components}
 
@@ -29,7 +31,7 @@ Calculate principal directions of a set of curves
 \examples{
 data("mpeg7")
 out = curve_karcher_mean(beta[,,1,1:2], maxit=2) # note: use more shapes, small for speed
-K = curve_karcher_cov(out$betamean, out$v)
+K = curve_karcher_cov(out$v)
 out = curve_principal_directions(out$v, K, out$mu)
 }
 \references{
