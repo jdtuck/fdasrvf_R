@@ -25,11 +25,11 @@ curve_geodesic <- function(beta1, beta2, k=5){
     dim(centroid2) = c(length(centroid2),1)
     beta2 = beta2 - repmat(centroid2, 1, T1)
 
-    q1 = curve_to_q(beta1)
+    q1 = curve_to_q(beta1)$q
 
     # optimize over SO(n) x Gamma using old DP
     out = find_rotation_seed_coord(beta1, beta2)
-    q2n = curve_to_q(out$beta2best)
+    q2n = curve_to_q(out$beta2best)$q
 
     # form geodesic between the registered curves
     dist = acos(innerprod_q2(q1, q2n))

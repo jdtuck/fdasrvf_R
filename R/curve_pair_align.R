@@ -23,14 +23,14 @@ curve_pair_align <- function(beta1, beta2){
     dim(centroid2) = c(length(centroid2),1)
     beta2 = beta2 - repmat(centroid2, 1, T1)
 
-    q1 = curve_to_q(beta1)
+    q1 = curve_to_q(beta1)$q
 
     # optimize over SO(n) x Gamma using DP
     out = reparam_curve(beta1, beta2)
     beta2n = out$R %*% shift_f(beta2, out$tau)
     gamI = invertGamma(out$gam)
     beta2n = group_action_by_gamma_coord(beta2n, gamI)
-    q2n = curve_to_q(beta2n)
+    q2n = curve_to_q(beta2n)$q
 
     return(list(beta2n=out$beta2new, q2n=q2n, gam=gamI, q1=q1))
 }
