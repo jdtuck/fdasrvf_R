@@ -11,9 +11,9 @@
 #' @export
 #' @examples
 #' data("mpeg7")
-#' out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-#' K = curve_karcher_cov(out$betamean, beta[,,1,1:2])
-#' samples = sample_shapes(out$q_mu, K)
+#' out = curve_karcher_mean(beta[,,1,1:2], maxit=2) # note: use more shapes, small for speed
+#' K = curve_karcher_cov(out$v)
+#' samples = sample_shapes(out$mu, K)
 sample_shapes <- function(mu, K, mode="O", no=3, numSamp=10){
     n = nrow(mu)
     T1 = ncol(mu)
