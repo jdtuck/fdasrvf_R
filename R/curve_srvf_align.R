@@ -16,7 +16,7 @@
 #' @examples
 #' data("mpeg7")
 #' out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
-curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20){
+curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20,ms = "mean"){
     if (mode=="C"){
       isclosed = TRUE
     }
@@ -31,7 +31,7 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, maxit=20){
       dim(centroid1) = c(length(centroid1),1)
       beta[,,i] = beta1 - repmat(centroid1,1,T1)
     }
-    out = curve_karcher_mean(beta, mode, rotated, maxit)
+    out = curve_karcher_mean(beta, mode, rotated, maxit,ms)
     mu = out$mu
     betamean = out$betamean/sqrt(innerprod_q2(out$betamean,out$betamean))
     v = out$v

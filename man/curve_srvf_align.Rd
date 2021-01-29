@@ -4,7 +4,7 @@
 \alias{curve_srvf_align}
 \title{Align Curves}
 \usage{
-curve_srvf_align(beta, mode = "O", rotated = T, maxit = 20)
+curve_srvf_align(beta, mode = "O", rotated = T, maxit = 20, ms = "mean")
 }
 \arguments{
 \item{beta}{array (n,T,N) for N number of curves}
