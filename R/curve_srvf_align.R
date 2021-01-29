@@ -6,6 +6,7 @@
 #' @param mode Open ("O") or Closed ("C") curves
 #' @param rotated Optimize over rotation (default = T)
 #' @param maxit maximum number of iterations
+#' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
 #' @return Returns a list containing \item{betan}{aligned curves}
 #' \item{qn}{aligned srvfs}
 #' \item{betamean}{mean curve}
