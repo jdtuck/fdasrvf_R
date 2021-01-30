@@ -30,7 +30,7 @@ curve_principal_directions <- function(v, K, mu, len=NA, no=3, N=5){
     s = out$d[1:no]
 
     tmp = dim(v)
-    N = tmp[3]
+    N1 = tmp[3]
     VM = apply(v, c(1,2), mean)
     VM = c(VM)
     if (!all(is.na(len))){
@@ -39,8 +39,8 @@ curve_principal_directions <- function(v, K, mu, len=NA, no=3, N=5){
     }
 
     # express shapes as coefficients
-    x = matrix(0, no, N)
-    for (ii in 1:N){
+    x = matrix(0, no, N1)
+    for (ii in 1:N1){
         tmpv = c(v[, , ii])
         if (!all(is.na(len))){
             tmpv = c(tmpv, len[ii])
