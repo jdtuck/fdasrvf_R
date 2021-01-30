@@ -7,13 +7,13 @@
 curve_principal_directions(v, K, mu, len = NA, no = 3, N = 5)
 }
 \arguments{
-\item{v}{array (n,T) of shooting vectors}
+\item{v}{array (n,T,N1) of shooting vectors}
 
 \item{K}{array (2*T,2*T) covariance matrix}
 
 \item{mu}{array (n,T) of mean srvf}
 
-\item{len}{lenght of original curves (default NA)}
+\item{len}{length of original curves (default NA)}
 
 \item{no}{number of components}
 

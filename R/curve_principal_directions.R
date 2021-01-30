@@ -2,10 +2,10 @@
 #'
 #' Calculate principal directions of a set of curves
 #'
-#' @param v array (n,T) of shooting vectors
+#' @param v array (n,T,N1) of shooting vectors
 #' @param K array (2*T,2*T) covariance matrix
 #' @param mu array (n,T) of mean srvf
-#' @param len lenght of original curves (default NA)
+#' @param len length of original curves (default NA)
 #' @param no number of components
 #' @param N number of samples on each side of mean
 #' @return Returns a list containing \item{s}{singular values}
