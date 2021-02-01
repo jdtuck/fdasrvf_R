@@ -608,13 +608,15 @@ karcher_calc <- function(beta, q, betamean, mu, rotated=T, mode="O"){
 }
 
 
-elastic_shooting <- function(q1, v){
+elastic_shooting <- function(q1, v,mode="O"){
     d = sqrt(innerprod_q2(v,v))
     if (d < 0.00001){
         q2n = q1
     } else {
         q2n = cos(d)*q1 + (sin(d)/d)*v
+        if (mode == "C"){
         q2n = project_curve(q2n)
+      }
     }
 
     return(q2n)

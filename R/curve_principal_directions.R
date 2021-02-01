@@ -3,11 +3,12 @@
 #' Calculate principal directions of a set of curves
 #'
 #' @param v array (n,T,N1) of shooting vectors
-#' @param K array (2*T,2*T) covariance matrix
+#' @param K array (n*T,n*T) covariance matrix
 #' @param mu array (n,T) of mean srvf
 #' @param len length of original curves (default NA)
 #' @param no number of components
 #' @param N number of samples on each side of mean
+#' @param mode Open ("O") or Closed ("C") curves
 #' @return Returns a list containing \item{s}{singular values}
 #' \item{U}{singular vectors}
 #' \item{coef}{principal coefficients}
@@ -20,7 +21,7 @@
 #' out = curve_karcher_mean(beta[,,1,1:2], maxit=2) # note: use more shapes, small for speed
 #' K = curve_karcher_cov(out$v)
 #' out = curve_principal_directions(out$v, K, out$mu)
-curve_principal_directions <- function(v, K, mu, len=NA, no=3, N=5){
+curve_principal_directions <- function(v, K, mu, len=NA, no=3, N=5,mode="O"){
     n = nrow(mu)
     T1 = ncol(mu)
 
@@ -62,7 +63,7 @@ curve_principal_directions <- function(v, K, mu, len=NA, no=3, N=5){
             }
             
             dim(v1) = c(n,T1)
-            q2n = elastic_shooting(mu, v1)
+            q2n = elastic_shooting(mu, v1,mode)
             p = q_to_curve(q2n, tmp_scale)
 
             pd[m, i][[1]] = p
