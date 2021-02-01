@@ -4,12 +4,12 @@
 \alias{curve_principal_directions}
 \title{Curve PCA}
 \usage{
-curve_principal_directions(v, K, mu, len = NA, no = 3, N = 5)
+curve_principal_directions(v, K, mu, len = NA, no = 3, N = 5, mode = "O")
 }
 \arguments{
 \item{v}{array (n,T,N1) of shooting vectors}
 
-\item{K}{array (2*T,2*T) covariance matrix}
+\item{K}{array (n*T,n*T) covariance matrix}
 
 \item{mu}{array (n,T) of mean srvf}
 
@@ -18,6 +18,8 @@ curve_principal_directions(v, K, mu, len = NA, no = 3, N = 5)
 \item{no}{number of components}
 
 \item{N}{number of samples on each side of mean}
+
+\item{mode}{Open ("O") or Closed ("C") curves}
 }
 \value{
 Returns a list containing \item{s}{singular values}
