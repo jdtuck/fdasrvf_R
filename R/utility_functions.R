@@ -381,7 +381,7 @@ cumtrapzmid <- function(x,y,c,mid){
     tmpx = x[seq(mid-1,1,-1)]
     tmpy = y[seq(mid-1,1,-1)]
     tmp = c + cumtrapz(tmpx,tmpy)
-    fn[1:mid-1] = rev(tmp)
+    fn[1:(mid-1)] = rev(tmp)
 
     # case >= mid
     fn[mid:a] = c + cumtrapz(x[mid:a],y[mid:a])
