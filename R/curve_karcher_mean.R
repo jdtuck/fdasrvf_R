@@ -9,8 +9,9 @@
 #' @param maxit maximum number of iterations
 #' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
 #' @return Returns a list containing \item{mu}{mean srvf}
-#' \item{type}{string indicating whether mean or median is returned}
+#' \item{beta}{centered data}
 #' \item{betamean}{mean or median curve}
+#' \item{type}{string indicating whether mean or median is returned}
 #' \item{v}{shooting vectors}
 #' \item{q}{array of srvfs}
 #' \item{gam}{array of warping functions}
@@ -173,7 +174,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit 
     }
 
     ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")
-    return(list(mu = mu, type = type, betamean = betamean, v = v, q = q, 
+    return(list(beta = beta, mu = mu, type = type, betamean = betamean, v = v, q = q, 
                 E=normvbar[1:itr], cent = cent, len = len, len_q = len_q,
                 qun = sumd[1:itr], mean_scale = mean_scale, mean_scale_q=mean_scale_q))
 }
