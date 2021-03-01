@@ -4,7 +4,14 @@
 \alias{curve_srvf_align}
 \title{Align Curves}
 \usage{
-curve_srvf_align(beta, mode = "O", rotated = T, maxit = 20, ms = "mean")
+curve_srvf_align(
+  beta,
+  mode = "O",
+  rotated = T,
+  scale = F,
+  maxit = 20,
+  ms = "mean"
+)
 }
 \arguments{
 \item{beta}{array (n,T,N) for N number of curves}
@@ -12,6 +19,8 @@ curve_srvf_align(beta, mode = "O", rotated = T, maxit = 20, ms = "mean")
 \item{mode}{Open ("O") or Closed ("C") curves}
 
 \item{rotated}{Optimize over rotation (default = T)}
+
+\item{scale}{Include scale (default = F)}
 
 \item{maxit}{maximum number of iterations}
 
