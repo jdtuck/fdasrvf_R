@@ -26,6 +26,7 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, maxit=20, ms 
     n = tmp[1]
     T1 = tmp[2]
     N = tmp[3]
+    beta_unscaled<-beta
     for (i in 1:N){
       beta[,,i] = beta[,,i]/sqrt(innerprod_q2(beta[,,i],beta[,,i]))
       beta1 = beta[,,i]
@@ -33,7 +34,7 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, maxit=20, ms 
       dim(centroid1) = c(length(centroid1),1)
       beta[,,i] = beta1 - repmat(centroid1,1,T1)
     }
-    out = curve_karcher_mean(beta, mode, rotated, scale, maxit, ms)
+    out = curve_karcher_mean(beta_unscaled, mode, rotated, scale, maxit, ms)
     mu = out$mu
     betamean = out$betamean
     v = out$v
