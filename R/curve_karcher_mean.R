@@ -9,8 +9,9 @@
 #' @param maxit maximum number of iterations
 #' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
 #' @return Returns a list containing \item{mu}{mean srvf}
-#' \item{type}{string indicating whether mean or median is returned}
+#' \item{beta}{centered data}
 #' \item{betamean}{mean or median curve}
+#' \item{type}{string indicating whether mean or median is returned}
 #' \item{v}{shooting vectors}
 #' \item{q}{array of srvfs}
 #' \item{gam}{array of warping functions}
