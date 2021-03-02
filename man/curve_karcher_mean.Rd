@@ -28,8 +28,9 @@ curve_karcher_mean(
 }
 \value{
 Returns a list containing \item{mu}{mean srvf}
-\item{type}{string indicating whether mean or median is returned}
+\item{beta}{centered data}
 \item{betamean}{mean or median curve}
+\item{type}{string indicating whether mean or median is returned}
 \item{v}{shooting vectors}
 \item{q}{array of srvfs}
 \item{gam}{array of warping functions}
