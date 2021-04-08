@@ -28,7 +28,8 @@
 #' @references T. Harris, J. D. Tucker, B. Li, and L. Shand, "Elastic depths for detecting shape anomalies in functional data," Technometrics, 10.1080/00401706.2020.1811156, 2020.
 #' @docType package
 #' @useDynLib fdasrvf, .registration=TRUE
-#' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields
+#' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields lpSolve
+#' @importFrom Matrix sparseMatrix as.matrix
 #' @importFrom graphics layout legend matplot plot title lines image plot.new
 #' @importFrom grDevices rainbow
 #' @importFrom coda traceplot mcmc

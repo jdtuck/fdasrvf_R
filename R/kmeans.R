@@ -7,6 +7,9 @@
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param K number of clusters
 #' @param seeds indexes of cluster center functions (default = NULL)
+#' @param nonempty minimum number of functions per cluster in assignment step of
+#'   k-means. Set it as a positive integer to avoid the problem of empty
+#'   clusters (default = 0)
 #' @param lambda controls the elasticity (default = 0)
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
@@ -41,9 +44,10 @@
 #' data("growth_vel")
 #' out <- kmeans_align(growth_vel$f,growth_vel$time, K=2)
 #' }
-kmeans_align <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
-                   smooth_data = FALSE, sparam = 25, parallel = FALSE,
-                   alignment = TRUE, omethod = "DP", MaxItr = 50, thresh = 0.01){
+kmeans_align <- function(f, time, K, seeds=NULL, nonempty = 0, lambda = 0, 
+                         showplot = TRUE, smooth_data = FALSE, sparam = 25, 
+                         parallel = FALSE, alignment = TRUE, omethod = "DP", 
+                         MaxItr = 50, thresh = 0.01){
   # Initialize --------------------------------------------------------------
   w <- 0.0
   k <- 1
@@ -54,6 +58,24 @@ kmeans_align <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
   } else
   {
     registerDoSEQ()
+  }
+  N <- length(f)
+  
+  if(nonempty){
+    lp.ind <- c(rbind(rep(0:(N-1), each = K), rep(N:(N+K-1), times=N)))
+    lp.beg <- seq(0, N*K*2-1, 2)
+    lp.rhs <- c(rep(1, N), rep(nonempty, K))
+    lp.val <- rep(1,N*K*2)
+    constr.ncol <- N * K
+    constr.nrow <- N + K
+  
+    constraints.coefs <- 1*as.matrix(sparseMatrix(i = lp.ind,
+                                                  p =  c(lp.beg, N*K*2), 
+                                                  dims=c(constr.nrow, constr.ncol),
+                                                  index1=FALSE))
+    constraints.dense <- matrix(c(lp.ind+1, rep(1:(N*K), each=2), lp.val), ncol=3)
+    constraints.directions <- c(rep("=", N), rep(">=", K))
+    constraints.rhs <- lp.rhs
   }
 
   M <- nrow(f)
@@ -88,37 +110,55 @@ kmeans_align <- function(f, time, K, seeds=NULL, lambda = 0, showplot = TRUE,
 
   for (itr in 1:MaxItr){
     cat(sprintf("updating step: r=%d\n", itr))
-    # Assignment and Alignment ------------------------------------------------
+    # Alignment ---------------------------------------------------------------
     gam <- list()
     Dy <- matrix(0,K,N)
     qn <- list()
     fn <- list()
-    for (i in 1:K){
-      outfor<-foreach(k = 1:N, .combine=cbind, .packages="fdasrvf") %dopar% {
+    for (k in 1:K){
+      outfor<-foreach(i = 1:N, .combine=cbind, .packages="fdasrvf") %dopar% {
         if (alignment){
-          gam_tmp <- optimum.reparam(templates.q[,i],time,q[,k],time,lambda,omethod,w,templates[1,i],f[1,k])
+          gam_tmp <- optimum.reparam(templates.q[,k],time,q[,i],time,lambda,omethod,w,templates[1,k],f[1,i])
         } else {
           gam_tmp <- seq(0,1,length.out=M)
         }
-        fw <- approx(time,f[,k],xout=(time[length(time)]-time[1])*gam_tmp + time[1])$y
+        fw <- approx(time,f[,i],xout=(time[length(time)]-time[1])*gam_tmp + time[1])$y
         qw <- f_to_srvf(fw,time)
-        dist <- sqrt(sum(trapz(time, (qw-templates.q[,i])^2)))
+        dist <- sqrt(sum(trapz(time, (qw-templates.q[,k])^2)))
         list(gam_tmp,fw,qw,dist)
       }
       gamt <- unlist(outfor[1,]);
       dim(gamt) <- c(M,N)
-      gam[[i]] <- gamt
+      gam[[k]] <- gamt
       f_temp <- unlist(outfor[2,]);
       dim(f_temp) <- c(M,N)
       q_temp <- unlist(outfor[3,]);
       dim(q_temp) <- c(M,N)
-      qn[[i]] <- q_temp
-      fn[[i]] <- f_temp
+      qn[[k]] <- q_temp
+      fn[[k]] <- f_temp
       dtil <- unlist(outfor[4,]);
       dim(dtil) <- c(1,N)
-      Dy[i,] <- dtil
+      Dy[k,] <- dtil
     }
-    cluster.id <- apply(Dy,2,which.min)
+    
+    # Assignment --------------------------------------------------
+    if (!nonempty) {
+      cluster.id <- apply(Dy,2,which.min)
+    }else{
+      lpSolution <- lp(direction = "min", objective.in=c(Dy^2), 
+                       const.dir = constraints.directions, const.rhs = constraints.rhs, 
+                       all.bin=TRUE, dense.const=constraints.dense)
+      clusterIndicator <- matrix(lpSolution$solution, nrow=K)
+      if(lpSolution$status){
+        stop("lpSolve failed to find feasible solution")
+      }
+      if(!all(clusterIndicator %in% c(0,1))){
+        cat("Matrix of cluster indicators is")
+        print(clusterIndicator)
+        stop("Not all entries in cluster indicator matrix are binary")
+      }
+      cluster.id <- apply(clusterIndicator,2, which.max)
+    }
 
 
     # Normalization -----------------------------------------------------------

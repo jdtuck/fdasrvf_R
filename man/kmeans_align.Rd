@@ -9,6 +9,7 @@ kmeans_align(
   time,
   K,
   seeds = NULL,
+  nonempty = 0,
   lambda = 0,
   showplot = TRUE,
   smooth_data = FALSE,
@@ -28,6 +29,10 @@ kmeans_align(
 \item{K}{number of clusters}
 
 \item{seeds}{indexes of cluster center functions (default = NULL)}
+
+\item{nonempty}{minimum number of functions per cluster in assignment step of
+k-means. Set it as a positive integer to avoid the problem of empty
+clusters (default = 0)}
 
 \item{lambda}{controls the elasticity (default = 0)}
 
