@@ -59,7 +59,8 @@ kmeans_align <- function(f, time, K, seeds=NULL, nonempty = 0, lambda = 0,
   {
     registerDoSEQ()
   }
-  N <- length(f)
+  M <- nrow(f)
+  N <- ncol(f)
   
   if(nonempty){
     lp.ind <- c(rbind(rep(0:(N-1), each = K), rep(N:(N+K-1), times=N)))
@@ -78,8 +79,6 @@ kmeans_align <- function(f, time, K, seeds=NULL, nonempty = 0, lambda = 0,
     constraints.rhs <- lp.rhs
   }
 
-  M <- nrow(f)
-  N <- ncol(f)
   if (is.null(seeds)){
     template.ind <- sample(1:N,K)
   } else {
