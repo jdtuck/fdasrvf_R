@@ -12,10 +12,10 @@ f_to_srvf(f, time)
 \item{time}{time}
 }
 \value{
-q matrix of SRSFs
+q matrix of SRVFs
 }
 \description{
-This function converts functions to srsf
+This function converts functions to srvf
 }
 \examples{
 data("simu_data")
