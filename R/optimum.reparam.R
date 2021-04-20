@@ -33,8 +33,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
       method = "DP"
     Q1=(Q1/pvecnorm(Q1,2))
     Q2=(Q2/pvecnorm(Q2,2))
-    C1=srsf_to_f(Q1,T1,f1o)
-    C2=srsf_to_f(Q2,T2,f2o)
+    C1=srvf_to_f(Q1,T1,f1o)
+    C2=srvf_to_f(Q2,T2,f2o)
     rotated = FALSE
     isclosed = FALSE
     skipm = 0

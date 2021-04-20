@@ -111,8 +111,8 @@ pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
 
   if (showplot){
 
-    input3 <- srsf_to_f(qt1_5,timet,f1[1])
-    input4 <- srsf_to_f(qt2_5,timet,f2[1])
+    input3 <- srvf_to_f(qt1_5,timet,f1[1])
+    input4 <- srvf_to_f(qt2_5,timet,f2[1])
     range <- max(input3)-min(input3)
     curve1 <- input3-mean(input3)
     curve2 <- input4-mean(input4)+1*range
