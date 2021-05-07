@@ -1,5 +1,8 @@
-fdasrvf 1.9.5
+fdasrvf 1.9.6
 --------------
+v1.9.6
+* bugfixes
+
 v1.9.5
 * refactor pf curve functions
 * add curve karcher median

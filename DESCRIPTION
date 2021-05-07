@@ -2,7 +2,7 @@ Package: fdasrvf
 Type: Package
 Title: Elastic Functional Data Analysis
 Version: 1.9.6
-Date: 2021-4-07
+Date: 2021-5-07
 Author: J. Derek Tucker <jdtuck@sandia.gov>
 Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
 Description: Performs alignment, PCA, and modeling of multidimensional and
