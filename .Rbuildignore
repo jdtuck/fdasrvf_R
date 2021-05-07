@@ -6,7 +6,10 @@
 .tags1
 appveyor.yml
 ^\src\*.a
+^\src\*.o
+^\src\*.so
 fdasrvf.Rproj
 cran-comments.md
 ^.*\.Rproj$
 ^revdep$
+fdasrvf_R.code-workspace
