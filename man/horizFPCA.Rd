@@ -4,12 +4,14 @@
 \alias{horizFPCA}
 \title{Horizontal Functional Principal Component Analysis}
 \usage{
-horizFPCA(warp_data, no, showplot = TRUE)
+horizFPCA(warp_data, no, ci = c(-1, 0, 1), showplot = TRUE)
 }
 \arguments{
 \item{warp_data}{fdawarp object from \link{time_warping} of aligned data}
 
 \item{no}{number of principal components to extract}
+
+\item{ci}{geodesic standard deviations (default = c(-1,0,1))}
 
 \item{showplot}{show plots of principal directions (default = T)}
 }

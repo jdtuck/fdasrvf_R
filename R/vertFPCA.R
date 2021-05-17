@@ -6,6 +6,7 @@
 #' @param warp_data fdawarp object from \link{time_warping} of aligned data
 #' @param no number of principal components to extract
 #' @param id point to use for f(0) (default = midpoint)
+#' @param ci geodesic standard deviations (default = c(-1,0,1))
 #' @param showplot show plots of principal directions (default = T)
 #' @return Returns a vfpca object containing \item{q_pca}{srvf principal directions}
 #' \item{f_pca}{f principal directions}
@@ -21,14 +22,13 @@
 #' @examples
 #' data("simu_warp")
 #' vfpca = vertFPCA(simu_warp,no = 3)
-vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),showplot = TRUE){
+vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),ci=c(-1,0,1),showplot = TRUE){
     # Parameters
     fn <- warp_data$fn
     time <- warp_data$time
     qn <- warp_data$qn
-    coef = -2:2
     NP = 1:no  # number of principal components
-    Nstd = length(coef)
+    Nstd = length(ci)
 
     # FPCA
     mq_new = rowMeans(qn)
@@ -45,7 +45,7 @@ vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),showplot = 
     q_pca = array(0,dim=c((length(mq_new)+1),Nstd,no))
     for (k in NP){
         for (i in 1:Nstd){
-            q_pca[,i,k] = mqn + coef[i]*stdS[k]*U[,k]
+            q_pca[,i,k] = mqn + ci[i]*stdS[k]*U[,k]
         }
     }
 

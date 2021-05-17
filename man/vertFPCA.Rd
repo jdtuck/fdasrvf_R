@@ -4,7 +4,13 @@
 \alias{vertFPCA}
 \title{Vertical Functional Principal Component Analysis}
 \usage{
-vertFPCA(warp_data, no, id = round(length(warp_data$time)/2), showplot = TRUE)
+vertFPCA(
+  warp_data,
+  no,
+  id = round(length(warp_data$time)/2),
+  ci = c(-1, 0, 1),
+  showplot = TRUE
+)
 }
 \arguments{
 \item{warp_data}{fdawarp object from \link{time_warping} of aligned data}
@@ -12,6 +18,8 @@ vertFPCA(warp_data, no, id = round(length(warp_data$time)/2), showplot = TRUE)
 \item{no}{number of principal components to extract}
 
 \item{id}{point to use for f(0) (default = midpoint)}
+
+\item{ci}{geodesic standard deviations (default = c(-1,0,1))}
 
 \item{showplot}{show plots of principal directions (default = T)}
 }
