@@ -38,8 +38,8 @@ horizFPCA <- function(warp_data,no,ci=c(-1,0,1),showplot = TRUE){
     TT = nrow(vec) + 1
     vm = rowMeans(vec)
 
-    gam_pca = array(0,dim=c(length(tau),length(mu)+1,no))
-    psi_pca = array(0,dim=c(length(tau),length(mu),no))
+    gam_pca = array(0,dim=c(length(ci),length(mu)+1,no))
+    psi_pca = array(0,dim=c(length(ci),length(mu),no))
     for (j in no_pca){
         cnt = 1
         for (k in ci){
