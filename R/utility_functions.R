@@ -347,7 +347,7 @@ svd2 <- function (x, nu = min(n, p), nv = min(n, p), LINPACK = FALSE)
     dx <- dim(x)
     n <- dx[1]
     p <- dx[2]
-    svd.x <- try(svd(x, nu, nv, LINPACK))
+    svd.x <- try(svd(x, nu, nv))
     if (class(svd.x) == "try-error") {
         nNA <- sum(is.na(x))
         nInf <- sum(abs(x) == Inf)
@@ -364,7 +364,7 @@ svd2 <- function (x, nu = min(n, p), nv = min(n, p), LINPACK = FALSE)
         msg <- paste("svd failed using LINPACK = ", LINPACK,
                                  " with n = ", n, " and p = ", p, ";", sep = "")
         warning(msg)
-        svd.x <- try(svd(x, nu, nv, !LINPACK))
+        svd.x <- try(svd(x, nu, nv))
         if (class(svd.x) == "try-error") {
             .xc <- .x2[1 + (!LINPACK)]
             stop("svd also failed using LINPACK = ", !LINPACK)
