@@ -25,7 +25,7 @@ Returns a list containing \item{pca}{pca output}
 }
 \description{
 This function computes tolerance bounds for functional data containing
-phase and amplitude variation using principal component anlaysis
+phase and amplitude variation using principal component analysis
 }
 \examples{
 \dontrun{

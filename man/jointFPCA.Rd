@@ -14,9 +14,9 @@ jointFPCA(
 )
 }
 \arguments{
-\item{warp_data}{fdawarp objecet from \link{time_warping} of aligned data}
+\item{warp_data}{fdawarp object from \link{time_warping} of aligned data}
 
-\item{no}{number of prinicpal components to extract}
+\item{no}{number of principal components to extract}
 
 \item{id}{integration point for f0 (default = midpoint)}
 
@@ -24,7 +24,7 @@ jointFPCA(
 
 \item{ci}{geodesic standard deviations (default = c(-1,0,1))}
 
-\item{showplot}{show plots of prinipal directions (default = T)}
+\item{showplot}{show plots of principal directions (default = T)}
 }
 \value{
 Returns a list containing \item{q_pca}{srvf principal directions}

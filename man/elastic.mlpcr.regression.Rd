@@ -2,7 +2,7 @@
 % Please edit documentation in R/elastic_mlpcr_regression.R
 \name{elastic.mlpcr.regression}
 \alias{elastic.mlpcr.regression}
-\title{Elastic Multinomial Logisitc Prinipcal Component Regression}
+\title{Elastic Multinomial logistic Principal Component Regression}
 \usage{
 elastic.mlpcr.regression(
   f,
@@ -21,10 +21,10 @@ elastic.mlpcr.regression(
 
 \item{time}{vector of size \eqn{N} describing the sample points}
 
-\item{pca.method}{string specifing pca method (options = "combined",
+\item{pca.method}{string specifying pca method (options = "combined",
 "vert", or "horiz", default = "combined")}
 
-\item{no}{scalar specifify number of principal components (default=5)}
+\item{no}{scalar specify number of principal components (default=5)}
 
 \item{smooth_data}{smooth data using box filter (default = F)}
 
@@ -39,7 +39,7 @@ Returns a mlpcr object containing
 \item{warp_data}{fdawarp object of aligned data}
 \item{pca}{pca object of principal components}
 \item{Loss}{logistic loss}
-\item{pca.method}{string specifing pca method used}
+\item{pca.method}{string specifying pca method used}
 }
 \description{
 This function identifies a multinomial logistic regression model with phase-variability

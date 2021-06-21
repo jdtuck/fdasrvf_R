@@ -2,7 +2,7 @@
 % Please edit documentation in R/predict.lpcr.R
 \name{predict.lpcr}
 \alias{predict.lpcr}
-\title{Elastic Prediction for functional logisitc PCR Model}
+\title{Elastic Prediction for functional logistic PCR Model}
 \usage{
 \method{predict}{lpcr}(object, newdata = NULL, y = NULL, ...)
 }
@@ -17,7 +17,7 @@
 }
 \value{
 Returns a list containing
-\item{y_pred}{predicted probabilites of the class of newdata}
+\item{y_pred}{predicted probabilities of the class of newdata}
 \item{y_labels}{class labels of newdata}
 \item{PC}{probability of classification}
 }

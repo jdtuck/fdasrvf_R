@@ -9,7 +9,7 @@
 #' @param lambda controls amount of warping (default = 0)
 #' @param method controls which optimization method (default="DP") options are
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-#' ("RBFGS"), Simultaneous Alignment ("SIMUL"), Dirchelet Bayesian ("dBayes"),
+#' ("RBFGS"), Simultaneous Alignment ("SIMUL"), Dirichlet Bayesian ("dBayes"),
 #' and Expo-Map Bayesian ("expBayes")
 #' @param w controls LRBFGS (default = 0.01)
 #' @param iter number of mcmc iterations for mcmc method (default 2000)

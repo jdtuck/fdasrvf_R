@@ -25,7 +25,7 @@ pair_align_functions(
 
 \item{method}{controls which optimization method (default="DP") options are
 Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-("RBFGS"), Simultaneous Alignment ("SIMUL"), Dirchelet Bayesian ("dBayes"),
+("RBFGS"), Simultaneous Alignment ("SIMUL"), Dirichlet Bayesian ("dBayes"),
 and Expo-Map Bayesian ("expBayes")}
 
 \item{w}{controls LRBFGS (default = 0.01)}

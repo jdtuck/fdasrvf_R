@@ -5,7 +5,7 @@
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time sample points of functions
 #' @param iter number of iterations (default = 150000)
-#' @param powera Dirchelet prior parameter (default 1)
+#' @param powera Dirichlet prior parameter (default 1)
 #' @param times factor of length of subsample points to look at (default = 5)
 #' @param tau standard deviation of Normal prior for increment (default ceil(times*.4))
 #' @param gp number of colors in plots (default seq(dim(f)[2]))

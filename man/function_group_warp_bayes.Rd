@@ -22,7 +22,7 @@ function_group_warp_bayes(
 
 \item{iter}{number of iterations (default = 150000)}
 
-\item{powera}{Dirchelet prior parameter (default 1)}
+\item{powera}{Dirichlet prior parameter (default 1)}
 
 \item{times}{factor of length of subsample points to look at (default = 5)}
 

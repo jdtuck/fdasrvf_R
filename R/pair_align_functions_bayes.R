@@ -9,7 +9,7 @@
 #' @param iter number of iterations (default = 15000)
 #' @param times factor of length of subsample points to look at (default = 5)
 #' @param tau standard deviation of Normal prior for increment (default ceil(times*.4))
-#' @param powera Dirchelet prior parameter (default 1)
+#' @param powera Dirichlet prior parameter (default 1)
 #' @param showplot shows plots of functions (default = T)
 #' @param extrainfo T/F whether additional information is returned
 #' @return Returns a list containing \item{f1}{function 1}

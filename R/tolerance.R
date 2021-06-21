@@ -89,7 +89,7 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, parallel=T){
 #' Tolerance Bound Calculation using Elastic Functional PCA
 #'
 #' This function computes tolerance bounds for functional data containing
-#' phase and amplitude variation using principal component anlaysis
+#' phase and amplitude variation using principal component analysis
 #'
 #' @param f matrix of functions
 #' @param time vector describing time sampling

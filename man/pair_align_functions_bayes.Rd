@@ -29,7 +29,7 @@ pair_align_functions_bayes(
 
 \item{tau}{standard deviation of Normal prior for increment (default ceil(times*.4))}
 
-\item{powera}{Dirchelet prior parameter (default 1)}
+\item{powera}{Dirichlet prior parameter (default 1)}
 
 \item{showplot}{shows plots of functions (default = T)}
 

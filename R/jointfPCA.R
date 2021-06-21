@@ -3,12 +3,12 @@
 #' This function calculates amplitude and phase joint  functional principal component
 #' analysis on aligned data
 #'
-#' @param warp_data fdawarp objecet from \link{time_warping} of aligned data
-#' @param no number of prinicpal components to extract
+#' @param warp_data fdawarp object from \link{time_warping} of aligned data
+#' @param no number of principal components to extract
 #' @param id integration point for f0 (default = midpoint)
 #' @param C balance value (default = NULL)
 #' @param ci geodesic standard deviations (default = c(-1,0,1))
-#' @param showplot show plots of prinipal directions (default = T)
+#' @param showplot show plots of principal directions (default = T)
 #' @return Returns a list containing \item{q_pca}{srvf principal directions}
 #' \item{f_pca}{f principal directions}
 #' \item{latent}{latent values}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/elastic_pcr_regression.R
 \name{elastic.pcr.regression}
 \alias{elastic.pcr.regression}
-\title{Elastic Linear Prinipcal Component Regression}
+\title{Elastic Linear Principal Component Regression}
 \usage{
 elastic.pcr.regression(
   f,
@@ -23,10 +23,10 @@ elastic.pcr.regression(
 
 \item{time}{vector of size \eqn{N} describing the sample points}
 
-\item{pca.method}{string specifing pca method (options = "combined",
+\item{pca.method}{string specifying pca method (options = "combined",
 "vert", or "horiz", default = "combined")}
 
-\item{no}{scalar specifify number of principal components (default=5)}
+\item{no}{scalar specify number of principal components (default=5)}
 
 \item{smooth_data}{smooth data using box filter (default = F)}
 
@@ -44,7 +44,7 @@ Returns a pcr object containing
 \item{warp_data}{fdawarp object of aligned data}
 \item{pca}{pca object of principal components}
 \item{SSE}{sum of squared errors}
-\item{pca.method}{string specifing pca method used}
+\item{pca.method}{string specifying pca method used}
 }
 \description{
 This function identifies a regression model with phase-variability

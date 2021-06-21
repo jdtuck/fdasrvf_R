@@ -1,4 +1,4 @@
-#' Elastic Prediction for functional logisitc PCR Model
+#' Elastic Prediction for functional logistic PCR Model
 #'
 #' This function performs prediction from an elastic logistic fPCR regression model
 #'  with phase-variability
@@ -8,7 +8,7 @@
 #' @param y An optional vector of labels to calculate PC. If omitted, PC is NULL
 #' @param ... additional arguments affecting the predictions produced
 #' @return Returns a list containing
-#' \item{y_pred}{predicted probabilites of the class of newdata}
+#' \item{y_pred}{predicted probabilities of the class of newdata}
 #' \item{y_labels}{class labels of newdata}
 #' \item{PC}{probability of classification}
 #' @keywords srvf alignment regression

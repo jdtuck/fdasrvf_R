@@ -2,7 +2,7 @@
 % Please edit documentation in R/predict.mlpcr.R
 \name{predict.mlpcr}
 \alias{predict.mlpcr}
-\title{Elastic Prediction for functional multinomial logisitc PCR Model}
+\title{Elastic Prediction for functional multinomial logistic PCR Model}
 \usage{
 \method{predict}{mlpcr}(object, newdata = NULL, y = NULL, ...)
 }
@@ -17,7 +17,7 @@
 }
 \value{
 Returns a list containing
-\item{y_pred}{predicted probabilites of the class of newdata}
+\item{y_pred}{predicted probabilities of the class of newdata}
 \item{y_labels}{class labels of newdata}
 \item{PC}{probability of classification per class}
 \item{PC.comb}{total probability of classification}
