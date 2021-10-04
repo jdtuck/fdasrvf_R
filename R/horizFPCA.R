@@ -43,7 +43,7 @@ horizFPCA <- function(warp_data,no,ci=c(-1,0,1),showplot = TRUE){
     for (j in no_pca){
         cnt = 1
         for (k in ci){
-            v = ci*sqrt(s[j])*U[,j]
+            v = k*sqrt(s[j])*U[,j]
             vn = pvecnorm(v,2)/sqrt(TT)
             if (vn < 0.0001){
                 psi_pca[cnt,,j] = mu

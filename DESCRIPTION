@@ -36,5 +36,5 @@ Suggests: akima,
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
     R (>= 3.5.0),
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
