@@ -9,6 +9,7 @@ time_warping(
   time,
   lambda = 0,
   method = "mean",
+  center = TRUE,
   showplot = TRUE,
   smooth_data = FALSE,
   sparam = 25,
@@ -26,6 +27,8 @@ time_warping(
 
 \item{method}{warp and calculate to Karcher Mean or Median (options = "mean"
 or "median", default = "mean")}
+
+\item{center}{center warping functions (default = T)}
 
 \item{showplot}{shows plots of functions (default = T)}
 

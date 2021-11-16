@@ -8,6 +8,7 @@
 #' @param lambda controls the elasticity (default = 0)
 #' @param method warp and calculate to Karcher Mean or Median (options = "mean"
 #' or "median", default = "mean")
+#' @param center center warping functions (default = T)
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
@@ -39,7 +40,7 @@
 #' data("simu_data")
 #' out = time_warping(simu_data$f,simu_data$time)
 #' }
-time_warping <- function(f, time, lambda = 0, method = "mean",
+time_warping <- function(f, time, lambda = 0, method = "mean", center = TRUE,
                          showplot = TRUE, smooth_data = FALSE, sparam = 25,
                          parallel = FALSE, omethod = "DP", MaxItr = 20){
     if (parallel){
@@ -199,33 +200,37 @@ time_warping <- function(f, time, lambda = 0, method = "mean",
     }
 
     # One last run, centering of gam
-    r = r+1
-    outfor<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
+    gamI = SqrtMeanInverse(t(gam))
+    gamI_dev = gradient(gamI, 1/(M-1))
+    if (center){
+      r = r+1
+      outfor<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
         gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda,omethod,w,mf[1,r],f[1,k,1])
         gam_dev = gradient(gam,1/(M-1))
         list(gam,gam_dev)
-    }
-    gam = unlist(outfor[1,]);
-    dim(gam)=c(M,N)
-    gam = t(gam)
-    gam_dev = unlist(outfor[2,]);
-    dim(gam_dev)=c(M,N)
-    gam_dev = t(gam_dev)
-
-    gamI = SqrtMeanInverse(t(gam))
-    gamI_dev = gradient(gamI, 1/(M-1))
-    mq[,r+1] = approx(time,mq[,r],xout=(time[length(time)]-time[1])*gamI +
-        time[1])$y*sqrt(gamI_dev)
-
-    for (k in 1:N){
+      }
+      gam = unlist(outfor[1,]);
+      dim(gam)=c(M,N)
+      gam = t(gam)
+      gam_dev = unlist(outfor[2,]);
+      dim(gam_dev)=c(M,N)
+      gam_dev = t(gam_dev)
+      gamI = SqrtMeanInverse(t(gam))
+      gamI_dev = gradient(gamI, 1/(M-1))
+      
+      mq[,r+1] = approx(time,mq[,r],xout=(time[length(time)]-time[1])*gamI +
+                          time[1])$y*sqrt(gamI_dev)
+      
+      for (k in 1:N){
         q[,k,r+1] = approx(time,q[,k,r],xout=(time[length(time)]-time[1])*gamI +
-            time[1])$y*sqrt(gamI_dev)
+                             time[1])$y*sqrt(gamI_dev)
         f[,k,r+1] = approx(time,f[,k,r],xout=(time[length(time)]-time[1])*gamI +
-            time[1])$y
+                             time[1])$y
         gam[k,] = approx(time,gam[k,],xout=(time[length(time)]-time[1])*gamI +
-            time[1])$y
+                           time[1])$y
+      }
     }
-
+    
     # Aligned data & stats
     fn = f[,,r+1]
     qn = q[,,r+1]
