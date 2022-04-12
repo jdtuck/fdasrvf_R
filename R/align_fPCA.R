@@ -54,7 +54,6 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
     M = nrow(f)
     N = ncol(f)
     f0 = f
-    lambda = 0
     coef = -2:2
     NP = 1:num_comp  # number of principal components
     Nstd = length(coef)
