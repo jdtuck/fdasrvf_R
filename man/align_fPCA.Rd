@@ -13,7 +13,8 @@ align_fPCA(
   sparam = 25,
   parallel = FALSE,
   cores = 8,
-  MaxItr = 51
+  MaxItr = 51,
+  lambda = 0
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ align_fPCA(
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
 
 \item{MaxItr}{maximum number of iterations}
+
+\item{lambda}{controls the elasticity (default = 0)}
 }
 \value{
 Returns a list containing \item{f0}{original functions}

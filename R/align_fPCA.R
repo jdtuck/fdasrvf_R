@@ -13,6 +13,7 @@
 #'   \code{doParallel} package
 #' @param cores set number of cores to use with \code{doParallel} (default = 2)
 #' @param MaxItr maximum number of iterations
+#' @param lambda controls the elasticity (default = 0)
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 #' \item{qn}{aligned srvfs - similar structure to fn}
@@ -38,7 +39,7 @@
 #' out = align_fPCA(simu_data$f,simu_data$time)
 #' }
 align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE, sparam = 25,
-                       parallel = FALSE, cores=8, MaxItr = 51){
+                       parallel = FALSE, cores=8, MaxItr = 51, lambda = 0){
     if (parallel){
         cl = makeCluster(cores)
         registerDoParallel(cl)
@@ -102,7 +103,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 
     # Matching Step
     gam_k<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
-        gam0 = optimum.reparam(qhat[,k],time,q[,k],time)
+        gam0 = optimum.reparam(qhat[,k],time,q[,k],time,lambda=lambda)
     }
 
     cat(sprintf("Aligning %d functions in SRVF space to %d fPCA components...\n",N,num_comp))
@@ -163,7 +164,7 @@ align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE,
 
         # Matching Step
         gam_k<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
-            gam0 = optimum.reparam(qhat[,k],time,q[,k,r],time)
+            gam0 = optimum.reparam(qhat[,k],time,q[,k,r],time,lambda=lambda)
         }
         gam[,,r] = gam_k
 
