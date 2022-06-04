@@ -2,6 +2,7 @@ language: r
 
 r_packages:
   - covr
+  - rcppeigen
 
 services:
   - xvfb
