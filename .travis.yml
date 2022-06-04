@@ -2,14 +2,13 @@ language: r
 
 r_packages:
   - covr
-  - rcppeigen
 
 services:
   - xvfb
   
 before_install:
   - export DISPLAY=:99.0
-  - sudo apt-get -y install  libglu1-mesa-dev
+  - sudo apt-get -y install  libglu1-mesa-dev r-cran-rcppeigen
 
 cache: packages
 
