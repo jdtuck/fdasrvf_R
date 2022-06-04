@@ -19,6 +19,7 @@ Imports:
     coda,
     foreach,
     mvtnorm,
+    methods,
     matrixcalc,
     splines,
     parallel,

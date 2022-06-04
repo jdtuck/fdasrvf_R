@@ -38,6 +38,7 @@
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom tolerance mvtol.region
 #' @importFrom testthat test_check
+#' @importFrom methods is
 #' @aliases fdasrvf fdasrvf-package
 NULL
 #' Simulated two Gaussian Dataset
