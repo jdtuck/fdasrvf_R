@@ -13,3 +13,4 @@ cran-comments.md
 ^.*\.Rproj$
 ^revdep$
 fdasrvf_R.code-workspace
+^CRAN-SUBMISSION$
