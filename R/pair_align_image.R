@@ -47,9 +47,9 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FA
             dx = (m-1)/(N-1)
             dy = (n-1)/(N-1)
             F1a = array(0,dim=c(N,N,2))
-            if (requireNamespace("akima", quietly = TRUE)) {
-                F1a[,,1] = akima::bicubic.grid(1:m,1:n,F1[,,1],xlim,ylim,dx=dx,dy=dy)$z
-                F1a[,,2] = akima::bicubic.grid(1:m,1:n,F1[,,2],xlim,ylim,dx=dx,dy=dy)$z
+            if (requireNamespace("interp", quietly = TRUE)) {
+                F1a[,,1] = interp::bicubic.grid(1:m,1:n,F1[,,1],xlim,ylim,dx=dx,dy=dy)$z
+                F1a[,,2] = interp::bicubic.grid(1:m,1:n,F1[,,2],xlim,ylim,dx=dx,dy=dy)$z
             } else {
                 grid.list<- list(x=seq(1,m,length.out=N), y=seq(1,n,length.out=N))
                 obj<-list(x=1:m, y=1:n, z=F1[,,1])
@@ -64,9 +64,9 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FA
             dx = (m1-1)/(N-1)
             dy = (n1-1)/(N-1)
             F2a = array(0,dim=c(N,N,2))
-            if (requireNamespace("akima", quietly = TRUE)) {
-              F2a[,,1] = akima::bicubic.grid(1:m1,1:n1,F2[,,1],xlim,ylim,dx=dx,dy=dy)$z
-              F2a[,,2] = akima::bicubic.grid(1:m1,1:n1,F2[,,2],xlim,ylim,dx=dx,dy=dy)$z
+            if (requireNamespace("interp", quietly = TRUE)) {
+              F2a[,,1] = interp::bicubic.grid(1:m1,1:n1,F2[,,1],xlim,ylim,dx=dx,dy=dy)$z
+              F2a[,,2] = interp::bicubic.grid(1:m1,1:n1,F2[,,2],xlim,ylim,dx=dx,dy=dy)$z
             } else {
               grid.list<- list(x=seq(1,m1,length.out=N), y=seq(1,n1,length.out=N))
               obj<-list(x=1:m1, y=1:n1, z=F2[,,1])

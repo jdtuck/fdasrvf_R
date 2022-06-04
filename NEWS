@@ -1,5 +1,9 @@
-fdasrvf 1.9.7
+fdasrvf 1.9.8
 --------------
+v1.9.8
+* bugfixes
+* remove akima to interp
+
 v1.9.7
 * bugfixes
 
