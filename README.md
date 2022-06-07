@@ -2,8 +2,8 @@ fdasrvf
 =======
 *R library for elastic functional data analysis*
 
-[![Build Status](https://img.shields.io/travis/jdtuck/fdasrvf_R.svg?style=flat-square&label=linux)](https://travis-ci.com/jdtuck/fdasrvf_R)
-[![codecov](https://codecov.io/gh/jdtuck/fdasrvf_R/branch/master/graph/badge.svg?token=92GPCN636T)](https://codecov.io/gh/jdtuck/fdasrvf_R)
+[![Build Status](https://app.travis-ci.com/jdtuck/fdasrvf_R.svg?branch=master)](https://app.travis-ci.com/jdtuck/fdasrvf_R)
+[![codecov](https://codecov.io/gh/jdtuck/fdasrvf_R/branch/master/graph/badge.svg?token=92GPCN636T)](https://app.codecov.io/gh/jdtuck/fdasrvf_R)
 [![Build status](https://img.shields.io/appveyor/ci/jdtuck/fdasrvf-r.svg?style=flat-square&label=windows)](https://ci.appveyor.com/project/jdtuck/fdasrvf-r/branch/master)
 
 A R package for functional data analysis using the square root
