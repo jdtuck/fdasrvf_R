@@ -9,6 +9,7 @@
 #' @param p coverage level of tolerance bound (default = 0.99)
 #' @param B number of bootstrap samples (default = 500)
 #' @param no number of principal components (default = 5)
+#' @param Nsamp number of functions per bootstrap (default = 100)
 #' @param parallel enable parallel processing (default = T)
 #' @return Returns a list containing \item{amp}{amplitude tolerance bounds}
 #' \item{ph}{phase tolerance bounds}
@@ -28,7 +29,7 @@
 #'   data("simu_data")
 #'   out1 = bootTB(simu_data$f,simu_data$time)
 #' }
-bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, parallel=T){
+bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
 
   M <- nrow(f)
   N <- ncol(f)
@@ -52,7 +53,7 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, parallel=T){
   k = 1
   pb <- txtProgressBar(0, B, style = 3)
   outfor <- foreach(k=1:B, .combine=cbind, .packages=c('fdasrvf','mvtnorm')) %dopar% {
-    samples <- joint_gauss_model(out.med, 100, no)
+    samples <- joint_gauss_model(out.med, Nsamp, no)
     amp <- AmplitudeBoxplot(samples, alpha=1-p, showplot=F)
     ph <- PhaseBoxplot(samples, alpha=1-p, showplot=F)
     setTxtProgressBar(pb, k)
