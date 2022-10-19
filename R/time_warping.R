@@ -6,6 +6,9 @@
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param lambda controls the elasticity (default = 0)
+#' @param pen alignment penalty (default="roughness") options are 
+#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+#' norm from id ("norm")
 #' @param method warp and calculate to Karcher Mean or Median (options = "mean"
 #' or "median", default = "mean")
 #' @param center center warping functions (default = T)
@@ -40,9 +43,10 @@
 #' data("simu_data")
 #' out = time_warping(simu_data$f,simu_data$time)
 #' }
-time_warping <- function(f, time, lambda = 0, method = "mean", center = TRUE,
-                         showplot = TRUE, smooth_data = FALSE, sparam = 25,
-                         parallel = FALSE, omethod = "DP", MaxItr = 20){
+time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean", 
+												 center = TRUE, showplot = TRUE, smooth_data = FALSE, 
+												 sparam = 25, parallel = FALSE, omethod = "DP", 
+												 MaxItr = 20){
     if (parallel){
         cores = detectCores()-1
         cl = makeCluster(cores)
@@ -87,7 +91,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean", center = TRUE,
     mf = f[,min_ind]
 
     gam<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
-        gam_tmp = optimum.reparam(mq,time,q[,k],time,lambda,omethod,w,mf[1],f[1,k])
+        gam_tmp = optimum.reparam(mq,time,q[,k],time,lambda,pen,omethod,w,mf[1],f[1,k])
     }
 
     gam = t(gam)
@@ -128,7 +132,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean", center = TRUE,
 
         # Matching Step
         outfor<-foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
-            gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda,omethod,w,mf[1,r],f[1,k,1])
+            gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda,pen,omethod,w,mf[1,r],f[1,k,1])
             gam_dev = gradient(gam,1/(M-1))
             f_temp = approx(time,f[,k,1],xout=(time[length(time)]-time[1])*gam +
                 time[1])$y
@@ -205,7 +209,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean", center = TRUE,
     if (center){
       r = r+1
       outfor<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
-        gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda,omethod,w,mf[1,r],f[1,k,1])
+        gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda,pen,omethod,w,mf[1,r],f[1,k,1])
         gam_dev = gradient(gam,1/(M-1))
         list(gam,gam_dev)
       }
