@@ -191,7 +191,7 @@ int xycompare(const void *x1, const void *x2) {
 }
 
 double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j, int n, int scl, double lam, int pen) {
-	double m = (j-l)/(double)(i-k), sqrtm = sqrt(m), E = 0, y, tmp, tmp_pen, ip, fp;
+	double m = (j-l)/(double)(i-k), sqrtm = sqrt(m), E = 0, y, tmp, tmp_pen, ip, fp, q1dotq2;
 	int x, idx, d, iL=i*scl, kL=k*scl, lL=l*scl;
 
 	for (x = kL; x <= iL; ++x) {
@@ -206,7 +206,14 @@ double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j,
 			}
 			// geodesic
 			if (pen == 2){
-				tmp_pen = acos(sqrtm);
+				q1dotq2 = sqrtm;
+				if (q1dotq2 > 1){
+					q1dotq2 = 1;
+				}
+				else if (q1dotq2 < -1){
+					q1dotq2 = -1;
+				}
+				tmp_pen = acos(q1dotq2);
 			}
 			// l2
 			if (pen == 3){

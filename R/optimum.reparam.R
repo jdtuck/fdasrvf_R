@@ -51,7 +51,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,pen="roughness",method="DP",
         G = rep(0,n)
         T = rep(0,n)
         size = 0;
-        ret = .Call('DPQ2', PACKAGE = 'fdasrvf', Q1, T1, Q2, T2, 1, n, n, T1, T2, n, n, G, T, size, lambda);
+        ret = .Call('DPQ2', PACKAGE = 'fdasrvf', Q1, T1, Q2, T2, 1, n, n, T1, T2, n, n, G, T, size, lambda, pen);
 
         G = ret$G[1:ret$size]
         Tf = ret$T[1:ret$size]
