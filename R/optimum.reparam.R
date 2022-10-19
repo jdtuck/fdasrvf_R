@@ -57,7 +57,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,pen="roughness",method="DP",
         Tf = ret$T[1:ret$size]
         gam0 = approx(Tf,G,xout=T2)$y
     } else if (method=="DPo"){
-        gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', Q2, Q1, 1, n, lambda, 0, rep(0,n))
+        gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', Q2, Q1, 1, n, lambda, pen, 0, rep(0,n))
     } else if (method=="SIMUL"){
     		if (lambda > 0)
     			warning("penalty not implemented")
