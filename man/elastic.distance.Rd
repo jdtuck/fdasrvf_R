@@ -4,7 +4,7 @@
 \alias{elastic.distance}
 \title{Calculates two elastic distance}
 \usage{
-elastic.distance(f1, f2, time, lambda = 0)
+elastic.distance(f1, f2, time, lambda = 0, pen = "roughness")
 }
 \arguments{
 \item{f1}{sample function 1}
@@ -14,6 +14,10 @@ elastic.distance(f1, f2, time, lambda = 0)
 \item{time}{sample points of functions}
 
 \item{lambda}{controls amount of warping (default = 0)}
+
+\item{pen}{alignment penalty (default="roughness") options are 
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+norm from id ("norm")}
 }
 \value{
 Returns a list containing \item{Dy}{amplitude distance}
