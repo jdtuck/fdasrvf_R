@@ -30,7 +30,7 @@ optimum.reparam(
 
 \item{pen}{alignment penalty (default="roughness") options are 
 second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
-norm from id ("norm")}
+norm from id ("l2gam"), srvf norm from id ("l2psi")}
 
 \item{method}{controls which optimization method (default="DP") options are
 Dynamic Programming ("DP"), Coordinate Descent ("DP2"), and Riemannian BFGS

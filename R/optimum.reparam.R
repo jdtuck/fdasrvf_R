@@ -9,7 +9,7 @@
 #' @param lambda alignment penalty value (default = 0)
 #' @param pen alignment penalty (default="roughness") options are 
 #' second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
-#' norm from id ("norm")
+#' norm from id ("l2gam"), srvf norm from id ("l2psi")
 #' @param method controls which optimization method (default="DP") options are
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), and Riemannian BFGS
 #' ("RBFGS")
@@ -32,7 +32,7 @@
 optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,pen="roughness",method="DP",
 														w=0.01,f1o=0.0,f2o=0.0){
 	  pen1 = pen
-	  pen <- pmatch(pen, c("roughness", "geodesic", "norm")) # 1 - roughness, 2 - geodesic, 3 - l2
+	  pen <- pmatch(pen, c("roughness", "l2gam", "l2psi", "geodesic")) # 1 - roughness, 2 - l2gam, 3 - l2psi, 4 - geodesic
 		if (is.na(pen))
 			stop("invalid penalty selection")
 	  

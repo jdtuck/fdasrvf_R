@@ -204,8 +204,16 @@ double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j,
 			if (pen == 1){
 				tmp_pen = (1-sqrtm)*(1-sqrtm);
 			}
-			// geodesic
+			// l2gam
 			if (pen == 2){
+				tmp_pen = (m - 1)*(m - 1);
+			}
+			// l2psi
+			if (pen == 3){
+				tmp_pen = (sqrtm - 1)*(sqrtm - 1);
+			}
+			// geodesic
+			if (pen == 4){
 				q1dotq2 = sqrtm;
 				if (q1dotq2 > 1){
 					q1dotq2 = 1;
@@ -214,10 +222,6 @@ double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j,
 					q1dotq2 = -1;
 				}
 				tmp_pen = acos(q1dotq2)*acos(q1dotq2);
-			}
-			// l2
-			if (pen == 3){
-				tmp_pen = (m - 1)*(m - 1);
 			}
 			
 			tmp = q1L[n*x + d] - sqrtm*q2L[n*idx + d];
