@@ -213,7 +213,7 @@ double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j,
 				else if (q1dotq2 < -1){
 					q1dotq2 = -1;
 				}
-				tmp_pen = acos(q1dotq2);
+				tmp_pen = acos(q1dotq2)*acos(q1dotq2);
 			}
 			// l2
 			if (pen == 3){
