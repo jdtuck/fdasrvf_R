@@ -38,7 +38,7 @@ elastic.depth <- function(f,time,lambda = 0, pen="roughness", parallel = FALSE){
     for (f1 in 1:(fns-1)) {
         
         dist<-foreach(k = f1:ncol(f), .combine=cbind,.packages='fdasrvf') %dopar% {
-            out = elastic.distance(f[,f1], f[,k], time, pen)
+            out = elastic.distance(f[,f1], f[,k], time, lambda, pen)
             
             list(out$Dy,out$Dx)
         }
