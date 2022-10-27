@@ -37,5 +37,5 @@ Suggests: interp,
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
     R (>= 3.5.0),
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Encoding: UTF-8
