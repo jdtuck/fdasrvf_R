@@ -189,9 +189,9 @@ kmeans_align <- function(f, time, K, seeds=NULL, nonempty = 0, lambda = 0,
 
     # Template Identification -------------------------------------------------
     qun.t <- rep(0,K)
+    old.templates.q <- templates.q
     for (i in 1:K){
       id <- which(cluster.id==i)
-      old.templates.q <- templates.q
       templates.q[,i] <- rowMeans(qn[[i]][,id])
       templates[,i] <- rowMeans(fn[[i]][,id])
 
