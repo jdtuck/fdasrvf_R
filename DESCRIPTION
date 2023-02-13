@@ -28,14 +28,16 @@ Imports:
     viridisLite,
     tolerance,
     lpSolve,
-    Matrix,
-    testthat
-Suggests: interp,
-          plot3D,
-          plot3Drgl,
-          rgl
+    Matrix
+Suggests: 
+    interp,
+    plot3D,
+    plot3Drgl,
+    rgl,
+    testthat (>= 3.0.0)
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
     R (>= 3.5.0),
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Encoding: UTF-8
+Config/testthat/edition: 3
