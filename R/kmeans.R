@@ -3,54 +3,92 @@ utils::globalVariables("n")
 #' K-Means Clustering and Alignment
 #'
 #' This function clusters functions and aligns using the elastic square-root
-#' slope (srsf) framework.
+#' slope function (SRSF) framework.
 #'
-#' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
-#' @param time vector of size \eqn{N} describing the sample points
-#' @param K number of clusters
-#' @param seeds indexes of cluster center functions (default = NULL)
-#' @param nonempty minimum number of functions per cluster in assignment step of
-#'   k-means. Set it as a positive integer to avoid the problem of empty
-#'   clusters (default = 0)
-#' @param lambda controls the elasticity (default = 0)
-#' @param showplot shows plots of functions (default = T)
-#' @param smooth_data smooth data using box filter (default = F)
-#' @param sparam number of times to apply box filter (default = 25)
-#' @param parallel enable parallel mode using [foreach()] and
-#'   `doParallel` package (default=F)
-#' @param alignment whether to perform alignment (default = T)
-#' @param omethod optimization method (DP,DP2,RBFGS)
-#' @param MaxItr maximum number of iterations
-#' @param thresh cost function threshold
-#' @return Returns a fdakma object containing \item{f0}{original functions}
-#' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples which is a list for each cluster}
-#' \item{qn}{aligned SRSFs - similar structure to fn}
-#' \item{q0}{original SRSFs}
-#' \item{labels}{cluster labels}
-#' \item{templates}{cluster center functions}
-#' \item{templates.q}{cluster center SRSFs}
-#' \item{gam}{warping functions - similar structure to fn}
-#' \item{qun}{Cost Function Value}
+#' @param f Either a numeric matrix or a numeric 3D array specifying the
+#'   functions that need to be jointly clustered and aligned.
+#'
+#'   - If a matrix, it must be of shape \eqn{M \times N}. In this case, it is
+#'   interpreted as a sample of \eqn{N} curves observed on a grid of size
+#'   \eqn{M}.
+#'   - If a 3D array, it must be of shape \eqn{L \times M \times N} and it is
+#'   interpreted as a sample of \eqn{N} \eqn{L}-dimensional curves observed on a
+#'   grid of size \eqn{M}.
+#' @param time A numeric vector of length \eqn{M} specifying the grid on which
+#'   the curves are evaluated.
+#' @param K An integer value specifying the number of clusters. Defaults to
+#'   `1L`.
+#' @param seeds An integer vector of length `K` specifying the indices of the
+#'   curves in `f` which will be chosen as initial centroids. Defaults to `NULL`
+#'   in which case such indices are randomly chosen.
+#' @param nonempty An integer value specifying the minimum number of curves per
+#'   cluster during the assignment step. Set it to a positive value to avoid the
+#'   problem of empty clusters. Defaults to `0L`.
+#' @param lambda A numeric value specifying the elasticity. Defaults to `0.0`.
+#' @param showplot A boolean specifying whether to show plots. Defaults to
+#'   `FALSE`.
+#' @param smooth_data A boolean specifying whether to smooth data using a box
+#'   filter. Defaults to `FALSE`.
+#' @param sparam An integer value specifying the number of box filters applied.
+#'   Defaults to `25L`.
+#' @param parallel A boolean specifying whether parallel mode (using
+#'   [foreach::foreach()] and the **doParallel** package) shoud be activated.
+#'   Defaults to `FALSE`.
+#' @param alignment A boolean specifying whether to perform alignment. Defaults
+#'   to `TRUE`.
+#' @param omethod A string specifying which method should be used to solve the
+#'   optimization problem that provides estimated warping functions. Choices are
+#'   `"DP"`, `"DP2"` or `"RBFGS"`. Defaults to `"DP"`.
+#' @param MaxItr An integer value specifying the maximum number of iterations.
+#'   Defaults to `50L`.
+#' @param thresh A numeric value specifying a threshold on the cost function
+#'   below which convergence is assumed. Defaults to `0.01`.
+#'
+#' @return An object of class `fdakma` which is a list containing:
+#'
+#' - `f0`: the original functions;
+#' - `q0`: the original SRSFs;
+#' - `fn`: the aligned functions as matrices or a 3D arrays of the same shape
+#' than `f0` by clusters in a list;
+#' - `qn`: the aligned SRSFs as matrices or a 3D arrays of the same shape
+#' than `f0` separated in clusters in a list;
+#' - `labels`: the cluster memberships as an integer vector;
+#' - `templates`: the centroids in the original functional space;
+#' - `templates.q`: the centroids in SRSF space;
+#' - `gam`: the warping functions as matrices or a 3D arrays of the same shape
+#' than `f0` by clusters in a list;
+#' - `qun`: cost function value.
+#'
 #' @keywords srsf alignment clustering
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
-#'  May 2011. Registration of functional data using fisher-rao metric,
-#'  arXiv:1103.3817v2.
-#' @references Tucker, J. D., Wu, W., Srivastava, A.,
-#'  Generative Models for Function Data using Phase and Amplitude Separation,
-#'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
-#' @references Sangalli, L. M., et al. (2010). "k-mean alignment for curve clustering."
-#'  Computational Statistics & Data Analysis 54(5): 1219-1233.
+#'   May 2011. Registration of functional data using Fisher-Rao metric,
+#'   arXiv:1103.3817v2.
+#' @references Tucker, J. D., Wu, W., Srivastava, A., Generative models for
+#'   functional data using phase and amplitude separation, Computational
+#'   Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+#' @references Sangalli, L. M., et al. (2010). "k-mean alignment for curve
+#'   clustering." Computational Statistics & Data Analysis 54(5): 1219-1233.
+#'
 #' @export
 #' @examples
 #' \dontrun{
 #'   out <- kmeans_align(growth_vel$f, growth_vel$time, K = 2)
 #' }
-kmeans_align <- function(f, time, K, seeds=NULL, nonempty = 0, lambda = 0,
-                         showplot = FALSE, smooth_data = FALSE, sparam = 25,
-                         parallel = FALSE, alignment = TRUE, omethod = "DP",
-                         MaxItr = 50, thresh = 0.01){
+kmeans_align <- function(f, time,
+                         K = 1L,
+                         seeds = NULL,
+                         nonempty = 0L,
+                         lambda = 0.0,
+                         showplot = FALSE,
+                         smooth_data = FALSE,
+                         sparam = 25L,
+                         parallel = FALSE,
+                         alignment = TRUE,
+                         omethod = c("DP", "DP2", "RBFGS"),
+                         MaxItr = 50L,
+                         thresh = 0.01) {
   # Initialize --------------------------------------------------------------
-  w <- 0.0
+  omethod <- match.arg(omethod, c("DP", "DP2", "RBFGS"))
 
   if (parallel) {
     cores <- detectCores()
@@ -137,7 +175,7 @@ kmeans_align <- function(f, time, K, seeds=NULL, nonempty = 0, lambda = 0,
             Q2 = q[, , n], T2 = time,
             lambda = lambda,
             method = omethod,
-            w = w,
+            w = 0.0,
             f1o = templates[, 1, k],
             f2o = f[, 1, n]
           )

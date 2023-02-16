@@ -12,8 +12,9 @@
 #'   curves observed on a grid of size \eqn{M}, unless \eqn{M = 1} in which case
 #'   it is interpreted as a single \eqn{1}-dimensional curve observed on a grid
 #'   of size \eqn{M}.
-#'   - If a matrix and `multidimensional == TRUE`, it is interpreted as a single
-#'   multi-dimensional curve.
+#'   - If a matrix and `multidimensional == TRUE`,it must be of shape
+#'   \eqn{L \times M} and it is interpreted as a single \eqn{L}-dimensional
+#'   curve observed on a grid of size \eqn{M}.
 #'   - If a 3D array, it must be of shape \eqn{L \times M \times N} and it is
 #'   interpreted as a sample of \eqn{N} \eqn{L}-dimensional curves observed on a
 #'   grid of size \eqn{M}.
