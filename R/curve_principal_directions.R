@@ -17,10 +17,10 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("mpeg7")
-#' out = curve_karcher_mean(beta[,,1,1:2], maxit=2) # note: use more shapes, small for speed
-#' K = curve_karcher_cov(out$v)
-#' out = curve_principal_directions(out$v, K, out$mu)
+#' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+#' # note: use more shapes, small for speed
+#' K <- curve_karcher_cov(out$v)
+#' out <- curve_principal_directions(out$v, K, out$mu)
 curve_principal_directions <- function(v, K, mu, len=NA, no=3, N=5,mode="O"){
     n = nrow(mu)
     T1 = ncol(mu)
@@ -45,7 +45,7 @@ curve_principal_directions <- function(v, K, mu, len=NA, no=3, N=5,mode="O"){
         tmpv = c(v[, , ii])
         if (!all(is.na(len))){
             tmpv = c(tmpv, len[ii])
-        }   
+        }
         x[, ii] = t(U)%*%(tmpv-VM)
     }
 
@@ -61,7 +61,7 @@ curve_principal_directions <- function(v, K, mu, len=NA, no=3, N=5,mode="O"){
                 v1 = tmp
                 tmp_scale = 1
             }
-            
+
             dim(v1) = c(n,T1)
             q2n = elastic_shooting(mu, v1,mode)
             p = q_to_curve(q2n, tmp_scale)

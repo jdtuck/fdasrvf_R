@@ -29,8 +29,11 @@
 #'  Graphical Statistics, DOI: 10.1080/10618600.2017.1336444.
 #' @export
 #' @examples
-#' data("simu_data")
-#' out = pair_align_functions(simu_data$f[,1],simu_data$f[,2],simu_data$time)
+#' out <- pair_align_functions(
+#'   f1 = simu_data$f[, 1],
+#'   f2 = simu_data$f[, 2],
+#'   time = simu_data$time
+#' )
 pair_align_functions <- function(f1, f2, time, lambda=0, method="DP", w=0.01, iter=2000){
 
   q1 = f_to_srvf(f1, time)

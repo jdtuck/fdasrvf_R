@@ -52,8 +52,11 @@ This function aligns two functions using Bayesian SRSF framework. It will align 
 to f1
 }
 \examples{
-data("simu_data")
-out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2], simu_data$time)
+out <- pair_align_functions_bayes(
+  f1 = simu_data$f[, 1],
+  f2 = simu_data$f[, 2],
+  timet = simu_data$time
+)
 }
 \references{
 Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian

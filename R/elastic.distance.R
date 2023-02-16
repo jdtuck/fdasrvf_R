@@ -19,8 +19,11 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_data")
-#' distances <- elastic.distance(simu_data$f[,1],simu_data$f[,2],simu_data$time)
+#' distances <- elastic.distance(
+#'   f1 = simu_data$f[, 1],
+#'   f2 = simu_data$f[, 2],
+#'   time = simu_data$time
+#' )
 elastic.distance <- function(f1,f2,time,lambda = 0){
     q1 <- f_to_srvf(f1,time)
     q2 <- f_to_srvf(f2,time)

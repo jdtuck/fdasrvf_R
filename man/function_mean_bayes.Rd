@@ -34,8 +34,7 @@ This function calculates karcher mean of functions using Bayesian method
 }
 \examples{
 \dontrun{
-data("simu_data")
-out = function_mean_bayes(simu_data$f, simu_data$time)
+  out <- function_mean_bayes(simu_data$f, simu_data$time)
 }
 }
 \references{

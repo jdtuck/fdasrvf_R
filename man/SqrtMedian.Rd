@@ -20,8 +20,7 @@ This function calculates the srvf of warping functions with corresponding
 shooting vectors and finds the median
 }
 \examples{
-data("simu_warp_median")
-out = SqrtMedian(simu_warp_median$gam)
+out <- SqrtMedian(simu_warp_median$gam)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

@@ -42,9 +42,7 @@ This function calculates amplitude and phase joint  functional principal compone
 analysis on aligned data
 }
 \examples{
-data("simu_warp")
-data("simu_data")
-jfpca = jointFPCA(simu_warp, no = 3)
+jfpca <- jointFPCA(simu_warp, no = 3)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

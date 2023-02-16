@@ -29,9 +29,7 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' data("simu_data")
-#' jfpca = jointFPCA(simu_warp, no = 3)
+#' jfpca <- jointFPCA(simu_warp, no = 3)
 jointFPCA <- function(warp_data, no, id=round(length(warp_data$time)/2), C=NULL, ci=c(-1,0,1), showplot=T){
     fn <- warp_data$fn
     time <- warp_data$time

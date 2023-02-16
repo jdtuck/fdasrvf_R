@@ -60,8 +60,7 @@ components.
 }
 \examples{
 \dontrun{
-data("simu_data")
-out = align_fPCA(simu_data$f,simu_data$time)
+out <- align_fPCA(simu_data$f, simu_data$time)
 }
 }
 \references{

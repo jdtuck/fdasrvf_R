@@ -22,8 +22,11 @@ fnew warped function
 This function warps function \eqn{f} by \eqn{\gamma}
 }
 \examples{
-data("simu_data")
-fnew = warp_f_gamma(simu_data$f[,1],simu_data$time,seq(0,1,length.out=101))
+fnew <- warp_f_gamma(
+  f = simu_data$f[, 1],
+  time = simu_data$time,
+  gamma = seq(0, 1, length.out = 101)
+)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

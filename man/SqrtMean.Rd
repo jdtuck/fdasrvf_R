@@ -20,8 +20,7 @@ This function calculates the srvf of warping functions with corresponding
 shooting vectors and finds the mean
 }
 \examples{
-data("simu_warp")
-out = SqrtMean(simu_warp$gam)
+out <- SqrtMean(simu_warp$gam)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

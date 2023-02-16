@@ -15,8 +15,7 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' out1 = gauss_model(simu_warp,n = 10)
+#' out1 <- gauss_model(simu_warp, n = 10)
 gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
     fn <- warp_data$fn
     time <- warp_data$time

@@ -21,8 +21,7 @@ a list containing \item{beta2n}{aligned curve 2 to 1}
 This function aligns to curves using Elastic Framework
 }
 \examples{
-data("mpeg7")
-out = curve_pair_align(beta[,,1,1], beta[,,1,5])
+out <- curve_pair_align(beta[, , 1, 1], beta[, , 1, 5])
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.

@@ -24,8 +24,11 @@ This functions calculates the distances between functions,
 \eqn{D_y} and \eqn{D_x}, where function 1 is aligned to function 2
 }
 \examples{
-data("simu_data")
-distances <- elastic.distance(simu_data$f[,1],simu_data$f[,2],simu_data$time)
+distances <- elastic.distance(
+  f1 = simu_data$f[, 1],
+  f2 = simu_data$f[, 2],
+  time = simu_data$time
+)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

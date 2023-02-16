@@ -24,8 +24,7 @@ This function models the functional data using a Gaussian model extracted from
 the principal components of the srvfs using the joint model
 }
 \examples{
-data("simu_warp")
-out1 = joint_gauss_model(simu_warp,n = 10)
+out1 <- joint_gauss_model(simu_warp, n = 10)
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,

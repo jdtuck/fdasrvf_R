@@ -18,8 +18,7 @@
 #'        	arXiv:1603.01775 [stat.ME].
 #' @export
 #' @examples
-#' data("simu_warp")
-#' out1 = joint_gauss_model(simu_warp,n = 10)
+#' out1 <- joint_gauss_model(simu_warp, n = 10)
 joint_gauss_model <- function(warp_data, n=1, no=5){
   fn <- warp_data$fn
   time <- warp_data$time

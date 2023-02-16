@@ -26,8 +26,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#'   data("simu_data")
-#'   out1 = bootTB(simu_data$f,simu_data$time)
+#'   out1 <- bootTB(simu_data$f, simu_data$time)
 #' }
 bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
 
@@ -112,8 +111,7 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
 #' @export
 #' @examples
 #' \dontrun{
-#'   data("simu_data")
-#'   out1 = pcaTB(simu_data$f,simu_data$time)
+#'   out1 <- pcaTB(simu_data$f, simu_data$time)
 #' }
 pcaTB <- function(f, time, m = 4, B = 100000, a = 0.05, p = 0.99){
   # Align Data --------------------------------------------------------------

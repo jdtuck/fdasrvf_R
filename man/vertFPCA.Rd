@@ -36,8 +36,7 @@ This function calculates vertical functional principal component analysis
 on aligned data
 }
 \examples{
-data("simu_warp")
-vfpca = vertFPCA(simu_warp,no = 3)
+vfpca <- vertFPCA(simu_warp, no = 3)
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,

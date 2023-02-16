@@ -19,8 +19,7 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("mpeg7")
-#' gam = reparam_curve(beta[,,1,1],beta[,,1,5])$gam
+#' gam <- reparam_curve(beta[, , 1, 1], beta[, , 1, 5])$gam
 reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
                           isclosed=F, mode="O"){
     n1 = nrow(beta2)

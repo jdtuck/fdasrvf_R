@@ -17,8 +17,7 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' out = SqrtMean(simu_warp$gam)
+#' out <- SqrtMean(simu_warp$gam)
 SqrtMean <- function(gam){
     TT = nrow(gam)
     n = ncol(gam)

@@ -37,8 +37,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' data("simu_data")
-#' out = time_warping(simu_data$f,simu_data$time)
+#'   out <- time_warping(simu_data$f, simu_data$time)
 #' }
 time_warping <- function(f, time, lambda = 0, method = "mean", center = TRUE,
                          showplot = TRUE, smooth_data = FALSE, sparam = 25,
@@ -217,10 +216,10 @@ time_warping <- function(f, time, lambda = 0, method = "mean", center = TRUE,
       gam_dev = t(gam_dev)
       gamI = SqrtMeanInverse(t(gam))
       gamI_dev = gradient(gamI, 1/(M-1))
-      
+
       mq[,r+1] = approx(time,mq[,r],xout=(time[length(time)]-time[1])*gamI +
                           time[1])$y*sqrt(gamI_dev)
-      
+
       for (k in 1:N){
         q[,k,r+1] = approx(time,q[,k,r],xout=(time[length(time)]-time[1])*gamI +
                              time[1])$y*sqrt(gamI_dev)
@@ -230,7 +229,7 @@ time_warping <- function(f, time, lambda = 0, method = "mean", center = TRUE,
                            time[1])$y
       }
     }
-    
+
     # Aligned data & stats
     fn = f[,,r+1]
     qn = q[,,r+1]

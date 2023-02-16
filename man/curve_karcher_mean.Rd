@@ -46,8 +46,8 @@ Returns a list containing \item{mu}{mean srvf}
 Calculates Karcher mean or median of a collection of curves using the elastic square-root velocity (srvf) framework.
 }
 \examples{
-data("mpeg7")
-out = curve_karcher_mean(beta[,,1,1:2],maxit=2)  # note: use more shapes, small for speed
+out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+# note: use more shapes, small for speed
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.

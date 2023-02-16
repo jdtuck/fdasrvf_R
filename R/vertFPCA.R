@@ -20,8 +20,7 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' vfpca = vertFPCA(simu_warp,no = 3)
+#' vfpca <- vertFPCA(simu_warp, no = 3)
 vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),ci=c(-1,0,1),showplot = TRUE){
     # Parameters
     fn <- warp_data$fn

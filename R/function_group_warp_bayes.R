@@ -23,8 +23,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' data("simu_data")
-#' out = function_group_warp_bayes(simu_data$f, simu_data$time)
+#'   out <- function_group_warp_bayes(simu_data$f, simu_data$time)
 #' }
 function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
                                       tau=ceiling(times*.04), gp=seq(dim(f)[2]),

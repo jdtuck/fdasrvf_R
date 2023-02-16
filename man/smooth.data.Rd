@@ -18,8 +18,7 @@ fo smoothed functions
 This function smooths functions using standard box filter
 }
 \examples{
-data("simu_data")
-fo = smooth.data(simu_data$f,25)
+fo <- smooth.data(simu_data$f, 25)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

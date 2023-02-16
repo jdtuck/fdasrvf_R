@@ -35,8 +35,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' data("simu_data")
-#' out = align_fPCA(simu_data$f,simu_data$time)
+#' out <- align_fPCA(simu_data$f, simu_data$time)
 #' }
 align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE, sparam = 25,
                        parallel = FALSE, cores=8, MaxItr = 51, lambda = 0){

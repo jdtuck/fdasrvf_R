@@ -62,8 +62,7 @@ slope (srsf) framework.
 }
 \examples{
 \dontrun{
-data("simu_data")
-out = time_warping(simu_data$f,simu_data$time)
+  out <- time_warping(simu_data$f, simu_data$time)
 }
 }
 \references{

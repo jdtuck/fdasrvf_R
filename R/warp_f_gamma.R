@@ -16,8 +16,11 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_data")
-#' fnew = warp_f_gamma(simu_data$f[,1],simu_data$time,seq(0,1,length.out=101))
+#' fnew <- warp_f_gamma(
+#'   f = simu_data$f[, 1],
+#'   time = simu_data$time,
+#'   gamma = seq(0, 1, length.out = 101)
+#' )
 warp_f_gamma <- function(f, time, gamma, spl.int=FALSE){
     if (spl.int){
       fnew <- spline(time,f,xout=(time[length(time)]-time[1])*gamma + time[1])$y

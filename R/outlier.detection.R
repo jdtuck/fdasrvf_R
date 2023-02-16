@@ -18,9 +18,12 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("toy_data")
-#' data("toy_warp")
-#' q_outlier = outlier.detection(toy_warp$q0,toy_data$time,toy_warp$mqn,k=.1)
+#' q_outlier <- outlier.detection(
+#'   q = toy_warp$q0,
+#'   time = toy_data$time,
+#'   mq = toy_warp$mqn,
+#'   k = .1
+#' )
 outlier.detection <- function(q, time, mq, k = 1.5){
     N = ncol(q)
     ds = rep(0,N)

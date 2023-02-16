@@ -12,8 +12,7 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("mpeg7")
-#' out = calc_shape_dist(beta[,,1,1],beta[,,1,4])
+#' out <- calc_shape_dist(beta[, , 1, 1], beta[, , 1, 4])
 calc_shape_dist <- function(beta1, beta2, mode="O", scale=F){
     T1 = ncol(beta1)
     centroid1 = calculatecentroid(beta1)
@@ -40,7 +39,7 @@ calc_shape_dist <- function(beta1, beta2, mode="O", scale=F){
     } else {
         d = acos(q1dotq2)
     }
-    
+
     gam = out$gambest
     time1 <- seq(0,1,length.out=T1)
     binsize <- mean(diff(time1))

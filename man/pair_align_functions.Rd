@@ -41,8 +41,11 @@ This function aligns two functions using SRSF framework. It will align f2
 to f1
 }
 \examples{
-data("simu_data")
-out = pair_align_functions(simu_data$f[,1],simu_data$f[,2],simu_data$time)
+out <- pair_align_functions(
+  f1 = simu_data$f[, 1],
+  f2 = simu_data$f[, 2],
+  time = simu_data$time
+)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

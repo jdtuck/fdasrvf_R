@@ -33,8 +33,7 @@ phase and amplitude variation using bootstrap sampling
 }
 \examples{
 \dontrun{
-  data("simu_data")
-  out1 = bootTB(simu_data$f,simu_data$time)
+  out1 <- bootTB(simu_data$f, simu_data$time)
 }
 }
 \references{

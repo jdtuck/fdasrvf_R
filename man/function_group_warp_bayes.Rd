@@ -45,8 +45,7 @@ This function aligns a set of functions using Bayesian SRSF framework
 }
 \examples{
 \dontrun{
-data("simu_data")
-out = function_group_warp_bayes(simu_data$f, simu_data$time)
+  out <- function_group_warp_bayes(simu_data$f, simu_data$time)
 }
 }
 \references{

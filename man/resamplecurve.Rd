@@ -20,8 +20,7 @@ xn matrix defining resampled curve
 This function resamples a curve to a number of points
 }
 \examples{
-data("mpeg7")
-xn = resamplecurve(beta[,,1,1],200)
+xn <- resamplecurve(beta[, , 1, 1], 200)
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.

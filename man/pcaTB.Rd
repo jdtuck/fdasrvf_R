@@ -29,8 +29,7 @@ phase and amplitude variation using principal component analysis
 }
 \examples{
 \dontrun{
-  data("simu_data")
-  out1 = pcaTB(simu_data$f,simu_data$time)
+  out1 <- pcaTB(simu_data$f, simu_data$time)
 }
 }
 \references{

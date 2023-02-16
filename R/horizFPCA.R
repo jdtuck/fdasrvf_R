@@ -19,8 +19,7 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' hfpca = horizFPCA(simu_warp,no = 3)
+#' hfpca <- horizFPCA(simu_warp, no = 3)
 horizFPCA <- function(warp_data,no,ci=c(-1,0,1),showplot = TRUE){
     gam <- warp_data$gam
     tmp = SqrtMean(gam)

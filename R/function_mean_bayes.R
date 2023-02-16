@@ -23,8 +23,7 @@
 #' registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @examples
 #' \dontrun{
-#' data("simu_data")
-#' out = function_mean_bayes(simu_data$f, simu_data$time)
+#'   out <- function_mean_bayes(simu_data$f, simu_data$time)
 #' }
 function_mean_bayes <- function(f, time, times = 5, group = 1:dim(f)[2], showplot = TRUE){
 

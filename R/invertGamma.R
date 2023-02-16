@@ -13,8 +13,7 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' out = invertGamma(simu_warp$gam[,1])
+#' out <- invertGamma(simu_warp$gam[, 1])
 invertGamma <- function(gam){
     N = length(gam)
     x = (0:(N-1))/(N-1)

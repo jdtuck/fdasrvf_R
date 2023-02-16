@@ -24,9 +24,12 @@ This function calculates outlier's using geodesic distances of the SRVFs from
 the median
 }
 \examples{
-data("toy_data")
-data("toy_warp")
-q_outlier = outlier.detection(toy_warp$q0,toy_data$time,toy_warp$mqn,k=.1)
+q_outlier <- outlier.detection(
+  q = toy_warp$q0,
+  time = toy_data$time,
+  mq = toy_warp$mqn,
+  k = .1
+)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
