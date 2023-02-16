@@ -160,14 +160,13 @@ kmeans_align <- function(f, time,
   for (itr in 1:MaxItr) {
     cli::cli_alert_info("Running iteration {itr}...")
 
-    # Alignment ---------------------------------------------------------------
+    cli::cli_alert_info("----> Alignment step")
     gam <- list()
     Dy <- matrix(0, nrow = K, ncol = N)
     qn <- list()
     fn <- list()
     fw <- matrix(nrow = L, ncol = M)
     for (k in 1:K) {
-      cli::cli_alert_info("----> Template {k}")
       outfor <- foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
         if (alignment) {
           gam_tmp <- optimum.reparam(
@@ -212,7 +211,7 @@ kmeans_align <- function(f, time,
       Dy[k, ] <- dtil
     }
 
-    # Assignment --------------------------------------------------
+    cli::cli_alert_info("----> Assignment step")
     if (!nonempty) {
       cluster.id <- apply(Dy, 2, which.min)
     } else {
@@ -235,7 +234,7 @@ kmeans_align <- function(f, time,
       cluster.id <- apply(clusterIndicator, 2, which.max)
     }
 
-    # Normalization -----------------------------------------------------------
+    cli::cli_alert_info("----> Normalisation step")
     for (k in 1:K) {
       id <- which(cluster.id == k)
       N1 <- length(id)
@@ -270,7 +269,7 @@ kmeans_align <- function(f, time,
       fn[[k]][, , id] <- f_temp
     }
 
-    # Template Identification -------------------------------------------------
+    cli::cli_alert_info("----> Template identification step")
     qun.t <- rep(0, K)
     old.templates.q <- templates.q
     for (k in 1:K) {
@@ -295,7 +294,7 @@ kmeans_align <- function(f, time,
       break
   }
 
-  # Output ------------------------------------------------------------------
+  cli::cli_alert_info("Consolidating output...")
   ftmp <- qtmp <- gamtmp <- list()
   for (k in 1:K) {
     id <- which(cluster.id == k)

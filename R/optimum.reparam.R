@@ -64,8 +64,8 @@ optimum.reparam <- function(Q1, T1, Q2, T2,
   if (method == "DPo" && all(T1 != T2))
     method <- "DP"
 
-  # Q1 <- Q1 / pvecnorm(Q1, 2)
-  # Q2 <- Q2 / pvecnorm(Q2, 2)
+  Q1 <- Q1 / pvecnorm(Q1, 2)
+  Q2 <- Q2 / pvecnorm(Q2, 2)
   C1 <- srvf_to_f(Q1, T1, f1o, multidimensional = (L > 1))
   C2 <- srvf_to_f(Q2, T2, f2o, multidimensional = (L > 1))
   rotated <- FALSE
