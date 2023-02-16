@@ -8,7 +8,7 @@
 #'
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'   May 2011. Registration of functional data using fisher-rao metric,
-#'   arXiv:1103.3817v2 [math.ST].
+#'   arXiv:1103.3817v2.
 #' @references Tucker, J. D., Wu, W., Srivastava, A., Generative Models for
 #'   Function Data using Phase and Amplitude Separation, Computational
 #'   Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
@@ -39,7 +39,7 @@
 #'   functions with a Gaussian process prior. Journal of Computational and
 #'   Graphical Statistics, 26, no. 4, 894–904.
 #' @references Lee, S. and S. Jung, 2017: Combined analysis of amplitude and
-#'   phase variations in functional data. arXiv:1603.01775 [stat.ME], 1–21.
+#'   phase variations in functional data. arXiv:1603.01775, 1–21.
 #' @references J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic Functional
 #'   Principal Component Regression,” Statistical Analysis and Data Mining, vol.
 #'   12, no. 2, pp. 101-115, 2019.
@@ -61,7 +61,6 @@
 #' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var spline median rgamma optimize
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom tolerance mvtol.region
-#' @importFrom testthat test_check
 #' @importFrom methods is
 #' @aliases fdasrvf fdasrvf-package
 NULL

@@ -28,7 +28,8 @@ Imports:
     viridisLite,
     tolerance,
     lpSolve,
-    Matrix
+    Matrix,
+    cli
 Suggests: 
     interp,
     plot3D,
