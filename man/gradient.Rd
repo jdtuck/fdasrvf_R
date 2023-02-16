@@ -4,22 +4,43 @@
 \alias{gradient}
 \title{Gradient using finite differences}
 \usage{
-gradient(f, binsize)
+gradient(f, binsize, multidimensional = FALSE)
 }
 \arguments{
-\item{f}{vector with \eqn{N} samples}
+\item{f}{Either a numeric vector of a numeric matrix or a numeric array
+specifying the curve(s) that need to be differentiated.
+\itemize{
+\item If a vector, it must be of shape \eqn{M} and it is interpreted as a
+single \eqn{1}-dimensional curve observed on a grid of size \eqn{M}.
+\item If a matrix and \code{multidimensional == FALSE}, it must be of shape
+\eqn{M \times N}. In this case, it is interpreted as a sample of \eqn{N}
+curves observed on a grid of size \eqn{M}, unless \eqn{M = 1} in which case
+it is interpreted as a single \eqn{1}-dimensional curve observed on a grid
+of size \eqn{M}.
+\item If a matrix and \code{multidimensional == TRUE}, it is interpreted as a single
+multi-dimensional curve.
+\item If a 3D array, it must be of shape \eqn{L \times M \times N} and it is
+interpreted as a sample of \eqn{N} \eqn{L}-dimensional curves observed on a
+grid of size \eqn{M}.
+}}
 
-\item{binsize}{scalar of time samples}
+\item{binsize}{A numeric value specifying the size of the bins for computing
+finite differences.}
+
+\item{multidimensional}{A boolean specifying if the curves are
+multi-dimensional. This is useful when \code{f} is provided as a matrix to
+determine whether it is a single multi-dimensional curve or a collection of
+uni-dimensional curves. Defaults to \code{FALSE}.}
 }
 \value{
-g vector with \eqn{N} samples which is the gradient of f
+A numeric array of the same shape as the input array \code{f} storing the
+gradient of \code{f} obtained via finite differences.
 }
 \description{
-This function takes the gradient of f using finite differences
+This function computes the gradient of \code{f} using finite differences.
 }
 \examples{
-data("simu_data")
-out = gradient(simu_data$f[,1],mean(diff(simu_data$time)))
+out <- gradient(simu_data$f[, 1], mean(diff(simu_data$time)))
 }
 \keyword{alignment}
 \keyword{srvf}

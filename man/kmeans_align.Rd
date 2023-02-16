@@ -11,7 +11,7 @@ kmeans_align(
   seeds = NULL,
   nonempty = 0,
   lambda = 0,
-  showplot = TRUE,
+  showplot = FALSE,
   smooth_data = FALSE,
   sparam = 25,
   parallel = FALSE,
@@ -42,7 +42,7 @@ clusters (default = 0)}
 
 \item{sparam}{number of times to apply box filter (default = 25)}
 
-\item{parallel}{enable parallel mode using \code{\link{foreach}} and
+\item{parallel}{enable parallel mode using \code{\link[=foreach]{foreach()}} and
 \code{doParallel} package (default=F)}
 
 \item{alignment}{whether to perform alignment (default = T)}
@@ -70,21 +70,20 @@ slope (srsf) framework.
 }
 \examples{
 \dontrun{
-data("growth_vel")
-out <- kmeans_align(growth_vel$f,growth_vel$time, K=2)
+  out <- kmeans_align(growth_vel$f, growth_vel$time, K = 2)
 }
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
- May 2011. Registration of functional data using fisher-rao metric,
- arXiv:1103.3817v2 [math.ST].
+May 2011. Registration of functional data using fisher-rao metric,
+arXiv:1103.3817v2.
 
 Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Generative Models for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 
 Sangalli, L. M., et al. (2010). "k-mean alignment for curve clustering."
- Computational Statistics & Data Analysis 54(5): 1219-1233.
+Computational Statistics & Data Analysis 54(5): 1219-1233.
 }
 \keyword{alignment}
 \keyword{clustering}
