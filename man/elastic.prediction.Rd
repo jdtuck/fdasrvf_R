@@ -28,12 +28,12 @@ Returns a list containing
 }
 \description{
 This function performs prediction from an elastic regression model
- with phase-variability
+with phase-variability
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,
- Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
- Electronic Journal of Statistics (2014), submitted.
+Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
+Electronic Journal of Statistics (2014), submitted.
 }
 \keyword{alignment}
 \keyword{regression}

@@ -13,7 +13,7 @@ function_mean_bayes(f, time, times = 5, group = 1:dim(f)[2], showplot = TRUE)
 
 \item{times}{factor of length of subsample points to look at (default = 5)}
 
-\item{group}{(default 1:dim(f)[2])}
+\item{group}{(default 1:dim(f)\link{2})}
 
 \item{showplot}{shows plots of functions (default = T)}
 }

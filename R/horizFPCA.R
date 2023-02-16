@@ -3,7 +3,7 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param warp_data fdawarp object from \link{time_warping} of aligned data
+#' @param warp_data fdawarp object from [time_warping] of aligned data
 #' @param no number of principal components to extract
 #' @param ci geodesic standard deviations (default = c(-1,0,1))
 #' @param showplot show plots of principal directions (default = T)

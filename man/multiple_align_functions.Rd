@@ -33,7 +33,7 @@ multiple_align_functions(
 
 \item{sparam}{number of times to apply box filter (default = 25)}
 
-\item{parallel}{enable parallel mode using \code{\link{foreach}} and
+\item{parallel}{enable parallel mode using \code{\link[=foreach]{foreach()}} and
 \code{doParallel} package (default=F)}
 
 \item{omethod}{optimization method (DP,DP2,RBFGS,dBayes,expBayes)}
@@ -61,12 +61,12 @@ slope (srsf) framework.
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
- May 2011. Registration of functional data using fisher-rao metric,
- arXiv:1103.3817v2 [math.ST].
+May 2011. Registration of functional data using fisher-rao metric,
+arXiv:1103.3817v2 \link{math.ST}.
 
 Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Generative Models for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
 \keyword{srsf}

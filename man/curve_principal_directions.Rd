@@ -9,7 +9,7 @@ curve_principal_directions(v, K, mu, len = NA, no = 3, N = 5, mode = "O")
 \arguments{
 \item{v}{array (n,T,N1) of shooting vectors}
 
-\item{K}{array (n*T,n*T) covariance matrix}
+\item{K}{array (n\emph{T,n}T) covariance matrix}
 
 \item{mu}{array (n,T) of mean srvf}
 

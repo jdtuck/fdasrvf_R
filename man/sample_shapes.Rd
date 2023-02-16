@@ -9,7 +9,7 @@ sample_shapes(mu, K, mode = "O", no = 3, numSamp = 10)
 \arguments{
 \item{mu}{array (n,T) of mean srvf}
 
-\item{K}{array (2*T,2*T) covariance matrix}
+\item{K}{array (2\emph{T,2}T) covariance matrix}
 
 \item{mode}{Open ("O") or Closed ("C") curves}
 

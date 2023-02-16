@@ -28,7 +28,7 @@ function_group_warp_bayes(
 
 \item{tau}{standard deviation of Normal prior for increment (default ceil(times*.4))}
 
-\item{gp}{number of colors in plots (default seq(dim(f)[2]))}
+\item{gp}{number of colors in plots (default seq(dim(f)\link{2}))}
 
 \item{showplot}{shows plots of functions (default = T)}
 }

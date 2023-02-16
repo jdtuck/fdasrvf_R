@@ -1,26 +1,34 @@
 #' Phase Boxplot
 #'
-#' This function constructs the amplitude boxplot
+#' This function constructs the phase boxplot.
 #'
-#' @param warp_median fdawarp object from \link{time_warping} of aligned data using the median
-#' @param alpha quantile value (default=.05, i.e., 95\%)
-#' @param kp scalar for outlier cutoff (default=1)
-#' @param showplot shows plots of functions (default = T)
-#' @return Returns a phbox object containing \item{median_x}{median warping function}
-#' \item{Q1}{First quartile}
-#' \item{Q3}{Second quartile}
-#' \item{Q1a}{First quantile based on alpha}
-#' \item{Q3a}{Second quantile based on alpha}
-#' \item{minn}{minimum extreme function}
-#' \item{maxx}{maximum extreme function}
-#' \item{outlier_index}{indexes of outlier functions}
+#' @param warp_median fdawarp object from [time_warping] of aligned data using
+#'   the median.
+#' @param alpha quantile value (default=.05, i.e., 95%).
+#' @param kp scalar for outlier cutoff (default=1).
+#' @param showplot shows plots of functions (default = T).
+#'
+#' @return Returns a `phbox` object containing:
+#'
+#' - `median_x`: median warping function
+#' - `Q1`: First quartile
+#' - `Q3`: Second quartile
+#' - `Q1a`: First quantile based on alpha
+#' - `Q3a`: Second quantile based on alpha
+#' - `minn`: minimum extreme function
+#' - `maxx`: maximum extreme function
+#' - `outlier_index`: indexes of outlier functions
+#'
 #' @keywords srvf alignment boxplot
-#' @references Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization
-#' of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
+#'
+#' @references Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A geometric
+#'   approach to visualization of variability in functional data." Journal of
+#'   the American Statistical Association in press: 1-34.
+#'
 #' @export
 #' @examples
-#' data("simu_warp_median")
-#' out <- PhaseBoxplot(simu_warp_median, showplot=FALSE)
+#' data(simu_warp_median)
+#' out <- PhaseBoxplot(simu_warp_median, showplot = FALSE)
 PhaseBoxplot <- function(warp_median, alpha=.05, kp=1, showplot=TRUE){
   gam <- warp_median$gam
   if (warp_median$method != 'median'){

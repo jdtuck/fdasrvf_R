@@ -12,7 +12,7 @@ samples}
 
 \item{time}{vector of size \eqn{N} describing the sample points}
 
-\item{mq}{median calculated using \code{\link{time_warping}}}
+\item{mq}{median calculated using \code{\link[=time_warping]{time_warping()}}}
 
 \item{k}{cutoff threshold (default = 1.5)}
 }
@@ -30,12 +30,12 @@ q_outlier = outlier.detection(toy_warp$q0,toy_data$time,toy_warp$mqn,k=.1)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
- May 2011. Registration of functional data using fisher-rao metric,
- arXiv:1103.3817v2 [math.ST].
+May 2011. Registration of functional data using fisher-rao metric,
+arXiv:1103.3817v2 \link{math.ST}.
 
 Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Generative Models for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{detection}
 \keyword{outlier}

@@ -34,7 +34,7 @@ elastic.mlogistic(
 
 \item{sparam}{number of times to apply box filter (default = 25)}
 
-\item{parallel}{enable parallel mode using \code{\link{foreach}} and
+\item{parallel}{enable parallel mode using \code{\link[=foreach]{foreach()}} and
 \code{doParallel} package}
 
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
@@ -58,8 +58,8 @@ phase-variability using elastic methods
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,
- Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
- Electronic Journal of Statistics (2014), submitted.
+Elastic Functional Logistic Regression with Application to Physiological Signal Classification,
+Electronic Journal of Statistics (2014), submitted.
 }
 \keyword{alignment}
 \keyword{regression}

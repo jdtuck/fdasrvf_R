@@ -30,7 +30,7 @@ align_fPCA(
 
 \item{sparam}{number of times to apply box filter (default = 25)}
 
-\item{parallel}{enable parallel mode using \code{\link{foreach}} and
+\item{parallel}{enable parallel mode using \code{\link[=foreach]{foreach()}} and
 \code{doParallel} package}
 
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
@@ -66,8 +66,8 @@ out = align_fPCA(simu_data$f,simu_data$time)
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Generative Models for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \concept{srvf alignment}
 \keyword{pca}

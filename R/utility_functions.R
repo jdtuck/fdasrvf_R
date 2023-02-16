@@ -69,41 +69,41 @@ cumtrapz <- function(x,y,dims=1){
 }
 
 trapz <- function(x,y,dims=1){
-    if ((dims-1)>0){
-        perm = c(dims:max(ndims(y),dims), 1:(dims-1))
-    } else {
-        perm = c(dims:max(ndims(y),dims))
-    }
+  if ((dims-1)>0){
+    perm = c(dims:max(ndims(y),dims), 1:(dims-1))
+  } else {
+    perm = c(dims:max(ndims(y),dims))
+  }
 
-    if (ndims(y) == 0){
-        m = 1
-    } else {
-        if (length(x) != dim(y)[dims])
-            stop('Dimension Mismatch')
-        y = aperm(y, perm)
-        m = nrow(y)
-    }
+  if (ndims(y) == 0){
+    m = 1
+  } else {
+    if (length(x) != dim(y)[dims])
+      stop('Dimension Mismatch')
+    y = aperm(y, perm)
+    m = nrow(y)
+  }
 
-    if (m==1){
-        M = length(y)
-        out = sum(diff(x)*(y[-M]+y[-1])/2)
-    } else {
-        slice1 = y[as.vector(outer(1:(m-1), dim(y)[1]*( 1:prod(dim(y)[-1])-1 ), '+')) ]
-        dim(slice1) = c(m-1, length(slice1)/(m-1))
-        slice2 = y[as.vector(outer(2:m, dim(y)[1]*( 1:prod(dim(y)[-1])-1 ), '+'))]
-        dim(slice2) = c(m-1, length(slice2)/(m-1))
-        out = t(diff(x)) %*% (slice1+slice2)/2.
-        siz = dim(y)
-        siz[1] = 1
-        out = array(out, siz)
-        perm2 = rep(0, length(perm))
-        perm2[perm] = 1:length(perm)
-        out = aperm(out, perm2)
-        ind = which(dim(out) != 1)
-        out = array(out, dim(out)[ind])
-    }
+  if (m==1){
+    M = length(y)
+    out = sum(diff(x)*(y[-M]+y[-1])/2)
+  } else {
+    slice1 = y[as.vector(outer(1:(m-1), dim(y)[1]*( 1:prod(dim(y)[-1])-1 ), '+')) ]
+    dim(slice1) = c(m-1, length(slice1)/(m-1))
+    slice2 = y[as.vector(outer(2:m, dim(y)[1]*( 1:prod(dim(y)[-1])-1 ), '+'))]
+    dim(slice2) = c(m-1, length(slice2)/(m-1))
+    out = t(diff(x)) %*% (slice1+slice2)/2.
+    siz = dim(y)
+    siz[1] = 1
+    out = array(out, siz)
+    perm2 = rep(0, length(perm))
+    perm2[perm] = 1:length(perm)
+    out = aperm(out, perm2)
+    ind = which(dim(out) != 1)
+    out = array(out, dim(out)[ind])
+  }
 
-    return(out)
+  out
 }
 
 cumint3 <- function(x,y){
@@ -222,38 +222,38 @@ cumtraps <- function(x,y){
     return(z)
 }
 
-pvecnorm <-function(v,p=2){
-    sum(abs(v)^p)^(1/p)
+pvecnorm <- function(v, p = 2) {
+  sum(abs(v) ^ p) ^ (1 / p)
 }
 
 pvecnorm2 <-function(dt,x){
     sqrt(sum(abs(x)*abs(x))*dt)
 }
 
-gradient.spline <- function(f,binsize,smooth_data=F){
-    if (smooth_data==TRUE){
-        n = nrow(f)
-        if (is.null(n)){
-            N = 1
-            tmp.spline = smooth.spline(f)
-            f.out = tmp.spline$y
-            g = predict(tmp.spline,deriv=1)$y/binsize
-        }else{
-            N = ncol(f)
-            f.out = matrix(0,nrow(f),ncol(f))
-            g = matrix(0,nrow(f),ncol(f))
-            for (jj in 1:N){
-                tmp.spline = smooth.spline(f[,jj])
-                f.out[,jj] = tmp.spline$y
-                g[,jj] = predict(tmp.spline,deriv=1)$y/binsize
-            }
-        }
-    }else{
-        g = gradient(f,binsize)
-        f.out = f
+gradient.spline <- function(f, binsize, smooth_data = FALSE) {
+  if (smooth_data) {
+    n <- nrow(f)
+    if (is.null(n)) {
+      N <- 1
+      tmp.spline <- smooth.spline(f)
+      f.out <- tmp.spline$y
+      g <- predict(tmp.spline, deriv = 1)$y / binsize
+    } else {
+      N <- ncol(f)
+      f.out <- matrix(0, nrow(f), ncol(f))
+      g <- matrix(0, nrow(f), ncol(f))
+      for (jj in 1:N) {
+        tmp.spline <- smooth.spline(f[, jj])
+        f.out[, jj] <- tmp.spline$y
+        g[, jj] <- predict(tmp.spline, deriv = 1)$y / binsize
+      }
     }
+  } else {
+    g <- gradient(f, binsize)
+    f.out <- f
+  }
 
-    return(list(g=g, f=f.out))
+  list(g = g, f = f.out)
 }
 
 resample.f <- function(f, timet, N=100){

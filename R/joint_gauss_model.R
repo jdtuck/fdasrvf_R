@@ -3,7 +3,7 @@
 #' This function models the functional data using a Gaussian model extracted from
 #' the principal components of the srvfs using the joint model
 #'
-#' @param warp_data fdawarp object from \link{time_warping} of aligned data
+#' @param warp_data fdawarp object from [time_warping] of aligned data
 #' @param n number of random samples (n = 1)
 #' @param no number of principal components (n=4)
 #' @return Returns a fdawarp object containing \item{fs}{random aligned samples}

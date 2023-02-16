@@ -46,19 +46,19 @@ out = pair_align_functions(simu_data$f[,1],simu_data$f[,2],simu_data$time)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
- May 2011. Registration of functional data using fisher-rao metric,
- arXiv:1103.3817v2 [math.ST].
+May 2011. Registration of functional data using fisher-rao metric,
+arXiv:1103.3817v2 \link{math.ST}.
 
 Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Generative Models for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 
 Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
- registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
+registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 
 Lu, Y., Herbei, R., and Kurtek, S. (2017). Bayesian registration
- of functions with a Gaussian process prior. Journal of Computational and
- Graphical Statistics, DOI: 10.1080/10618600.2017.1336444.
+of functions with a Gaussian process prior. Journal of Computational and
+Graphical Statistics, DOI: 10.1080/10618600.2017.1336444.
 }
 \keyword{alignment}
 \keyword{srsf}

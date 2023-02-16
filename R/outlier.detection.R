@@ -6,7 +6,7 @@
 #' @param q matrix (\eqn{N} x \eqn{M}) of \eqn{M} SRVF functions with \eqn{N}
 #' samples
 #' @param time vector of size \eqn{N} describing the sample points
-#' @param mq median calculated using \code{\link{time_warping}}
+#' @param mq median calculated using [time_warping()]
 #' @param k cutoff threshold (default = 1.5)
 #' @return \item{q_outlier}{outlier functions}
 #' @keywords srvf outlier detection

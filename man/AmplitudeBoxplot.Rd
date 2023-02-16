@@ -7,7 +7,8 @@
 AmplitudeBoxplot(warp_median, alpha = 0.05, ka = 1, showplot = TRUE)
 }
 \arguments{
-\item{warp_median}{fdawarp object from \link{time_warping} of aligned data using the median}
+\item{warp_median}{fdawarp object from \link{time_warping} of aligned data using
+the median}
 
 \item{alpha}{quantile value (default=.05, i.e., 95\%)}
 
@@ -16,26 +17,30 @@ AmplitudeBoxplot(warp_median, alpha = 0.05, ka = 1, showplot = TRUE)
 \item{showplot}{shows plots of functions (default = T)}
 }
 \value{
-Returns a ampbox object containing \item{median_y}{median function}
-\item{Q1}{First quartile}
-\item{Q3}{Second quartile}
-\item{Q1a}{First quantile based on alpha}
-\item{Q3a}{Second quantile based on alpha}
-\item{minn}{minimum extreme function}
-\item{maxx}{maximum extreme function}
-\item{outlier_index}{indexes of outlier functions}
-\item{fmedian}{median function}
+Returns an \code{ampbox} object containing:
+\itemize{
+\item \code{median_y}: median function
+\item \code{Q1}: First quartile
+\item \code{Q3}: Second quartile
+\item \code{Q1a}: First quantile based on alpha
+\item \code{Q3a}: Second quantile based on alpha
+\item \code{minn}: minimum extreme function
+\item \code{maxx}: maximum extreme function
+\item \code{outlier_index}: indexes of outlier functions
+\item \code{fmedian}: median function
+}
 }
 \description{
-This function constructs the amplitude boxplot
+This function constructs the amplitude boxplot.
 }
 \examples{
-data("simu_warp_median")
-out <- AmplitudeBoxplot(simu_warp_median, showplot=FALSE)
+data(simu_warp_median)
+out <- AmplitudeBoxplot(simu_warp_median, showplot = FALSE)
 }
 \references{
-Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization
-of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
+Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A geometric
+approach to visualization of variability in functional data." Journal of
+the American Statistical Association in press: 1-34.
 }
 \keyword{alignment}
 \keyword{boxplot}
