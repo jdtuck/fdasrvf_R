@@ -11,11 +11,11 @@
 #' \item{ft}{random function samples}
 #' \item{qs}{random srvf samples}
 #' @keywords pca
-#' @references Tucker, J. D., Wu, W., Srivastava, A.,
-#'  Generative Models for Function Data using Phase and Amplitude Separation,
-#'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
-#' @references Jung, S. L. a. S. (2016). "Combined Analysis of Amplitude and Phase Variations in Functional Data."
-#'        	arXiv:1603.01775 [stat.ME].
+#' @references Tucker, J. D., Wu, W., Srivastava, A., Generative Models for
+#'   Function Data using Phase and Amplitude Separation, Computational
+#'   Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+#' @references Jung, S. L. a. S. (2016). "Combined Analysis of Amplitude and
+#'   Phase Variations in Functional Data." arXiv:1603.01775.
 #' @export
 #' @examples
 #' out1 <- joint_gauss_model(simu_warp, n = 10)

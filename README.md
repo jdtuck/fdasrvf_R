@@ -39,8 +39,7 @@ Huang, W. 2014, Optimization Algorithms on Riemannian Manifolds with
 Applications. Ph.D. Thesis, Florida State University.
 
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E. and Marron, J. S. (2011).
-Registration of Functional Data Using Fisher-Rao Metric. arXiv:1103.3817v2
-[math.ST].
+Registration of Functional Data Using Fisher-Rao Metric. arXiv:1103.3817v2.
 
 Tucker, J. D., Wu, W. and Srivastava, A. (2013). Generative models for
 functional data using phase and amplitude separation. Computational Statistics
@@ -76,7 +75,7 @@ of variability in functional data, Journal of American Statistical Association 1
 Lu, Y., R. Herbei, and S. Kurtek, 2017: Bayesian registration of functions with a Gaussian process prior. Journal of
 Computational and Graphical Statistics, 26, no. 4, 894–904.
 
-Lee, S. and S. Jung, 2017: Combined analysis of amplitude and phase variations in functional data. arXiv:1603.01775 [stat.ME], 1–21.
+Lee, S. and S. Jung, 2017: Combined analysis of amplitude and phase variations in functional data. arXiv:1603.01775, 1–21.
 
 J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic Functional Principal Component Regression,” Statistical Analysis and Data Mining, vol. 12, no. 2, pp. 101-115, 2019.
 

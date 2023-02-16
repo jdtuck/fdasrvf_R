@@ -13,7 +13,7 @@ modeling using functional component analysis.
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 May 2011. Registration of functional data using fisher-rao metric,
-arXiv:1103.3817v2 \link{math.ST}.
+arXiv:1103.3817v2.
 
 Tucker, J. D., Wu, W., Srivastava, A., Generative Models for
 Function Data using Phase and Amplitude Separation, Computational
@@ -56,7 +56,7 @@ functions with a Gaussian process prior. Journal of Computational and
 Graphical Statistics, 26, no. 4, 894–904.
 
 Lee, S. and S. Jung, 2017: Combined analysis of amplitude and
-phase variations in functional data. arXiv:1603.01775 \link{stat.ME}, 1–21.
+phase variations in functional data. arXiv:1603.01775, 1–21.
 
 J. D. Tucker, J. R. Lewis, and A. Srivastava, “Elastic Functional
 Principal Component Regression,” Statistical Analysis and Data Mining, vol.

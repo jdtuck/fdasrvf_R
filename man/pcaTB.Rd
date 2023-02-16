@@ -33,15 +33,15 @@ phase and amplitude variation using principal component analysis
 }
 }
 \references{
-J. D. Tucker, J. R. Lewis, C. King, and S. Kurtek,
-“A Geometric Approach for Computing Tolerance Bounds for Elastic Functional Data,”
+J. D. Tucker, J. R. Lewis, C. King, and S. Kurtek, “A Geometric
+Approach for Computing Tolerance Bounds for Elastic Functional Data,”
 Journal of Applied Statistics, 10.1080/02664763.2019.1645818, 2019.
 
-Tucker, J. D., Wu, W., Srivastava, A.,
-Generative Models for Function Data using Phase and Amplitude Separation,
-Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative Models for
+Function Data using Phase and Amplitude Separation, Computational
+Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 
-Jung, S. L. a. S. (2016). "Combined Analysis of Amplitude and Phase Variations in Functional Data."
-arXiv:1603.01775 \link{stat.ME}.
+Jung, S. L. a. S. (2016). "Combined Analysis of Amplitude and
+Phase Variations in Functional Data." arXiv:1603.01775.
 }
 \concept{pca tolerance bounds}
