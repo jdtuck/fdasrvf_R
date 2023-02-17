@@ -38,7 +38,6 @@
 #'
 #' @export
 #' @examples
-#' data(simu_data)
 #' q <- f_to_srvf(simu_data$f, simu_data$time)
 #' gam <- optimum.reparam(q[, 1], simu_data$time, q[, 2], simu_data$time)
 optimum.reparam <- function(Q1, T1, Q2, T2,

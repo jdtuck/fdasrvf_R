@@ -39,7 +39,7 @@ utils::globalVariables("n")
 #' @param omethod A string specifying which method should be used to solve the
 #'   optimization problem that provides estimated warping functions. Choices are
 #'   `"DP"`, `"DP2"` or `"RBFGS"`. Defaults to `"DP"`.
-#' @param MaxItr An integer value specifying the maximum number of iterations.
+#' @param max_iter An integer value specifying the maximum number of iterations.
 #'   Defaults to `50L`.
 #' @param thresh A numeric value specifying a threshold on the cost function
 #'   below which convergence is assumed. Defaults to `0.01`.
@@ -85,7 +85,7 @@ kmeans_align <- function(f, time,
                          parallel = FALSE,
                          alignment = TRUE,
                          omethod = c("DP", "DP2", "RBFGS"),
-                         MaxItr = 50L,
+                         max_iter = 50L,
                          thresh = 0.01) {
   # Initialize --------------------------------------------------------------
   omethod <- match.arg(omethod, c("DP", "DP2", "RBFGS"))
@@ -141,15 +141,12 @@ kmeans_align <- function(f, time,
   for (k in 1:K)
     templates[, , k] <- f[, , template.ind[k]]
   cluster.id <- rep(0, N)
-  qun <- rep(0, MaxItr)
+  qun <- rep(0, max_iter)
 
   # Convert to SRSF
-  if (smooth_data)
-    f <- smooth.data(f, sparam) # TO DO: might not work with multidim fd
-
-  if (showplot) { # TO DO: might not work with multidim fd
-    matplot(time,f,type="l")
-    title(main="Original data")
+  if (smooth_data) {
+    for (l in 1:L)
+      f[l, , ] <- smooth.data(f[l, , ], sparam = sparam)
   }
 
   q <- f_to_srvf(f, time, multidimensional = (L > 1))
@@ -157,7 +154,7 @@ kmeans_align <- function(f, time,
   for (k in 1:K)
     templates.q[, , k] <- q[, , template.ind[k]]
 
-  for (itr in 1:MaxItr) {
+  for (itr in 1:max_iter) {
     cli::cli_alert_info("Running iteration {itr}...")
 
     cli::cli_alert_info("----> Alignment step")
@@ -306,8 +303,8 @@ kmeans_align <- function(f, time,
   }
 
   out <- list(
-    f0 = f,
-    q0 = q,
+    f0 = f[, , ],
+    q0 = q[, , ],
     time = time,
     fn = ftmp,
     qn = qtmp,
@@ -322,7 +319,70 @@ kmeans_align <- function(f, time,
 
   class(out) <- "fdakma"
 
-  if (showplot) plot(out)
+  if (showplot) {
+    idx <- unique(out$labels)
+    tbl <- table(out$labels)
+    cols <- idx |>
+      lapply(function(.idx) as.integer(.idx, tbl[.idx])) |>
+      unlist() |>
+      as.integer()
+
+    oldpar <- graphics::par(mfrow = c(1, L))
+
+    if (L == 1) {
+      matplot(time, out$f0, type = "l")
+    } else {
+      for (l in 1:L)
+        matplot(time, out$f0[l, , ], type = "l", ylab = paste("Component", l))
+    }
+    graphics::mtext("Curves in original functional space", side = 3, line = -2, outer = TRUE)
+
+    if (L == 1) {
+      curves <- matrix(nrow = M, ncol = 0)
+      for (k in 1:K)
+        curves <- cbind(curves, out$fn[[k]])
+      matplot(time, curves, type = "l", col = cols)
+    } else {
+      for (l in 1:L) {
+        curves <- matrix(nrow = M, ncol = 0)
+        for (k in 1:K)
+          curves <- cbind(curves, out$fn[[k]][l, , ])
+        matplot(time, curves, type = "l", ylab = paste("Component", l), col = cols)
+      }
+    }
+    graphics::mtext("Aligned curves in original functional space", side = 3, line = -2, outer = TRUE)
+
+    if (L == 1) {
+      matplot(time, out$q0, type = "l")
+    } else {
+      for (l in 1:L)
+        matplot(time, out$q0[l, , ], type = "l", ylab = paste("Component", l))
+    }
+    graphics::mtext("Curves in SRSF space", side = 3, line = -2, outer = TRUE)
+
+    if (L == 1) {
+      curves <- matrix(nrow = M, ncol = 0)
+      for (k in 1:K)
+        curves <- cbind(curves, out$qn[[k]])
+      matplot(time, curves, type = "l", col = cols)
+    } else {
+      for (l in 1:L) {
+        curves <- matrix(nrow = M, ncol = 0)
+        for (k in 1:K)
+          curves <- cbind(curves, out$qn[[k]][l, , ])
+        matplot(time, curves, type = "l", ylab = paste("Component", l), col = cols)
+      }
+    }
+    graphics::mtext("Aligned curves in SRSF space", side = 3, line = -2, outer = TRUE)
+
+    graphics::par(oldpar)
+
+    curves <- matrix(nrow = M, ncol = 0)
+    for (k in 1:K)
+      curves <- cbind(curves, out$gam[[k]])
+    matplot(time, curves, type = "l", ylab = "warped time", col = cols)
+    graphics::mtext("Estimated warping functions", side = 3, line = -2, outer = TRUE)
+  }
 
   if (parallel) stopCluster(cl)
 

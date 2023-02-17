@@ -35,7 +35,8 @@ Suggests:
     plot3D,
     plot3Drgl,
     rgl,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
     R (>= 3.5.0),

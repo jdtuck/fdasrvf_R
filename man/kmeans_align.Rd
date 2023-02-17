@@ -17,7 +17,7 @@ kmeans_align(
   parallel = FALSE,
   alignment = TRUE,
   omethod = c("DP", "DP2", "RBFGS"),
-  MaxItr = 50L,
+  max_iter = 50L,
   thresh = 0.01
 )
 }
@@ -69,7 +69,7 @@ to \code{TRUE}.}
 optimization problem that provides estimated warping functions. Choices are
 \code{"DP"}, \code{"DP2"} or \code{"RBFGS"}. Defaults to \code{"DP"}.}
 
-\item{MaxItr}{An integer value specifying the maximum number of iterations.
+\item{max_iter}{An integer value specifying the maximum number of iterations.
 Defaults to \code{50L}.}
 
 \item{thresh}{A numeric value specifying a threshold on the cost function
