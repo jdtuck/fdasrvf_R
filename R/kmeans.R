@@ -322,10 +322,8 @@ kmeans_align <- function(f, time,
   if (showplot) {
     idx <- unique(out$labels)
     tbl <- table(out$labels)
-    cols <- idx |>
-      lapply(function(.idx) as.integer(.idx, tbl[.idx])) |>
-      unlist() |>
-      as.integer()
+    cols <- lapply(idx, function(.idx) as.integer(.idx, tbl[.idx]))
+    cols <- as.integer(unlist(cols))
 
     oldpar <- graphics::par(mfrow = c(1, L))
 
