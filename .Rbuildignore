@@ -14,3 +14,5 @@ cran-comments.md
 ^revdep$
 fdasrvf_R.code-workspace
 ^CRAN-SUBMISSION$
+^\.github$
+^codecov\.yml$
