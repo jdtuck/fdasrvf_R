@@ -1,4 +1,8 @@
 # fdasrvf 1.9.8.9000
+* bugfixes, doc updates
+* add additional penalties to warping
+* add multivariate kmeans
+* exposed additional outputs to *bootTB*
 
 # fdasrvf 1.9.8
 * bugfixes
