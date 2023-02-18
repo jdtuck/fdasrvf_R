@@ -2,9 +2,12 @@ fdasrvf
 =======
 *R library for elastic functional data analysis*
 
-[![Build Status](https://app.travis-ci.com/jdtuck/fdasrvf_R.svg?branch=master)](https://app.travis-ci.com/jdtuck/fdasrvf_R)
-[![codecov](https://codecov.io/gh/jdtuck/fdasrvf_R/branch/master/graph/badge.svg?token=92GPCN636T)](https://app.codecov.io/gh/jdtuck/fdasrvf_R)
-[![Build status](https://img.shields.io/appveyor/ci/jdtuck/fdasrvf-r.svg?style=flat-square&label=windows)](https://ci.appveyor.com/project/jdtuck/fdasrvf-r/branch/master)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/jdtuck/fdasrvf_R/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/jdtuck/fdasrvf_R/actions/workflows/check-standard.yaml)
+[![test-coverage](https://github.com/jdtuck/fdasrvf_R/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/jdtuck/fdasrvf_R/actions/workflows/test-coverage.yaml)
+[![Codecov test coverage](https://codecov.io/gh/jdtuck/fdasrvf_R/branch/master/graph/badge.svg)](https://app.codecov.io/gh/jdtuck/fdasrvf_R?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/fdasrvf)](https://CRAN.R-project.org/package=fdasrvf)
+<!-- badges: end -->
 
 A R package for functional data analysis using the square root
 velocity framework which performs pair-wise and group-wise
