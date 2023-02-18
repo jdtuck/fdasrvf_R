@@ -87,3 +87,5 @@ J. D. Tucker, J. R. Lewis, C. King, and S. Kurtek, “A Geometric Approach for C
 T. Harris, J. D. Tucker, B. Li, and L. Shand, "Elastic depths for detecting shape anomalies in functional data," Technometrics, 10.1080/00401706.2020.1811156, 2020.
 
 Q. Xie, S. Kurtek, E. Klassen, G. E. Christensen and A. Srivastava. Metric-based pairwise and multiple image registration. IEEE European Conference on Computer Vision (ECCV), September, 2014
+
+X. Zhang, S. Kurtek, O. Chkrebtii, and J. D. Tucker, “Elastic kkk-means clustering of functional data for posterior exploration, with an application to inference on acute respiratory infection dynamics”, arXiv:2011.12397 [stat.ME], 2020 arxiv
