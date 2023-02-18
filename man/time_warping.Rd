@@ -8,6 +8,7 @@ time_warping(
   f,
   time,
   lambda = 0,
+  pen = "roughness",
   method = "mean",
   center = TRUE,
   showplot = TRUE,
@@ -24,6 +25,10 @@ time_warping(
 \item{time}{vector of size \eqn{N} describing the sample points}
 
 \item{lambda}{controls the elasticity (default = 0)}
+
+\item{pen}{alignment penalty (default="roughness") options are 
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+norm from id ("norm")}
 
 \item{method}{warp and calculate to Karcher Mean or Median (options = "mean"
 or "median", default = "mean")}

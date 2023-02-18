@@ -52,7 +52,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
         G = rep(0,M)
         T1 = rep(0,M)
         size = 0
-        ret = .Call('DPQ2', PACKAGE = 'fdasrvf', q1i, timet, q2i, timet, n1, M, M, timet, timet, M, M, G, T1, size, lambda);
+        ret = .Call('DPQ2', PACKAGE = 'fdasrvf', q1i, timet, q2i, timet, n1, M, M, timet, timet, M, M, G, T1, size, lambda, 1);
 
         G = ret$G[1:ret$size]
         Tf = ret$T[1:ret$size]
@@ -80,7 +80,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
       dim(q1i) = c(M*n1)
       q2i = q2
       dim(q2i) = c(M*n1)
-      gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n1, M, lambda, 0, rep(0,M))
+      gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n1, M, lambda, 1, 0, rep(0,M))
     } else if (method=="DP2") {
         c1 = t(beta1)
         dim(c1) = c(M*n1)

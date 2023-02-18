@@ -43,20 +43,21 @@ const int Nbrs[NNBRS][2] = {
 };
 
 int xycompare(const void *x1, const void *x2);
-double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j, int n, int scl, double lam);
+double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j, int n, int scl, double lam, int pen);
 void thomas(double *x, const double *a, const double *b, double *c, int n);
 void spline(double *D, const double *y, int n);
 void lookupspline(double *t, int *k, double dist, double len, int n);
 double evalspline(double t, const double D[2], const double y[2]);
 
-void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *Disp, double *yy) {
-	int i, j, k, l, n, M, N, Eidx, Fidx, Ftmp, Fmin, Num, *Path, *xy, x, y, cnt;
+void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *Disp, double *yy) {
+	int i, j, k, l, n, M, N, Eidx, Fidx, Ftmp, Fmin, Num, *Path, *xy, x, y, cnt, pen=1;
 	const int scl = 5;
 	double *q1L, *q2L, *D1, *D2, *tmp1, *tmp2, *E, Etmp, Emin, t, a, b, lam=0;
 
 	n = *n1;
 	N = *N1;
 	lam = *lam1;
+	pen = *pen1;
 
 	M = scl*(N-1)+1;
 
@@ -112,7 +113,7 @@ void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *Disp, doubl
 				l = j - Nbrs[Num][1];
 
 				if (k >= 0 && l >= 0) {
-					Etmp = E[N*l + k] + CostFn2(q1L,q2L,k,l,i,j,n,scl,lam);
+					Etmp = E[N*l + k] + CostFn2(q1L,q2L,k,l,i,j,n,scl,lam,pen);
 					if (Num == 0 || Etmp < Emin) {
 						Emin = Etmp;
 						Eidx = Num;
@@ -189,8 +190,8 @@ int xycompare(const void *x1, const void *x2) {
 	return (*(int *)x1 > *(int *)x2) - (*(int *)x1 < *(int *)x2);
 }
 
-double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j, int n, int scl, double lam) {
-	double m = (j-l)/(double)(i-k), sqrtm = sqrt(m), E = 0, y, tmp, ip, fp;
+double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j, int n, int scl, double lam, int pen) {
+	double m = (j-l)/(double)(i-k), sqrtm = sqrt(m), E = 0, y, tmp, tmp_pen, ip, fp, q1dotq2;
 	int x, idx, d, iL=i*scl, kL=k*scl, lL=l*scl;
 
 	for (x = kL; x <= iL; ++x) {
@@ -199,8 +200,32 @@ double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j,
 		idx = (int)(ip + (fp >= 0.5));
 
 		for (d = 0; d < n; ++d) {
+			// roughness
+			if (pen == 1){
+				tmp_pen = (1-sqrtm)*(1-sqrtm);
+			}
+			// l2gam
+			if (pen == 2){
+				tmp_pen = (m - 1)*(m - 1);
+			}
+			// l2psi
+			if (pen == 3){
+				tmp_pen = (sqrtm - 1)*(sqrtm - 1);
+			}
+			// geodesic
+			if (pen == 4){
+				q1dotq2 = sqrtm;
+				if (q1dotq2 > 1){
+					q1dotq2 = 1;
+				}
+				else if (q1dotq2 < -1){
+					q1dotq2 = -1;
+				}
+				tmp_pen = acos(q1dotq2)*acos(q1dotq2);
+			}
+			
 			tmp = q1L[n*x + d] - sqrtm*q2L[n*idx + d];
-			E += tmp*tmp;
+			E += (tmp*tmp + lam*tmp_pen);
 		}
 	}
 

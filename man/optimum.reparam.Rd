@@ -10,6 +10,7 @@ optimum.reparam(
   Q2,
   T2,
   lambda = 0,
+  pen = "roughness",
   method = c("DP", "DPo", "SIMUL", "DP2", "RBFGS"),
   w = 0.01,
   f1o = 0,
@@ -33,6 +34,10 @@ the 1st SRSF is evaluated.}
 
 \item{lambda}{A numeric value specifying the amount of warping. Defaults to
 \code{0.0}.}
+
+\item{pen}{alignment penalty (default="roughness") options are 
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+norm from id ("l2gam"), srvf norm from id ("l2psi")}
 
 \item{method}{A string specifying the optimization method. Choices are
 \code{"DP"}, \code{"DPo"}, \code{"SIMUL"},\code{"DP2"} or \code{"RBFGS"}. Defaults to \code{"DP"}.}
