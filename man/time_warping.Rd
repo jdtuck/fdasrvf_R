@@ -26,8 +26,8 @@ time_warping(
 
 \item{lambda}{controls the elasticity (default = 0)}
 
-\item{pen}{alignment penalty (default="roughness") options are 
-second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+\item{pen}{alignment penalty (default="roughness") options are
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 norm from id ("norm")}
 
 \item{method}{warp and calculate to Karcher Mean or Median (options = "mean"

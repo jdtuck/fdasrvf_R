@@ -16,9 +16,6 @@ the curves \code{f} have been evaluated.
 }
 }
 }
-\source{
-???
-}
 \usage{
 toy_data
 }

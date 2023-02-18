@@ -8,12 +8,9 @@
 \subsection{\code{beta}}{
 
 An array of shape \eqn{2 \times 100 \times 65 \times 20} storing a sample of
-\eqn{20} curves from \eqn{\mathbb{R}} to \eqn{\mathbb{R}^2} distributed in
+\eqn{20} curves from \eqn{R} to \eqn{R^2} distributed in
 \eqn{65} different classes, evaluated on a grid of size \eqn{100}.
 }
-}
-\source{
-???
 }
 \usage{
 beta

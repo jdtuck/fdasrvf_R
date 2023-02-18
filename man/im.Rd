@@ -14,9 +14,6 @@ A list with two components:
 }
 }
 }
-\source{
-???
-}
 \usage{
 im
 }

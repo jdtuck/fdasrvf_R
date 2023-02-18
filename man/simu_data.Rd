@@ -16,9 +16,6 @@ the curves \code{f} have been evaluated.
 }
 }
 }
-\source{
-???
-}
 \usage{
 simu_data
 }

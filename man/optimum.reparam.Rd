@@ -35,8 +35,8 @@ the 1st SRSF is evaluated.}
 \item{lambda}{A numeric value specifying the amount of warping. Defaults to
 \code{0.0}.}
 
-\item{pen}{alignment penalty (default="roughness") options are 
-second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+\item{pen}{alignment penalty (default="roughness") options are
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 norm from id ("l2gam"), srvf norm from id ("l2psi")}
 
 \item{method}{A string specifying the optimization method. Choices are

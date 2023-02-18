@@ -11,9 +11,6 @@ A list which contains the output of the \code{\link[=time_warping]{time_warping(
 the data set \code{simu_data}.
 }
 }
-\source{
-???
-}
 \usage{
 simu_warp
 }
