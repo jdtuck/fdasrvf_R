@@ -183,7 +183,7 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
             dim(q1i) = c(T1*n)
             q2i = q2n
             dim(q2i) = c(T1*n)
-            gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n, T1, 0, 0, rep(0,T1))
+            gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n, T1, 0, 1, 0, rep(0,T1))
             gamI = invertGamma(gam0)
             gam = (gamI-gamI[1])/(gamI[length(gamI)]-gamI[1])
             beta2n = q_to_curve(q2n)
@@ -246,7 +246,7 @@ find_rotation_seed_unqiue <- function(q1, q2, mode="O"){
             dim(q1i) = c(T1*n1)
             q2i = q2n
             dim(q2i) = c(T1*n1)
-            gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n1, T1, 0, 0, rep(0,T1))
+            gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n1, T1, 0, 1, 0, rep(0,T1))
             gamI = invertGamma(gam0)
             gam = (gamI-gamI[1])/(gamI[length(gamI)]-gamI[1])
             beta2n = q_to_curve(q2n)

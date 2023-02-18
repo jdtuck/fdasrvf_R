@@ -9,6 +9,7 @@ pair_align_functions(
   f2,
   time,
   lambda = 0,
+  pen = "roughness",
   method = "DP",
   w = 0.01,
   iter = 2000
@@ -22,6 +23,10 @@ pair_align_functions(
 \item{time}{sample points of functions}
 
 \item{lambda}{controls amount of warping (default = 0)}
+
+\item{pen}{alignment penalty (default="roughness") options are 
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+norm from id ("norm")}
 
 \item{method}{controls which optimization method (default="DP") options are
 Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS

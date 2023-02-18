@@ -69,7 +69,7 @@ RcppExport SEXP DPQ2(SEXP Q1, SEXP T1, SEXP Q2, SEXP T2, SEXP m1, SEXP n1, SEXP 
   return(ret);
 }
 
-RcppExport SEXP DPQ(SEXP Q1, SEXP Q2, SEXP n1, SEXP N1, SEXP lam1, SEXP Disp, SEXP yy){
+RcppExport SEXP DPQ(SEXP Q1, SEXP Q2, SEXP n1, SEXP N1, SEXP lam1, SEXP pen1, SEXP Disp, SEXP yy){
 
   NumericVector Q1i(Q1);
   NumericVector Q2i(Q2);
@@ -83,8 +83,9 @@ RcppExport SEXP DPQ(SEXP Q1, SEXP Q2, SEXP n1, SEXP N1, SEXP lam1, SEXP Disp, SE
   int _N1 = as<int>(N1);
   int _Disp = as<int>(Disp);
   double _lam1 = as<double>(lam1);
+  int _pen1 = as<double>(pen1);
 
-  DP(_Q1i, _Q2i, &_n1, &_N1, &_lam1, &_Disp, _yyi);
+  DP(_Q1i, _Q2i, &_n1, &_N1, &_lam1, &_pen1, &_Disp, _yyi);
 
   return(yyi);
 }

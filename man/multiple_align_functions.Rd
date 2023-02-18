@@ -9,6 +9,7 @@ multiple_align_functions(
   time,
   mu,
   lambda = 0,
+  pen = "roughness",
   showplot = TRUE,
   smooth_data = FALSE,
   sparam = 25,
@@ -26,6 +27,10 @@ multiple_align_functions(
 \item{mu}{vector of size \eqn{N} that f is aligned to}
 
 \item{lambda}{controls the elasticity (default = 0)}
+
+\item{pen}{alignment penalty (default="roughness") options are 
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+norm from id ("norm")}
 
 \item{showplot}{shows plots of functions (default = T)}
 

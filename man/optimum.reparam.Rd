@@ -10,6 +10,7 @@ optimum.reparam(
   Q2,
   T2,
   lambda = 0,
+  pen = "roughness",
   method = "DP",
   w = 0.01,
   f1o = 0,
@@ -25,7 +26,11 @@ optimum.reparam(
 
 \item{T2}{sample points of function 2}
 
-\item{lambda}{controls amount of warping (default = 0)}
+\item{lambda}{alignment penalty value (default = 0)}
+
+\item{pen}{alignment penalty (default="roughness") options are 
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+norm from id ("l2gam"), srvf norm from id ("l2psi")}
 
 \item{method}{controls which optimization method (default="DP") options are
 Dynamic Programming ("DP"), Coordinate Descent ("DP2"), and Riemannian BFGS

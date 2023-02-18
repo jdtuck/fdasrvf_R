@@ -6,7 +6,10 @@
 #' @param T1 sample points of function 1
 #' @param Q2 srsf of function 2
 #' @param T2 sample points of function 2
-#' @param lambda controls amount of warping (default = 0)
+#' @param lambda alignment penalty value (default = 0)
+#' @param pen alignment penalty (default="roughness") options are 
+#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+#' norm from id ("l2gam"), srvf norm from id ("l2psi")
 #' @param method controls which optimization method (default="DP") options are
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), and Riemannian BFGS
 #' ("RBFGS")
@@ -26,8 +29,13 @@
 #' data("simu_data")
 #' q = f_to_srvf(simu_data$f,simu_data$time)
 #' gam = optimum.reparam(q[,1],simu_data$time,q[,2],simu_data$time)
-optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
-                            f2o=0.0){
+optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,pen="roughness",method="DP",
+														w=0.01,f1o=0.0,f2o=0.0){
+	  pen1 = pen
+	  pen <- pmatch(pen, c("roughness", "l2gam", "l2psi", "geodesic")) # 1 - roughness, 2 - l2gam, 3 - l2psi, 4 - geodesic
+		if (is.na(pen))
+			stop("invalid penalty selection")
+	  
     n = length(T1)
     if (method=="DPo" && all(T1!=T2))
       method = "DP"
@@ -43,14 +51,16 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
         G = rep(0,n)
         T = rep(0,n)
         size = 0;
-        ret = .Call('DPQ2', PACKAGE = 'fdasrvf', Q1, T1, Q2, T2, 1, n, n, T1, T2, n, n, G, T, size, lambda);
+        ret = .Call('DPQ2', PACKAGE = 'fdasrvf', Q1, T1, Q2, T2, 1, n, n, T1, T2, n, n, G, T, size, lambda, pen);
 
         G = ret$G[1:ret$size]
         Tf = ret$T[1:ret$size]
         gam0 = approx(Tf,G,xout=T2)$y
     } else if (method=="DPo"){
-        gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', Q2, Q1, 1, n, lambda, 0, rep(0,n))
+        gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', Q2, Q1, 1, n, lambda, pen, 0, rep(0,n))
     } else if (method=="SIMUL"){
+    		if (lambda > 0)
+    			warning("penalty not implemented")
         out = simul_align(C1,C2)
         u = seq(0,1,length.out=length(out$g1))
         tmin = min(T1)
@@ -59,6 +69,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
         timet2 = (timet2-tmin)/(tmax-tmin)
         gam0 = simul_gam(u,out$g1,out$g2,timet2,out$s1,out$s2,timet2)
     } else if (method=="DP2") {
+    		if (lambda > 0)
+    			warning("penalty not implemented")
         opt = rep(0,n+1+1);
         swap = FALSE
         fopts = rep(0,5)
@@ -73,6 +85,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,lambda=0,method="DP",w=0.01,f1o=0.0,
             gam0 = invertGamma(gam0);
         }
     } else {
+    	  if (lambda > 0)
+    	  	warning("penalty not implemented")
         opt = rep(0,n+1+1);
         swap = FALSE
         fopts = rep(0,5)
