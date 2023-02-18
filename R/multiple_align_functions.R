@@ -13,8 +13,8 @@
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
-#' @param parallel enable parallel mode using \code{\link{foreach}} and
-#'   \code{doParallel} package (default=F)
+#' @param parallel enable parallel mode using [foreach()] and
+#'   `doParallel` package (default=F)
 #' @param omethod optimization method (DP,DP2,RBFGS,dBayes,expBayes)
 #' @param MaxItr maximum number of iterations
 #' @param iter bayesian number of mcmc samples (default 2000)
@@ -32,7 +32,7 @@
 #' @keywords srsf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
-#'  arXiv:1103.3817v2 [math.ST].
+#'  arXiv:1103.3817v2.
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.

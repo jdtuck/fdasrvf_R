@@ -79,16 +79,23 @@ zpcn$probs give the probability of each shift size.
 }
 \examples{
 \dontrun{
-# This is a mcmc algorithm and takes a long time to run
-data("simu_data")
-myzpcn <- list(betas = c(0.1, 0.01, 0.005, 0.0001),
-  probs = c(0.2, 0.2, 0.4, 0.2))
-out = pair_align_functions_expomap(simu_data$f[,1], simu_data$f[,2],
-  timet = simu_data$time, zpcn = myzpcn, extrainfo = TRUE)
-# overall acceptance ratio
-mean(out$accept)
-# acceptance ratio by zpcn coefficient
-with(out, tapply(accept, myzpcn$betas[betas.ind], mean))}
+  # This is an MCMC algorithm and takes a long time to run
+  myzpcn <- list(
+    betas = c(0.1, 0.01, 0.005, 0.0001),
+    probs = c(0.2, 0.2, 0.4, 0.2)
+  )
+  out <- pair_align_functions_expomap(
+    f1 = simu_data$f[, 1],
+    f2 = simu_data$f[, 2],
+    timet = simu_data$time,
+    zpcn = myzpcn,
+    extrainfo = TRUE
+  )
+  # overall acceptance ratio
+  mean(out$accept)
+  # acceptance ratio by zpcn coefficient
+  with(out, tapply(accept, myzpcn$betas[betas.ind], mean))
+}
 }
 \references{
 Lu, Y., Herbei, R., and Kurtek, S. (2017). Bayesian registration

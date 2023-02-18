@@ -15,8 +15,8 @@ elastic.distance(f1, f2, time, lambda = 0, pen = "roughness")
 
 \item{lambda}{controls amount of warping (default = 0)}
 
-\item{pen}{alignment penalty (default="roughness") options are 
-second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+\item{pen}{alignment penalty (default="roughness") options are
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 norm from id ("norm")}
 }
 \value{
@@ -28,17 +28,20 @@ This functions calculates the distances between functions,
 \eqn{D_y} and \eqn{D_x}, where function 1 is aligned to function 2
 }
 \examples{
-data("simu_data")
-distances <- elastic.distance(simu_data$f[,1],simu_data$f[,2],simu_data$time)
+distances <- elastic.distance(
+  f1 = simu_data$f[, 1],
+  f2 = simu_data$f[, 2],
+  time = simu_data$time
+)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
- May 2011. Registration of functional data using fisher-rao metric,
- arXiv:1103.3817v2 [math.ST].
+May 2011. Registration of functional data using fisher-rao metric,
+arXiv:1103.3817v2.
 
 Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Generative Models for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \concept{srvf alignment}
 \keyword{distances}

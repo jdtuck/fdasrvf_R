@@ -1,113 +1,113 @@
-fdasrvf 1.9.8
---------------
-v1.9.8
-* bugfixes
-* remove akima to interp
+# fdasrvf 1.9.8.9000
 
-v1.9.7
+# fdasrvf 1.9.8
 * bugfixes
+* remove **akima** to **interp**
 
-v1.9.6
+# fdasrvf 1.9.7
 * bugfixes
 
-v1.9.5
+# fdasrvf 1.9.6
+* bugfixes
+
+# fdasrvf 1.9.5
 * refactor pf curve functions
 * add curve karcher median
 * bugfixes
 
-v1.9.4
+# fdasrvf 1.9.4
 * add elastic depth functions
 
-v1.9.3
-* fix gfortran issues
+# fdasrvf 1.9.3
+* fix `gfortran` issues
 
-v1.9.2
-* update gropt library
+# fdasrvf 1.9.2
+* update `gropt` library
 
-v1.9.1
+# fdasrvf 1.9.1
 * Added tolerance bound functions
 
-v1.9.0
+# fdasrvf 1.9.0
 * Added elastic principal component regression functions
 
-v1.8.4
+# fdasrvf 1.8.4
 * centered rgam calculation
 * fix bug in curve functions and image registration
 
-v1.8.3
+# fdasrvf 1.8.3
 * added bayesian alignment method by Y. Lu et. al
 * added multiple functional alignment function
 * bugfixes to curve alginment
 
-v1.8.2
+# fdasrvf 1.8.2
 * added objects for outputs of time_warping, boxplot, and pca functions
 * added plot methods for the above objects
 * added summary methods for the above objects
-* added kmeans clustering and alignment based on Sangalli et. al.
+* added kmeans clustering and alignment based on Sangalli et al.
 * multiple bugfixes
 
-v1.8.1
+# fdasrvf 1.8.1
 * fix boxplot functions documentation
 * added quantile option
 * updated surface plot for boxplot functions
 
-v1.8.0
+# fdasrvf 1.8.0
 * added phase and amplitude boxplot functions
 * fixed issue with time_warping finding the median
 
-v1.7.1
+# fdasrvf 1.7.1
 * fix memory leaks in bayesian c code
 * update SqrtMean calculation to have more numerical accuracy
 
-v1.7.0
+# fdasrvf 1.7.0
 * added a pair align function for 1-D data
 * added bayesian alignment for 1-D functions
 
-v1.6.2
+# fdasrvf 1.6.2
 * updated curve functions to support R^n
 * cleaned up curve function for loops
 
-v1.6.1
+# fdasrvf 1.6.1
 * bug fixes to curve functions
 
-v1.6.0
+# fdasrvf 1.6.0
 * added open and closed curve function (N-D)
 
-v1.5.2
+# fdasrvf 1.5.2
 * added image alignment functions and fix minor bugs
 
-v1.5.1
+# fdasrvf 1.5.1
 * added gropt optimization methods and alignment
 
-v1.5.0
+# fdasrvf 1.5.0
 * added simul optimization method for reparam
 
-v1.4.2
+# fdasrvf 1.4.2
 * Fixed gradient bug
 
-v1.4.1
+# fdasrvf 1.4.1
 * Fixed bug in doParallel for windows computers
 * Fixed numerical issues for high lambda for no warping required
 
-v1.4
+# fdasrvf 1.4
 * Fixed memory leak in Dynamic Programming algorithm
 * Updated random gamma generation to use a Fourier basis on the tangent space
 * Changed over parallel support to doParallel
 * Fixed documentation error
 
-v1.3
+# fdasrvf 1.3
 * Fixed numerical issues
 * Updated documentation
 
-v1.2
+# fdasrvf 1.2
 * Changed SRVF calculation to use splines for derivatives
 * Added control to the amount of warping via lambda to the time_warping function
 * Fixed documentation bugs and minor bugs in horizontal PCA calculation
 
-v1.1
+# fdasrvf 1.1
 * Updated so the parallel functions are windows compatible and windows binary
 can be compiled, now suggests doSNOW or doMC
 * Added variance calculation to time_warping function
 
-v1.0
+# fdasrvf 1.0
 * Initial Version of Package

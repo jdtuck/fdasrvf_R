@@ -11,56 +11,67 @@ optimum.reparam(
   T2,
   lambda = 0,
   pen = "roughness",
-  method = "DP",
+  method = c("DP", "DPo", "SIMUL", "DP2", "RBFGS"),
   w = 0.01,
   f1o = 0,
   f2o = 0
 )
 }
 \arguments{
-\item{Q1}{srsf of function 1}
+\item{Q1}{A numeric matrix of shape \verb{n_points x n_dimensions} specifying the
+SRSF of the 1st \code{n_dimensions}-dimensional function evaluated on a grid of
+size \code{n_points} of its univariate domain.}
 
-\item{T1}{sample points of function 1}
+\item{T1}{A numeric vector of size \code{n_points} specifying the grid on which
+the 1st SRSF is evaluated.}
 
-\item{Q2}{srsf of function 2}
+\item{Q2}{A numeric matrix of shape \verb{n_points x n_dimensions} specifying the
+SRSF of the 2nd \code{n_dimensions}-dimensional function evaluated on a grid of
+size \code{n_points} of its univariate domain.}
 
-\item{T2}{sample points of function 2}
+\item{T2}{A numeric vector of size \code{n_points} specifying the grid on which
+the 1st SRSF is evaluated.}
 
-\item{lambda}{alignment penalty value (default = 0)}
+\item{lambda}{A numeric value specifying the amount of warping. Defaults to
+\code{0.0}.}
 
-\item{pen}{alignment penalty (default="roughness") options are 
-second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+\item{pen}{alignment penalty (default="roughness") options are
+second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 norm from id ("l2gam"), srvf norm from id ("l2psi")}
 
-\item{method}{controls which optimization method (default="DP") options are
-Dynamic Programming ("DP"), Coordinate Descent ("DP2"), and Riemannian BFGS
-("RBFGS")}
+\item{method}{A string specifying the optimization method. Choices are
+\code{"DP"}, \code{"DPo"}, \code{"SIMUL"},\code{"DP2"} or \code{"RBFGS"}. Defaults to \code{"DP"}.}
 
-\item{w}{controls LRBFGS (default = 0.01)}
+\item{w}{A scalar value specifying a parameter of the Riemannian BFGS
+algorithm. Defaults to \code{0.01}. Used only when \code{method == "RBFGS"}.}
 
-\item{f1o}{initial value of f1, vector or scalar depending on q1, defaults to zero}
+\item{f1o}{A numeric vector of size \code{n_dimensions} specifying the value of
+the 1st function at \eqn{t = t_{\min}}. Defaults to \code{rep(0, n_dimensions)}.}
 
-\item{f2o}{initial value of f2, vector or scalar depending on q1, defaults to zero}
+\item{f2o}{A numeric vector of size \code{n_dimensions} specifying the value of
+the 2nd function at \eqn{t = t_{\min}}. Defaults to \code{rep(0, n_dimensions)}.}
 }
 \value{
-gam warping function
+A numeric vector of size \code{n_points} storing discrete evaluations of
+the estimated boundary-preserving warping diffeomorphism on the initial
+grid.
 }
 \description{
-This function aligns two SRSF functions using Dynamic Programming
+This function aligns the SRSFs of two functions defined on an interval
+\eqn{[t_{\min}, t_{\max}]} using dynamic programming.
 }
 \examples{
-data("simu_data")
-q = f_to_srvf(simu_data$f,simu_data$time)
-gam = optimum.reparam(q[,1],simu_data$time,q[,2],simu_data$time)
+q <- f_to_srvf(simu_data$f, simu_data$time)
+gam <- optimum.reparam(q[, 1], simu_data$time, q[, 2], simu_data$time)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
- May 2011. Registration of functional data using fisher-rao metric,
- arXiv:1103.3817v2 [math.ST].
+May 2011. Registration of functional data using Fisher-Rao metric,
+arXiv:1103.3817v2.
 
-Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative models for
+functional data using phase and amplitude separation, Computational
+Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
 \keyword{srsf}

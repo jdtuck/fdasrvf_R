@@ -16,8 +16,8 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("mpeg7")
-#' out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
+#' out <- curve_srvf_align(beta[, , 1, 1:2], maxit = 2)
+#' # note: use more shapes, small for speed
 curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, maxit=20, ms = "mean"){
     if (mode=="C"){
       isclosed = TRUE
@@ -35,7 +35,7 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, maxit=20, ms 
 
     qn = array(0, c(n,T1,N))
     betan = array(0, c(n,T1,N))
-    
+
     # align to mean
     for (ii in 1:N){
         q1 = q[,,ii]

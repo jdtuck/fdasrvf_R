@@ -7,34 +7,39 @@
 PhaseBoxplot(warp_median, alpha = 0.05, kp = 1, showplot = TRUE)
 }
 \arguments{
-\item{warp_median}{fdawarp object from \link{time_warping} of aligned data using the median}
+\item{warp_median}{fdawarp object from \link{time_warping} of aligned data using
+the median.}
 
-\item{alpha}{quantile value (default=.05, i.e., 95\%)}
+\item{alpha}{quantile value (default=.05, i.e., 95\%).}
 
-\item{kp}{scalar for outlier cutoff (default=1)}
+\item{kp}{scalar for outlier cutoff (default=1).}
 
-\item{showplot}{shows plots of functions (default = T)}
+\item{showplot}{shows plots of functions (default = T).}
 }
 \value{
-Returns a phbox object containing \item{median_x}{median warping function}
-\item{Q1}{First quartile}
-\item{Q3}{Second quartile}
-\item{Q1a}{First quantile based on alpha}
-\item{Q3a}{Second quantile based on alpha}
-\item{minn}{minimum extreme function}
-\item{maxx}{maximum extreme function}
-\item{outlier_index}{indexes of outlier functions}
+Returns a \code{phbox} object containing:
+\itemize{
+\item \code{median_x}: median warping function
+\item \code{Q1}: First quartile
+\item \code{Q3}: Second quartile
+\item \code{Q1a}: First quantile based on alpha
+\item \code{Q3a}: Second quantile based on alpha
+\item \code{minn}: minimum extreme function
+\item \code{maxx}: maximum extreme function
+\item \code{outlier_index}: indexes of outlier functions
+}
 }
 \description{
-This function constructs the amplitude boxplot
+This function constructs the phase boxplot.
 }
 \examples{
-data("simu_warp_median")
-out <- PhaseBoxplot(simu_warp_median, showplot=FALSE)
+data(simu_warp_median)
+out <- PhaseBoxplot(simu_warp_median, showplot = FALSE)
 }
 \references{
-Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A Geometric Approach to Visualization
-of Variability in Functional Data." Journal of the American Statistical Association in press: 1-34.
+Xie, W., S. Kurtek, K. Bharath, and Y. Sun  (2016). "A geometric
+approach to visualization of variability in functional data." Journal of
+the American Statistical Association in press: 1-34.
 }
 \keyword{alignment}
 \keyword{boxplot}

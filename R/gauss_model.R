@@ -3,7 +3,7 @@
 #' This function models the functional data using a Gaussian model extracted from
 #' the principal components of the srvfs
 #'
-#' @param warp_data fdawarp object from \link{time_warping} of aligned data
+#' @param warp_data fdawarp object from [time_warping] of aligned data
 #' @param n number of random samples (n = 1)
 #' @param sort_samples sort samples (default = F)
 #' @return Returns a fdawarp object containing \item{fs}{random aligned samples}
@@ -15,8 +15,7 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' out1 = gauss_model(simu_warp,n = 10)
+#' out1 <- gauss_model(simu_warp, n = 10)
 gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
     fn <- warp_data$fn
     time <- warp_data$time

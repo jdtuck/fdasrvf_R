@@ -46,9 +46,9 @@ This function aligns to images using the q-map framework
 }
 \examples{
 \dontrun{
-# This is a gradient descent algorithm and takes a long time to run
-data("image")
-out <- pair_align_image(im$I1, im$I2)}
+  # This is a gradient descent algorithm and takes a long time to run
+  out <- pair_align_image(im$I1, im$I2)
+}
 }
 \references{
 Q. Xie, S. Kurtek, E. Klassen, G. E. Christensen and A. Srivastava. Metric-based pairwise and multiple image registration. IEEE European Conference on Computer Vision (ECCV), September, 2014

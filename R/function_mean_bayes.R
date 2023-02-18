@@ -5,7 +5,7 @@
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time sample points of functions
 #' @param times factor of length of subsample points to look at (default = 5)
-#' @param group (default 1:dim(f)[2])
+#' @param group (defaults `1:dim(f)[2]`)
 #' @param showplot shows plots of functions (default = T)
 #' @return Returns a list containing \item{distfamily}{dist matrix}
 #' \item{match.matrix}{matrix of warping functions}
@@ -17,14 +17,15 @@
 #' \item{estimator}{estimator}
 #' \item{estimator2}{estimator2}
 #' \item{regfuncs}{registered functions}
+#'
 #' @keywords bayesian
 #' @concept srsf alignment
 #' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
-#' registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
+#'   registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
+#'
 #' @examples
 #' \dontrun{
-#' data("simu_data")
-#' out = function_mean_bayes(simu_data$f, simu_data$time)
+#'   out <- function_mean_bayes(simu_data$f, simu_data$time)
 #' }
 function_mean_bayes <- function(f, time, times = 5, group = 1:dim(f)[2], showplot = TRUE){
 

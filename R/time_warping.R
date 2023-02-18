@@ -15,8 +15,8 @@
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
-#' @param parallel enable parallel mode using \code{\link{foreach}} and
-#'   \code{doParallel} package (default=F)
+#' @param parallel enable parallel mode using [foreach()] and
+#'   `doParallel` package (default=F)
 #' @param omethod optimization method (DP,DP2,RBFGS)
 #' @param MaxItr maximum number of iterations
 #' @return Returns a fdawarp object containing \item{f0}{original functions}
@@ -33,15 +33,14 @@
 #' @keywords srsf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
-#'  arXiv:1103.3817v2 [math.ST].
+#'  arXiv:1103.3817v2.
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
 #' \dontrun{
-#' data("simu_data")
-#' out = time_warping(simu_data$f,simu_data$time)
+#'   out <- time_warping(simu_data$f, simu_data$time)
 #' }
 time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean", 
 												 center = TRUE, showplot = TRUE, smooth_data = FALSE, 
@@ -221,10 +220,10 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
       gam_dev = t(gam_dev)
       gamI = SqrtMeanInverse(t(gam))
       gamI_dev = gradient(gamI, 1/(M-1))
-      
+
       mq[,r+1] = approx(time,mq[,r],xout=(time[length(time)]-time[1])*gamI +
                           time[1])$y*sqrt(gamI_dev)
-      
+
       for (k in 1:N){
         q[,k,r+1] = approx(time,q[,k,r],xout=(time[length(time)]-time[1])*gamI +
                              time[1])$y*sqrt(gamI_dev)
@@ -234,7 +233,7 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
                            time[1])$y
       }
     }
-    
+
     # Aligned data & stats
     fn = f[,,r+1]
     qn = q[,,r+1]

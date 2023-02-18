@@ -1,5 +1,4 @@
 library(fdasrvf)
-testthat::context("Pair align functions bayes expomap")
 
 testthat::test_that("Verify pair_align_functions_expomap() works as intended", {
   set.seed(1)

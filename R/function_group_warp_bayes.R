@@ -8,7 +8,7 @@
 #' @param powera Dirichlet prior parameter (default 1)
 #' @param times factor of length of subsample points to look at (default = 5)
 #' @param tau standard deviation of Normal prior for increment (default ceil(times*.4))
-#' @param gp number of colors in plots (default seq(dim(f)[2]))
+#' @param gp number of colors in plots (defaults `seq(dim(f)[2])`)
 #' @param showplot shows plots of functions (default = T)
 #' @return Returns a list containing \item{f0}{original functions}
 #' \item{f_q}{f aligned quotient space}
@@ -19,12 +19,11 @@
 #' @keywords bayesian
 #' @concept srsf alignment
 #' @references Cheng, W., Dryden, I. L., and Huang, X. (2016). Bayesian
-#' registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
+#'   registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @export
 #' @examples
 #' \dontrun{
-#' data("simu_data")
-#' out = function_group_warp_bayes(simu_data$f, simu_data$time)
+#'   out <- function_group_warp_bayes(simu_data$f, simu_data$time)
 #' }
 function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
                                       tau=ceiling(times*.04), gp=seq(dim(f)[2]),

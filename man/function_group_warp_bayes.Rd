@@ -28,7 +28,7 @@ function_group_warp_bayes(
 
 \item{tau}{standard deviation of Normal prior for increment (default ceil(times*.4))}
 
-\item{gp}{number of colors in plots (default seq(dim(f)[2]))}
+\item{gp}{number of colors in plots (defaults \code{seq(dim(f)[2])})}
 
 \item{showplot}{shows plots of functions (default = T)}
 }
@@ -45,8 +45,7 @@ This function aligns a set of functions using Bayesian SRSF framework
 }
 \examples{
 \dontrun{
-data("simu_data")
-out = function_group_warp_bayes(simu_data$f, simu_data$time)
+  out <- function_group_warp_bayes(simu_data$f, simu_data$time)
 }
 }
 \references{

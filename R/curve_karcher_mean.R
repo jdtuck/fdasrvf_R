@@ -26,9 +26,9 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("mpeg7")
-#' out = curve_karcher_mean(beta[,,1,1:2],maxit=2)  # note: use more shapes, small for speed
-curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit = 20, ms = "mean") 
+#' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+#' # note: use more shapes, small for speed
+curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit = 20, ms = "mean")
 {
     if(ms!="mean"&ms!="median"){warning("ms must be either \"mean\" or \"median\". ms has been set to \"mean\"",immediate. = T)}
     if(ms!="median"){ms = "mean"}
@@ -70,21 +70,21 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit 
         d_i = rep(0,N) #include vector for norm calculations
         v_d = array(0, c(n, T1, N)) #include array to hold v_i / d_i
     }
-    
-    
+
+
     cat("\nInitializing...\n")
     gam = matrix(0,T1,N)
     for (k in 1:N) {
         out = find_rotation_seed_unqiue(mu,q[, , k],mode)
         gam[,k] = out$gambest
     }
-    
+
     gam = t(gam)
     gamI = SqrtMeanInverse(t(gam))
     bmu = group_action_by_gamma_coord(bmu, gamI)
     mu = curve_to_q(bmu)$q
     mu[is.nan(mu)] <- 0
-    
+
     while (itr < maxit) {
         cat(sprintf("Iteration: %d\n", itr))
         mu = mu/sqrt(innerprod_q2(mu, mu))
@@ -107,7 +107,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit 
             if (q1dotq2 < -1){
                 q1dotq2 = -1
             }
-                
+
             dist = acos(q1dotq2)
 
             u = qn_t - q1dotq2 * q1
@@ -131,7 +131,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit 
                 } else{
                     v_d[,,i] = v[,,i]
                 }
-                
+
             }
             sumd[itr + 1] = sumd[itr + 1] + dist^2
         }
@@ -151,7 +151,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit 
         if ((sumd[itr]-sumd[itr+1]) < 0){
             break
         } else if ((normv > tolv) && (abs(sumd[itr + 1] - sumd[itr]) > told)) {
-            mu = cos(delta * normvbar[itr]) * mu + sin(delta * 
+            mu = cos(delta * normvbar[itr]) * mu + sin(delta *
                      normvbar[itr]) * vbar/normvbar[itr]
             if (mode == "C") {
                 mu = project_curve(mu)
@@ -174,7 +174,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit 
     }
 
     ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")
-    return(list(beta = beta, mu = mu, type = type, betamean = betamean, v = v, q = q, 
+    return(list(beta = beta, mu = mu, type = type, betamean = betamean, v = v, q = q,
                 E=normvbar[1:itr], cent = cent, len = len, len_q = len_q,
                 qun = sumd[1:itr], mean_scale = mean_scale, mean_scale_q=mean_scale_q))
 }

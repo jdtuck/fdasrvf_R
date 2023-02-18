@@ -7,84 +7,111 @@
 kmeans_align(
   f,
   time,
-  K,
+  K = 1L,
   seeds = NULL,
-  nonempty = 0,
+  nonempty = 0L,
   lambda = 0,
-  showplot = TRUE,
+  showplot = FALSE,
   smooth_data = FALSE,
-  sparam = 25,
+  sparam = 25L,
   parallel = FALSE,
   alignment = TRUE,
-  omethod = "DP",
-  MaxItr = 50,
+  omethod = c("DP", "DP2", "RBFGS"),
+  max_iter = 50L,
   thresh = 0.01
 )
 }
 \arguments{
-\item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
+\item{f}{Either a numeric matrix or a numeric 3D array specifying the
+functions that need to be jointly clustered and aligned.
+\itemize{
+\item If a matrix, it must be of shape \eqn{M \times N}. In this case, it is
+interpreted as a sample of \eqn{N} curves observed on a grid of size
+\eqn{M}.
+\item If a 3D array, it must be of shape \eqn{L \times M \times N} and it is
+interpreted as a sample of \eqn{N} \eqn{L}-dimensional curves observed on a
+grid of size \eqn{M}.
+}}
 
-\item{time}{vector of size \eqn{N} describing the sample points}
+\item{time}{A numeric vector of length \eqn{M} specifying the grid on which
+the curves are evaluated.}
 
-\item{K}{number of clusters}
+\item{K}{An integer value specifying the number of clusters. Defaults to
+\code{1L}.}
 
-\item{seeds}{indexes of cluster center functions (default = NULL)}
+\item{seeds}{An integer vector of length \code{K} specifying the indices of the
+curves in \code{f} which will be chosen as initial centroids. Defaults to \code{NULL}
+in which case such indices are randomly chosen.}
 
-\item{nonempty}{minimum number of functions per cluster in assignment step of
-k-means. Set it as a positive integer to avoid the problem of empty
-clusters (default = 0)}
+\item{nonempty}{An integer value specifying the minimum number of curves per
+cluster during the assignment step. Set it to a positive value to avoid the
+problem of empty clusters. Defaults to \code{0L}.}
 
-\item{lambda}{controls the elasticity (default = 0)}
+\item{lambda}{A numeric value specifying the elasticity. Defaults to \code{0.0}.}
 
-\item{showplot}{shows plots of functions (default = T)}
+\item{showplot}{A boolean specifying whether to show plots. Defaults to
+\code{FALSE}.}
 
-\item{smooth_data}{smooth data using box filter (default = F)}
+\item{smooth_data}{A boolean specifying whether to smooth data using a box
+filter. Defaults to \code{FALSE}.}
 
-\item{sparam}{number of times to apply box filter (default = 25)}
+\item{sparam}{An integer value specifying the number of box filters applied.
+Defaults to \code{25L}.}
 
-\item{parallel}{enable parallel mode using \code{\link{foreach}} and
-\code{doParallel} package (default=F)}
+\item{parallel}{A boolean specifying whether parallel mode (using
+\code{\link[foreach:foreach]{foreach::foreach()}} and the \strong{doParallel} package) shoud be activated.
+Defaults to \code{FALSE}.}
 
-\item{alignment}{whether to perform alignment (default = T)}
+\item{alignment}{A boolean specifying whether to perform alignment. Defaults
+to \code{TRUE}.}
 
-\item{omethod}{optimization method (DP,DP2,RBFGS)}
+\item{omethod}{A string specifying which method should be used to solve the
+optimization problem that provides estimated warping functions. Choices are
+\code{"DP"}, \code{"DP2"} or \code{"RBFGS"}. Defaults to \code{"DP"}.}
 
-\item{MaxItr}{maximum number of iterations}
+\item{max_iter}{An integer value specifying the maximum number of iterations.
+Defaults to \code{50L}.}
 
-\item{thresh}{cost function threshold}
+\item{thresh}{A numeric value specifying a threshold on the cost function
+below which convergence is assumed. Defaults to \code{0.01}.}
 }
 \value{
-Returns a fdakma object containing \item{f0}{original functions}
-\item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples which is a list for each cluster}
-\item{qn}{aligned SRSFs - similar structure to fn}
-\item{q0}{original SRSFs}
-\item{labels}{cluster labels}
-\item{templates}{cluster center functions}
-\item{templates.q}{cluster center SRSFs}
-\item{gam}{warping functions - similar structure to fn}
-\item{qun}{Cost Function Value}
+An object of class \code{fdakma} which is a list containing:
+\itemize{
+\item \code{f0}: the original functions;
+\item \code{q0}: the original SRSFs;
+\item \code{fn}: the aligned functions as matrices or a 3D arrays of the same shape
+than \code{f0} by clusters in a list;
+\item \code{qn}: the aligned SRSFs as matrices or a 3D arrays of the same shape
+than \code{f0} separated in clusters in a list;
+\item \code{labels}: the cluster memberships as an integer vector;
+\item \code{templates}: the centroids in the original functional space;
+\item \code{templates.q}: the centroids in SRSF space;
+\item \code{gam}: the warping functions as matrices or a 3D arrays of the same shape
+than \code{f0} by clusters in a list;
+\item \code{qun}: cost function value.
+}
 }
 \description{
 This function clusters functions and aligns using the elastic square-root
-slope (srsf) framework.
+slope function (SRSF) framework.
 }
 \examples{
 \dontrun{
-data("growth_vel")
-out <- kmeans_align(growth_vel$f,growth_vel$time, K=2)
+  out <- kmeans_align(growth_vel$f, growth_vel$time, K = 2)
 }
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
- May 2011. Registration of functional data using fisher-rao metric,
- arXiv:1103.3817v2 [math.ST].
+May 2011. Registration of functional data using Fisher-Rao metric,
+arXiv:1103.3817v2.
 
-Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative models for
+functional data using phase and amplitude separation, Computational
+Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 
-Sangalli, L. M., et al. (2010). "k-mean alignment for curve clustering."
- Computational Statistics & Data Analysis 54(5): 1219-1233.
+Sangalli, L. M., et al. (2010). "k-mean alignment for curve
+clustering." Computational Statistics & Data Analysis 54(5): 1219-1233.
 }
 \keyword{alignment}
 \keyword{clustering}

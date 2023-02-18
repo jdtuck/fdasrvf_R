@@ -12,8 +12,7 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("mpeg7")
-#' out = curve_pair_align(beta[,,1,1], beta[,,1,5])
+#' out <- curve_pair_align(beta[, , 1, 1], beta[, , 1, 5])
 curve_pair_align <- function(beta1, beta2){
     T1 = ncol(beta1)
     centroid1 = calculatecentroid(beta1)

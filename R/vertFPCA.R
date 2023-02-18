@@ -3,7 +3,7 @@
 #' This function calculates vertical functional principal component analysis
 #' on aligned data
 #'
-#' @param warp_data fdawarp object from \link{time_warping} of aligned data
+#' @param warp_data fdawarp object from [time_warping] of aligned data
 #' @param no number of principal components to extract
 #' @param id point to use for f(0) (default = midpoint)
 #' @param ci geodesic standard deviations (default = c(-1,0,1))
@@ -20,8 +20,7 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' vfpca = vertFPCA(simu_warp,no = 3)
+#' vfpca <- vertFPCA(simu_warp, no = 3)
 vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),ci=c(-1,0,1),showplot = TRUE){
     # Parameters
     fn <- warp_data$fn

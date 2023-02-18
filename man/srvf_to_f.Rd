@@ -2,36 +2,69 @@
 % Please edit documentation in R/srvf_to_f.R
 \name{srvf_to_f}
 \alias{srvf_to_f}
-\title{Convert SRVF to f}
+\title{Transformation from SRSF Space}
 \usage{
-srvf_to_f(q, time, f0 = 0)
+srvf_to_f(q, time, f0 = 0, multidimensional = FALSE)
 }
 \arguments{
-\item{q}{matrix of srvf}
+\item{q}{Either a numeric vector of a numeric matrix or a numeric array
+specifying the SRSFs that need to be transformed.
+\itemize{
+\item If a vector, it must be of shape \eqn{M} and it is interpreted as a
+single \eqn{1}-dimensional curve observed on a grid of size \eqn{M}.
+\item If a matrix and \code{multidimensional == FALSE}, it must be of shape
+\eqn{M \times N}. In this case, it is interpreted as a sample of \eqn{N}
+curves observed on a grid of size \eqn{M}, unless \eqn{M = 1} in which case
+it is interpreted as a single \eqn{1}-dimensional curve observed on a grid
+of size \eqn{M}.
+\item If a matrix and \code{multidimensional == TRUE},it must be of shape
+\eqn{L \times M} and it is interpreted as a single \eqn{L}-dimensional
+curve observed on a grid of size \eqn{M}.
+\item If a 3D array, it must be of shape \eqn{L \times M \times N} and it is
+interpreted as a sample of \eqn{N} \eqn{L}-dimensional curves observed on a
+grid of size \eqn{M}.
+}}
 
-\item{time}{time}
+\item{time}{A numeric vector of length \eqn{M} specifying the grid on which
+SRSFs are evaluated.}
 
-\item{f0}{initial value of f}
+\item{f0}{Either a numeric value or a numeric vector of or a numeric matrix
+specifying the initial value of the curves in the original functional
+space. It must be:
+\itemize{
+\item a value if \code{q} represents a single \eqn{1}-dimensional SRSF.
+\item a vector of length \eqn{L} if \code{q} represents a single
+\eqn{L}-dimensional SRSF.
+\item a vector of length \eqn{N} if \code{q} represents a sample of \eqn{N}
+\eqn{1}-dimensional SRSFs.
+\item a matrix of shape \eqn{L \times M} if \code{q} represents a sample of \eqn{N}
+\eqn{L}-dimensional  SRSFs.
+}}
+
+\item{multidimensional}{A boolean specifying if the curves are
+multi-dimensional. This is useful when \code{q} is provided as a matrix to
+determine whether it is a single multi-dimensional curve or a collection of
+uni-dimensional curves. Defaults to \code{FALSE}.}
 }
 \value{
-f matrix of functions
+A numeric array of the same shape as the input \code{q} storing the
+transformation of the SRSFs \code{q} back to the original functional space.
 }
 \description{
-This function converts SRVFs to functions
+This function transforms SRVFs back to the original functional space.
 }
 \examples{
-data("simu_data")
-q = f_to_srvf(simu_data$f,simu_data$time)
-f = srvf_to_f(q,simu_data$time,simu_data$f[1,])
+q <- f_to_srvf(simu_data$f, simu_data$time)
+f <- srvf_to_f(q, simu_data$time, simu_data$f[1, ])
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
- May 2011. Registration of functional data using fisher-rao metric,
- arXiv:1103.3817v2 [math.ST].
+May 2011. Registration of functional data using fisher-rao metric,
+arXiv:1103.3817v2.
 
-Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative models for
+functional data using amplitude and phase separation, Computational
+Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
 \keyword{srsf}

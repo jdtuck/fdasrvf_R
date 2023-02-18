@@ -3,7 +3,7 @@
 #' This function calculates amplitude and phase joint  functional principal component
 #' analysis on aligned data
 #'
-#' @param warp_data fdawarp object from \link{time_warping} of aligned data
+#' @param warp_data fdawarp object from [time_warping] of aligned data
 #' @param no number of principal components to extract
 #' @param id integration point for f0 (default = midpoint)
 #' @param C balance value (default = NULL)
@@ -21,17 +21,15 @@
 #' @keywords srvf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
-#'  arXiv:1103.3817v2 [math.ST].
+#'  arXiv:1103.3817v2.
 #' @references Jung, S. L. a. S. (2016). "Combined Analysis of Amplitude and Phase Variations in Functional Data."
-#'        	arXiv:1603.01775 [stat.ME].
+#'        	arXiv:1603.01775.
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' data("simu_warp")
-#' data("simu_data")
-#' jfpca = jointFPCA(simu_warp, no = 3)
+#' jfpca <- jointFPCA(simu_warp, no = 3)
 jointFPCA <- function(warp_data, no, id=round(length(warp_data$time)/2), C=NULL, ci=c(-1,0,1), showplot=T){
     fn <- warp_data$fn
     time <- warp_data$time

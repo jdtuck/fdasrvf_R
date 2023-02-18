@@ -13,7 +13,7 @@ function_mean_bayes(f, time, times = 5, group = 1:dim(f)[2], showplot = TRUE)
 
 \item{times}{factor of length of subsample points to look at (default = 5)}
 
-\item{group}{(default 1:dim(f)[2])}
+\item{group}{(defaults \code{1:dim(f)[2]})}
 
 \item{showplot}{shows plots of functions (default = T)}
 }
@@ -34,8 +34,7 @@ This function calculates karcher mean of functions using Bayesian method
 }
 \examples{
 \dontrun{
-data("simu_data")
-out = function_mean_bayes(simu_data$f, simu_data$time)
+  out <- function_mean_bayes(simu_data$f, simu_data$time)
 }
 }
 \references{

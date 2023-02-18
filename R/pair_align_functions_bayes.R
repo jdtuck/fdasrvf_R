@@ -28,8 +28,11 @@
 #' registration of functions and curves. Bayesian Analysis, 11(2), 447-475.
 #' @export
 #' @examples
-#' data("simu_data")
-#' out = pair_align_functions_bayes(simu_data$f[,1], simu_data$f[,2], simu_data$time)
+#' out <- pair_align_functions_bayes(
+#'   f1 = simu_data$f[, 1],
+#'   f2 = simu_data$f[, 2],
+#'   timet = simu_data$time
+#' )
 pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
                                        tau = ceiling(times*.4), powera=1,
                                        showplot = TRUE, extrainfo = FALSE){

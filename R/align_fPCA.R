@@ -9,9 +9,9 @@
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
-#' @param parallel enable parallel mode using \code{\link{foreach}} and
-#'   \code{doParallel} package
-#' @param cores set number of cores to use with \code{doParallel} (default = 2)
+#' @param parallel enable parallel mode using [foreach()] and
+#'   `doParallel` package
+#' @param cores set number of cores to use with `doParallel` (default = 2)
 #' @param MaxItr maximum number of iterations
 #' @param lambda controls the elasticity (default = 0)
 #' @return Returns a list containing \item{f0}{original functions}
@@ -35,8 +35,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' data("simu_data")
-#' out = align_fPCA(simu_data$f,simu_data$time)
+#' out <- align_fPCA(simu_data$f, simu_data$time)
 #' }
 align_fPCA <- function(f, time, num_comp = 3, showplot = T, smooth_data = FALSE, sparam = 25,
                        parallel = FALSE, cores=8, MaxItr = 51, lambda = 0){

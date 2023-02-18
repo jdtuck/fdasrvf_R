@@ -23,12 +23,11 @@ This function models the functional data using a Gaussian model extracted from
 the principal components of the srvfs
 }
 \examples{
-data("simu_warp")
-out1 = gauss_model(simu_warp,n = 10)
+out1 <- gauss_model(simu_warp, n = 10)
 }
 \references{
 Tucker, J. D., Wu, W., Srivastava, A.,
- Generative Models for Function Data using Phase and Amplitude Separation,
- Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Generative Models for Function Data using Phase and Amplitude Separation,
+Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{pca}

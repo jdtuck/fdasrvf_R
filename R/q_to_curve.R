@@ -9,9 +9,8 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' data("mpeg7")
-#' q = curve_to_q(beta[,,1,1])$q
-#' beta1 = q_to_curve(q)
+#' q <- curve_to_q(beta[, , 1, 1])$q
+#' beta1 <- q_to_curve(q)
 q_to_curve <- function(q, scale=1){
   T1 = ncol(q)
   n = nrow(q)
@@ -24,6 +23,6 @@ q_to_curve <- function(q, scale=1){
   beta = cumtrapz(1:T1, integrand, 2)/T1
 
   beta = scale * beta
-  
+
   return(beta)
 }

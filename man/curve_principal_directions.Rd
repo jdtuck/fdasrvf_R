@@ -9,7 +9,7 @@ curve_principal_directions(v, K, mu, len = NA, no = 3, N = 5, mode = "O")
 \arguments{
 \item{v}{array (n,T,N1) of shooting vectors}
 
-\item{K}{array (n*T,n*T) covariance matrix}
+\item{K}{array (n\emph{T,n}T) covariance matrix}
 
 \item{mu}{array (n,T) of mean srvf}
 
@@ -31,10 +31,10 @@ Returns a list containing \item{s}{singular values}
 Calculate principal directions of a set of curves
 }
 \examples{
-data("mpeg7")
-out = curve_karcher_mean(beta[,,1,1:2], maxit=2) # note: use more shapes, small for speed
-K = curve_karcher_cov(out$v)
-out = curve_principal_directions(out$v, K, out$mu)
+out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+# note: use more shapes, small for speed
+K <- curve_karcher_cov(out$v)
+out <- curve_principal_directions(out$v, K, out$mu)
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
