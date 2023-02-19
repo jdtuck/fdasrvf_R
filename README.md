@@ -16,7 +16,7 @@ analysis
 
 ### Installation
 ------------------------------------------------------------------------------
-v1.9.8 is on [CRAN](https://cran.r-project.org/package=fdasrvf)
+v2.0.0 is on [CRAN](https://cran.r-project.org/package=fdasrvf)
 and can be installed as
 > `install.packages("fdasrvf")`
 
