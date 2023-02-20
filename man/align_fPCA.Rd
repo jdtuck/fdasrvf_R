@@ -7,52 +7,83 @@
 align_fPCA(
   f,
   time,
-  num_comp = 3,
-  showplot = T,
+  num_comp = 3L,
+  showplot = TRUE,
   smooth_data = FALSE,
-  sparam = 25,
+  sparam = 25L,
   parallel = FALSE,
-  cores = 8,
-  MaxItr = 51,
+  cores = NULL,
+  max_iter = 51L,
   lambda = 0
 )
 }
 \arguments{
-\item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
+\item{f}{A numeric matrix of shape \eqn{M \times N} specifying a sample of
+\eqn{N} \eqn{1}-dimensional curves observed on a grid of size \eqn{M}.}
 
-\item{time}{vector of size \eqn{N} describing the sample points}
+\item{time}{A numeric vector of length \eqn{M} specifying the grid on which
+functions \code{f} have been evaluated.}
 
-\item{num_comp}{number of principal components to extract (default = 3)}
+\item{num_comp}{An integer value specifying the number of principal
+components to extract. Defaults to \code{3L}.}
 
-\item{showplot}{shows plots of functions (default = T)}
+\item{showplot}{A boolean specifying whether to display plots along the way.
+Defaults to \code{TRUE}.}
 
-\item{smooth_data}{smooth data using box filter (default = F)}
+\item{smooth_data}{A boolean specifying whether to smooth data using box
+filter. Defaults to \code{FALSE}.}
 
-\item{sparam}{number of times to apply box filter (default = 25)}
+\item{sparam}{An integer value specifying the number of times to apply box
+filter. Defaults to \code{25L}. This argument is only used if \code{smooth_data == TRUE}.}
 
-\item{parallel}{enable parallel mode using \code{\link[=foreach]{foreach()}} and
-\code{doParallel} package}
+\item{parallel}{A boolean specifying whether computations should run in
+parallel. Defaults to \code{FALSE}.}
 
-\item{cores}{set number of cores to use with \code{doParallel} (default = 2)}
+\item{cores}{An integer value specifying the number of cores to use for
+parallel computations. Defaults to \code{NULL} in which case it uses all
+available cores but one. This argument is only used when \code{parallel == TRUE}.}
 
-\item{MaxItr}{maximum number of iterations}
+\item{max_iter}{An integer value specifying the maximum number of iterations.
+Defaults to \code{51L}.}
 
-\item{lambda}{controls the elasticity (default = 0)}
+\item{lambda}{A numeric value specifying the elasticity. Defaults to \code{0.0}.}
 }
 \value{
-Returns a list containing \item{f0}{original functions}
-\item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
-\item{qn}{aligned srvfs - similar structure to fn}
-\item{q0}{original srvfs - similar structure to fn}
-\item{mqn}{srvf mean - vector of length \eqn{N}}
-\item{gam}{warping functions - vector of length \eqn{N}}
-\item{Dx}{cost function}
-\item{vfpca}{list containing}
-\item{q_pca}{srvf principal directions}
-\item{f_pca}{f principal directions}
-\item{latent}{latent values}
-\item{coef}{coefficients}
-\item{U}{eigenvectors}
+A list with the following components:
+\itemize{
+\item \code{f0}: A numeric matrix of shape \eqn{M \times N} storing the original
+functions;
+\item \code{fn}: A numeric matrix of the same shape as \code{f0} storing the aligned
+functions;
+\item \code{qn}: A numeric matrix of the same shape as \code{f0} storing the aligned
+SRSFs;
+\item \code{q0}: A numeric matrix of the same shape as \code{f0} storing the SRSFs of the
+original functions;
+\item \code{mqn}: A numeric vector of length \eqn{M} storing the mean SRSF;
+\item \code{gam}: A numeric matrix of the same shape as \code{f0} storing the estimated
+warping functions;
+\item \code{vfpca}: A list storing information about the vertical PCA with the
+following components:
+\itemize{
+\item \code{q_pca}: A numeric matrix of shape \eqn{(M + 1) \times 5 \times
+  \mathrm{num\_comp}} storing the first \eqn{3} principal directions in SRSF
+space; the first dimension is \eqn{M + 1} because, in SRSF space, the
+original functions are represented by the SRSF and the initial value of the
+functions.
+\item \code{f_pca}: A numeric matrix of shape \eqn{M \times 5 \times
+  \mathrm{num\_comp}} storing the first \eqn{3} principal directions in
+original space;
+\item \code{latent}: A numeric vector of length \eqn{M + 1} storing the singular
+values of the SVD decomposition in SRSF space;
+\item \code{coef}: A numeric matrix of shape \eqn{N \times \mathrm{num\_comp}}
+storing the scores of the \eqn{N} original functions on the first
+\code{num_comp} principal components;
+\item \code{U}: A numeric matrix of shape \eqn{(M + 1) \times (M + 1)} storing the
+eigenvectors associated with the SVD decomposition in SRSF space.
+}
+\item \code{Dx}: A numeric vector of length \code{max_iter} storing the value of the cost
+function at each iteration.
+}
 }
 \description{
 This function aligns a collection of functions while extracting principal
@@ -60,13 +91,13 @@ components.
 }
 \examples{
 \dontrun{
-out <- align_fPCA(simu_data$f, simu_data$time)
+  out <- align_fPCA(simu_data$f, simu_data$time)
 }
 }
 \references{
-Tucker, J. D., Wu, W., Srivastava, A.,
-Generative Models for Function Data using Phase and Amplitude Separation,
-Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative models for
+functional data using phase and amplitude separation, Computational
+Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \concept{srvf alignment}
 \keyword{pca}
