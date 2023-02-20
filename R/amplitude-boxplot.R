@@ -28,7 +28,6 @@
 #'
 #' @export
 #' @examples
-#' data(simu_warp_median)
 #' out <- AmplitudeBoxplot(simu_warp_median, showplot = FALSE)
 AmplitudeBoxplot <- function(warp_median, alpha=.05, ka=1, showplot=TRUE){
 
