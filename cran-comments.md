@@ -1,6 +1,5 @@
 ## Test environments
-* local OS X install, R 4.2.0
-* ubuntu 18.04 (on travis-ci), R 4.2.0
+* windows, os x, ubuntu 18.04 (on githubactions), R 4.2.2
 * win-builder (devel and release)
 
 ## R CMD check results

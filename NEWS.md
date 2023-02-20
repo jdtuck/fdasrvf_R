@@ -1,4 +1,4 @@
-# fdasrvf 1.9.8.9000
+# fdasrvf 2.0.0
 * bugfixes, doc updates
 * add additional penalties to warping
 * add multivariate kmeans
