@@ -14,21 +14,19 @@ License: GPL-3
 LazyData: TRUE
 SystemRequirements: C++11
 Imports:
-    Rcpp (>= 0.12.1),
+    cli,
     coda,
-    foreach,
-    mvtnorm,
-    methods,
-    matrixcalc,
-    splines,
-    parallel,
-    fields,
     doParallel,
-    viridisLite,
-    tolerance,
+    fields,
+    foreach,
     lpSolve,
     Matrix,
-    cli
+    mvtnorm,
+    parallel,
+    Rcpp,
+    splines,
+    tolerance,
+    viridisLite
 Suggests: 
     covr,
     interp,
@@ -37,10 +35,12 @@ Suggests:
     rgl,
     testthat (>= 3.0.0),
     withr
-LinkingTo: Rcpp, RcppArmadillo
 Depends:
     R (>= 3.5.0),
 RoxygenNote: 7.2.3
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo

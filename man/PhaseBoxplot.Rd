@@ -33,7 +33,6 @@ Returns a \code{phbox} object containing:
 This function constructs the phase boxplot.
 }
 \examples{
-data(simu_warp_median)
 out <- PhaseBoxplot(simu_warp_median, showplot = FALSE)
 }
 \references{

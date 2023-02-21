@@ -38,7 +38,7 @@ sample_shapes <- function(mu, K, mode="O", no=3, numSamp=10){
     for (i in 1:numSamp){
         v = matrix(0, 2, T1)
         for (m in 1:no){
-            v = v + rnorm(1)*sqrt(s[m])*c(U[1:T1,m], U[(T1+1):(2*T1),m])
+            v = v + stats::rnorm(1)*sqrt(s[m])*c(U[1:T1,m], U[(T1+1):(2*T1),m])
         }
 
         q1 = mu

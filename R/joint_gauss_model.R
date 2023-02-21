@@ -39,9 +39,9 @@ joint_gauss_model <- function(warp_data, n=1, no=5){
 
   # Generate Random Samples -------------------------------------------------
   if (length(s)>1){
-    vals <- rmvnorm(n, sigma = diag(s))
+    vals <- mvtnorm::rmvnorm(n, sigma = diag(s))
   } else {
-    vals <- rnorm(n, sd=s)
+    vals <- stats::rnorm(n, sd=s)
   }
 
   tmp <- U%*%t(vals)

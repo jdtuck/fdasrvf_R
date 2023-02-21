@@ -75,7 +75,7 @@ pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
   best_match <- match
   dist <- NULL
   dist_collect <- rep(0,iter+1)
-  idy <- round(approx(c(row,p+1),match,method="linear",xout=1:p)$y)
+  idy <- round(stats::approx(c(row,p+1),match,method="linear",xout=1:p)$y)
   idy[idy > p] <- p
   scale <- sqrt(diff(match)*(1/times))
   scalevec <- rep(scale,each = times)
@@ -94,23 +94,23 @@ pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
   log_collect <- c(res$log_collect)
   dist_collect[-1] <- c(res$dist_collect)
   kappa_collect <- c(res$kappa_collect)
-  bestidy <- approx(c(row,p+1),best_match,method="linear",xout=1:p)$y
+  bestidy <- stats::approx(c(row,p+1),best_match,method="linear",xout=1:p)$y
   bestidy[bestidy > p] <- p
   burnin <- round(0.5*iter/thin)
   LowerP <- NULL
   UpperP <- NULL
   MeanP <- NULL
   for (i in 1:(L+1)) {
-    LowerP[i] <- quantile(match_collect[burnin:(iter/thin),i],0.025)
-    UpperP[i] <- quantile(match_collect[burnin:(iter/thin),i],0.975)
+    LowerP[i] <- stats::quantile(match_collect[burnin:(iter/thin),i],0.025)
+    UpperP[i] <- stats::quantile(match_collect[burnin:(iter/thin),i],0.975)
     MeanP[i] <- mean(match_collect[burnin:(iter/thin),i])
   }
 
-  Meanidy <- approx(c(row,p+1),MeanP,method="linear",xout=1:p)$y
+  Meanidy <- stats::approx(c(row,p+1),MeanP,method="linear",xout=1:p)$y
   Meanidy[Meanidy > p] <- p
 
-  reg_q <- (spline(seq(0,p-1),f2,n=times*(p+1)-1)$y)[(bestidy-1)*times+1]
-  reg_a <- (spline(seq(0,p-1),f2,n=times*(p+1)-1)$y)[(Meanidy-1)*times+1]
+  reg_q <- (stats::spline(seq(0,p-1),f2,n=times*(p+1)-1)$y)[(bestidy-1)*times+1]
+  reg_a <- (stats::spline(seq(0,p-1),f2,n=times*(p+1)-1)$y)[(Meanidy-1)*times+1]
 
   if (showplot){
 
@@ -121,44 +121,44 @@ pair_align_functions_bayes <- function(f1, f2, timet, iter=15000, times = 5,
     curve2 <- input4-mean(input4)+1*range
     plot( timet,curve1,col="black",type="l",ylim=c(min(curve1)-0.15*range,max(curve2)+0.15*range),
           main="",xlab="t", ylab="")
-    lines(timet,curve2,col="blue")
-    legend("topleft",c("function 1","function 2"),col=c("black","blue"),lty=c(1,1))
+    graphics::lines(timet,curve2,col="blue")
+    graphics::legend("topleft",c("function 1","function 2"),col=c("black","blue"),lty=c(1,1))
     SAM=1:length(best_match)
     for (n in SAM) {
-      lines(c(timet[times*(n-1)+1],timet[best_match[n]]),c(curve1[times*(n-1)+1],curve2[best_match [n]]),col="red")
+      graphics::lines(c(timet[times*(n-1)+1],timet[best_match[n]]),c(curve1[times*(n-1)+1],curve2[best_match [n]]),col="red")
     }
-    title("Correspondence between 2 function")
+    graphics::title("Correspondence between 2 function")
 
     plot ((1:(L+1)-1)/L,(best_match-1)/p,type="l",main="",xlab="t",ylab="r(t)",col="blue")
-    lines((1:(L+1)-1)/L,(LowerP-1)/p, lty=2,col="red")
-    lines((1:(L+1)-1)/L,(UpperP-1)/p, lty=2,col="red")
-    lines((1:(L+1)-1)/L,(MeanP-1)/p,  lty=2,col="black")
-    legend("topleft",c("Quotient estimate","Pointwise mean","Pointwise 95% interval"),
+    graphics::lines((1:(L+1)-1)/L,(LowerP-1)/p, lty=2,col="red")
+    graphics::lines((1:(L+1)-1)/L,(UpperP-1)/p, lty=2,col="red")
+    graphics::lines((1:(L+1)-1)/L,(MeanP-1)/p,  lty=2,col="black")
+    graphics::legend("topleft",c("Quotient estimate","Pointwise mean","Pointwise 95% interval"),
            col=c("blue","black","red"),lty=c(1,2,2))
 
     plot (timet,f1,type="l",col="black",main="",ylab="Height",xlab="t")
-    lines(timet,f2,col="blue")
-    legend("topleft",c("function 1","function 2"),col=c("black","blue"),lty=c(1,1))
-    title("Original functions")
+    graphics::lines(timet,f2,col="blue")
+    graphics::legend("topleft",c("function 1","function 2"),col=c("black","blue"),lty=c(1,1))
+    graphics::title("Original functions")
 
     plot(timet,f1,type="l",col="black",main="",ylab="Height",xlab="t")
-    lines(timet,reg_q,col="blue")
-    legend("topleft",c("function 1","function 2"),col=c("black","blue"),lty=c(1,1))
-    title("Registration by Quotient estimate")
+    graphics::lines(timet,reg_q,col="blue")
+    graphics::legend("topleft",c("function 1","function 2"),col=c("black","blue"),lty=c(1,1))
+    graphics::title("Registration by Quotient estimate")
 
     plot(timet,f1,type="l",col="black",main="",ylab="Height",xlab="t")
-    lines(timet,reg_a,col="blue")
-    legend("topleft",c("function 1","function 2*"),col=c("black","blue"),lty=c(1,1))
-    title("Registration by Bayesian estimate")
+    graphics::lines(timet,reg_a,col="blue")
+    graphics::legend("topleft",c("function 1","function 2*"),col=c("black","blue"),lty=c(1,1))
+    graphics::title("Registration by Bayesian estimate")
 
-    traceplot(mcmc(kappa_collect[burnin:iter]))
-    title("Traceplot of kappa after burn-in")
+    coda::traceplot(coda::mcmc(kappa_collect[burnin:iter]))
+    graphics::title("Traceplot of kappa after burn-in")
 
-    traceplot(mcmc(dist_collect[(burnin:iter)+1]))
-    title("Traceplot of dist after burn-in")
+    coda::traceplot(coda::mcmc(dist_collect[(burnin:iter)+1]))
+    graphics::title("Traceplot of dist after burn-in")
 
-    traceplot(mcmc(log_collect[burnin:iter]))
-    title("Traceplot of log posterior after burn-in")
+    coda::traceplot(coda::mcmc(log_collect[burnin:iter]))
+    graphics::title("Traceplot of log posterior after burn-in")
   }
 
   retVal <- list(f1 = f1, f2_q = reg_q, gam_q = (bestidy-1)/p,

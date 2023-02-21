@@ -141,7 +141,7 @@ align_fPCA <- function(f, time,
   qhat <- matrix(mq, nrow = M, ncol = N) + tmp
 
   # Matching Step
-  gam_k <- foreach(k = 1:N, .combine = cbind, .packages="fdasrvf") %dopar% {
+  gam_k <- foreach::foreach(k = 1:N, .combine = cbind, .packages="fdasrvf") %dopar% {
     gam0 <- optimum.reparam(qhat[, k], time, q[, k], time, lambda = lambda)
   }
 
@@ -196,7 +196,7 @@ align_fPCA <- function(f, time,
     q[, , r] <- q_temp
     mq[, r] <- rowMeans(q_temp)
 
-    K <- cov(t(q[, , r]))
+    K <- stats::cov(t(q[, , r]))
     out <- svd(K)
     s <- out$d
     U <- out$u
@@ -222,7 +222,7 @@ align_fPCA <- function(f, time,
     qhat <- matrix(mq_c, nrow = M, ncol = N) + tmp
 
     # Matching Step
-    gam_k <- foreach(k = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
+    gam_k <- foreach::foreach(k = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
       gam0 <- optimum.reparam(qhat[, k], time, q[, k, r], time, lambda = lambda)
     }
     gam[, , r] <- gam_k
@@ -246,13 +246,13 @@ align_fPCA <- function(f, time,
   qn <- q[, , r]
   q0 <- q[, , 1]
   mean_f0 <- rowMeans(f[, , 1])
-  std_f0 = apply(f[, , 1], 1, sd)
+  std_f0 = apply(f[, , 1], 1, stats::sd)
   mqn <- mq[, r]
   gamf <- gam[, , 1]
   for (k in 2:r) {
     gam_k <- gam[, , k]
     for (l in 1:N)
-      gamf[, l] <- approx(
+      gamf[, l] <- stats::approx(
         x = time,
         y = gamf[, l],
         xout = (time[M] - time[1]) * gam_k[, l] + time[1]
@@ -287,14 +287,14 @@ align_fPCA <- function(f, time,
   }
 
   mean_fn <- rowMeans(fn)
-  std_fn <- apply(fn, 1, sd)
+  std_fn <- apply(fn, 1, stats::sd)
 
   # Get Final PCA
   mq_new <- rowMeans(qn)
   id <- round(M / 2)
   m_new <- sign(fn[id, ]) * sqrt(abs(fn[id, ])) # scaled version
   mqn2 <- c(mq_new, mean(m_new))
-  K <- cov(t(rbind(qn, m_new)))
+  K <- stats::cov(t(rbind(qn, m_new)))
   out <- svd(K)
   s <- out$d
   stdS <- sqrt(s)

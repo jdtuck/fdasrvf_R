@@ -56,7 +56,7 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
 
         G = ret$G[1:ret$size]
         Tf = ret$T[1:ret$size]
-        gam0 = approx(Tf,G,xout=timet)$y
+        gam0 = stats::approx(Tf,G,xout=timet)$y
     } else if (method=="DP") {
       # Optimize over SO(n) x Gamma
       q1 = curve_to_q(beta1)$q

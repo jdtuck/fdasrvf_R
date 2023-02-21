@@ -32,9 +32,9 @@ gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
     id = round(length(time)/2)
     m_new = sign(fn[id,])*sqrt(abs(fn[id,]))  # scaled version
     mqn = c(mq_new,mean(m_new))
-    C = cov(t(rbind(qn,m_new)))
+    C = stats::cov(t(rbind(qn,m_new)))
 
-    q_s = rmvnorm(n,mean=mqn,sigma=C,method="svd")
+    q_s = mvtnorm::rmvnorm(n,mean=mqn,sigma=C,method="svd")
     q_s = t(q_s)
     end = dim(q_s)[1]
 
@@ -78,11 +78,11 @@ gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
         # combine x-variability and y-variability
         ft = matrix(0,M,n)
         for (k in 1:n){
-            tmp = approx((0:(M-1))/(M-1),fs[,seq1[k]],xout = gams[,seq2[k]])
+            tmp = stats::approx((0:(M-1))/(M-1),fs[,seq1[k]],xout = gams[,seq2[k]])
             ft[,k] = tmp$y
             while (is.na(ft[,k])){
                 rgam2 = randomGamma(gam,1)
-                tmp = approx((0:(M-1))/(M-1),fs[,seq1[k]],xout = invertGamma(rgam2))
+                tmp = stats::approx((0:(M-1))/(M-1),fs[,seq1[k]],xout = invertGamma(rgam2))
                 ft[,k] = tmp$y
             }
         }
@@ -91,11 +91,11 @@ gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
         # combine x-variability and y-variability
         ft = matrix(0,M,n)
         for (k in 1:n){
-            tmp = approx((0:(M-1))/(M-1),fs[,k],xout = gams[,k])
+            tmp = stats::approx((0:(M-1))/(M-1),fs[,k],xout = gams[,k])
             ft[,k] = tmp$y
             while (is.na(ft[,k])[1]){
                 rgam2 = randomGamma(gam,1)
-                tmp = approx((0:(M-1))/(M-1),fs[,k],xout = invertGamma(rgam2))
+                tmp = stats::approx((0:(M-1))/(M-1),fs[,k],xout = invertGamma(rgam2))
                 ft[,k] = tmp$y
             }
         }

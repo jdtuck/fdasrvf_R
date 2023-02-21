@@ -28,7 +28,7 @@ inner_product<-function(psi1, psi2, time=seq(0,1,length.out=length(psi1))){
 warp_q_gamma <- function(time, q, gam){
   M = length(gam)
   gam_dev = gradient(gam, 1/(M-1))
-  q_tmp = approx(time,q,xout=(time[length(time)]-time[1])*gam +
+  q_tmp = stats::approx(time,q,xout=(time[length(time)]-time[1])*gam +
                time[1])$y*sqrt(gam_dev)
   return(q_tmp)
 }
@@ -39,7 +39,7 @@ randomGamma <- function(gam,num){
     psi = out$psi
     vec = out$vec
 
-    K = cov(t(vec))
+    K = stats::cov(t(vec))
     out = svd(K)
     s = out$d
     U = out$u
@@ -50,7 +50,7 @@ randomGamma <- function(gam,num){
 
     rgam = matrix(0,num,TT)
     for (k in 1:num){
-        a = rnorm(n)
+        a = stats::rnorm(n)
         v = rep(0,length(vm))
         for (i in 1:n){
             v = v + a[i]*sqrt(s[i])*U[,i]
@@ -128,10 +128,10 @@ findkarcherinv <- function(warps, times, round = F){
   }
   karcher.s <- 1+c(0,cumsum(mupsi.update^2)*times)
   if(round){
-    invidy <- c(round(approx(karcher.s,seq(1,(m-1)*times+1,times),method="linear",xout=1:((m-1)*times))$y),(m-1)*times+1)
+    invidy <- c(round(stats::approx(karcher.s,seq(1,(m-1)*times+1,times),method="linear",xout=1:((m-1)*times))$y),(m-1)*times+1)
   }
   else{
-    invidy <- c((approx(karcher.s,seq(1,(m-1)*times+1,times),method="linear",xout=1:((m-1)*times))$y),(m-1)*times+1)
+    invidy <- c((stats::approx(karcher.s,seq(1,(m-1)*times+1,times),method="linear",xout=1:((m-1)*times))$y),(m-1)*times+1)
   }
   revscalevec <- sqrt(diff(invidy))
   return(list(invidy = invidy,revscalevec = revscalevec))

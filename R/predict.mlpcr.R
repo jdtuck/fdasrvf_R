@@ -48,7 +48,7 @@ predict.mlpcr <- function(object, newdata=NULL, y=NULL, ...){
         gam <- matrix(0,M,n)
         for (ii in 1:n){
             gam[, ii] <- optimum.reparam(mq,time,q[,ii],time,lambda,omethod)
-            fn[, ii] <- approx(time,newdata[,ii],xout=(time[length(time)]-time[1])*gam[, ii] +
+            fn[, ii] <- stats::approx(time,newdata[,ii],xout=(time[length(time)]-time[1])*gam[, ii] +
                                time[1])$y
             qn[, ii] <- f_to_srvf(fn[, ii], time)
         }

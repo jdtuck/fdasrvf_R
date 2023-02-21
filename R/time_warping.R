@@ -6,8 +6,8 @@
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param lambda controls the elasticity (default = 0)
-#' @param pen alignment penalty (default="roughness") options are 
-#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+#' @param pen alignment penalty (default="roughness") options are
+#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 #' norm from id ("norm")
 #' @param method warp and calculate to Karcher Mean or Median (options = "mean"
 #' or "median", default = "mean")
@@ -42,17 +42,17 @@
 #' \dontrun{
 #'   out <- time_warping(simu_data$f, simu_data$time)
 #' }
-time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean", 
-												 center = TRUE, showplot = TRUE, smooth_data = FALSE, 
-												 sparam = 25, parallel = FALSE, omethod = "DP", 
+time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
+												 center = TRUE, showplot = TRUE, smooth_data = FALSE,
+												 sparam = 25, parallel = FALSE, omethod = "DP",
 												 MaxItr = 20){
     if (parallel){
-        cores = detectCores()-1
-        cl = makeCluster(cores)
-        registerDoParallel(cl)
+        cores = max(parallel::detectCores() - 1, 1)
+        cl = parallel::makeCluster(cores)
+        doParallel::registerDoParallel(cl)
     } else
     {
-        registerDoSEQ()
+        foreach::registerDoSEQ()
     }
     method1 <- method
     method <- pmatch(method, c("mean", "median")) # 1 - mean, 2 - median
@@ -73,8 +73,8 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
     }
 
     if (showplot){
-        matplot(time,f,type="l")
-        title(main="Original data")
+      graphics::matplot(time,f,type="l")
+      graphics::title(main="Original data")
     }
 
     # Compute q-function of the functional data
@@ -89,14 +89,14 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
     mq = q[,min_ind]
     mf = f[,min_ind]
 
-    gam<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
+    gam<-foreach::foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
         gam_tmp = optimum.reparam(mq,time,q[,k],time,lambda,pen,omethod,w,mf[1],f[1,k])
     }
 
     gam = t(gam)
     gamI = SqrtMeanInverse(t(gam))
     gamI_dev = gradient(gamI, 1/(M-1))
-    mf = approx(time,mf,xout=(time[length(time)]-time[1])*gamI + time[1])$y
+    mf = stats::approx(time,mf,xout=(time[length(time)]-time[1])*gamI + time[1])$y
     mq = f_to_srvf(mf,time)
     mq[is.nan(mq)] <- 0
 
@@ -130,10 +130,10 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
         }
 
         # Matching Step
-        outfor<-foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
+        outfor<-foreach::foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
             gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda,pen,omethod,w,mf[1,r],f[1,k,1])
             gam_dev = gradient(gam,1/(M-1))
-            f_temp = approx(time,f[,k,1],xout=(time[length(time)]-time[1])*gam +
+            f_temp = stats::approx(time,f[,k,1],xout=(time[length(time)]-time[1])*gam +
                 time[1])$y
             q_temp = f_to_srvf(f_temp,time)
             v <- q_temp - mq[,r]
@@ -193,7 +193,7 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
             # compute the median of the matched function
             vbar <- rowSums(vtil)*sum(dtil)^(-1)
             mq[,r+1] <- mq[,r] + stp*vbar
-            mf[,r+1] <- median(f[1,,1]) + cumtrapz(time,mq[,r+1]*abs(mq[,r+1]))
+            mf[,r+1] <- stats::median(f[1,,1]) + cumtrapz(time,mq[,r+1]*abs(mq[,r+1]))
 
             qun[r+1] = pvecnorm(mq[,r+1]-mq[,r],2)/pvecnorm(mq[,r],2)
         }
@@ -207,7 +207,7 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
     gamI_dev = gradient(gamI, 1/(M-1))
     if (center){
       r = r+1
-      outfor<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
+      outfor<-foreach::foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
         gam = optimum.reparam(mq[,r],time,q[,k,1],time,lambda,pen,omethod,w,mf[1,r],f[1,k,1])
         gam_dev = gradient(gam,1/(M-1))
         list(gam,gam_dev)
@@ -221,15 +221,15 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
       gamI = SqrtMeanInverse(t(gam))
       gamI_dev = gradient(gamI, 1/(M-1))
 
-      mq[,r+1] = approx(time,mq[,r],xout=(time[length(time)]-time[1])*gamI +
+      mq[,r+1] = stats::approx(time,mq[,r],xout=(time[length(time)]-time[1])*gamI +
                           time[1])$y*sqrt(gamI_dev)
 
       for (k in 1:N){
-        q[,k,r+1] = approx(time,q[,k,r],xout=(time[length(time)]-time[1])*gamI +
+        q[,k,r+1] = stats::approx(time,q[,k,r],xout=(time[length(time)]-time[1])*gamI +
                              time[1])$y*sqrt(gamI_dev)
-        f[,k,r+1] = approx(time,f[,k,r],xout=(time[length(time)]-time[1])*gamI +
+        f[,k,r+1] = stats::approx(time,f[,k,r],xout=(time[length(time)]-time[1])*gamI +
                              time[1])$y
-        gam[k,] = approx(time,gam[k,],xout=(time[length(time)]-time[1])*gamI +
+        gam[k,] = stats::approx(time,gam[k,],xout=(time[length(time)]-time[1])*gamI +
                            time[1])$y
       }
     }
@@ -238,24 +238,24 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
     fn = f[,,r+1]
     qn = q[,,r+1]
     q0 = q[,,1]
-    mean_f0 = rowMeans(f[,,1]);
-    std_f0 = apply(f[,,1], 1, sd)
+    mean_f0 = rowMeans(f[,,1])
+    std_f0 = apply(f[,,1], 1, stats::sd)
     mean_fn = rowMeans(fn)
-    std_fn = apply(fn, 1, sd)
+    std_fn = apply(fn, 1, stats::sd)
     mqn = mq[,r+1]
     if (method==1){
       fmean = mean(f0[1,])+cumtrapz(time,mqn*abs(mqn));
     } else {
-      fmean = median(f0[1,])+cumtrapz(time,mqn*abs(mqn));
+      fmean = stats::median(f0[1,])+cumtrapz(time,mqn*abs(mqn));
     }
     gam = t(gam)
 
     fgam = matrix(0,M,N)
     for (ii in 1:N){
-        fgam[,ii] = approx(time,fmean,xout=(time[length(time)]-time[1])*gam[,ii] +
+        fgam[,ii] = stats::approx(time,fmean,xout=(time[length(time)]-time[1])*gam[,ii] +
             time[1])$y
     }
-    var_fgam = apply(fgam,1,var)
+    var_fgam = apply(fgam,1,stats::var)
 
     orig.var = trapz(time,std_f0^2)
     amp.var = trapz(time,std_fn^2)
@@ -271,9 +271,7 @@ time_warping <- function(f, time, lambda = 0, pen="roughness", method = "mean",
         plot(out)
     }
 
-    if (parallel){
-        stopCluster(cl)
-    }
+    if (parallel) parallel::stopCluster(cl)
 
     return(out)
 

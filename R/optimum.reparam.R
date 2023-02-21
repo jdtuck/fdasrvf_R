@@ -15,8 +15,8 @@
 #'   the 1st SRSF is evaluated.
 #' @param lambda A numeric value specifying the amount of warping. Defaults to
 #'   `0.0`.
-#' @param pen alignment penalty (default="roughness") options are 
-#'   second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+#' @param pen alignment penalty (default="roughness") options are
+#'   second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 #'   norm from id ("l2gam"), srvf norm from id ("l2psi")
 #' @param method A string specifying the optimization method. Choices are
 #'   `"DP"`, `"DPo"`, `"SIMUL"`,`"DP2"` or `"RBFGS"`. Defaults to `"DP"`.
@@ -54,7 +54,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
   pen <- pmatch(pen, c("roughness", "l2gam", "l2psi", "geodesic")) # 1 - roughness, 2 - l2gam, 3 - l2psi, 4 - geodesic
 	if (is.na(pen))
     stop("invalid penalty selection")
-  
+
   M <- length(T1)
   stopifnot(length(T2) == M)
 
@@ -93,7 +93,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
       )
       G <- ret$G[1:ret$size]
       Tf <- ret$T[1:ret$size]
-      gam0 <- approx(Tf, G, xout = T2)$y
+      gam0 <- stats::approx(Tf, G, xout = T2)$y
     },
     DPo = {
       gam0 <- .Call(

@@ -23,9 +23,9 @@ apply_gam_to_gam <- function(gamnew, gam){
         } else {
             grid.list<- list(x=Ut, y=Vt)
             obj<-list(x=U, y=V, z=gam[,,i])
-            gam_tmp[,,i] = interp.surface.grid(obj, grid.list)$z
+            gam_tmp[,,i] = fields::interp.surface.grid(obj, grid.list)$z
             obj<-list(x=U, y=V, z=gamnew[,,i])
-            gam_new_tmp[,,i] = interp.surface.grid(obj, grid.list)$z
+            gam_new_tmp[,,i] = fields::interp.surface.grid(obj, grid.list)$z
         }
 
     }
@@ -39,7 +39,7 @@ apply_gam_to_gam <- function(gamnew, gam){
         } else {
             grid.list<- cbind(x2, y2)
             obj<-list(x=Ut, y=Vt, z=gam_new_tmp[,,i])
-            tmp = interp.surface(obj, grid.list)
+            tmp = fields::interp.surface(obj, grid.list)
         }
         gam_cum_tmp[,,i] = matrix(tmp,nrow=mt,byrow=F)
     }
@@ -51,7 +51,7 @@ apply_gam_to_gam <- function(gamnew, gam){
         } else {
             grid.list<- list(x=U, y=V)
             obj<-list(x=Ut, y=Vt, z=gam_cum_tmp[,,i])
-            gam_tmp[,,i] = interp.surface.grid(obj, grid.list)$z
+            gam_tmp[,,i] = fields::interp.surface.grid(obj, grid.list)$z
         }
     }
 
@@ -80,7 +80,7 @@ apply_gam_to_imag <- function(img, gam){
         } else {
             grid.list<- cbind(x2, y2)
             obj<-list(x=U, y=V, z=img)
-            tmp = interp.surface(obj, grid.list)
+            tmp = fields::interp.surface(obj, grid.list)
         }
         img_new = matrix(tmp,nrow=m,byrow=F)
     } else {
@@ -90,7 +90,7 @@ apply_gam_to_imag <- function(img, gam){
             } else {
                 grid.list<- cbind(x2, y2)
                 obj<-list(x=U, y=V, z=img[,,i])
-                tmp = interp.surface(obj, grid.list)
+                tmp = fields::interp.surface(obj, grid.list)
             }
             img_new[,,i] = matrix(tmp,nrow=m,byrow=F)
         }
@@ -113,7 +113,7 @@ apply_gam_gamid <- function(gamid, gaminc){
         } else {
             grid.list<- cbind(x2, y2)
             obj<-list(x=U, y=V, z=gamid[,,i])
-            tmp = interp.surface(obj, grid.list)
+            tmp = fields::interp.surface(obj, grid.list)
         }
         gam_cum[,,i] = matrix(tmp,nrow=m,byrow=F)
     }

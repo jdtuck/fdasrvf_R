@@ -59,7 +59,7 @@ jointFPCA <- function(warp_data, no, id=round(length(warp_data$time)/2), C=NULL,
 
         mu_g <- rowMeans(g)
 
-        K <- cov(t(g))
+        K <- stats::cov(t(g))
         out.K <- svd(K, nu=m, nv=m)
         s <- out.K$d
         U <- out.K$u
@@ -100,7 +100,7 @@ jointFPCA <- function(warp_data, no, id=round(length(warp_data$time)/2), C=NULL,
 
     m <- no
     if (is.null(C))
-        C <- optimize(findC, c(0,1e4),qn=qn1,vec=vec,q0=q0,m=m)$minimum
+        C <- stats::optimize(findC, c(0,1e4),qn=qn1,vec=vec,q0=q0,m=m)$minimum
 
     # Final PCA ---------------------------------------------------------------
     out.pca <- jointfPCAd(qn1, vec, C, m=m)

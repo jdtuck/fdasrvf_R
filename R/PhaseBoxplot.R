@@ -27,7 +27,6 @@
 #'
 #' @export
 #' @examples
-#' data(simu_warp_median)
 #' out <- PhaseBoxplot(simu_warp_median, showplot = FALSE)
 PhaseBoxplot <- function(warp_median, alpha=.05, kp=1, showplot=TRUE){
   gam <- warp_median$gam

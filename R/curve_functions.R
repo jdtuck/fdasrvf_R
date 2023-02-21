@@ -157,7 +157,7 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
     n = nrow(beta1)
     T1 = ncol(beta1)
     q1 = curve_to_q(beta1)$q
-    
+
     scl = 4
     minE = 1000
     if (mode=="C"){
@@ -171,7 +171,7 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
             beta2n = shift_f(beta2, scl*ctr)
         } else {
             beta2n = beta2
-        } 
+        }
         out = find_best_rotation(beta1, beta2n)
         beta2n = out$q2new
         q2n = curve_to_q(beta2n)$q
@@ -235,7 +235,7 @@ find_rotation_seed_unqiue <- function(q1, q2, mode="O"){
             q2n = shift_f(q2, scl*ctr)
         } else {
             q2n = q2
-        } 
+        }
         out = find_best_rotation(q1, q2n)
         q2n = out$q2new
 
@@ -308,7 +308,7 @@ group_action_by_gamma <- function(q, gamma){
     timet = seq(0, 1, length.out = T1)
 
     for (j in 1:n){
-        qn[j,] = spline(timet, q[j,], xout=gamma)$y * sqrt(gammadot)
+        qn[j,] = stats::spline(timet, q[j,], xout=gamma)$y * sqrt(gammadot)
     }
 
     qn = qn/sqrt(innerprod_q2(qn,qn))
@@ -324,7 +324,7 @@ group_action_by_gamma_coord <- function(f, gamma){
     timet = seq(0, 1, length.out = T1)
 
     for (j in 1:n){
-        fn[j,] = spline(timet, f[j,], xout=gamma)$y
+        fn[j,] = stats::spline(timet, f[j,], xout=gamma)$y
     }
 
     return(fn)

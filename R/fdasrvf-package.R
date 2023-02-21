@@ -7,16 +7,16 @@
 #' @name fdasrvf
 #'
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
-#'   May 2011. Registration of functional data using fisher-rao metric,
+#'   May 2011. Registration of functional data using Fisher-Rao metric,
 #'   arXiv:1103.3817v2.
-#' @references Tucker, J. D., Wu, W., Srivastava, A., Generative Models for
-#'   Function Data using Phase and Amplitude Separation, Computational
+#' @references Tucker, J. D., Wu, W., Srivastava, A., Generative models for
+#'   functional data using phase and amplitude separation, Computational
 #'   Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
-#' @references J. D. Tucker, W. Wu, and A. Srivastava, ``Phase-Amplitude
-#'   Separation of Proteomics Data Using Extended Fisher-Rao Metric," Electronic
+#' @references J. D. Tucker, W. Wu, and A. Srivastava, Phase-amplitude
+#'   separation of proteomics data using extended Fisher-Rao metric, Electronic
 #'   Journal of Statistics, Vol 8, no. 2. pp 1724-1733, 2014.
 #' @references J. D. Tucker, W. Wu, and A. Srivastava, ``Analysis of signals
-#'   under compositional noise With applications to SONAR data," IEEE Journal of
+#'   under compositional noise with applications to SONAR data," IEEE Journal of
 #'   Oceanic Engineering, Vol 29, no. 2. pp 318-330, Apr 2014.
 #' @references Tucker, J. D. 2014, Functional Component Analysis and Regression
 #'   using Elastic Methods. Ph.D. Thesis, Florida State University.
@@ -52,15 +52,7 @@
 #'
 #' @docType package
 #' @useDynLib fdasrvf, .registration=TRUE
-#' @import foreach mvtnorm matrixcalc splines parallel doParallel Rcpp fields lpSolve
-#' @importFrom Matrix sparseMatrix as.matrix
-#' @importFrom graphics layout legend matplot plot title lines image plot.new
-#' @importFrom grDevices rainbow
-#' @importFrom coda traceplot mcmc
-#' @importFrom viridisLite viridis
-#' @importFrom stats approx cov optim predict quantile rnorm runif sd smooth.spline var spline median rgamma optimize
-#' @importFrom utils setTxtProgressBar txtProgressBar
-#' @importFrom tolerance mvtol.region
-#' @importFrom methods is
+#' @importFrom Rcpp sourceCpp
+#' @importFrom foreach %dopar%
 #' @aliases fdasrvf fdasrvf-package
 NULL

@@ -35,11 +35,11 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
                                cores=2){
 
   if (parallel){
-    cl = makeCluster(cores)
-    registerDoParallel(cl)
+    cl = parallel::makeCluster(cores)
+    doParallel::registerDoParallel(cl)
   } else
   {
-    registerDoSEQ()
+    foreach::registerDoSEQ()
   }
 
   binsize = mean(diff(time))
@@ -54,7 +54,7 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
 
   # Create B-Spline Basis if none provided
   if (is.null(B)){
-    B = bs(time, df=df, degree=4, intercept=TRUE)
+    B = splines::bs(time, df=df, degree=4, intercept=TRUE)
   }
   Nb = ncol(B)
 
@@ -79,7 +79,7 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
     fn = matrix(0, M, N)
     qn = matrix(0, M, N)
     for (ii in 1:N){
-      fn[,ii] = approx(time,f[,ii],xout=(time[length(time)]-time[1])*gam[,ii] + time[1])$y
+      fn[,ii] = stats::approx(time,f[,ii],xout=(time[length(time)]-time[1])*gam[,ii] + time[1])$y
       qn[,ii] = f_to_srvf(fn[,ii], time)
     }
 
@@ -115,7 +115,7 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
     SSE[itr] = sum((y-alpha-int_X)^2)
 
     # find gamma
-    gamma_new<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
+    gamma_new<-foreach::foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
       gam = regression_warp(beta, time, q[,k], y[k], alpha)
     }
 
@@ -131,21 +131,19 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
   # last step with centering of gam
   gamI = SqrtMeanInverse(t(gam))
   gamI_dev = gradient(gamI, 1/(M-1))
-  beta = approx(time,beta,xout=(time[length(time)]-time[1])*gamI +
+  beta = stats::approx(time,beta,xout=(time[length(time)]-time[1])*gamI +
                       time[1])$y*sqrt(gamI_dev)
 
   for (k in 1:N){
-    qn[,k] = approx(time,qn[,k],xout=(time[length(time)]-time[1])*gamI +
+    qn[,k] = stats::approx(time,qn[,k],xout=(time[length(time)]-time[1])*gamI +
                          time[1])$y*sqrt(gamI_dev)
-    fn[,k] = approx(time,fn[,k],xout=(time[length(time)]-time[1])*gamI +
+    fn[,k] = stats::approx(time,fn[,k],xout=(time[length(time)]-time[1])*gamI +
                          time[1])$y
-    gam[,k] = approx(time,gam[,k],xout=(time[length(time)]-time[1])*gamI +
+    gam[,k] = stats::approx(time,gam[,k],xout=(time[length(time)]-time[1])*gamI +
                        time[1])$y
   }
 
-  if (parallel){
-    stopCluster(cl)
-  }
+  if (parallel) parallel::stopCluster(cl)
 
   return(list(alpha=alpha, beta=beta, fn=fn, qn=qn, gamma=gam, q=q, B=B,
               b=b[2:length(b)], SSE=SSE[1:itr], mode='linear')  )

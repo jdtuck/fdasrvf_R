@@ -65,7 +65,7 @@ elastic.mlpcr.regression <- function(f, y, time, pca.method="combined", no=5,
     Phi[,2:(no+1)] <- out.pca$coef
     # Find alpha and beta using l_bfgs
     b0 <- rep(0,m*(no+1))
-    out1 <- optim(b0, mlogit_loss, gr = mlogit_gradient, Phi, Y,
+    out1 <- stats::optim(b0, mlogit_loss, gr = mlogit_gradient, Phi, Y,
                   method = "BFGS", control = list(maxit=200,pgtol=1e-10))
     b <- out1$par
 

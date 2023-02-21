@@ -30,7 +30,7 @@ outlier.detection <- function(q, time, mq, k = 1.5){
     for (kk in 1:N)
         ds[kk] = sqrt(sum(simpson(time, (mq-q[,kk])^2)))
 
-    quartile_range = quantile(ds)
+    quartile_range = stats::quantile(ds)
     IQR = quartile_range[4] - quartile_range[2]
 
     thresh = quartile_range[4] + k * IQR

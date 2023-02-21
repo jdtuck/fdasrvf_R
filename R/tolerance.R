@@ -36,26 +36,26 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
   out.med <- time_warping(f, time, method="median", parallel = parallel, showplot = F)
 
   if (parallel){
-    cores <- detectCores()
+    cores <- max(parallel::detectCores() - 1, 1)
     if (cores > 40){
       cores = 32
     }
-    cl <- makeCluster(cores, outfile = "")
-    registerDoParallel(cl)
+    cl <- parallel::makeCluster(cores, outfile = "")
+    doParallel::registerDoParallel(cl)
   } else {
-    registerDoSEQ()
+    foreach::registerDoSEQ()
   }
 
   # Caclculate CI -----------------------------------------------------------
   # a% tolerance bound with p% coverage
   cat("Bootstrap Sampling\n")
   k = 1
-  pb <- txtProgressBar(0, B, style = 3)
-  outfor <- foreach(k=1:B, .combine=cbind, .packages=c('fdasrvf','mvtnorm')) %dopar% {
+  pb <- utils::txtProgressBar(0, B, style = 3)
+  outfor <- foreach::foreach(k=1:B, .combine=cbind, .packages=c('fdasrvf','mvtnorm')) %dopar% {
     samples <- joint_gauss_model(out.med, Nsamp, no)
     amp <- AmplitudeBoxplot(samples, alpha=1-p, showplot=F)
     ph <- PhaseBoxplot(samples, alpha=1-p, showplot=F)
-    setTxtProgressBar(pb, k)
+    utils::setTxtProgressBar(pb, k)
     list(amp$Q3a,amp$Q1a,ph$Q3a,ph$Q1a)
   }
   bootLwr.amp <- unlist(outfor[1,])
@@ -75,8 +75,7 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
   boot.out$qn <- boot.amp.q
   boot.out$gam <- boot.ph
 
-  if (parallel)
-    stopCluster(cl)
+  if (parallel) parallel::stopCluster(cl)
 
   # Tolerance Bounds --------------------------------------------------------
   amp <- AmplitudeBoxplot(boot.out, alpha=a, showplot=F)
@@ -123,7 +122,7 @@ pcaTB <- function(f, time, m = 4, B = 100000, a = 0.05, p = 0.99){
   # Calcualte TB
   # Krishnamoorthy, K. and Mondal, S. (2006), Improved Tolerance Factors for Multivariate Normal
   # Distributions, Communications in Statistics - Simulation and Computation, 35, 461–478.
-  tol <- mvtol.region(x = out.pca$coef, alpha = a, P = p, B = B)
+  tol <- tolerance::mvtol.region(x = out.pca$coef, alpha = a, P = p, B = B)
 
   return(list(pca=out.pca, align=out, tol=tol))
 }

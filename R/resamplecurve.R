@@ -26,7 +26,7 @@ resamplecurve <- function(x, N=100, mode="O"){
     newdel = seq(0,1,length.out=N)
 
     for (r in 1:n){
-        xn[r,] = spline(cumdel,x[r,],xout=newdel)$y
+        xn[r,] = stats::spline(cumdel,x[r,],xout=newdel)$y
     }
 
     if (mode=="C"){
