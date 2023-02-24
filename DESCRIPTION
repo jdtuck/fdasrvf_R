@@ -13,7 +13,6 @@ Description: Performs alignment, PCA, and modeling of multidimensional and
             amplitude separation.
 License: GPL-3
 LazyData: TRUE
-SystemRequirements: C++11
 Imports:
     Rcpp (>= 0.12.1),
     coda,
