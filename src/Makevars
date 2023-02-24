@@ -25,8 +25,6 @@ OBJECTS = $(SOURCES:.cpp=.o)
 PKG_CPPFLAGS = -I. -Igropt/incl/ -Ifdaqmap/incl/
 PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 
-CXX_STD = CXX11
-
 all: $(SHLIB)
 
 #$(OBJECTS): clean
