@@ -3,8 +3,16 @@ Type: Package
 Title: Elastic Functional Data Analysis
 Version: 2.0.0
 Date: 2023-02-19
-Author: J. Derek Tucker <jdtuck@sandia.gov>
-Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
+Authors@R: c(
+    person(given = "J. Derek", 
+           family = "Tucker", 
+           role = c("aut", "cre"), 
+           email = "jdtuck@sandia.gov"),
+    person(given = "Aymeric",
+           family = "Stamm",
+           role = "ctb",
+           email = "aymeric.stamm@math.cnrs.fr",
+           comment = c(ORCID = "0000-0002-8725-3654")))
 Description: Performs alignment, PCA, and modeling of multidimensional and 
     unidimensional functions using the square-root velocity framework 
     (Srivastava et al., 2011 <arXiv:1103.3817> and Tucker et al., 2014 
@@ -22,9 +30,7 @@ Imports:
     lpSolve,
     Matrix,
     mvtnorm,
-    parallel,
     Rcpp,
-    splines,
     tolerance,
     viridisLite
 Suggests: 
@@ -44,3 +50,5 @@ Roxygen: list(markdown = TRUE)
 LinkingTo: 
     Rcpp,
     RcppArmadillo
+URL: https://github.com/jdtuck/fdasrvf_R
+BugReports: https://github.com/jdtuck/fdasrvf_R/issues
