@@ -11,7 +11,6 @@ time_warping(
   penalty_method = c("roughness", "geodesic", "norm"),
   centroid_type = c("mean", "median"),
   center_warpings = TRUE,
-  show_plot = TRUE,
   smooth_data = FALSE,
   sparam = 25L,
   parallel = FALSE,
@@ -40,9 +39,6 @@ Choices are \code{"mean"} or \code{"median"}. Defaults to \code{"mean"}.}
 \item{center_warpings}{A boolean specifying whether to center the estimated
 warping functions. Defaults to \code{TRUE}.}
 
-\item{show_plot}{A boolean specifying whether to display plots of original
-and wrapped functions. Defaults to \code{TRUE}.}
-
 \item{smooth_data}{A boolean specifying whether to smooth curves using a box
 filter. Defaults to \code{FALSE}.}
 
@@ -61,30 +57,31 @@ Defaults to \code{20L}.}
 \value{
 An object of class \code{fdawarp} which is a list with the following
 components:
-
-\code{f0}: a numeric matrix of shape \eqn{M \times N} storing the original sample
+\itemize{
+\item \code{f0}: a numeric matrix of shape \eqn{M \times N} storing the original sample
 of \eqn{N} functions observed on a grid of size \eqn{M};
-\code{time}: a numeric vector of length \eqn{M} storing the original grid;
-\code{fn}: a numeric matrix of the same shape as \code{f0} storing the aligned
+\item \code{time}: a numeric vector of length \eqn{M} storing the original grid;
+\item \code{fn}: a numeric matrix of the same shape as \code{f0} storing the aligned
 functions;
-\code{qn}: a numeric matrix of the same shape as \code{f0} storing the aligned SRSFs;
-\code{q0}: a numeric matrix of the same shape as \code{f0} storing the original SRSFs;
-\code{fmean}: a numeric vector of length \eqn{M} storing the mean or median curve;
-\code{mqn}: a numeric vector of length \eqn{M} storing the mean or median SRSF;
-\code{gam}: a numeric matrix of the same shape as \code{f0} storing the estimated
+\item \code{qn}: a numeric matrix of the same shape as \code{f0} storing the aligned SRSFs;
+\item \code{q0}: a numeric matrix of the same shape as \code{f0} storing the original SRSFs;
+\item \code{fmean}: a numeric vector of length \eqn{M} storing the mean or median curve;
+\item \code{mqn}: a numeric vector of length \eqn{M} storing the mean or median SRSF;
+\item \code{gam}: a numeric matrix of the same shape as \code{f0} storing the estimated
 warping functions;
-\code{orig.var}: a numeric value storing the variance of the original sample;
-\code{amp.var}: a numeric value storing the variance in amplitude of the aligned
+\item \code{orig.var}: a numeric value storing the variance of the original sample;
+\item \code{amp.var}: a numeric value storing the variance in amplitude of the aligned
 sample;
-\code{phase.var}: a numeric value storing the variance in phase of the aligned
+\item \code{phase.var}: a numeric value storing the variance in phase of the aligned
 sample;
-\code{qun}: a numeric vector of maximum length \code{max_iter + 2} storing the values
+\item \code{qun}: a numeric vector of maximum length \code{max_iter + 2} storing the values
 of the cost function after each iteration;
-\code{lambda}: the input parameter \code{lambda} which specifies the elasticity;
-\code{method}: the input centroid type;
-\code{omethod}: the input optimization method;
-\code{gamI}: the inverse of the mean estimated warping function;
-\code{rsamps}: TO DO.
+\item \code{lambda}: the input parameter \code{lambda} which specifies the elasticity;
+\item \code{method}: the input centroid type;
+\item \code{omethod}: the input optimization method;
+\item \code{gamI}: the inverse of the mean estimated warping function;
+\item \code{rsamps}: TO DO.
+}
 }
 \description{
 This function aligns a collection of \eqn{1}-dimensional curves that are

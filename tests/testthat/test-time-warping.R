@@ -2,7 +2,6 @@ test_that("The function `time_warping()` works", {
   out <- time_warping(
     f = simu_data$f,
     time = simu_data$time,
-    show_plot = FALSE,
     max_iter = 1
   )
   expect_equal(length(out), 17)
@@ -14,7 +13,7 @@ test_that("The function `time_warping()` works", {
   expect_equal(dim(out$fn), c(101, 21))
   expect_equal(dim(out$qn), c(101, 21))
   expect_equal(dim(out$q0), c(101, 21))
-  expect_equal(dim(out$fmean), c(101, 1))
+  expect_equal(length(out$fmean), 101)
   expect_equal(length(out$mqn), 101)
   expect_equal(dim(out$gam), c(101, 21))
   expect_equal(length(out$orig.var), 1)

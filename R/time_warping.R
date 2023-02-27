@@ -17,8 +17,6 @@
 #'   Choices are `"mean"` or `"median"`. Defaults to `"mean"`.
 #' @param center_warpings A boolean specifying whether to center the estimated
 #'   warping functions. Defaults to `TRUE`.
-#' @param show_plot A boolean specifying whether to display plots of original
-#'   and wrapped functions. Defaults to `TRUE`.
 #' @param smooth_data A boolean specifying whether to smooth curves using a box
 #'   filter. Defaults to `FALSE`.
 #' @param sparam An integer value specifying the number of times to apply the
@@ -33,29 +31,29 @@
 #' @return An object of class `fdawarp` which is a list with the following
 #'   components:
 #'
-#' `f0`: a numeric matrix of shape \eqn{M \times N} storing the original sample
+#' - `f0`: a numeric matrix of shape \eqn{M \times N} storing the original sample
 #' of \eqn{N} functions observed on a grid of size \eqn{M};
-#' `time`: a numeric vector of length \eqn{M} storing the original grid;
-#' `fn`: a numeric matrix of the same shape as `f0` storing the aligned
+#' - `time`: a numeric vector of length \eqn{M} storing the original grid;
+#' - `fn`: a numeric matrix of the same shape as `f0` storing the aligned
 #' functions;
-#' `qn`: a numeric matrix of the same shape as `f0` storing the aligned SRSFs;
-#' `q0`: a numeric matrix of the same shape as `f0` storing the original SRSFs;
-#' `fmean`: a numeric vector of length \eqn{M} storing the mean or median curve;
-#' `mqn`: a numeric vector of length \eqn{M} storing the mean or median SRSF;
-#' `gam`: a numeric matrix of the same shape as `f0` storing the estimated
+#' - `qn`: a numeric matrix of the same shape as `f0` storing the aligned SRSFs;
+#' - `q0`: a numeric matrix of the same shape as `f0` storing the original SRSFs;
+#' - `fmean`: a numeric vector of length \eqn{M} storing the mean or median curve;
+#' - `mqn`: a numeric vector of length \eqn{M} storing the mean or median SRSF;
+#' - `gam`: a numeric matrix of the same shape as `f0` storing the estimated
 #' warping functions;
-#' `orig.var`: a numeric value storing the variance of the original sample;
-#' `amp.var`: a numeric value storing the variance in amplitude of the aligned
+#' - `orig.var`: a numeric value storing the variance of the original sample;
+#' - `amp.var`: a numeric value storing the variance in amplitude of the aligned
 #' sample;
-#' `phase.var`: a numeric value storing the variance in phase of the aligned
+#' - `phase.var`: a numeric value storing the variance in phase of the aligned
 #' sample;
-#' `qun`: a numeric vector of maximum length `max_iter + 2` storing the values
+#' - `qun`: a numeric vector of maximum length `max_iter + 2` storing the values
 #' of the cost function after each iteration;
-#' `lambda`: the input parameter `lambda` which specifies the elasticity;
-#' `method`: the input centroid type;
-#' `omethod`: the input optimization method;
-#' `gamI`: the inverse of the mean estimated warping function;
-#' `rsamps`: TO DO.
+#' - `lambda`: the input parameter `lambda` which specifies the elasticity;
+#' - `method`: the input centroid type;
+#' - `omethod`: the input optimization method;
+#' - `gamI`: the inverse of the mean estimated warping function;
+#' - `rsamps`: TO DO.
 #'
 #' @keywords srsf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
@@ -75,7 +73,6 @@ time_warping <- function(f, time,
                          penalty_method = c("roughness", "geodesic", "norm"),
                          centroid_type = c("mean", "median"),
                          center_warpings = TRUE,
-                         show_plot = TRUE,
                          smooth_data = FALSE,
                          sparam = 25L,
                          parallel = FALSE,
@@ -102,11 +99,6 @@ time_warping <- function(f, time,
   w <- 0.0
 
   if (smooth_data) f <- smooth.data(f, sparam)
-
-  if (show_plot) {
-    graphics::matplot(time, f, type = "l")
-    graphics::title(main = "Original data")
-  }
 
   # Compute q-function of the functional data
   tmp <- gradient.spline(f, binsize, smooth_data)
@@ -343,8 +335,6 @@ time_warping <- function(f, time,
   )
 
   class(out) <- "fdawarp"
-
-  if (show_plot) plot(out)
 
   if (parallel) parallel::stopCluster(cl)
 
