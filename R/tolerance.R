@@ -33,7 +33,12 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
   M <- nrow(f)
   N <- ncol(f)
   # Align Data --------------------------------------------------------------
-  out.med <- time_warping(f, time, method="median", parallel = parallel, showplot = F)
+  out.med <- time_warping(
+    f, time,
+    centroid_type = "median",
+    parallel = parallel,
+    show_plot = FALSE
+  )
 
   if (parallel){
     cores <- max(parallel::detectCores() - 1, 1)
@@ -114,7 +119,7 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
 #' }
 pcaTB <- function(f, time, m = 4, B = 100000, a = 0.05, p = 0.99){
   # Align Data --------------------------------------------------------------
-  out <- time_warping(f, time, parallel = T, showplot = F)
+  out <- time_warping(f, time, parallel = TRUE, show_plot = FALSE)
 
   # Calculate PCA -----------------------------------------------------------
   out.pca <- jointFPCA(out, m, showplot=F)

@@ -45,7 +45,7 @@ plot.ampbox <- function(x, ...){
   allparts<-c(part1,part2[2:100],part3[2:100],part4[2:100],part5[2:100],part6[2:100])
 
   if (requireNamespace("plot3Drgl", quietly = TRUE)) {
-    p=plot3D::persp3D(x=time,y=allparts,z=Fs2,col= viridisLite::viridis(128),plot=F,main="Amplitude Surface Plot",ticktype="detailed",box=F)+
+    p <- plot3D::persp3D(x=time,y=allparts,z=Fs2,col= viridisLite::viridis(128),plot=F,main="Amplitude Surface Plot",ticktype="detailed",box=F)+
       plot3D::lines3D(x=time,y=rep(0,M),z=fmedian,col="black",lwd=6,add=T,plot=F)+
       plot3D::lines3D(x=time,y=rep(-d1,M),z=Q1,col="blue",lwd=6,add=T,plot=F)+
       plot3D::lines3D(x=time,y=rep(-d1-d1a,M),z=Q1a,col="green",lwd=6,add=T,plot=F)+

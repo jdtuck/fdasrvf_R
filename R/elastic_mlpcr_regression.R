@@ -47,7 +47,7 @@ elastic.mlpcr.regression <- function(f, y, time, pca.method="combined", no=5,
 
 
     # Align Data --------------------------------------------------------------
-    out <- time_warping(f, time, parallel = T, showplot = F)
+    out <- time_warping(f, time, parallel = TRUE, show_plot = FALSE)
 
 
     # Calculate PCA -----------------------------------------------------------
