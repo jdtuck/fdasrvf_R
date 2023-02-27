@@ -40,8 +40,7 @@
 #' functions;
 #' `qn`: a numeric matrix of the same shape as `f0` storing the aligned SRSFs;
 #' `q0`: a numeric matrix of the same shape as `f0` storing the original SRSFs;
-#' `fmean`: a numeric matrix of shape \eqn{M \times 1} storing the mean or
-#' median curve;
+#' `fmean`: a numeric vector of length \eqn{M} storing the mean or median curve;
 #' `mqn`: a numeric vector of length \eqn{M} storing the mean or median SRSF;
 #' `gam`: a numeric matrix of the same shape as `f0` storing the estimated
 #' warping functions;
@@ -50,13 +49,13 @@
 #' sample;
 #' `phase.var`: a numeric value storing the variance in phase of the aligned
 #' sample;
-#' `qun`: a numeric vector of length `max_iter + 1` storing the values of the
-#' cost function at each iteration;
-#' `lambda`:
-#' `method`:
-#' `omethod`:
-#' `gamI`:
-#' `rsamps`:
+#' `qun`: a numeric vector of maximum length `max_iter + 2` storing the values
+#' of the cost function after each iteration;
+#' `lambda`: the input parameter `lambda` which specifies the elasticity;
+#' `method`: the input centroid type;
+#' `omethod`: the input optimization method;
+#' `gamI`: the inverse of the mean estimated warping function;
+#' `rsamps`: TO DO.
 #'
 #' @keywords srsf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
@@ -142,19 +141,23 @@ time_warping <- function(f, time,
 
   ds <- rep(0, max_iter + 2)
   ds[1] <- Inf
-  qun <- rep(0, max_iter)
+
   tmp <- matrix(0, nrow = M, ncol = max_iter + 2)
   tmp[, 1] <- mq
   mq <- tmp
+
   tmp <- matrix(0, nrow = M, ncol = max_iter + 2)
   tmp[, 1] <- mf
   mf <- tmp
+
   tmp <- array(0, dim = c(M, N, max_iter + 2))
   tmp[, , 1] <- f
   f <- tmp
+
   tmp <- array(0, dim = c(M, N, max_iter + 2))
   tmp[, , 1] <- q
   q <- tmp
+
   qun <- rep(0, max_iter + 2)
   qun[1] <- pvecnorm(mq[, 1] - q[, min_ind, 1], 2) / pvecnorm(q[, min_ind, 1], 2)
   stp <- .3
@@ -217,8 +220,6 @@ time_warping <- function(f, time,
       # compute the mean of the matched function
       mq[, r + 1] <- rowMeans(q[, , r + 1])
       mf[, r + 1] <- rowMeans(f[, , r + 1])
-
-      qun[r + 1] <- pvecnorm(mq[, r + 1] - mq[, r], 2) / pvecnorm(mq[, r], 2)
     }
 
     if (centroid_type == "median") {
@@ -236,11 +237,11 @@ time_warping <- function(f, time,
       mq[, r + 1] <- mq[, r] + stp * vbar
       mf[, r + 1] <- stats::median(f[1, , 1]) +
         cumtrapz(time, mq[, r + 1] * abs(mq[, r + 1]))
-
-      qun[r + 1] <- pvecnorm(mq[, r + 1] - mq[, r], 2) / pvecnorm(mq[, r], 2)
     }
 
-    if (qun[r + 1] < 1e-4 || r >= max_iter)
+    qun[r + 1] <- pvecnorm(mq[, r + 1] - mq[, r], 2) / pvecnorm(mq[, r], 2)
+
+    if (qun[r + 1] - qun[r] < 1.0e-4 * qun[r])
       break
   }
 
@@ -288,6 +289,8 @@ time_warping <- function(f, time,
         xout = (time[M] - time[1]) * gamI + time[1]
       )$y
     }
+
+    qun[r + 1] <- pvecnorm(mq[, r + 1] - mq[, r], 2) / pvecnorm(mq[, r], 2)
   }
 
   # Aligned data & stats
@@ -301,12 +304,11 @@ time_warping <- function(f, time,
   mqn <- mq[, r + 1]
 
   if (centroid_type == "mean")
-    fmean = mean(f0[1, ]) + cumtrapz(time, mqn * abs(mqn))
+    fmean = mean(f0[1, ]) + as.numeric(cumtrapz(time, mqn * abs(mqn)))
   else
-    fmean = stats::median(f0[1, ]) + cumtrapz(time, mqn * abs(mqn))
+    fmean = stats::median(f0[1, ]) + as.numeric(cumtrapz(time, mqn * abs(mqn)))
 
   gam <- t(gam)
-
   fgam <- matrix(0, M, N)
 
   for (n in 1:N)

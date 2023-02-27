@@ -61,20 +61,30 @@ Defaults to \code{20L}.}
 \value{
 An object of class \code{fdawarp} which is a list with the following
 components:
-\itemize{
-\item \code{f0}: original functions;
-\item \code{fn}: aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions
-with \eqn{N} samples;
-\item \code{qn}: aligned SRSFs - similar structure to fn;
-\item \code{q0}: original SRSF - similar structure to fn;
-\item \code{fmean}: function mean or median - vector of length \eqn{N};
-\item \code{mqn}: SRSF mean or median - vector of length \eqn{N};
-\item \code{gam}: warping functions - similar structure to fn;
-\item \code{orig.var}: Original Variance of Functions;
-\item \code{amp.var}: Amplitude Variance;
-\item \code{phase.var}: Phase Variance;
-\item \code{qun}: Cost function value.
-}
+
+\code{f0}: a numeric matrix of shape \eqn{M \times N} storing the original sample
+of \eqn{N} functions observed on a grid of size \eqn{M};
+\code{time}: a numeric vector of length \eqn{M} storing the original grid;
+\code{fn}: a numeric matrix of the same shape as \code{f0} storing the aligned
+functions;
+\code{qn}: a numeric matrix of the same shape as \code{f0} storing the aligned SRSFs;
+\code{q0}: a numeric matrix of the same shape as \code{f0} storing the original SRSFs;
+\code{fmean}: a numeric vector of length \eqn{M} storing the mean or median curve;
+\code{mqn}: a numeric vector of length \eqn{M} storing the mean or median SRSF;
+\code{gam}: a numeric matrix of the same shape as \code{f0} storing the estimated
+warping functions;
+\code{orig.var}: a numeric value storing the variance of the original sample;
+\code{amp.var}: a numeric value storing the variance in amplitude of the aligned
+sample;
+\code{phase.var}: a numeric value storing the variance in phase of the aligned
+sample;
+\code{qun}: a numeric vector of maximum length \code{max_iter + 2} storing the values
+of the cost function after each iteration;
+\code{lambda}: the input parameter \code{lambda} which specifies the elasticity;
+\code{method}: the input centroid type;
+\code{omethod}: the input optimization method;
+\code{gamI}: the inverse of the mean estimated warping function;
+\code{rsamps}: TO DO.
 }
 \description{
 This function aligns a collection of \eqn{1}-dimensional curves that are
