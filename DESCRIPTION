@@ -20,7 +20,6 @@ Description: Performs alignment, PCA, and modeling of multidimensional and
     analysis of functional data through phase and amplitude separation.
 License: GPL-3
 LazyData: TRUE
-SystemRequirements: C++11
 Imports:
     cli,
     coda,
