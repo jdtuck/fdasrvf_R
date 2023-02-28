@@ -16,7 +16,7 @@ test_that("`align_fPCA()` works", {
   expect_equal(dim(out$vfpca$f_pca), c(M, 2 * n_sd + 1, n_components))
   expect_equal(length(out$vfpca$latent), M + 1)
   expect_equal(dim(out$vfpca$coef), c(N, n_components))
-  expect_equal(dim(out$vfpca$U), c(M + 1, M + 1))
+  expect_equal(dim(out$vfpca$U), c(M + 1, n_components))
   expect_equal(length(out$Dx), 51)
   expect_snapshot(out)
 })

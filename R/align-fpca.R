@@ -298,8 +298,9 @@ align_fPCA <- function(f, time,
   m_new <- sign(fn[id, ]) * sqrt(abs(fn[id, ])) # scaled version
   mqn2 <- c(mq_new, mean(m_new))
   K <- stats::cov(t(rbind(qn, m_new)))
-  out <- svd(K)
+  out <- svd(K, nu = num_comp, nv = num_comp)
   s <- out$d
+  s[s < .Machine$double.eps] <- 0
   stdS <- sqrt(s)
   U <- out$u
 
