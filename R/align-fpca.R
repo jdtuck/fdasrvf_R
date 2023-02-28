@@ -236,17 +236,20 @@ align_fPCA <- function(f, time,
       Dx1[ii] <- Re(acos(acos_input))
     }
     Dx[r] <- max(Dx1)
+    if (Dx[r] < .Machine$double.eps) Dx[r] <- 0
 
-    if (abs(Dx[r] - Dx[r - 1]) < 1e-4 || r >= max_iter)
+    if (abs(Dx[r] - Dx[r - 1]) <= 1.0e-4 * Dx[r - 1])
       break
   }
+
+  print(Dx)
 
   # Aligned data & stats
   fn <- f[, , r]
   qn <- q[, , r]
   q0 <- q[, , 1]
   mean_f0 <- rowMeans(f[, , 1])
-  std_f0 = apply(f[, , 1], 1, stats::sd)
+  std_f0 <- apply(f[, , 1], 1, stats::sd)
   mqn <- mq[, r]
   gamf <- gam[, , 1]
   for (k in 2:r) {

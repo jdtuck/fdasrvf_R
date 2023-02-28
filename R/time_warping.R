@@ -236,8 +236,9 @@ time_warping <- function(f, time,
     }
 
     qun[r + 1] <- pvecnorm(mq[, r + 1] - mq[, r], 2) / pvecnorm(mq[, r], 2)
+    if (qun[r + 1] < .Machine$double.eps) qun[r + 1] <- 0
 
-    if (qun[r + 1] - qun[r] < 1.0e-4 * qun[r])
+    if (qun[r + 1] - qun[r] <= 1.0e-4 * qun[r])
       break
   }
 
