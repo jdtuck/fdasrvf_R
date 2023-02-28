@@ -7,8 +7,8 @@
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param mu vector of size \eqn{N} that f is aligned to
 #' @param lambda controls the elasticity (default = 0)
-#' @param pen alignment penalty (default="roughness") options are 
-#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+#' @param pen alignment penalty (default="roughness") options are
+#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 #' norm from id ("norm")
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
@@ -37,16 +37,16 @@
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
-multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness", 
+multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
                                      showplot = TRUE, smooth_data = FALSE, sparam = 25,
                                      parallel = FALSE, omethod = "DP", MaxItr = 20, iter=2000){
   if (parallel){
-    cores = detectCores()-1
-    cl = makeCluster(cores)
-    registerDoParallel(cl)
+    cores = max(parallel::detectCores() - 1, 1)
+    cl = parallel::makeCluster(cores)
+    doParallel::registerDoParallel(cl)
   } else
   {
-    registerDoSEQ()
+    foreach::registerDoSEQ()
   }
 
   cat(sprintf("lambda = %5.1f \n",lambda))
@@ -63,8 +63,8 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
   }
 
   if (showplot){
-    matplot(time,f,type="l")
-    title(main="Original data")
+    graphics::matplot(time,f,type="l")
+    graphics::title(main="Original data")
   }
 
   # Compute q-function of the functional data
@@ -78,7 +78,7 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
   k <- 1
 
   cat(sprintf("Aligning %d functions in SRSF space...\n",N))
-  outfor<-foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
+  outfor<-foreach::foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
     if (omethod=="expBayes"){
       gam <- pair_align_functions_expomap(mu, c(f[,k]), time, iter=iter)$gamma
       gam <- gam$y
@@ -89,7 +89,7 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
     }
 
     gam_dev = gradient(gam,1/(M-1))
-    f_temp = approx(time,f[,k],xout=(time[length(time)]-time[1])*gam +
+    f_temp = stats::approx(time,f[,k],xout=(time[length(time)]-time[1])*gam +
                       time[1])$y
     q_temp = f_to_srvf(f_temp,time)
     v <- q_temp - mq
@@ -123,9 +123,9 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
   # Aligned data & stats
   q0 = q
   mean_f0 = rowMeans(f)
-  std_f0 = apply(f, 1, sd)
+  std_f0 = apply(f, 1, stats::sd)
   mean_fn = rowMeans(fn)
-  std_fn = apply(fn, 1, sd)
+  std_fn = apply(fn, 1, stats::sd)
   mqn = mq
   fmean = mean(f0[1,])+cumtrapz(time,mqn*abs(mqn))
   gam = t(gam)
@@ -134,10 +134,10 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
 
   fgam = matrix(0,M,N)
   for (ii in 1:N){
-    fgam[,ii] = approx(time,fmean,xout=(time[length(time)]-time[1])*gam[,ii] +
+    fgam[,ii] = stats::approx(time,fmean,xout=(time[length(time)]-time[1])*gam[,ii] +
                          time[1])$y
   }
-  var_fgam = apply(fgam,1,var)
+  var_fgam = apply(fgam,1,stats::var)
 
   orig.var = trapz(time,std_f0^2)
   amp.var = trapz(time,std_fn^2)
@@ -153,10 +153,7 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
     plot(out)
   }
 
-  if (parallel){
-    stopCluster(cl)
-  }
+  if (parallel) parallel::stopCluster(cl)
 
   return(out)
-
 }

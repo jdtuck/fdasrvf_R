@@ -23,9 +23,9 @@
 #' )
 warp_f_gamma <- function(f, time, gamma, spl.int=FALSE){
     if (spl.int){
-      fnew <- spline(time,f,xout=(time[length(time)]-time[1])*gamma + time[1])$y
+      fnew <- stats::spline(time,f,xout=(time[length(time)]-time[1])*gamma + time[1])$y
     } else {
-      fnew <- approx(time,f,xout=(time[length(time)]-time[1])*gamma + time[1])$y
+      fnew <- stats::approx(time,f,xout=(time[length(time)]-time[1])*gamma + time[1])$y
     }
 
     return(fnew)

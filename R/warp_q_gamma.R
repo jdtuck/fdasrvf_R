@@ -22,10 +22,10 @@ warp_q_gamma <- function(q, time, gamma, spl.int=FALSE){
     M <- length(gamma);
     gam_dev <- gradient(gamma, 1/(M-1))
     if (spl.int){
-      qnew <- spline(time,q,xout=(time[length(time)]-time[1])*gamma +
+      qnew <- stats::spline(time,q,xout=(time[length(time)]-time[1])*gamma +
                     time[1])$y*sqrt(gam_dev)
     } else {
-      qnew <- approx(time,q,xout=(time[length(time)]-time[1])*gamma +
+      qnew <- stats::approx(time,q,xout=(time[length(time)]-time[1])*gamma +
                     time[1])$y*sqrt(gam_dev)
     }
 

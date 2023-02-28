@@ -65,7 +65,7 @@ function_mean_bayes <- function(f, time, times = 5, group = 1:dim(f)[2], showplo
     for (j in (1:n)){
       res <- dpcode(mu_5[row],mu_5,qt.matrix[,j],times,cut)
       match <- c(res$MatchIn2,m+1)
-      idy <- approx(c(row,m+1),match,method="linear",xout=1:m)$y
+      idy <- stats::approx(c(row,m+1),match,method="linear",xout=1:m)$y
       idy[idy>m] <- m
       scale <- sqrt(diff(match)*(1/times))
       scalevec <- rep(scale,each = times)
@@ -88,11 +88,11 @@ function_mean_bayes <- function(f, time, times = 5, group = 1:dim(f)[2], showplo
   revscalevec <- karcher.res$revscalevec
   invidy <- (karcher.res$invidy)[-(m+1)]
   invidy[invidy>=m] <- m
-  mu_5 <- revscalevec*(approx(seq(m),mu_5,xout=invidy)$y)
+  mu_5 <- revscalevec*(stats::approx(seq(m),mu_5,xout=invidy)$y)
   rescale <-  sqrt(m/sum((mu_5)^2))
   estimator <- rescale*mu_5
   reg.curve <- matrix(0,m+1,n)
-  for (j in 1:n) {reg.curve[,j] <- (spline(seq(0,m),f[,j],n=times*(m+1)-1)$y)[(rtmatrix[,j]-1)*times+1]}
+  for (j in 1:n) {reg.curve[,j] <- (stats::spline(seq(0,m),f[,j],n=times*(m+1)-1)$y)[(rtmatrix[,j]-1)*times+1]}
   crossmean <- apply(reg.curve,1,mean)
 
   if (showplot)
@@ -100,11 +100,11 @@ function_mean_bayes <- function(f, time, times = 5, group = 1:dim(f)[2], showplo
     plotl <- min(f)
     plotu <- max(f)
     plot(timet,reg.curve[,1],type="l",col=group[1],main="registered functions",ylab="",ylim=c(plotl-0.1*abs(plotl),plotu+0.1*abs(plotu)))
-    for ( j in 2:n){lines(timet,reg.curve[,j],col=group[j],lty=2,lwd=1.2)}
+    for ( j in 2:n){graphics::lines(timet,reg.curve[,j],col=group[j],lty=2,lwd=1.2)}
     plot(timet,crossmean,type="l",col="red",
          main="Cross sectional mean",ylab="",ylim=c(plotl-0.1*abs(plotl),plotu+0.1*abs(plotu)))
-    for ( j in 1:n){lines(timet,reg.curve[,j],col="grey")}
-    lines(timet,crossmean,col="red")
+    for ( j in 1:n){graphics::lines(timet,reg.curve[,j],col="grey")}
+    graphics::lines(timet,crossmean,col="red")
   }
   sumdist <- apply(dist.matrix,1,sum)
 

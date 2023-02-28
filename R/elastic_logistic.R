@@ -34,11 +34,11 @@ elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
                              cores=2){
 
   if (parallel){
-    cl = makeCluster(cores)
-    registerDoParallel(cl)
+    cl = parallel::makeCluster(cores)
+    doParallel::registerDoParallel(cl)
   } else
   {
-    registerDoSEQ()
+    foreach::registerDoSEQ()
   }
 
   binsize = mean(diff(time))
@@ -53,7 +53,7 @@ elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
 
   # Create B-Spline Basis if none provided
   if (is.null(B)){
-    B = bs(time, df=df, degree=4, intercept=TRUE)
+    B = splines::bs(time, df=df, degree=4, intercept=TRUE)
   }
   Nb = ncol(B)
 
@@ -72,7 +72,7 @@ elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
     fn = matrix(0, M, N)
     qn = matrix(0, M, N)
     for (ii in 1:N){
-      fn[,ii] = approx(time,f[,ii],xout=(time[length(time)]-time[1])*gam[,ii] + time[1])$y
+      fn[,ii] = stats::approx(time,f[,ii],xout=(time[length(time)]-time[1])*gam[,ii] + time[1])$y
       qn[,ii] = f_to_srvf(fn[,ii], time)
     }
 
@@ -84,7 +84,7 @@ elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
       }
     }
     b0 = rep(0,Nb+1)
-    out = optim(b0, logit_loss, gr = logit_gradient, Phi, y,
+    out = stats::optim(b0, logit_loss, gr = logit_gradient, Phi, y,
                 method = "L-BFGS-B", control = list(maxit=200,pgtol=1e-10))
     b = out$par
 
@@ -96,7 +96,7 @@ elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
 
     # find gamma
     k=1
-    gamma_new<-foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
+    gamma_new<-foreach::foreach(k = 1:N, .combine=cbind,.packages="fdasrvf") %dopar% {
       gam = logistic_warp(beta, time, q[,k], y[k])
     }
 
@@ -110,9 +110,7 @@ elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
   }
   gam = gamma_new
 
-  if (parallel){
-    stopCluster(cl)
-  }
+  if (parallel) parallel::stopCluster(cl)
 
   return(list(alpha=alpha, beta=beta, fn=fn, qn=qn, gamma=gam, q=q, B=B,
               b=b[2:length(b)], Loss=LL[1:itr], mode='logistic')  )

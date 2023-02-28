@@ -3,32 +3,37 @@ Type: Package
 Title: Elastic Functional Data Analysis
 Version: 2.0.0
 Date: 2023-02-19
-Author: J. Derek Tucker <jdtuck@sandia.gov>
-Maintainer: J. Derek Tucker <jdtuck@sandia.gov>
-Description: Performs alignment, PCA, and modeling of multidimensional and
-            unidimensional functions using the square-root velocity framework
-            (Srivastava et al., 2011 <arXiv:1103.3817> and
-            Tucker et al., 2014 <DOI:10.1016/j.csda.2012.12.001>). This framework
-            allows for elastic analysis of functional data through phase and
-            amplitude separation.
+Authors@R: c(
+    person(given = "J. Derek", 
+           family = "Tucker", 
+           role = c("aut", "cre"), 
+           email = "jdtuck@sandia.gov", 
+           comment = c(ORCID = "0000-0001-8844-2169")),
+    person(given = "Aymeric",
+           family = "Stamm",
+           role = "ctb",
+           email = "aymeric.stamm@math.cnrs.fr",
+           comment = c(ORCID = "0000-0002-8725-3654")))
+Description: Performs alignment, PCA, and modeling of multidimensional and 
+    unidimensional functions using the square-root velocity framework 
+    (Srivastava et al., 2011 <arXiv:1103.3817> and Tucker et al., 2014 
+    <DOI:10.1016/j.csda.2012.12.001>). This framework allows for elastic 
+    analysis of functional data through phase and amplitude separation.
 License: GPL-3
 LazyData: TRUE
 Imports:
-    Rcpp (>= 0.12.1),
+    cli,
     coda,
-    foreach,
-    mvtnorm,
-    methods,
-    matrixcalc,
-    splines,
-    parallel,
-    fields,
     doParallel,
-    viridisLite,
-    tolerance,
+    fields,
+    foreach,
     lpSolve,
     Matrix,
-    cli
+    mvtnorm,
+    Rcpp,
+    rlang,
+    tolerance,
+    viridisLite
 Suggests: 
     covr,
     interp,
@@ -37,10 +42,14 @@ Suggests:
     rgl,
     testthat (>= 3.0.0),
     withr
-LinkingTo: Rcpp, RcppArmadillo
 Depends:
     R (>= 3.5.0),
 RoxygenNote: 7.2.3
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo
+URL: https://github.com/jdtuck/fdasrvf_R
+BugReports: https://github.com/jdtuck/fdasrvf_R/issues

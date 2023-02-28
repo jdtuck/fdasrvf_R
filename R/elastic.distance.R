@@ -7,8 +7,8 @@
 #' @param f2 sample function 2
 #' @param time sample points of functions
 #' @param lambda controls amount of warping (default = 0)
-#' @param pen alignment penalty (default="roughness") options are 
-#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+#' @param pen alignment penalty (default="roughness") options are
+#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 #' norm from id ("norm")
 #' @return Returns a list containing \item{Dy}{amplitude distance}
 #' \item{Dx}{phase distance}
@@ -31,7 +31,7 @@ elastic.distance <- function(f1,f2,time,lambda = 0,pen="roughness"){
     q1 <- f_to_srvf(f1,time)
     q2 <- f_to_srvf(f2,time)
     gam <- optimum.reparam(q1,time,q2,time,lambda,pen)
-    fw <- approx(time,f2,xout=(time[length(time)]-time[1])*gam + time[1])$y
+    fw <- stats::approx(time,f2,xout=(time[length(time)]-time[1])*gam + time[1])$y
     qw <- f_to_srvf(fw,time)
     Dy <- sqrt(trapz(time, (q1-qw)^2))
 

@@ -22,8 +22,10 @@ OBJECTS = wrapper.o
 OBJS1 = $(SOURCES1:.cpp=.o)
 OBJS2 = $(SOURCES2:.cpp=.o)
 OBJS3 = $(SOURCES3:.cpp=.o)
+
 PKG_CPPFLAGS= -I. -Igropt/incl/ -Ifdaqmap/incl/
-PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) libfdasrvf1.a libfdasrvf2.a libfdasrvf3.a
+PKG_CXXFLAGS = $(SHLIB_OPENMP_CXXFLAGS)
+PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) libfdasrvf1.a libfdasrvf2.a libfdasrvf3.a
 
 all: libfdasrvf1.a libfdasrvf2.a libfdasrvf3.a $(SHLIB)
 

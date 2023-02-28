@@ -33,7 +33,7 @@ curve_karcher_cov <- function(v, len=NA){
         tmpv[, i] = c(tmp)
     }
 
-    K = cov(t(tmpv))
+    K = stats::cov(t(tmpv))
 
     return(K)
 }

@@ -26,11 +26,11 @@ rgam <- function(N, sigma, num){
     mu = sqrt(rep(1,N-1)*TT/(N-1))
     omega = 2*pi
     for (k in 1:num){
-        alpha_i = rnorm(1,sd=sigma)
+        alpha_i = stats::rnorm(1,sd=sigma)
         v = alpha_i * rep(1,TT)
         cnt = 1
         for (l in 2:3){
-            alpha_i = rnorm(1,sd=sigma)
+            alpha_i = stats::rnorm(1,sd=sigma)
             if (l %% 2 !=0){#odd
                 v = v + alpha_i*sqrt(2)*cos(cnt*omega*time)
                 cnt = cnt + 1
@@ -49,7 +49,7 @@ rgam <- function(N, sigma, num){
     gamI = SqrtMeanInverse(t(gam))
     time = seq(0,1,length.out=N)
     for (k in 1:num){
-        gam0 = approx(time,gam[k,],xout=(time[length(time)]-time[1])*gamI +
+        gam0 = stats::approx(time,gam[k,],xout=(time[length(time)]-time[1])*gamI +
             time[1])$y
         gam[k,] = (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])
     }

@@ -107,42 +107,42 @@ function_group_warp_bayes <- function(f, time, iter=50000, powera=1, times=5,
   f_q <- matrix(0,m+1,n)
 
   for (t in 1:n){
-    gam_q[,t] <- approx(c(row,m+1),best_match.matrix[,t],method="linear",xout=1:(m+1))$y
-    f_q[,t] <- (spline(seq(0,m),f[,t],n=times*(m+1)-1)$y)[(gam_q[,t]-1)*times+1]
-    gam_a[,t] <- approx(c(row,m+1),bayes_warps[,t],method="linear", xout=1:(m+1))$y
-    f_a[,t] <- (spline(seq(0,m),f[,t],n=times*(m+1)-1)$y)[(gam_a[,t]-1)*times+1]
+    gam_q[,t] <- stats::approx(c(row,m+1),best_match.matrix[,t],method="linear",xout=1:(m+1))$y
+    f_q[,t] <- (stats::spline(seq(0,m),f[,t],n=times*(m+1)-1)$y)[(gam_q[,t]-1)*times+1]
+    gam_a[,t] <- stats::approx(c(row,m+1),bayes_warps[,t],method="linear", xout=1:(m+1))$y
+    f_a[,t] <- (stats::spline(seq(0,m),f[,t],n=times*(m+1)-1)$y)[(gam_a[,t]-1)*times+1]
   }
 
   if(showplot)
   {
-    traceplot(mcmc(log.posterior[burnin:iter]))
-    title("Trace plot of log posterior after burn-in period")
+    coda::traceplot(coda::mcmc(log.posterior[burnin:iter]))
+    graphics::title("Trace plot of log posterior after burn-in period")
 
-    traceplot(mcmc(kappafamily[burnin:iter]))
-    title("Trace plot of kappa after burn-in period")
+    coda::traceplot(coda::mcmc(kappafamily[burnin:iter]))
+    graphics::title("Trace plot of kappa after burn-in period")
 
     plotl <- min(f)
     plotu <- max(f)
     plot(timet,f[,1],type="l", main="",ylab="",xlab="t",
          ylim=c(plotl-0.1*abs(plotl),plotu+0.1*abs(plotu)))
     for (t in 1:n){
-      lines(timet,f[,t],col=gp[t])
+      graphics::lines(timet,f[,t],col=gp[t])
     }
-    title("Original functions")
+    graphics::title("Original functions")
 
     plot(timet,f_q[,1],type="l",main="",ylab="",
          xlab="t",ylim=c(plotl-0.1*abs(plotl),plotu+0.1*abs(plotu)))
     for (t in 1:n){
-      lines(timet,f_q[,t],col=gp[t])
+      graphics::lines(timet,f_q[,t],col=gp[t])
     }
-    title("Quotient registered functions")
+    graphics::title("Quotient registered functions")
 
     plot(timet,f_a[,1],type="l",main="",ylab="",
          xlab="t",ylim=c(plotl-0.1*abs(plotl),plotu+0.1*abs(plotu)))
     for (t in 1:n){
-      lines(timet,f_a[,t],col=gp[t])
+      graphics::lines(timet,f_a[,t],col=gp[t])
     }
-    title("Bayesian registered functions")
+    graphics::title("Bayesian registered functions")
   }
 
   return(list(f0 = f, f_q = f_q, gam_q = (gam_q-1)/m, f_a = f_a ,

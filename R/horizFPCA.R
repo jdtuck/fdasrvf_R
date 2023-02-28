@@ -29,7 +29,7 @@ horizFPCA <- function(warp_data,no,ci=c(-1,0,1),showplot = TRUE){
     no_pca = 1:no
 
     # TFPCA
-    K = cov(t(vec)) #out$sigma
+    K = stats::cov(t(vec)) #out$sigma
 
     out = svd(K)
     s = out$d

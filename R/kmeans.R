@@ -91,11 +91,11 @@ kmeans_align <- function(f, time,
   omethod <- match.arg(omethod, c("DP", "DP2", "RBFGS"))
 
   if (parallel) {
-    cores <- detectCores()
-    cl <- makeCluster(cores)
-    registerDoParallel(cl)
+    cores <- max(parallel::detectCores() - 1, 1)
+    cl <- parallel::makeCluster(cores)
+    doParallel::registerDoParallel(cl)
   } else {
-    registerDoSEQ()
+    foreach::registerDoSEQ()
   }
 
   # L: Codomain dimension
@@ -119,7 +119,7 @@ kmeans_align <- function(f, time,
     constr.ncol <- N * K
     constr.nrow <- N + K
 
-    constraints.coefs <- 1 * as.matrix(sparseMatrix(
+    constraints.coefs <- 1 * as.matrix(Matrix::sparseMatrix(
       i = lp.ind,
       p =  c(lp.beg, N * K * 2),
       dims = c(constr.nrow, constr.ncol),
@@ -164,7 +164,7 @@ kmeans_align <- function(f, time,
     fn <- list()
     fw <- matrix(nrow = L, ncol = M)
     for (k in 1:K) {
-      outfor <- foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
+      outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
         if (alignment) {
           gam_tmp <- optimum.reparam(
             Q1 = templates.q[, , k], T1 = time,
@@ -180,7 +180,7 @@ kmeans_align <- function(f, time,
           gam_tmp <- seq(0, 1, length.out = M)
 
         for (l in 1:L) {
-          fw[l, ] <- approx(
+          fw[l, ] <- stats::approx(
             x = time,
             y = f[l, , n],
             xout = (time[M] - time[1]) * gam_tmp + time[1]
@@ -212,7 +212,7 @@ kmeans_align <- function(f, time,
     if (!nonempty) {
       cluster.id <- apply(Dy, 2, which.min)
     } else {
-      lpSolution <- lp(
+      lpSolution <- lpSolve::lp(
         direction = "min",
         objective.in = c(Dy ^ 2),
         const.dir = constraints.directions,
@@ -241,16 +241,16 @@ kmeans_align <- function(f, time,
       gamI <- SqrtMeanInverse(gamtmp)
 
       fw <- matrix(nrow = L, ncol = M)
-      outfor <- foreach(n = 1:N1, .combine = cbind, .packages = "fdasrvf") %dopar% {
+      outfor <- foreach::foreach(n = 1:N1, .combine = cbind, .packages = "fdasrvf") %dopar% {
         for (l in 1:L) {
-          fw[l, ] <- approx(
+          fw[l, ] <- stats::approx(
             x = time,
             y = ftmp[l, , n],
             xout = (time[M] - time[1]) * gamI + time[1]
           )$y
         }
         qw <- f_to_srvf(fw, time, multidimensional = (L > 1))
-        gamt1 <- approx(
+        gamt1 <- stats::approx(
           x = time,
           y = gamtmp[, n],
           xout = (time[M] - time[1]) * gamI + time[1]
@@ -328,10 +328,10 @@ kmeans_align <- function(f, time,
     oldpar <- graphics::par(mfrow = c(1, L))
 
     if (L == 1) {
-      matplot(time, out$f0, type = "l")
+      graphics::matplot(time, out$f0, type = "l")
     } else {
       for (l in 1:L)
-        matplot(time, out$f0[l, , ], type = "l", ylab = paste("Component", l))
+        graphics::matplot(time, out$f0[l, , ], type = "l", ylab = paste("Component", l))
     }
     graphics::mtext("Curves in original functional space", side = 3, line = -2, outer = TRUE)
 
@@ -339,22 +339,22 @@ kmeans_align <- function(f, time,
       curves <- matrix(nrow = M, ncol = 0)
       for (k in 1:K)
         curves <- cbind(curves, out$fn[[k]])
-      matplot(time, curves, type = "l", col = cols)
+      graphics::matplot(time, curves, type = "l", col = cols)
     } else {
       for (l in 1:L) {
         curves <- matrix(nrow = M, ncol = 0)
         for (k in 1:K)
           curves <- cbind(curves, out$fn[[k]][l, , ])
-        matplot(time, curves, type = "l", ylab = paste("Component", l), col = cols)
+        graphics::matplot(time, curves, type = "l", ylab = paste("Component", l), col = cols)
       }
     }
     graphics::mtext("Aligned curves in original functional space", side = 3, line = -2, outer = TRUE)
 
     if (L == 1) {
-      matplot(time, out$q0, type = "l")
+      graphics::matplot(time, out$q0, type = "l")
     } else {
       for (l in 1:L)
-        matplot(time, out$q0[l, , ], type = "l", ylab = paste("Component", l))
+        graphics::matplot(time, out$q0[l, , ], type = "l", ylab = paste("Component", l))
     }
     graphics::mtext("Curves in SRSF space", side = 3, line = -2, outer = TRUE)
 
@@ -362,13 +362,13 @@ kmeans_align <- function(f, time,
       curves <- matrix(nrow = M, ncol = 0)
       for (k in 1:K)
         curves <- cbind(curves, out$qn[[k]])
-      matplot(time, curves, type = "l", col = cols)
+      graphics::matplot(time, curves, type = "l", col = cols)
     } else {
       for (l in 1:L) {
         curves <- matrix(nrow = M, ncol = 0)
         for (k in 1:K)
           curves <- cbind(curves, out$qn[[k]][l, , ])
-        matplot(time, curves, type = "l", ylab = paste("Component", l), col = cols)
+        graphics::matplot(time, curves, type = "l", ylab = paste("Component", l), col = cols)
       }
     }
     graphics::mtext("Aligned curves in SRSF space", side = 3, line = -2, outer = TRUE)
@@ -378,11 +378,11 @@ kmeans_align <- function(f, time,
     curves <- matrix(nrow = M, ncol = 0)
     for (k in 1:K)
       curves <- cbind(curves, out$gam[[k]])
-    matplot(time, curves, type = "l", ylab = "warped time", col = cols)
+    graphics::matplot(time, curves, type = "l", ylab = "warped time", col = cols)
     graphics::mtext("Estimated warping functions", side = 3, line = -2, outer = TRUE)
   }
 
-  if (parallel) stopCluster(cl)
+  if (parallel) parallel::stopCluster(cl)
 
   out
 }

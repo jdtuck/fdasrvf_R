@@ -53,9 +53,9 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FA
             } else {
                 grid.list<- list(x=seq(1,m,length.out=N), y=seq(1,n,length.out=N))
                 obj<-list(x=1:m, y=1:n, z=F1[,,1])
-                F1a[,,1] = interp.surface.grid(obj, grid.list)$z
+                F1a[,,1] = fields::interp.surface.grid(obj, grid.list)$z
                 obj<-list(x=1:m, y=1:n, z=F1[,,2])
-                F1a[,,2] = interp.surface.grid(obj, grid.list)$z
+                F1a[,,2] = fields::interp.surface.grid(obj, grid.list)$z
             }
             F1 = F1a
 
@@ -70,9 +70,9 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FA
             } else {
               grid.list<- list(x=seq(1,m1,length.out=N), y=seq(1,n1,length.out=N))
               obj<-list(x=1:m1, y=1:n1, z=F2[,,1])
-              F2a[,,1] = interp.surface.grid(obj, grid.list)$z
+              F2a[,,1] = fields::interp.surface.grid(obj, grid.list)$z
               obj<-list(x=1:m1, y=1:n1, z=F2[,,2])
-              F2a[,,2] = interp.surface.grid(obj, grid.list)$z
+              F2a[,,2] = fields::interp.surface.grid(obj, grid.list)$z
             }
             F2 = F2a
         }

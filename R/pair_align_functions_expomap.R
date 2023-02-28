@@ -113,7 +113,7 @@ f.updateg.pw <-
     )
 
     ratio = min(1, exp(logl.prop - logl.curr))  #prob to accept the proposal
-    u = runif(1)
+    u = stats::runif(1)
     if (u <= ratio) {
       return(
         list(
@@ -207,7 +207,7 @@ f.predictfunction <- function(f,
                               deriv = 0,
                               method = "linear") {
   if (method == "cubic") {
-    result = predict(smooth.spline(
+    result = stats::predict(stats::smooth.spline(
       f$x,
       f$y,
       all.knots = F,
@@ -219,12 +219,10 @@ f.predictfunction <- function(f,
   }
   if (method == "linear") {
     if (deriv == 0) {
-      result = approx(f$x, f$y, xout = at, rule = 2)
+      result = stats::approx(f$x, f$y, xout = at, rule = 2)
     }
     if (deriv == 1) {
-      #f=list(x=c(0,0.5,1),y=c(1,2,4))
-      #at=c(0,0.25,0.5,0.75,1)
-      fmod = approx(f$x, f$y, rule = 2, xout = at)
+      fmod = stats::approx(f$x, f$y, rule = 2, xout = at)
       diffy1 = c(0, diff(fmod$y))
       diffy2 = c(diff(fmod$y), 0)
       diffx1 = c(0, diff(fmod$x))
@@ -582,10 +580,10 @@ pair_align_functions_expomap <- function(f1,
     pCN.beta <- zpcn$betas
     pCN.prob <- zpcn$probs
     probm <- c(0, cumsum(pCN.prob))
-    z = runif(1)
+    z = stats::runif(1)
     for (i in 1:length(pCN.beta)) {
       if (z <= probm[i + 1] && z > probm[i]) {
-        g.coef.new = rnorm(pw.sim.global.Mg * 2,
+        g.coef.new = stats::rnorm(pw.sim.global.Mg * 2,
                            sd = pw.sim.global.sigma.g / rep(c(1:pw.sim.global.Mg), each =
                                                               2))
         result <-
@@ -716,7 +714,7 @@ pair_align_functions_expomap <- function(f1,
 
   # resample to same number of points as the input f1 and f2.
   result.posterior.psi <- with(result.posterior.psi.simDomain,
-                               approx(
+                               stats::approx(
                                  x = x,
                                  y = y,
                                  xout = f1$x,
@@ -743,7 +741,7 @@ pair_align_functions_expomap <- function(f1,
     gamma_mat <- apply(pw.sim.est.psi.matrix,
                        2,
                        function(vec) {
-                         resamp <- approx(
+                         resamp <- stats::approx(
                            x = pw.sim.global.domain.par,
                            y = vec,
                            xout = f1$x,
@@ -773,8 +771,8 @@ pair_align_functions_expomap <- function(f1,
 
     # gamma stats: can add other stats of interest here...
     statsFun <- function(vec) {
-      return(c(quantile(vec, probs = 0.025),
-               quantile(vec, probs = 0.975)))
+      return(c(stats::quantile(vec, probs = 0.025),
+               stats::quantile(vec, probs = 0.975)))
     }
     gamma.stats <- apply(gamma_mat, 1, statsFun)
     gamma_q025 <- gamma.stats['2.5%', ]

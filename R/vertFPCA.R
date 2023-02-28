@@ -33,7 +33,7 @@ vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),ci=c(-1,0,1
     mq_new = rowMeans(qn)
     m_new = sign(fn[id,])*sqrt(abs(fn[id,]))  # scaled version
     mqn = c(mq_new,mean(m_new))
-    K = cov(t(rbind(qn,m_new))) #out$sigma
+    K = stats::cov(t(rbind(qn,m_new))) #out$sigma
 
     out = svd(K)
     s = out$d

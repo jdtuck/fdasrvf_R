@@ -39,7 +39,7 @@ elastic.lpcr.regression <- function(f, y, time, pca.method="combined", no=5,
     N1 <- ncol(f)
 
     # Align Data --------------------------------------------------------------
-    out <- time_warping(f, time, parallel = T, showplot = F)
+    out <- time_warping(f, time, parallel = TRUE)
 
 
     # Calculate PCA -----------------------------------------------------------
@@ -57,7 +57,7 @@ elastic.lpcr.regression <- function(f, y, time, pca.method="combined", no=5,
     Phi[,2:(no+1)] <- out.pca$coef
     # Find alpha and beta using l_bfgs
     b0 <- rep(0,no+1)
-    out1 <- optim(b0, logit_loss, gr = logit_gradient, Phi, y,
+    out1 <- stats::optim(b0, logit_loss, gr = logit_gradient, Phi, y,
                   method = "L-BFGS-B", control = list(maxit=200,pgtol=1e-10))
     b <- out1$par
 

@@ -2,68 +2,94 @@
 % Please edit documentation in R/time_warping.R
 \name{time_warping}
 \alias{time_warping}
-\title{Group-wise function alignment}
+\title{Alignment of univariate functional data}
 \usage{
 time_warping(
   f,
   time,
   lambda = 0,
-  pen = "roughness",
-  method = "mean",
-  center = TRUE,
-  showplot = TRUE,
+  penalty_method = c("roughness", "geodesic", "norm"),
+  centroid_type = c("mean", "median"),
+  center_warpings = TRUE,
   smooth_data = FALSE,
-  sparam = 25,
+  sparam = 25L,
   parallel = FALSE,
-  omethod = "DP",
-  MaxItr = 20
+  optim_method = c("DP", "DP2", "RBFGS"),
+  max_iter = 20L
 )
 }
 \arguments{
-\item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
+\item{f}{A numeric matrix of shape \eqn{M \times N} specifying a sample of
+\eqn{N} curves observed on a grid of size \eqn{M}.}
 
-\item{time}{vector of size \eqn{N} describing the sample points}
+\item{time}{A numeric vector of length \eqn{M} specifying the common grid on
+which all curves \code{f} have been observed.}
 
-\item{lambda}{controls the elasticity (default = 0)}
+\item{lambda}{A numeric value specifying the elasticity. Defaults to \code{0.0}.}
 
-\item{pen}{alignment penalty (default="roughness") options are
-second derivative ("roughness"), geodesic distance from id ("geodesic"), and
-norm from id ("norm")}
+\item{penalty_method}{A string specifying the penalty term used in the
+formulation of the cost function to minimize for alignment. Choices are
+\code{"roughness"} which uses the norm of the second derivative, \code{"geodesic"}
+which uses the geodesic distance to the identity and \code{"norm"} which uses
+the Euclidean distance to the identity. Defaults to \code{"roughness"}.}
 
-\item{method}{warp and calculate to Karcher Mean or Median (options = "mean"
-or "median", default = "mean")}
+\item{centroid_type}{A string specifying the type of centroid to align to.
+Choices are \code{"mean"} or \code{"median"}. Defaults to \code{"mean"}.}
 
-\item{center}{center warping functions (default = T)}
+\item{center_warpings}{A boolean specifying whether to center the estimated
+warping functions. Defaults to \code{TRUE}.}
 
-\item{showplot}{shows plots of functions (default = T)}
+\item{smooth_data}{A boolean specifying whether to smooth curves using a box
+filter. Defaults to \code{FALSE}.}
 
-\item{smooth_data}{smooth data using box filter (default = F)}
+\item{sparam}{An integer value specifying the number of times to apply the
+box filter. Defaults to \code{25L}. This is used only when \code{smooth_data = TRUE}.}
 
-\item{sparam}{number of times to apply box filter (default = 25)}
+\item{parallel}{A boolean specifying whether to run calculations in parallel.
+Defaults to \code{FALSE}.}
 
-\item{parallel}{enable parallel mode using \code{\link[=foreach]{foreach()}} and
-\code{doParallel} package (default=F)}
+\item{optim_method}{A string specifying the algorithm used for optimization.
+Choices are \code{"DP"}, \code{"DP2"} and \code{"RBFGS"}. Defaults to \code{"DP"}.}
 
-\item{omethod}{optimization method (DP,DP2,RBFGS)}
-
-\item{MaxItr}{maximum number of iterations}
+\item{max_iter}{An integer value specifying the maximum number of iterations.
+Defaults to \code{20L}.}
 }
 \value{
-Returns a fdawarp object containing \item{f0}{original functions}
-\item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
-\item{qn}{aligned SRSFs - similar structure to fn}
-\item{q0}{original SRSF - similar structure to fn}
-\item{fmean}{function mean or median - vector of length \eqn{N}}
-\item{mqn}{SRSF mean or median - vector of length \eqn{N}}
-\item{gam}{warping functions - similar structure to fn}
-\item{orig.var}{Original Variance of Functions}
-\item{amp.var}{Amplitude Variance}
-\item{phase.var}{Phase Variance}
-\item{qun}{Cost Function Value}
+An object of class \code{fdawarp} which is a list with the following
+components:
+\itemize{
+\item \code{time}: a numeric vector of length \eqn{M} storing the original grid;
+\item \code{f0}: a numeric matrix of shape \eqn{M \times N} storing the original
+sample of \eqn{N} functions observed on a grid of size \eqn{M};
+\item \code{q0}: a numeric matrix of the same shape as \code{f0} storing the original
+SRSFs;
+\item \code{fn}: a numeric matrix of the same shape as \code{f0} storing the aligned
+functions;
+\item \code{qn}: a numeric matrix of the same shape as \code{f0} storing the aligned SRSFs;
+\item \code{fmean}: a numeric vector of length \eqn{M} storing the mean or median
+curve;
+\item \code{mqn}: a numeric vector of length \eqn{M} storing the mean or median SRSF;
+\item \code{warping_functions}: a numeric matrix of the same shape as \code{f0} storing the
+estimated warping functions;
+\item \code{original_variance}: a numeric value storing the variance of the original
+sample;
+\item \code{amplitude_variance}: a numeric value storing the variance in amplitude of
+the aligned sample;
+\item \code{phase_variance}: a numeric value storing the variance in phase of the
+aligned sample;
+\item \code{qun}: a numeric vector of maximum length \code{max_iter + 2} storing the values
+of the cost function after each iteration;
+\item \code{lambda}: the input parameter \code{lambda} which specifies the elasticity;
+\item \code{centroid_type}: the input centroid type;
+\item \code{optim_method}: the input optimization method;
+\item \code{inverse_average_warping_function}: the inverse of the mean estimated
+warping function;
+\item \code{rsamps}: TO DO.
+}
 }
 \description{
-This function aligns a collection of functions using the elastic square-root
-slope (srsf) framework.
+This function aligns a collection of \eqn{1}-dimensional curves that are
+observed on the same grid.
 }
 \examples{
 \dontrun{
@@ -72,12 +98,12 @@ slope (srsf) framework.
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
-May 2011. Registration of functional data using fisher-rao metric,
+May 2011. Registration of functional data using Fisher-Rao metric,
 arXiv:1103.3817v2.
 
-Tucker, J. D., Wu, W., Srivastava, A.,
-Generative Models for Function Data using Phase and Amplitude Separation,
-Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+Tucker, J. D., Wu, W., Srivastava, A., Generative models for
+functional data using phase and amplitude Separation, Computational
+Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
 \keyword{srsf}
