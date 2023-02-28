@@ -53,8 +53,8 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
   pb <- utils::txtProgressBar(0, B, style = 3)
   outfor <- foreach::foreach(k=1:B, .combine=cbind, .packages=c('fdasrvf','mvtnorm')) %dopar% {
     samples <- joint_gauss_model(out.med, Nsamp, no)
-    amp <- AmplitudeBoxplot(samples, alpha=1-p, showplot=F)
-    ph <- PhaseBoxplot(samples, alpha=1-p, showplot=F)
+    amp <- ampbox_data(samples, alpha = 1 - p)
+    ph <- phbox_data(samples, alpha = 1 - p)
     utils::setTxtProgressBar(pb, k)
     list(amp$Q3a,amp$Q1a,ph$Q3a,ph$Q1a)
   }
@@ -78,11 +78,10 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
   if (parallel) parallel::stopCluster(cl)
 
   # Tolerance Bounds --------------------------------------------------------
-  amp <- AmplitudeBoxplot(boot.out, alpha=a, showplot=F)
-  ph <- PhaseBoxplot(boot.out, alpha=a, showplot=F)
+  amp <- ampbox_data(boot.out, alpha = a)
+  ph <- phbox_data(boot.out, alpha = a)
 
-  return(list(amp=amp,ph=ph,align=out.med))
-
+  list(amp = amp, ph = ph, align = out.med)
 }
 
 #' Tolerance Bound Calculation using Elastic Functional PCA

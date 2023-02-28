@@ -58,28 +58,32 @@ Defaults to \code{20L}.}
 An object of class \code{fdawarp} which is a list with the following
 components:
 \itemize{
-\item \code{f0}: a numeric matrix of shape \eqn{M \times N} storing the original sample
-of \eqn{N} functions observed on a grid of size \eqn{M};
 \item \code{time}: a numeric vector of length \eqn{M} storing the original grid;
+\item \code{f0}: a numeric matrix of shape \eqn{M \times N} storing the original
+sample of \eqn{N} functions observed on a grid of size \eqn{M};
+\item \code{q0}: a numeric matrix of the same shape as \code{f0} storing the original
+SRSFs;
 \item \code{fn}: a numeric matrix of the same shape as \code{f0} storing the aligned
 functions;
 \item \code{qn}: a numeric matrix of the same shape as \code{f0} storing the aligned SRSFs;
-\item \code{q0}: a numeric matrix of the same shape as \code{f0} storing the original SRSFs;
-\item \code{fmean}: a numeric vector of length \eqn{M} storing the mean or median curve;
+\item \code{fmean}: a numeric vector of length \eqn{M} storing the mean or median
+curve;
 \item \code{mqn}: a numeric vector of length \eqn{M} storing the mean or median SRSF;
-\item \code{gam}: a numeric matrix of the same shape as \code{f0} storing the estimated
-warping functions;
-\item \code{orig.var}: a numeric value storing the variance of the original sample;
-\item \code{amp.var}: a numeric value storing the variance in amplitude of the aligned
+\item \code{warping_functions}: a numeric matrix of the same shape as \code{f0} storing the
+estimated warping functions;
+\item \code{original_variance}: a numeric value storing the variance of the original
 sample;
-\item \code{phase.var}: a numeric value storing the variance in phase of the aligned
-sample;
+\item \code{amplitude_variance}: a numeric value storing the variance in amplitude of
+the aligned sample;
+\item \code{phase_variance}: a numeric value storing the variance in phase of the
+aligned sample;
 \item \code{qun}: a numeric vector of maximum length \code{max_iter + 2} storing the values
 of the cost function after each iteration;
 \item \code{lambda}: the input parameter \code{lambda} which specifies the elasticity;
-\item \code{method}: the input centroid type;
-\item \code{omethod}: the input optimization method;
-\item \code{gamI}: the inverse of the mean estimated warping function;
+\item \code{centroid_type}: the input centroid type;
+\item \code{optim_method}: the input optimization method;
+\item \code{inverse_average_warping_function}: the inverse of the mean estimated
+warping function;
 \item \code{rsamps}: TO DO.
 }
 }

@@ -31,28 +31,32 @@
 #' @return An object of class `fdawarp` which is a list with the following
 #'   components:
 #'
-#' - `f0`: a numeric matrix of shape \eqn{M \times N} storing the original sample
-#' of \eqn{N} functions observed on a grid of size \eqn{M};
 #' - `time`: a numeric vector of length \eqn{M} storing the original grid;
+#' - `f0`: a numeric matrix of shape \eqn{M \times N} storing the original
+#' sample of \eqn{N} functions observed on a grid of size \eqn{M};
+#' - `q0`: a numeric matrix of the same shape as `f0` storing the original
+#' SRSFs;
 #' - `fn`: a numeric matrix of the same shape as `f0` storing the aligned
 #' functions;
 #' - `qn`: a numeric matrix of the same shape as `f0` storing the aligned SRSFs;
-#' - `q0`: a numeric matrix of the same shape as `f0` storing the original SRSFs;
-#' - `fmean`: a numeric vector of length \eqn{M} storing the mean or median curve;
+#' - `fmean`: a numeric vector of length \eqn{M} storing the mean or median
+#' curve;
 #' - `mqn`: a numeric vector of length \eqn{M} storing the mean or median SRSF;
-#' - `gam`: a numeric matrix of the same shape as `f0` storing the estimated
-#' warping functions;
-#' - `orig.var`: a numeric value storing the variance of the original sample;
-#' - `amp.var`: a numeric value storing the variance in amplitude of the aligned
+#' - `warping_functions`: a numeric matrix of the same shape as `f0` storing the
+#' estimated warping functions;
+#' - `original_variance`: a numeric value storing the variance of the original
 #' sample;
-#' - `phase.var`: a numeric value storing the variance in phase of the aligned
-#' sample;
+#' - `amplitude_variance`: a numeric value storing the variance in amplitude of
+#' the aligned sample;
+#' - `phase_variance`: a numeric value storing the variance in phase of the
+#' aligned sample;
 #' - `qun`: a numeric vector of maximum length `max_iter + 2` storing the values
 #' of the cost function after each iteration;
 #' - `lambda`: the input parameter `lambda` which specifies the elasticity;
-#' - `method`: the input centroid type;
-#' - `omethod`: the input optimization method;
-#' - `gamI`: the inverse of the mean estimated warping function;
+#' - `centroid_type`: the input centroid type;
+#' - `optim_method`: the input optimization method;
+#' - `inverse_average_warping_function`: the inverse of the mean estimated
+#' warping function;
 #' - `rsamps`: TO DO.
 #'
 #' @keywords srsf alignment
@@ -310,28 +314,36 @@ time_warping <- function(f, time,
     )$y
 
   var_fgam <- apply(fgam, 1, stats::var)
-  orig.var <- trapz(time, std_f0 ^ 2)
-  amp.var <- trapz(time, std_fn ^ 2)
-  phase.var <- trapz(time, var_fgam)
+  orig_var <- trapz(time, std_f0 ^ 2)
+  amp_var <- trapz(time, std_fn ^ 2)
+  phase_var <- trapz(time, var_fgam)
 
   out <- list(
-    f0 = f[, , 1],
     time = time,
+    f0 = f[, , 1],
+    q0 = q0,
     fn = fn,
     qn = qn,
-    q0 = q0,
     fmean = fmean,
     mqn = mqn,
-    gam = gam,
-    orig.var = orig.var,
-    amp.var = amp.var,
-    phase.var = phase.var,
+    warping_functions = gam,
+    original_variance = orig_var,
+    amplitude_variance = amp_var,
+    phase_variance = phase_var,
     qun = qun[1:r],
-    lambda = lambda,
-    method = centroid_type,
-    omethod = optim_method,
-    gamI = gamI,
-    rsamps = FALSE
+    inverse_average_warping_function = gamI,
+    rsamps = FALSE,
+    call = list(
+      lambda = lambda,
+      penalty_method = penalty_method,
+      centroid_type = centroid_type,
+      center_warpings = center_warpings,
+      smooth_data = smooth_data,
+      sparam = sparam,
+      parallel = parallel,
+      optim_method = optim_method,
+      max_iter = max_iter
+    )
   )
 
   class(out) <- "fdawarp"
