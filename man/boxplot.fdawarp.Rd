@@ -57,6 +57,8 @@ The function \code{\link[=boxplot.fdawarp]{boxplot.fdawarp()}} returns optionall
 provided as well to avoid re-computation of the boxplot statistics.
 }
 \examples{
+\dontrun{
 out <- time_warping(simu_data$f, simu_data$time)
 boxplot(out, what = "stats")
+}
 }
