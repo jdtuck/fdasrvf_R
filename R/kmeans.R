@@ -21,6 +21,8 @@ utils::globalVariables("n")
 #' @param seeds An integer vector of length `K` specifying the indices of the
 #'   curves in `f` which will be chosen as initial centroids. Defaults to `NULL`
 #'   in which case such indices are randomly chosen.
+#' @param centroid_type A string specifying the type of centroid to compute.
+#'   Choices are `"mean"` or `"medoid"`. Defaults to `"mean"`.
 #' @param nonempty An integer value specifying the minimum number of curves per
 #'   cluster during the assignment step. Set it to a positive value to avoid the
 #'   problem of empty clusters. Defaults to `0L`.
@@ -43,6 +45,8 @@ utils::globalVariables("n")
 #'   Defaults to `50L`.
 #' @param thresh A numeric value specifying a threshold on the cost function
 #'   below which convergence is assumed. Defaults to `0.01`.
+#' @param use_verbose A boolean specifying whether to display information about
+#'   the calculations in the console. Defaults to `FALSE`.
 #'
 #' @return An object of class `fdakma` which is a list containing:
 #'
@@ -55,6 +59,8 @@ utils::globalVariables("n")
 #' - `labels`: the cluster memberships as an integer vector;
 #' - `templates`: the centroids in the original functional space;
 #' - `templates.q`: the centroids in SRSF space;
+#' - `distances_to_center`: A numeric vector storing the distances of each
+#' observed curve to its center;
 #' - `gam`: the warping functions as matrices or a 3D arrays of the same shape
 #' than `f0` by clusters in a list;
 #' - `qun`: cost function value.
@@ -77,6 +83,7 @@ utils::globalVariables("n")
 kmeans_align <- function(f, time,
                          K = 1L,
                          seeds = NULL,
+                         centroid_type = c("mean", "medoid"),
                          nonempty = 0L,
                          lambda = 0.0,
                          showplot = FALSE,
@@ -86,9 +93,11 @@ kmeans_align <- function(f, time,
                          alignment = TRUE,
                          omethod = c("DP", "DP2", "RBFGS"),
                          max_iter = 50L,
-                         thresh = 0.01) {
+                         thresh = 0.01,
+                         use_verbose = FALSE) {
   # Initialize --------------------------------------------------------------
-  omethod <- match.arg(omethod, c("DP", "DP2", "RBFGS"))
+  omethod <- rlang::arg_match(omethod)
+  centroid_type <- rlang::arg_match(centroid_type)
 
   if (parallel) {
     cores <- max(parallel::detectCores() - 1, 1)
@@ -154,10 +163,15 @@ kmeans_align <- function(f, time,
   for (k in 1:K)
     templates.q[, , k] <- q[, , template.ind[k]]
 
-  for (itr in 1:max_iter) {
-    cli::cli_alert_info("Running iteration {itr}...")
+  # For storing final distances to center
+  dtc <- rep(NA, N)
 
-    cli::cli_alert_info("----> Alignment step")
+  for (itr in 1:max_iter) {
+    if (use_verbose)
+      cli::cli_alert_info("Running iteration {itr}...")
+
+    if (use_verbose)
+      cli::cli_alert_info("----> Alignment step")
     gam <- list()
     Dy <- matrix(0, nrow = K, ncol = N)
     qn <- list()
@@ -208,7 +222,10 @@ kmeans_align <- function(f, time,
       Dy[k, ] <- dtil
     }
 
-    cli::cli_alert_info("----> Assignment step")
+    if (use_verbose)
+      cli::cli_alert_info("----> Assignment step")
+
+    old.cluster.id <- cluster.id
     if (!nonempty) {
       cluster.id <- apply(Dy, 2, which.min)
     } else {
@@ -231,7 +248,9 @@ kmeans_align <- function(f, time,
       cluster.id <- apply(clusterIndicator, 2, which.max)
     }
 
-    cli::cli_alert_info("----> Normalisation step")
+    if (use_verbose)
+      cli::cli_alert_info("----> Normalisation step")
+
     for (k in 1:K) {
       id <- which(cluster.id == k)
       N1 <- length(id)
@@ -266,7 +285,9 @@ kmeans_align <- function(f, time,
       fn[[k]][, , id] <- f_temp
     }
 
-    cli::cli_alert_info("----> Template identification step")
+    if (use_verbose)
+      cli::cli_alert_info("----> Template identification step")
+
     qun.t <- rep(0, K)
     old.templates.q <- templates.q
     for (k in 1:K) {
@@ -278,8 +299,14 @@ kmeans_align <- function(f, time,
       }
 
       for (l in 1:L) {
-        templates.q[l, , k] <- rowMeans(qn[[k]][l, , id])
-        templates[l, , k] <- rowMeans(fn[[k]][l, , id])
+        if (centroid_type == "mean") {
+          templates.q[l, , k] <- rowMeans(qn[[k]][l, , id])
+          templates[l, , k] <- rowMeans(fn[[k]][l, , id])
+        } else if (centroid_type == "medoid") {
+          idx <- which.min(Dy[k, id])
+          templates.q[l, , k] <- qn[[k]][l, , id][, idx]
+          templates[l, , k] <- fn[[k]][l, , id][, idx]
+        }
       }
 
       qun.t[k] <- pvecnorm(templates.q[, , k] - old.templates.q[, , k], 2) /
@@ -287,11 +314,16 @@ kmeans_align <- function(f, time,
     }
     qun[itr] <- mean(qun.t, na.rm = TRUE)
 
-    if (qun[itr] < thresh)
+    for (n in 1:N)
+      dtc[n] <- Dy[cluster.id[n], n]
+
+    if (qun[itr] < thresh || sum(table(cluster.id, old.cluster.id) > 0) == K)
       break
   }
 
-  cli::cli_alert_info("Consolidating output...")
+  if (use_verbose)
+    cli::cli_alert_info("Consolidating output...")
+
   ftmp <- qtmp <- gamtmp <- list()
   for (k in 1:K) {
     id <- which(cluster.id == k)
@@ -312,6 +344,7 @@ kmeans_align <- function(f, time,
     labels = cluster.id,
     templates = templates,
     templates.q = templates.q,
+    distances_to_center = dtc,
     lambda = lambda,
     omethod = omethod,
     qun = qun[1:itr]

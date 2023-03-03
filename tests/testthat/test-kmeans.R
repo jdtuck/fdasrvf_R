@@ -4,8 +4,8 @@ test_that("`kmeans_align()` works", {
   })
   expect_equal(
     names(out),
-    c("f0", "q0", "time", "fn", "qn", "gam", "labels",
-      "templates", "templates.q", "lambda", "omethod", "qun")
+    c("f0", "q0", "time", "fn", "qn", "gam", "labels", "templates",
+      "templates.q", "distances_to_center", "lambda", "omethod", "qun")
   )
   expect_equal(dim(out$f0), c(101, 21))
   expect_equal(dim(out$q0), c(101, 21))
@@ -19,6 +19,7 @@ test_that("`kmeans_align()` works", {
   expect_equal(out$labels, rep(1, 21))
   expect_equal(dim(out$templates), c(1, 101, 1))
   expect_equal(dim(out$templates.q), c(1, 101, 1))
+  expect_equal(length(out$distances_to_center), 21)
   expect_equal(out$lambda, 0)
   expect_equal(out$omethod, "DP")
   expect_snapshot(out)
