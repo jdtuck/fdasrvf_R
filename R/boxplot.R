@@ -33,8 +33,10 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' out <- time_warping(simu_data$f, simu_data$time)
 #' boxplot(out, what = "stats")
+#' }
 boxplot.fdawarp <- function(x,
                             variability_type = c("amplitude", "phase"),
                             alpha = 0.05,
