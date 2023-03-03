@@ -1,8 +1,24 @@
+# fdasrvf 2.0.1
+
+* Added functionalities to `kmeans_align()` (#24). Specifically:
+
+  - it gains the argument `use_verbose` which allows the user to suppress 
+  information displayed in the console;
+  - it includes a numeric vector storing the distances to corresponding center 
+  for each curve in the output;
+  - it is now possible to use the *medoid* as centroid type as an alternative to 
+  the mean; the medoid is the most central curve among the existing curves.
+
+* Further small improvements, documentation updates and improved code coverage 
+(#23).
+
 # fdasrvf 2.0.0
-* bugfixes, doc updates
-* add additional penalties to warping
-* add multivariate kmeans
-* exposed additional outputs to *bootTB*
+
+* Added multivariate kmeans (#18);
+* Added additional penalties to warping and additional outputs exposed to 
+`bootTB()` (#19);
+* Switch from travis appveyor to GHA for CI and code coverage monitoring (#20);
+* Bugfixes and documentation updates.
 
 # fdasrvf 1.9.8
 * bugfixes

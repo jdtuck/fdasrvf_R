@@ -9,6 +9,7 @@ kmeans_align(
   time,
   K = 1L,
   seeds = NULL,
+  centroid_type = c("mean", "medoid"),
   nonempty = 0L,
   lambda = 0,
   showplot = FALSE,
@@ -18,7 +19,8 @@ kmeans_align(
   alignment = TRUE,
   omethod = c("DP", "DP2", "RBFGS"),
   max_iter = 50L,
-  thresh = 0.01
+  thresh = 0.01,
+  use_verbose = FALSE
 )
 }
 \arguments{
@@ -42,6 +44,9 @@ the curves are evaluated.}
 \item{seeds}{An integer vector of length \code{K} specifying the indices of the
 curves in \code{f} which will be chosen as initial centroids. Defaults to \code{NULL}
 in which case such indices are randomly chosen.}
+
+\item{centroid_type}{A string specifying the type of centroid to compute.
+Choices are \code{"mean"} or \code{"medoid"}. Defaults to \code{"mean"}.}
 
 \item{nonempty}{An integer value specifying the minimum number of curves per
 cluster during the assignment step. Set it to a positive value to avoid the
@@ -74,6 +79,9 @@ Defaults to \code{50L}.}
 
 \item{thresh}{A numeric value specifying a threshold on the cost function
 below which convergence is assumed. Defaults to \code{0.01}.}
+
+\item{use_verbose}{A boolean specifying whether to display information about
+the calculations in the console. Defaults to \code{FALSE}.}
 }
 \value{
 An object of class \code{fdakma} which is a list containing:
@@ -87,6 +95,8 @@ than \code{f0} separated in clusters in a list;
 \item \code{labels}: the cluster memberships as an integer vector;
 \item \code{templates}: the centroids in the original functional space;
 \item \code{templates.q}: the centroids in SRSF space;
+\item \code{distances_to_center}: A numeric vector storing the distances of each
+observed curve to its center;
 \item \code{gam}: the warping functions as matrices or a 3D arrays of the same shape
 than \code{f0} by clusters in a list;
 \item \code{qun}: cost function value.
