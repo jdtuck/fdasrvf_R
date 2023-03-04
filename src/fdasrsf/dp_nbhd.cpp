@@ -95,11 +95,6 @@ static size_t compute_nbhd_count_rec(size_t n, int * states) {
 static size_t compute_nbhd_count(size_t n) {
 
   int* states = (int*)malloc((n + 1) * sizeof(*states));
-  if(states == NULL)
-  {
-    fprintf(stderr, "Error allocating memory in compute_nbhd_count\n");
-    abort();
-  }
 
   for(size_t i = 0; i < n + 1; states[i++] = -1);
 
@@ -127,11 +122,6 @@ Pair * dp_generate_nbhd(size_t nbhd_dim, size_t * nbhd_count) {
   /* Allocate memory for the partition, using the exact amount of we can use
    ~60% of memory that if we use nbhd_dim^2 */
   Pair* dp_nbhd = (Pair*)malloc((*nbhd_count) * sizeof(*dp_nbhd));
-  if(dp_nbhd == NULL)
-  {
-    fprintf(stderr, "Error allocating memory in dp_generate_nbhd\n");
-    abort();
-  }
 
   for(size_t i = 1; i <= nbhd_dim; i++) {
     for(size_t j = 1; j <= nbhd_dim; j++) {
