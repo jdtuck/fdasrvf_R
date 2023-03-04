@@ -35,7 +35,7 @@ RcppExport SEXP mlogit_warp_grad_wrap(SEXP m1, SEXP m2, SEXP alpha, SEXP beta, S
   return(gamouti);
 }
 
-RcppExport SEXP DPQ2(SEXP Q1, SEXP T1, SEXP Q2, SEXP T2, SEXP m1, SEXP n1, SEXP n2, SEXP tv1, SEXP tv2, SEXP n1v, SEXP n2v, SEXP G, SEXP T, SEXP size, SEXP lam1){
+RcppExport SEXP DPQ2(SEXP Q1, SEXP T1, SEXP Q2, SEXP T2, SEXP m1, SEXP n1, SEXP n2, SEXP tv1, SEXP tv2, SEXP n1v, SEXP n2v, SEXP G, SEXP T, SEXP size, SEXP lam1, SEXP nbhd_dim){
 
   NumericVector Q1i(Q1);
   NumericVector Q2i(Q2);
@@ -62,8 +62,9 @@ RcppExport SEXP DPQ2(SEXP Q1, SEXP T1, SEXP Q2, SEXP T2, SEXP m1, SEXP n1, SEXP 
   int _n2v = as<int>(n2v);
   int _size = as<int>(size);
   double _lam1 = as<double>(lam1);
+  int _nbhd_dim = as<int>(nbhd_dim);
 
-  DynamicProgrammingQ2(_Q1i, _T1i, _Q2i, _T2i, &_m1, &_n1, &_n2, _tv1i, _tv2i, &_n1v, &_n2v, _GG, _TT, &_size, &_lam1);
+  DynamicProgrammingQ2(_Q1i, _T1i, _Q2i, _T2i, &_m1, &_n1, &_n2, _tv1i, _tv2i, &_n1v, &_n2v, _GG, _TT, &_size, &_lam1, &_nbhd_dim);
 
   List ret; ret["G"] = wrap(GG); ret["T"] = wrap(TT); ret["size"] = wrap(_size);
   return(ret);
