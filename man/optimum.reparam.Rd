@@ -14,7 +14,8 @@ optimum.reparam(
   method = c("DP", "DPo", "SIMUL", "DP2", "RBFGS"),
   w = 0.01,
   f1o = 0,
-  f2o = 0
+  f2o = 0,
+  nbhd_dim = 7
 )
 }
 \arguments{
@@ -50,6 +51,8 @@ the 1st function at \eqn{t = t_{\min}}. Defaults to \code{rep(0, n_dimensions)}.
 
 \item{f2o}{A numeric vector of size \code{n_dimensions} specifying the value of
 the 2nd function at \eqn{t = t_{\min}}. Defaults to \code{rep(0, n_dimensions)}.}
+
+\item{nbhd_dim}{size of the grid (default = 7)}
 }
 \value{
 A numeric vector of size \code{n_points} storing discrete evaluations of

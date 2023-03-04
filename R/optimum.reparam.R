@@ -26,6 +26,7 @@
 #'   the 1st function at \eqn{t = t_{\min}}. Defaults to `rep(0, n_dimensions)`.
 #' @param f2o A numeric vector of size `n_dimensions` specifying the value of
 #'   the 2nd function at \eqn{t = t_{\min}}. Defaults to `rep(0, n_dimensions)`.
+#' @param nbhd_dim size of the grid (default = 7)
 #'
 #' @return A numeric vector of size `n_points` storing discrete evaluations of
 #'   the estimated boundary-preserving warping diffeomorphism on the initial
@@ -49,7 +50,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
                             method = c("DP", "DPo", "SIMUL", "DP2", "RBFGS"),
 														w = 0.01,
                             f1o = 0.0,
-                            f2o = 0.0) {
+                            f2o = 0.0,
+														nbhd_dim=7) {
 	pen1 = pen
   pen <- pmatch(pen, c("roughness", "l2gam", "l2psi", "geodesic")) # 1 - roughness, 2 - l2gam, 3 - l2psi, 4 - geodesic
 	if (is.na(pen))
@@ -89,7 +91,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
       size <- 0
       ret <- .Call(
         "DPQ2", PACKAGE = "fdasrvf",
-        Q1, T1, Q2, T2, L, M, M, T1, T2, M, M, G, T, size, lambda, pen
+        Q1, T1, Q2, T2, L, M, M, T1, T2, M, M, G, T, size, lambda, nbhd_dim
       )
       G <- ret$G[1:ret$size]
       Tf <- ret$T[1:ret$size]

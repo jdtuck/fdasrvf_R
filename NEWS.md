@@ -1,3 +1,7 @@
+# fdasrvf 2.0.1.900
+
+* added dynamic grid to DP method (#25)
+
 # fdasrvf 2.0.1
 
 * Added functionalities to `kmeans_align()` (#24). Specifically:
