@@ -31,7 +31,7 @@ elastic.distance <- function(f1,f2,time,lambda = 0,pen="roughness"){
     q1 <- f_to_srvf(f1,time)
     q2 <- f_to_srvf(f2,time)
     gam <- optimum.reparam(q1,time,q2,time,lambda,pen)
-    fw <- warp_f_gamma(f,time,gam)
+    fw <- warp_f_gamma(f2,time,gam)
     qw <- warp_q_gamma(q2,time,gam)
     Dy <- sqrt(trapz(time, (q1-qw)^2))
 
