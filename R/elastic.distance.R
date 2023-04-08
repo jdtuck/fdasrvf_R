@@ -31,15 +31,20 @@ elastic.distance <- function(f1,f2,time,lambda = 0,pen="roughness"){
     q1 <- f_to_srvf(f1,time)
     q2 <- f_to_srvf(f2,time)
     gam <- optimum.reparam(q1,time,q2,time,lambda,pen)
-    fw <- stats::approx(time,f2,xout=(time[length(time)]-time[1])*gam + time[1])$y
-    qw <- f_to_srvf(fw,time)
+    fw <- warp_f_gamma(f,time,gam)
+    qw <- warp_q_gamma(q2,time,gam)
     Dy <- sqrt(trapz(time, (q1-qw)^2))
 
     time1 <- seq(0,1,length.out=length(time))
     binsize <- mean(diff(time1))
     psi <- sqrt(gradient(gam,binsize))
-    v <- inv_exp_map(rep(1,length(gam)), psi)
-    Dx <- sqrt(trapz(time1, v^2))
+    q1dotq2 = trapz(time1, psi)
+    if (q1dotq2 > 1){
+      q1dotq2 = 1
+    } else if (q1dotq2 < - 1){
+      q1dotq2 = -1
+    }
+    Dx <- acos(q1dotq2)
 
     return(list(Dy=Dy,Dx=Dx))
 }
