@@ -35,8 +35,8 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, maxit=20, ms 
 
     qn = array(0, c(n,T1,N))
     betan = array(0, c(n,T1,N))
-    rotmat = array(0, c(n,n,N)) # CL added
-    gams = matrix(0, T1, N)     # CL added
+    rotmat = array(0, c(n,n,N)) 
+    gams = matrix(0, T1, N)     
  
     # align to mean
     for (ii in 1:N){
@@ -44,7 +44,7 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, maxit=20, ms 
         beta1 = beta[,,ii]
 
         out = find_rotation_seed_unqiue(mu,q1,mode)
-        gams[,ii] = out$gambest # CL added
+        gams[,ii] = out$gambest 
         beta1 = out$Rbest%*%beta1
         beta1n = group_action_by_gamma_coord(beta1, out$gambest)
         q1n = curve_to_q(beta1n)$q
@@ -52,7 +52,7 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, maxit=20, ms 
         out = find_best_rotation(mu, q1n)
         qn[,,ii] = out$q2new
         betan[,,ii] = out$R%*%beta1n
-        rotmat[,,ii] = out$R  # CL added
+        rotmat[,,ii] = out$R  
     }
     return(list(betan=betan, qn=qn, betamean=betamean, q_mu=mu, rotmat = rotmat,gams = gams,v=v))
 }
