@@ -1,7 +1,11 @@
-exp_map<-function(psi, v){
-  v_norm <- l2_norm(v)
+exp_map <- function(psi, v, wnorm = l2_norm){
+  v_norm <- wnorm(v)
   expgam <- cos(v_norm) * psi + sin(v_norm) * v / v_norm
   return(expgam)
+}
+
+l2_curvenorm <- function(psi, time=seq(0,1,length.out=ncol(psi))){
+  sqrt(trapz(time,apply(psi^2,2,sum)))
 }
 
 inv_exp_map<-function(Psi, psi){
