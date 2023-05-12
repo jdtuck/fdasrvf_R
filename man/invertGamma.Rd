@@ -16,7 +16,7 @@ Returns gamI inverted vector
 This function calculates the inverse of gamma
 }
 \examples{
-out <- invertGamma(simu_warp$gam[, 1])
+out <- invertGamma(simu_warp$warping_functions[, 1])
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
