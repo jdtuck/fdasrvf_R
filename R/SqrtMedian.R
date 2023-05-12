@@ -17,7 +17,7 @@
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' out <- SqrtMedian(simu_warp_median$gam)
+#' out <- SqrtMedian(simu_warp_median$warping_functions)
 SqrtMedian <- function(gam){
     TT = nrow(gam)
     n = ncol(gam)
