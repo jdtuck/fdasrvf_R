@@ -59,13 +59,13 @@ plot.fdawarp <- function(x, ...){
     lty = 1
   )
 
-  if (x$method == "mean")
+  if (x$call$centroid_type == "mean")
     plot(
       x = x$time,
       y = x$fmean,
       type = "l",
       col = "green",
-      main = bquote(paste(f[mean], " (", lambda == .(x$lambda), ")"))
+      main = bquote(paste(f[mean], " (", lambda == .(x$call$lambda), ")"))
     )
   else
     plot(
@@ -73,6 +73,6 @@ plot.fdawarp <- function(x, ...){
       y = x$fmean,
       type = "l",
       col = "green",
-      main = bquote(paste(f[median], " (", lambda == .(x$lambda), ")"))
+      main = bquote(paste(f[median], " (", lambda == .(x$call$lambda), ")"))
     )
 }
