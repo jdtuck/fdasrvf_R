@@ -9,7 +9,7 @@ plot.fdawarp <- function(x, ...){
 
   graphics::matplot(
     x = (0:(M - 1)) / (M - 1),
-    y = x$gam,
+    y = x$warping_functions,
     type = "l",
     main = "Warping functions",
     xlab = "Time"

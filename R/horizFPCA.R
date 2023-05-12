@@ -21,7 +21,7 @@
 #' @examples
 #' hfpca <- horizFPCA(simu_warp, no = 3)
 horizFPCA <- function(warp_data,no,ci=c(-1,0,1),showplot = TRUE){
-    gam <- warp_data$gam
+    gam <- warp_data$warping_functions
     tmp = SqrtMean(gam)
     vec = tmp$vec
     mu = tmp$mu

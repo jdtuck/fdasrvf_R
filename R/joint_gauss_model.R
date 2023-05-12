@@ -23,7 +23,7 @@ joint_gauss_model <- function(warp_data, n=1, no=5){
   fn <- warp_data$fn
   time <- warp_data$time
   qn <- warp_data$qn
-  gam <- warp_data$gam
+  gam <- warp_data$warping_functions
   # Perform PCA -------------------------------------------------------------
   M <- nrow(fn)
   jfpca <- jointFPCA(warp_data, no, showplot = F)

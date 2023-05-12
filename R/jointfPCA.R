@@ -37,7 +37,7 @@ jointFPCA <- function(warp_data, no, id=round(length(warp_data$time)/2), C=NULL,
     M <- nrow(qn)
     N <- ncol(qn)
     q0 <- warp_data$q0
-    gam <- warp_data$gam
+    gam <- warp_data$warping_functions
     # Set up for fPCA in q-space
     mq_new <- rowMeans(qn)
     m_new <- sign(fn[id,])*sqrt(abs(fn[id,]))  # scaled version
