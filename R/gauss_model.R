@@ -20,7 +20,7 @@ gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
     fn <- warp_data$fn
     time <- warp_data$time
     qn <- warp_data$qn
-    gam <- warp_data$gam
+    gam <- warp_data$warping_functions
     # Parameters
     no = 3
     eps = .Machine$double.eps
