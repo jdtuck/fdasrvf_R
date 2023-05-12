@@ -46,7 +46,7 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
     foreach::registerDoSEQ()
   }
 
-  # Caclculate CI -----------------------------------------------------------
+  # Calculate CI -----------------------------------------------------------
   # a% tolerance bound with p% coverage
   cat("Bootstrap Sampling\n")
   k = 1
