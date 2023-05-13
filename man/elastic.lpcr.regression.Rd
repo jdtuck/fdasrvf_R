@@ -17,7 +17,7 @@ elastic.lpcr.regression(
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 
-\item{y}{vector of size \eqn{M} lables}
+\item{y}{vector of size \eqn{M} labels}
 
 \item{time}{vector of size \eqn{N} describing the sample points}
 

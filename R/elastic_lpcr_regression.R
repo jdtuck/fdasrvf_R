@@ -4,7 +4,7 @@
 #' using elastic pca
 #'
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
-#' @param y vector of size \eqn{M} lables
+#' @param y vector of size \eqn{M} labels
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param pca.method string specifying pca method (options = "combined",
 #' "vert", or "horiz", default = "combined")
