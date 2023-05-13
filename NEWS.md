@@ -1,4 +1,6 @@
-# fdasrvf 2.0.1.900
+# fdasrvf 2.0.2.900
+
+# fdasrvf 2.0.2
 
 * added dynamic grid to DP method (#25)
 * update outputs to curve functions (#26)
