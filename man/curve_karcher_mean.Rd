@@ -9,6 +9,7 @@ curve_karcher_mean(
   mode = "O",
   rotated = T,
   scale = F,
+  lambda = 0,
   maxit = 20,
   ms = "mean"
 )
@@ -21,6 +22,8 @@ curve_karcher_mean(
 \item{rotated}{Optimize over rotation (default = T)}
 
 \item{scale}{Include scale (default = F)}
+
+\item{lambda}{A numeric value specifying the elasticity. Defaults to \code{0.0}.}
 
 \item{maxit}{maximum number of iterations}
 
