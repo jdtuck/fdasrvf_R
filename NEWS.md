@@ -1,5 +1,6 @@
 # fdasrvf 2.0.2.900
 * exposed lam to curve functions
+* added gamma to shooting vector conversion functions
 
 # fdasrvf 2.0.2
 

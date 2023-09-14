@@ -140,3 +140,60 @@ findkarcherinv <- function(warps, times, round = F){
   revscalevec <- sqrt(diff(invidy))
   return(list(invidy = invidy,revscalevec = revscalevec))
 }
+
+# map gam to tangent space at identity
+gam_to_v<-function(gam, smooth=TRUE){
+  TT = nrow(gam)
+  n = ncol(gam)
+  eps = .Machine$double.eps
+  time <- seq(0,1,length.out=TT)
+  binsize <- mean(diff(time))
+
+  psi = matrix(0,TT,n)
+  if (smooth) {
+    g <- matrix(0, TT, n)
+    for (i in 1:n) {
+      tmp.spline <- stats::smooth.spline(gam[,i])
+      g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      g[x<0, i] = 0
+      psi[,i] = sqrt(g[, i])
+    }
+  } else {
+    for (i in 1:n){
+      psi[,i] = sqrt(gradient(gam[,i],binsize))
+    }
+  }
+
+    mu = rep(1,TT)
+    vec = matrix(0,TT,n)
+    for (i in 1:n){
+      vec[,i] <- inv_exp_map(mu, psi[,i])
+    }
+
+  return(vec)
+}
+
+v_to_gam<-function(v){
+  if (ndims(v) == 0){
+    TT = length(v)
+    time <- seq(0,1,length.out=TT)
+    mu = rep(1,TT)
+    psi <- exp_map(mu,v)
+    gam0 <- cumtrapz(time,psi*psi)
+    gam <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+  } else {
+    TT = nrow(v)
+    n = ncol(v)
+    time <- seq(0,1,length.out=TT)
+
+    mu = rep(1,TT)
+    gam = matrix(0,TT,n)
+    for (i in 1:n){
+      psi <- exp_map(mu,v[,i])
+      gam0 <- cumtrapz(time,psi*psi)
+      gam[,i] <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+    }
+  }
+  return(gam)
+}
+
