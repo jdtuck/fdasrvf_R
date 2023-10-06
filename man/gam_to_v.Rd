@@ -8,7 +8,7 @@ gam_to_v(gam, smooth = TRUE)
 }
 \arguments{
 \item{gam}{Either a numeric vector of a numeric matrix or a numeric array
-specifying the warping functions t}
+specifying the warping functions}
 
 \item{smooth}{Apply smoothing before gradient}
 }
