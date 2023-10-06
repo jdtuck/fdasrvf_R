@@ -141,7 +141,18 @@ findkarcherinv <- function(warps, times, round = F){
   return(list(invidy = invidy,revscalevec = revscalevec))
 }
 
-# map gam to tangent space at identity
+#' map warping function to tangent space at identity
+#'
+#'
+#' @param gam Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the warping functions t
+#' @param smooth Apply smoothing before gradient
+#'
+#' @return A numeric array of the same shape as the input array `gamma` storing the
+#'   shooting vectors of `gamma` obtained via finite differences.
+#'
+#' @keywords srvf alignment
+#' @export
 gam_to_v<-function(gam, smooth=TRUE){
   TT = nrow(gam)
   n = ncol(gam)
