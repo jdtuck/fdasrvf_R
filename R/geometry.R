@@ -20,51 +20,51 @@ inv_exp_map<-function(Psi, psi){
 }
 
 l2_norm<-function(psi, time=seq(0,1,length.out=length(psi))){
-    l2norm <- sqrt(trapz(time,psi*psi))
-    return(l2norm)
+  l2norm <- sqrt(trapz(time,psi*psi))
+  return(l2norm)
 }
 
 inner_product<-function(psi1, psi2, time=seq(0,1,length.out=length(psi1))){
-    ip <- trapz(time,psi1*psi2)
-    return(ip)
+  ip <- trapz(time,psi1*psi2)
+  return(ip)
 }
 
 warp_q_gamma <- function(time, q, gam){
   M = length(gam)
   gam_dev = gradient(gam, 1/(M-1))
   q_tmp = stats::approx(time,q,xout=(time[length(time)]-time[1])*gam +
-               time[1])$y*sqrt(gam_dev)
+                          time[1])$y*sqrt(gam_dev)
   return(q_tmp)
 }
 
 randomGamma <- function(gam,num){
-    out = SqrtMean(gam)
-    mu = out$mu
-    psi = out$psi
-    vec = out$vec
+  out = SqrtMean(gam)
+  mu = out$mu
+  psi = out$psi
+  vec = out$vec
 
-    K = stats::cov(t(vec))
-    out = svd(K)
-    s = out$d
-    U = out$u
-    n = 5
-    TT = nrow(vec)
-    vm = rowMeans(vec)
-    time <- seq(0,1,length.out=TT)
+  K = stats::cov(t(vec))
+  out = svd(K)
+  s = out$d
+  U = out$u
+  n = 5
+  TT = nrow(vec)
+  vm = rowMeans(vec)
+  time <- seq(0,1,length.out=TT)
 
-    rgam = matrix(0,num,TT)
-    for (k in 1:num){
-        a = stats::rnorm(n)
-        v = rep(0,length(vm))
-        for (i in 1:n){
-            v = v + a[i]*sqrt(s[i])*U[,i]
-        }
-        psi <- exp_map(mu,v)
-
-        gam0 <- cumtrapz(time,psi*psi)
-        rgam[k,] = (gam0 - min(gam0))/(max(gam0)-min(gam0))
+  rgam = matrix(0,num,TT)
+  for (k in 1:num){
+    a = stats::rnorm(n)
+    v = rep(0,length(vm))
+    for (i in 1:n){
+      v = v + a[i]*sqrt(s[i])*U[,i]
     }
-    return(rgam)
+    psi <- exp_map(mu,v)
+
+    gam0 <- cumtrapz(time,psi*psi)
+    rgam[k,] = (gam0 - min(gam0))/(max(gam0)-min(gam0))
+  }
+  return(rgam)
 }
 
 SqrtMeanInverse <- function(gam){
@@ -76,7 +76,7 @@ SqrtMeanInverse <- function(gam){
   psi = matrix(0,TT,n)
   binsize <- mean(diff(time))
   for (i in 1:n){
-      psi[,i] = sqrt(gradient(gam[,i],binsize))
+    psi[,i] = sqrt(gradient(gam[,i],binsize))
   }
 
   # Find Direction
@@ -154,32 +154,54 @@ findkarcherinv <- function(warps, times, round = F){
 #' @keywords srvf alignment
 #' @export
 gam_to_v<-function(gam, smooth=TRUE){
-  TT = nrow(gam)
-  n = ncol(gam)
-  eps = .Machine$double.eps
-  time <- seq(0,1,length.out=TT)
-  binsize <- mean(diff(time))
+  if (ndims(gam_obs) == 0){
+    TT = length(gam)
+    eps = .Machine$double.eps
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
 
-  psi = matrix(0,TT,n)
-  if (smooth) {
-    g <- matrix(0, TT, n)
-    for (i in 1:n) {
-      tmp.spline <- stats::smooth.spline(gam[,i])
-      g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
-      g[x<0, i] = 0
-      psi[,i] = sqrt(g[, i])
+    psi = rep(0,TT)
+    if (smooth) {
+      tmp.spline <- stats::smooth.spline(gam)
+      g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      g[x<0] = 0
+      psi = sqrt(g)
+    } else {
+        psi = sqrt(gradient(gam,binsize))
     }
+
+    mu = rep(1,TT)
+    vec <- inv_exp_map(mu, psi)
+
   } else {
-    for (i in 1:n){
-      psi[,i] = sqrt(gradient(gam[,i],binsize))
+    TT = nrow(gam)
+    n = ncol(gam)
+    eps = .Machine$double.eps
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
+
+    psi = matrix(0,TT,n)
+    if (smooth) {
+      g <- matrix(0, TT, n)
+      for (i in 1:n) {
+        tmp.spline <- stats::smooth.spline(gam[,i])
+        g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+        g[x<0, i] = 0
+        psi[,i] = sqrt(g[, i])
+      }
+    } else {
+      for (i in 1:n){
+        psi[,i] = sqrt(gradient(gam[,i],binsize))
+      }
     }
-  }
 
     mu = rep(1,TT)
     vec = matrix(0,TT,n)
     for (i in 1:n){
       vec[,i] <- inv_exp_map(mu, psi[,i])
     }
+
+  }
 
   return(vec)
 }
