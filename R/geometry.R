@@ -154,7 +154,7 @@ findkarcherinv <- function(warps, times, round = F){
 #' @keywords srvf alignment
 #' @export
 gam_to_v<-function(gam, smooth=TRUE){
-  if (ndims(gam_obs) == 0){
+  if (ndims(gam) == 0){
     TT = length(gam)
     eps = .Machine$double.eps
     time <- seq(0,1,length.out=TT)
@@ -164,7 +164,7 @@ gam_to_v<-function(gam, smooth=TRUE){
     if (smooth) {
       tmp.spline <- stats::smooth.spline(gam)
       g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
-      g[x<0] = 0
+      g[g<0] = 0
       psi = sqrt(g)
     } else {
         psi = sqrt(gradient(gam,binsize))
@@ -186,7 +186,7 @@ gam_to_v<-function(gam, smooth=TRUE){
       for (i in 1:n) {
         tmp.spline <- stats::smooth.spline(gam[,i])
         g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
-        g[x<0, i] = 0
+        g[g[,i]<0, i] = 0
         psi[,i] = sqrt(g[, i])
       }
     } else {
