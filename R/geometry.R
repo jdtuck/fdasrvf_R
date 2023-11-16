@@ -8,6 +8,17 @@ l2_curvenorm <- function(psi, time=seq(0,1,length.out=ncol(psi))){
   sqrt(trapz(time,apply(psi^2,2,sum)))
 }
 
+#' map square root of warping function to tangent space
+#'
+#'
+#' @param Psi vector describing psi function at center of tangent space
+#' @param psi vector describing psi function to map to tangent space
+#'
+#' @return A numeric array of the same length as the input array `psi` storing the
+#'   shooting vector of `psi`
+#'
+#' @keywords srvf alignment
+#' @export
 inv_exp_map<-function(Psi, psi){
   theta <- acos(inner_product(Psi,psi))
 
@@ -67,6 +78,24 @@ randomGamma <- function(gam,num){
   return(rgam)
 }
 
+#' SRVF transform of warping functions
+#'
+#' This function calculates the srvf of warping functions with corresponding
+#' shooting vectors and finds the inverse of mean
+#'
+#' @param gam matrix (\eqn{N} x \eqn{M}) of \eqn{M} warping functions with \eqn{N} samples
+#' @return `gamI` inverse of Karcher mean warping function
+#'
+#' @keywords srvf alignment
+#' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
+#'  May 2011. Registration of functional data using fisher-rao metric,
+#'  arXiv:1103.3817v2.
+#' @references Tucker, J. D., Wu, W., Srivastava, A.,
+#'  Generative Models for Function Data using Phase and Amplitude Separation,
+#'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+#' @export
+#' @examples
+#' gamI <- SqrtMeanInverse(simu_warp$warping_functions)
 SqrtMeanInverse <- function(gam){
   TT = nrow(gam)
   n = ncol(gam)
