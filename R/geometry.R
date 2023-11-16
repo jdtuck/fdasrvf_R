@@ -20,7 +20,13 @@ l2_curvenorm <- function(psi, time=seq(0,1,length.out=ncol(psi))){
 #' @keywords srvf alignment
 #' @export
 inv_exp_map<-function(Psi, psi){
-  theta <- acos(inner_product(Psi,psi))
+  ip <- inner_product(Psi, psi)
+  if(ip < -1){
+    ip = -1
+  }else if(ip > 1){
+    ip = 1
+  }
+  theta <- acos(ip)
 
   if (theta < 1e-10){
     exp_inv = rep(0,length(psi))
