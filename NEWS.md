@@ -1,4 +1,9 @@
+# fdasrvf 2.0.3.9999
+* exposed `SqrtMeanInverse` and `inv_exp_map` to global
+* bugfixes
+
 # fdasrvf 2.0.3
+
 * exposed lam to curve functions
 * added gamma to shooting vector conversion functions
 * bugfixes
