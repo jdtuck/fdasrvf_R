@@ -24,7 +24,7 @@
 #' @param parallel A boolean specifying whether to run calculations in parallel.
 #'   Defaults to `FALSE`.
 #' @param optim_method A string specifying the algorithm used for optimization.
-#'   Choices are `"DP"`, `"DP2"` and `"RBFGS"`. Defaults to `"DP"`.
+#'   Choices are `"DP"`, `"DPo"`, `"DP2"`, and `"RBFGS"`. Defaults to `"DP"`.
 #' @param max_iter An integer value specifying the maximum number of iterations.
 #'   Defaults to `20L`.
 #'
@@ -80,7 +80,7 @@ time_warping <- function(f, time,
                          smooth_data = FALSE,
                          sparam = 25L,
                          parallel = FALSE,
-                         optim_method = c("DP", "DP2", "RBFGS"),
+                         optim_method = c("DP", "DPo", "DP2", "RBFGS"),
                          max_iter = 20L) {
   penalty_method <- rlang::arg_match(penalty_method)
   centroid_type <- rlang::arg_match(centroid_type)

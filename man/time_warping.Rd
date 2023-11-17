@@ -14,7 +14,7 @@ time_warping(
   smooth_data = FALSE,
   sparam = 25L,
   parallel = FALSE,
-  optim_method = c("DP", "DP2", "RBFGS"),
+  optim_method = c("DP", "DPo", "DP2", "RBFGS"),
   max_iter = 20L
 )
 }
@@ -49,7 +49,7 @@ box filter. Defaults to \code{25L}. This is used only when \code{smooth_data = T
 Defaults to \code{FALSE}.}
 
 \item{optim_method}{A string specifying the algorithm used for optimization.
-Choices are \code{"DP"}, \code{"DP2"} and \code{"RBFGS"}. Defaults to \code{"DP"}.}
+Choices are \code{"DP"}, \code{"DPo"}, \code{"DP2"}, and \code{"RBFGS"}. Defaults to \code{"DP"}.}
 
 \item{max_iter}{An integer value specifying the maximum number of iterations.
 Defaults to \code{20L}.}
