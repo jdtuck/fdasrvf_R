@@ -15,13 +15,9 @@ to estimating covariance matrix assuming iid data.}
 \item{kern_type}{Kernel function to be used for the estimation of the long run covariance
 matrix. The choices are \code{c("BT", "PR", "SP", "FT")} which are respectively, bartlett, parzen, simple and flat-top kernels.
 By default the function uses a \code{"barlett"} kernel.}
-
-\item{...}{Further arguments to pass}
 }
 \value{
-\item{\code{}}{
-Estimated long run covariance matrix.
-}
+Returns long run covariance matrix
 }
 \description{
 This function estimates the long run covariance matrix of a given multivariate data sample.

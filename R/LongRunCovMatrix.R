@@ -8,14 +8,7 @@
 #' @param kern_type Kernel function to be used for the estimation of the long run covariance
 #' matrix. The choices are \code{c("BT", "PR", "SP", "FT")} which are respectively, bartlett, parzen, simple and flat-top kernels.
 #' By default the function uses a \code{"barlett"} kernel.
-#' @param ... Further arguments to pass
-#'
-#' @return
-#'\item{\code{}}{
-#' Estimated long run covariance matrix.
-#'}
-#'
-
+#' @return Returns long run covariance matrix
 
 # this is for the computation of Long Run Variance of \Theta
 LongRunCovMatrix <- function(mdobj, h=0, kern_type = "bartlett"){

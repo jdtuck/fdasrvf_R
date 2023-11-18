@@ -98,29 +98,29 @@ elastic_amp_change_ff <- function(f, time, d = 1000, h = 0, smooth_data=FALSE, s
 
   # Plot
   if (showplot == TRUE) {
-    par(mfrow = c(1, 3))
-    matplot(f, type = "l", col = "grey", main = "Functional Data", ylab = "values")
+    graphics::par(mfrow = c(1, 3))
+    graphics::matplot(f, type = "l", col = "grey", main = "Functional Data", ylab = "values")
     for (i in 1:ncol(dat.a)) {
-      lines(dat.a[, i], col = "pink")
+      graphics::lines(dat.a[, i], col = "pink")
     }
     for (i in 1:ncol(dat.b)) {
-      lines(dat.b[, i], col = "lightblue")
+      graphics::lines(dat.b[, i], col = "lightblue")
     }
-    lines(mean.b, col = "blue")
-    lines(mean.a, col = "red")
-    legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
-    plot(delta, type = "l", main = "Estimated Change Function", ylab = "values")
+    graphics::lines(mean.b, col = "blue")
+    graphics::lines(mean.a, col = "red")
+    graphics::legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
+    graphics::plot(delta, type = "l", main = "Estimated Change Function", ylab = "values")
 
-    matplot(out$warping_functions, type = "l", col = "grey", main = "Warping Functions", ylab = "values")
+    graphics::matplot(out$warping_functions, type = "l", col = "grey", main = "Warping Functions", ylab = "values")
     for (i in 1:ncol(warp.b)) {
-      lines(warp.b[, i], col = "pink")
+      graphics::lines(warp.b[, i], col = "pink")
     }
     for (i in 1:ncol(warp.a)) {
-      lines(warp.a[, i], col = "lightblue")
+      graphics::lines(warp.a[, i], col = "lightblue")
     }
-    lines(warp_mean_a, col = "blue")
-    lines(warp_mean_b, col = "red")
-    legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
+    graphics::lines(warp_mean_a, col = "blue")
+    graphics::lines(warp_mean_b, col = "red")
+    graphics::legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
   }
 
   out <- list(
@@ -239,29 +239,29 @@ elastic_ph_change_ff <- function(f, time, d = 1000, h = 0, smooth_data=FALSE, sp
   # Plot
   delta <- mean.a - mean.b
   if (showplot == TRUE) {
-    par(mfrow = c(1, 3))
-    matplot(f, type = "l", col = "grey", main = "Functional Data", ylab = "values")
+    graphics::par(mfrow = c(1, 3))
+    graphics::matplot(f, type = "l", col = "grey", main = "Functional Data", ylab = "values")
     for (i in 1:ncol(dat.a)) {
-      lines(dat.a[, i], col = "pink")
+      graphics::lines(dat.a[, i], col = "pink")
     }
     for (i in 1:ncol(dat.b)) {
-      lines(dat.b[, i], col = "lightblue")
+      graphics::lines(dat.b[, i], col = "lightblue")
     }
-    lines(mean.b, col = "blue")
-    lines(mean.a, col = "red")
-    legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
-    plot(delta, type = "l", main = "Estimated Change Function", ylab = "values")
+    graphics::lines(mean.b, col = "blue")
+    graphics::lines(mean.a, col = "red")
+    graphics::legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
+    graphics::plot(delta, type = "l", main = "Estimated Change Function", ylab = "values")
 
-    matplot(out$warping_functions, type = "l", col = "grey", main = "Warping Functions", ylab = "values")
+    graphics::matplot(out$warping_functions, type = "l", col = "grey", main = "Warping Functions", ylab = "values")
     for (i in 1:ncol(warp.b)) {
-      lines(warp.b[, i], col = "pink")
+      graphics::lines(warp.b[, i], col = "pink")
     }
     for (i in 1:ncol(warp.a)) {
-      lines(warp.a[, i], col = "lightblue")
+      graphics::lines(warp.a[, i], col = "lightblue")
     }
-    lines(warp_mean_a, col = "blue")
-    lines(warp_mean_b, col = "red")
-    legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
+    graphics::lines(warp_mean_a, col = "blue")
+    graphics::lines(warp_mean_b, col = "red")
+    graphics::legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
   }
 
   out <- list(
@@ -377,30 +377,30 @@ elastic_change_fpca <- function(f, time, pca.method = "combined", pc = 0.95, d =
   # Plot
   delta <- mean.a - mean.b
   if (showplot == TRUE) {
-    par(mfrow = c(1, 3))
-    matplot(f, type = "l", col = "grey", main = "Functional Data", ylab = "values")
+    graphics::par(mfrow = c(1, 3))
+    graphics::matplot(f, type = "l", col = "grey", main = "Functional Data", ylab = "values")
     for (i in 1:ncol(dat.b)) {
-      lines(dat.b[, i], col = "pink")
+      graphics::lines(dat.b[, i], col = "pink")
     }
     for (i in 1:ncol(dat.a)) {
-      lines(dat.a[, i], col = "lightblue")
+      graphics::lines(dat.a[, i], col = "lightblue")
     }
-    lines(mean.a, col = "blue")
-    lines(mean.b, col = "red")
-    legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
+    graphics::lines(mean.a, col = "blue")
+    graphics::lines(mean.b, col = "red")
+    graphics::legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
 
-    plot(delta, type = "l", main = "Estimated Change Function", ylab = "values")
+    graphics::plot(delta, type = "l", main = "Estimated Change Function", ylab = "values")
 
-    matplot(out$warping_functions, type = "l", col = "grey", main = "Warping Functions", ylab = "values")
+    graphics::matplot(out$warping_functions, type = "l", col = "grey", main = "Warping Functions", ylab = "values")
     for (i in 1:ncol(warp.b)) {
-      lines(warp.b[, i], col = "pink")
+      graphics::lines(warp.b[, i], col = "pink")
     }
     for (i in 1:ncol(warp.a)) {
-      lines(warp.a[, i], col = "lightblue")
+      graphics::lines(warp.a[, i], col = "lightblue")
     }
-    lines(warp_mean_a, col = "blue")
-    lines(warp_mean_b, col = "red")
-    legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
+    graphics::lines(warp_mean_a, col = "blue")
+    graphics::lines(warp_mean_b, col = "red")
+    graphics::legend("topleft", c("before", "after"), col = c("blue", "red"), lty = c(1, 1), cex = 0.5)
   }
 
   out <- list(
