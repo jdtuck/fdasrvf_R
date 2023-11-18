@@ -42,7 +42,7 @@ Returns a list object containing
 \item{WarpingMeanBefore}{mean warping function before changepoint}
 \item{WarpingMeanAfter}{mean warping function after changepoint}
 \item{change_fun}{amplitude change function}
-\item{Sn}{test statisitc values}
+\item{Sn}{test statistic values}
 \item{mu}{mean shooting vectors}
 }
 \description{
