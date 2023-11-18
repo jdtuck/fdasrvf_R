@@ -8,7 +8,7 @@
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param pca.method string specifying pca method (options = "combined",
 #' "vert", or "horiz", default = "combined")
-#' @param no scalar specify number of principal components (default=5)
+#' @param no scalar specify number of principal components (default = 5)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel run in parallel (default = F)

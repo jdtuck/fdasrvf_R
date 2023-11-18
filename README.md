@@ -16,7 +16,7 @@ analysis
 
 ### Installation
 ------------------------------------------------------------------------------
-v2.0.3 is on [CRAN](https://cran.r-project.org/package=fdasrvf)
+v2.1.0 is on [CRAN](https://cran.r-project.org/package=fdasrvf)
 and can be installed as
 > `install.packages("fdasrvf")`
 
@@ -89,3 +89,6 @@ T. Harris, J. D. Tucker, B. Li, and L. Shand, "Elastic depths for detecting shap
 Q. Xie, S. Kurtek, E. Klassen, G. E. Christensen and A. Srivastava. Metric-based pairwise and multiple image registration. IEEE European Conference on Computer Vision (ECCV), September, 2014
 
 X. Zhang, S. Kurtek, O. Chkrebtii, and J. D. Tucker, “Elastic kkk-means clustering of functional data for posterior exploration, with an application to inference on acute respiratory infection dynamics”, arXiv:2011.12397 [stat.ME], 2020 arxiv
+
+J. D. Tucker and D. Yarger, “Elastic Functional Changepoint Detection of Climate Impacts from Localized Sources”, Envirometrics, 10.1002/env.2826, 2023.
+
