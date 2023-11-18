@@ -4,7 +4,7 @@
 #' phase-variability using elastic methods
 #'
 #' @param f matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples
-#' @param y vector of size \eqn{M} labels {1,2,...,m} for m classes
+#' @param y vector of size \eqn{M} labels [1,2,...,m] for m classes
 #' @param time vector of size \eqn{N} describing the sample points
 #' @param B matrix defining basis functions (default = NULL)
 #' @param df scalar controlling degrees of freedom if B=NULL (default=20)

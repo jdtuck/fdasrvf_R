@@ -20,7 +20,7 @@ elastic.mlogistic(
 \arguments{
 \item{f}{matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 
-\item{y}{vector of size \eqn{M} labels {1,2,...,m} for m classes}
+\item{y}{vector of size \eqn{M} labels (1,2,...,m) for m classes}
 
 \item{time}{vector of size \eqn{N} describing the sample points}
 
