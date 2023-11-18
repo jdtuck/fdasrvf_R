@@ -34,7 +34,7 @@ utils::globalVariables("n")
 #' @param sparam An integer value specifying the number of box filters applied.
 #'   Defaults to `25L`.
 #' @param parallel A boolean specifying whether parallel mode (using
-#'   [foreach::foreach()] and the **doParallel** package) shoud be activated.
+#'   [foreach::foreach()] and the **doParallel** package) should be activated.
 #'   Defaults to `FALSE`.
 #' @param alignment A boolean specifying whether to perform alignment. Defaults
 #'   to `TRUE`.

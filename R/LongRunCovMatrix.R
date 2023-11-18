@@ -1,4 +1,3 @@
-
 #' Long Run Covariance Matrix Estimation for Multivariate Time Series
 #'
 #' This function estimates the long run covariance matrix of a given multivariate data sample.
