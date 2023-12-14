@@ -22,7 +22,7 @@ namespace ROPTLIB{
 		iter = 0;
 		if (Debug >= ITERRESULT)
 		{
-			Rprintf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
+			Rprintf("i:%ld,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
 			timeSeries[iter] = static_cast<double>(getTickCount() - starttime) / CLK_PS;
 			funSeries[iter] = f1; gradSeries[iter] = ngf;
 			distSeries[iter] = ((soln == nullptr) ? 0 : Mani->Dist(x1, soln));
@@ -87,7 +87,7 @@ namespace ROPTLIB{
 				iter++;
 				if (Debug >= ITERRESULT && iter % OutputGap == 0)
 				{
-					Rprintf("X_{%d} WAS REJECTED.\n", iter);
+					Rprintf("X_{%ld} WAS REJECTED.\n", iter);
 					PrintGenInfo();
 					PrintInfo(); // Output information specific to Algorithms
 				}
@@ -106,19 +106,19 @@ namespace ROPTLIB{
 
 		if (Debug >= FINALRESULT)
 		{
-			Rprintf("Iter:%d,f:%.3e,", iter, f2);
+			Rprintf("Iter:%ld,f:%.3e,", iter, f2);
 			if (nsubgf != -1)
 			{
 				Rprintf("nsubgf:%.3e,", nsubgf);
 			}
-			Rprintf("|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,nf:%d,ng:%d,nR:%d,", ngf, ngf / ngf0, ComTime, nf, ng, nR);
+			Rprintf("|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,nf:%ld,ng:%ld,nR:%ld,", ngf, ngf / ngf0, ComTime, nf, ng, nR);
 			if (nH != 0)
 			{
-				Rprintf("nH:%d,", nH);
+				Rprintf("nH:%ld,", nH);
 			}
 			if (nV != 0)
 			{
-				Rprintf("nV(nVp):%d(%d),", nV, nVp);
+				Rprintf("nV(nVp):%ld(%ld),", nV, nVp);
 			}
 			Rprintf("\n");
 		}
@@ -221,7 +221,7 @@ namespace ROPTLIB{
 	void SolversTR::PrintGenInfo(void)
 	{
 		Solvers::PrintGenInfo();
-		Rprintf("nH:%d,rho:%.2e,radius:%.3e,tCGstatus:%s,innerIter:%d,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str(), innerIter);
+		Rprintf("nH:%ld,rho:%.2e,radius:%.3e,tCGstatus:%s,innerIter:%ld,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str(), innerIter);
 	};
 
 	void SolversTR::CheckParams(void)

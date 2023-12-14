@@ -52,7 +52,7 @@ void optimum_reparam(double *C1, double *C2, int n, int d, double w,
 	for (iter = CheckMemoryDeleted->begin(); iter != CheckMemoryDeleted->end(); iter++)
 	{
 		if (iter->second != 1)
-			Rprintf("Global address: %p, sharedtimes: %d\n", iter->first, iter->second);
+			Rprintf("Global address: %p, sharedtimes: %ld\n", iter->first, iter->second);
 	}
 	delete CheckMemoryDeleted;
 	return;

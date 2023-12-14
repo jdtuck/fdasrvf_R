@@ -287,7 +287,7 @@ namespace ROPTLIB{
 		std::string Repa2NSVectorTransportnames[L2SPHEREVECTORTRANSPORTLENGTH] = { "L2SPARALLELTRANSLATION" };
 		Manifold::CheckParams();
 		Rprintf("%s PARAMETERS:\n", name.c_str());
-		Rprintf("n             :%15d,\t", n);
+		Rprintf("n             :%15ld,\t", n);
 		Rprintf("metric        :%15s\n", Repa2NSMetricnames[metric].c_str());
 		Rprintf("retraction    :%15s,\t", Repa2NSRetractionnames[retraction].c_str());
 		Rprintf("VecTran       :%15s\n", Repa2NSVectorTransportnames[VecTran].c_str());

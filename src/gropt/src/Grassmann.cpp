@@ -37,8 +37,8 @@ namespace ROPTLIB{
 	{
 		Manifold::CheckParams();
 		Rprintf("%s PARAMETERS:\n", name.c_str());
-		Rprintf("n             :%15d,\t", n);
-		Rprintf("p             :%15d\n", p);
+		Rprintf("n             :%15ld,\t", n);
+		Rprintf("p             :%15ld\n", p);
 	};
 
 	void Grassmann::ExtrProjection(Variable *x, Vector *v, Vector *result) const

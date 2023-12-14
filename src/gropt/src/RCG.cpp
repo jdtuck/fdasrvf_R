@@ -49,7 +49,7 @@ namespace ROPTLIB{
 
 		Rprintf("RCG METHOD PARAMETERS:\n");
 		status = (ManDim >= 0 && ManDim <= std::numeric_limits<integer>::max()) ? YES : NO;
-		Rprintf("ManDim        :%15d[%s],\t", ManDim, status);
+		Rprintf("ManDim        :%15ld[%s],\t", ManDim, status);
 		status = (RCGmethod >= 0 && RCGmethod <= RCGMETHODSLENGTH) ? YES : NO;
 		Rprintf("RCGmethod     :%15s[%s]\n", RCGmethodSetnames[RCGmethod].c_str(), status);
 	};

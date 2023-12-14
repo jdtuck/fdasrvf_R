@@ -101,8 +101,8 @@ namespace ROPTLIB{
 		std::string StieVectorTransportnames[STIEVECTORTRANSPORTLENGTH] = { "PARALLELIZATION", "RIGGING", "PARALLELTRANSLATION", "PROJECTION", "CAYLEYVT" };
 		Manifold::CheckParams();
 		Rprintf("%s PARAMETERS:\n", name.c_str());
-		Rprintf("n             :%15d,\t", n);
-		Rprintf("p             :%15d\n", p);
+		Rprintf("n             :%15ld,\t", n);
+		Rprintf("p             :%15ld\n", p);
 		Rprintf("metric        :%15s,\t", StieMetricnames[metric].c_str());
 		Rprintf("retraction    :%15s\n", StieRetractionnames[retraction].c_str());
 		Rprintf("VecTran       :%15s\n", StieVectorTransportnames[VecTran].c_str());

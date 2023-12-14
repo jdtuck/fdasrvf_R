@@ -533,12 +533,12 @@ namespace ROPTLIB{
 	void LRTRSR1::PrintGenInfo(void)
 	{
 		Solvers::PrintGenInfo();
-		Rprintf("nH:%d,rho:%.2e,radius:%.3e,tCGstatus:%s,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str());
+		Rprintf("nH:%ld,rho:%.2e,radius:%.3e,tCGstatus:%s,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str());
 	};
 
 	void LRTRSR1::PrintInfo(void)
 	{
-		Rprintf("\n\tgamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", gamma, inpss, inpsy, inpyy, isupdated);
+		Rprintf("\n\tgamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%ld,", gamma, inpss, inpsy, inpyy, isupdated);
 		Rprintf("\n");
 	};
 }; /*end of ROPTLIB namespace*/

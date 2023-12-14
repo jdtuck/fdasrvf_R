@@ -582,7 +582,7 @@ namespace ROPTLIB{
 			}
 			else
 			{
-				Rprintf("beta: %d\n", 1);
+				Rprintf("beta: %ld\n", 1);
 			}
 			Rprintf("|xix| / |T_{etax} xix|:%g\n", sqrt(Metric(x, inxix, inxix) / Metric(x, inzetax, inzetax)));
 			ScaleTimesVector(x, sqrt(Metric(x, inxix, inxix) / Metric(x, inzetax, inzetax)),
@@ -608,7 +608,7 @@ namespace ROPTLIB{
 			}
 			else
 			{
-				Rprintf("beta: %d\n", 1);
+				Rprintf("beta: %ld\n", 1);
 			}
 			Rprintf("|xix| / |T_{etax} xix|:%g\n", sqrt(Metric(x, xix, xix) / Metric(x, zetax, zetax)));
 			ScaleTimesVector(x, sqrt(Metric(x, xix, xix) / Metric(x, zetax, zetax)),

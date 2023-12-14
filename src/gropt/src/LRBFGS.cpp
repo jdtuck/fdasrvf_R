@@ -97,7 +97,7 @@ namespace ROPTLIB{
 
 	void LRBFGS::PrintInfo(void)
 	{
-		Rprintf("\n\tbetay:%.3e,rho:%.3e,gamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%d,", betay, rho, gamma, inpss, inpsy, inpyy, isupdated);
+		Rprintf("\n\tbetay:%.3e,rho:%.3e,gamma:%.3e,inpss:%.3e,inpsy:%.3e,inpyy:%.3e,IsUpdateHessian:%ld,", betay, rho, gamma, inpss, inpsy, inpyy, isupdated);
 		Rprintf("\n");
 	};
 }; /*end of ROPTLIB namespace*/
