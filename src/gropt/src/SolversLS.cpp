@@ -748,7 +748,7 @@ namespace ROPTLIB{
 		if (LineSearch_LS == INPUTFUN)
 		{
 			status = YES;
-			Rprintf("IsPureLSInput :%15ld[%s]\n", IsPureLSInput, status);
+			Rprintf("IsPureLSInput :%15d[%s]\n", IsPureLSInput, status);
 		}
 	};
 

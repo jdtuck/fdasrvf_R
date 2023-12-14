@@ -246,9 +246,9 @@ namespace ROPTLIB{
 		status = (maximum_Delta > 0 && maximum_Delta >= minimum_Delta) ? YES : NO;
 		Rprintf("maximum_Delta :%15g[%s]\n", maximum_Delta, status);
 		status = (Min_Inner_Iter >= 0 && Min_Inner_Iter <= Max_Inner_Iter) ? YES : NO;
-		Rprintf("Min_Inner_Iter:%15d[%s],\t", Min_Inner_Iter, status);
+		Rprintf("Min_Inner_Iter:%15ld[%s],\t", Min_Inner_Iter, status);
 		status = (Max_Inner_Iter >= 0 && Max_Inner_Iter >= Min_Inner_Iter) ? YES : NO;
-		Rprintf("Max_Inner_Iter:%15d[%s],\n", Max_Inner_Iter, status);
+		Rprintf("Max_Inner_Iter:%15ld[%s],\n", Max_Inner_Iter, status);
 		status = (theta >= 0) ? YES : NO;
 		Rprintf("theta         :%15g[%s],\t", theta, status);
 		status = (kappa > 0 && kappa < 1) ? YES : NO;

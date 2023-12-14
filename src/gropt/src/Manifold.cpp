@@ -420,8 +420,8 @@ namespace ROPTLIB{
 		Rprintf("GENERAL PARAMETERS:\n");
 		Rprintf("name          :%15s,\t", name.c_str());
 		Rprintf("IsIntrApproach:%15d\n", IsIntrApproach);
-		Rprintf("IntrinsicDim  :%15d,\t", IntrinsicDim);
-		Rprintf("ExtrinsicDim  :%15d\n", ExtrinsicDim);
+		Rprintf("IntrinsicDim  :%15ld,\t", IntrinsicDim);
+		Rprintf("ExtrinsicDim  :%15ld\n", ExtrinsicDim);
 		Rprintf("HasHHR        :%15d,\t", HasHHR);
 		Rprintf("UpdBetaAlone  :%15d\n", UpdBetaAlone);
 		Rprintf("HasLockCon    :%15d\n", HasLockCon);
@@ -582,7 +582,7 @@ namespace ROPTLIB{
 			}
 			else
 			{
-				Rprintf("beta: %ld\n", 1);
+				Rprintf("beta: %d\n", 1);
 			}
 			Rprintf("|xix| / |T_{etax} xix|:%g\n", sqrt(Metric(x, inxix, inxix) / Metric(x, inzetax, inzetax)));
 			ScaleTimesVector(x, sqrt(Metric(x, inxix, inxix) / Metric(x, inzetax, inzetax)),
@@ -608,7 +608,7 @@ namespace ROPTLIB{
 			}
 			else
 			{
-				Rprintf("beta: %ld\n", 1);
+				Rprintf("beta: %d\n", 1);
 			}
 			Rprintf("|xix| / |T_{etax} xix|:%g\n", sqrt(Metric(x, xix, xix) / Metric(x, zetax, zetax)));
 			ScaleTimesVector(x, sqrt(Metric(x, xix, xix) / Metric(x, zetax, zetax)),
