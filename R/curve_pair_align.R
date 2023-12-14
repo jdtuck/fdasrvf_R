@@ -31,5 +31,5 @@ curve_pair_align <- function(beta1, beta2){
     beta2n = group_action_by_gamma_coord(beta2n, gamI)
     q2n = curve_to_q(beta2n)$q
 
-    return(list(beta2n=out$beta2new, q2n=q2n, gam=gamI, q1=q1))
+    return(list(beta2n=beta2n, q2n=q2n, gam=gamI, q1=q1))
 }
