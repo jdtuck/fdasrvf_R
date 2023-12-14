@@ -9,6 +9,7 @@
 #' \item{gam}{warping function}
 #' \item{q1}{srvf of curve 1}
 #' \item{beta1}{centered curve 1}
+#' \item{beta2}{centered curve 2}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
@@ -32,5 +33,5 @@ curve_pair_align <- function(beta1, beta2){
     beta2n = group_action_by_gamma_coord(beta2n, gamI)
     q2n = curve_to_q(beta2n)$q
 
-    return(list(beta2n=beta2n, q2n=q2n, gam=gamI, q1=q1, beta1=beta1))
+    return(list(beta2n=beta2n, q2n=q2n, gam=gamI, q1=q1, beta1=beta1, beta2=beta2))
 }
