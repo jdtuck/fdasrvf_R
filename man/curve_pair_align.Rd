@@ -16,6 +16,7 @@ a list containing \item{beta2n}{aligned curve 2 to 1}
 \item{q2n}{aligned srvf 2 to 1}
 \item{gam}{warping function}
 \item{q1}{srvf of curve 1}
+\item{beta1}{centered curve 1}
 }
 \description{
 This function aligns to curves using Elastic Framework
