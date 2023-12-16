@@ -140,10 +140,12 @@ shift_f <- function(f, tau){
     n = nrow(f)
     T1 = ncol(f)
     fn = matrix(0, n, T1)
-    if (tau > 0){
+    if (tau == T1){
+        fn[,(T1-tau+1):T1] = f[,1:tau]
+    } else if (tau > 0){
         fn[,1:(T1-tau)] = f[,(tau+1):T1]
         fn[,(T1-tau+1):T1] = f[,1:tau]
-    } else if (tau ==0) {
+    } else if (tau == 0) {
       fn = f
     } else {
         t = abs(tau)+1
