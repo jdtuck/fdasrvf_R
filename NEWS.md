@@ -1,3 +1,6 @@
+# fdasrvf 2.1.1
+* bugfixes
+
 # fdasrvf 2.1.0
 * added elastic change point functions
 * exposed `SqrtMeanInverse` and `inv_exp_map` to global
