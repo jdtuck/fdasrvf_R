@@ -18,7 +18,7 @@
 #' @export
 #' @examples
 #' data("mpeg7")
-#' out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
+#' out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes and iterations, small for speed
 curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, lambda = 0.0,
                              maxit=20, ms = "mean"){
     if (mode=="C"){
