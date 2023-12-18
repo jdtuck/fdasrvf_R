@@ -15,7 +15,7 @@ namespace ROPTLIB{
 
 	void Solvers::PrintGenInfo(void)
 	{
-		Rprintf("i:%d,f:%.3e,df/f:%.3e,", iter, f2, ((f1 - f2) / f2));
+		Rprintf("i:%ld,f:%.3e,df/f:%.3e,", iter, f2, ((f1 - f2) / f2));
 
 		if (nsubgf != -1)
 			Rprintf("nsubgf:%.3e,", nsubgf);
@@ -23,12 +23,12 @@ namespace ROPTLIB{
 		Rprintf("|gf|:%.3e,time:%.2e,", ngf, static_cast<double>(getTickCount() - starttime) / CLK_PS);
 
 		if (subprobtimes != 0)
-			Rprintf("nsubprob:%d,", subprobtimes);
+			Rprintf("nsubprob:%ld,", subprobtimes);
 
-		Rprintf("nf:%d,ng:%d,nR:%d,", nf, ng, nR);
+		Rprintf("nf:%ld,ng:%ld,nR:%ld,", nf, ng, nR);
 
 		if (nV != 0)
-			Rprintf("nV(nVp):%d(%d),", nV, nVp);
+			Rprintf("nV(nVp):%ld(%ld),", nV, nVp);
 	};
 
 	void Solvers::PrintInfo(void)
@@ -148,17 +148,17 @@ namespace ROPTLIB{
 		status = (Tolerance > 0) ? YES : NO;
 		Rprintf("Tolerance     :%15g[%s]\n", Tolerance, status);
 		status = (Max_Iteration > 0 && Max_Iteration >= Min_Iteration) ? YES : NO;
-		Rprintf("Max_Iteration :%15d[%s],\t", Max_Iteration, status);
+		Rprintf("Max_Iteration :%15ld[%s],\t", Max_Iteration, status);
 		status = (Min_Iteration >= 0 && Min_Iteration <= Max_Iteration) ? YES : NO;
-		Rprintf("Min_Iteration :%15d[%s]\n", Min_Iteration, status);
+		Rprintf("Min_Iteration :%15ld[%s]\n", Min_Iteration, status);
 		status = (OutputGap > 0) ? YES : NO;
-		Rprintf("OutputGap     :%15d[%s],\t", OutputGap, status);
+		Rprintf("OutputGap     :%15ld[%s],\t", OutputGap, status);
 		status = (Debug >= 0 && Debug < DEBUGLENGTH) ? YES : NO;
 		Rprintf("DEBUG         :%15s[%s]\n", DEBUGnames[Debug].c_str(), status);
 		status = (Diffx > 0) ? YES : NO;
 		Rprintf("Diffx         :%15g[%s],\t", Diffx, status);
 		status = (NumExtraGF > 0) ? YES : NO;
-		Rprintf("NumExtraGF    :%15d[%s]\n", NumExtraGF, status);
+		Rprintf("NumExtraGF    :%15ld[%s]\n", NumExtraGF, status);
 	};
 
 	void Solvers::Run(void)

@@ -6,6 +6,7 @@
 #' @param mode Open ("O") or Closed ("C") curves
 #' @param rotated Optimize over rotation (default = T)
 #' @param scale Include scale (default = F)
+#' @param lambda A numeric value specifying the elasticity. Defaults to `0.0`.
 #' @param maxit maximum number of iterations
 #' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
 #' @return Returns a list containing \item{mu}{mean srvf}
@@ -28,7 +29,8 @@
 #' @examples
 #' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' # note: use more shapes, small for speed
-curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit = 20, ms = "mean")
+curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F,
+                                lambda = 0.0, maxit = 20, ms = "mean")
 {
     if(ms!="mean"&ms!="median"){warning("ms must be either \"mean\" or \"median\". ms has been set to \"mean\"",immediate. = T)}
     if(ms!="median"){ms = "mean"}
@@ -75,7 +77,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit 
     cat("\nInitializing...\n")
     gam = matrix(0,T1,N)
     for (k in 1:N) {
-        out = find_rotation_seed_unqiue(mu,q[, , k],mode)
+        out = find_rotation_seed_unqiue(mu,q[, , k],mode,lambda)
         gam[,k] = out$gambest
     }
 
@@ -96,7 +98,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F, maxit 
         for (i in 1:N) {
             q1 = q[, , i]
 
-            out = find_rotation_seed_unqiue(mu,q1,mode)
+            out = find_rotation_seed_unqiue(mu,q1,mode,lambda)
             qn_t = out$q2best/sqrt(innerprod_q2(out$q2best,out$q2best))
 
             q1dotq2 = innerprod_q2(mu,qn_t)

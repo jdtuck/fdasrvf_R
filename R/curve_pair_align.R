@@ -4,16 +4,19 @@
 #'
 #' @param beta1 array describing curve 1 (n,T)
 #' @param beta2 array describing curve 2 (n,T)
+#' @param mode Open ("O") or Closed ("C") curves
 #' @return a list containing \item{beta2n}{aligned curve 2 to 1}
 #' \item{q2n}{aligned srvf 2 to 1}
 #' \item{gam}{warping function}
 #' \item{q1}{srvf of curve 1}
+#' \item{beta1}{centered curve 1}
+#' \item{beta2}{centered curve 2}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
 #' out <- curve_pair_align(beta[, , 1, 1], beta[, , 1, 5])
-curve_pair_align <- function(beta1, beta2){
+curve_pair_align <- function(beta1, beta2, mode="O"){
     T1 = ncol(beta1)
     centroid1 = calculatecentroid(beta1)
     dim(centroid1) = c(length(centroid1),1)
@@ -23,13 +26,11 @@ curve_pair_align <- function(beta1, beta2){
     beta2 = beta2 - repmat(centroid2, 1, T1)
 
     q1 = curve_to_q(beta1)$q
+    out = find_rotation_seed_coord(beta1, beta2, mode)
+    gam = out$gambest
+    q2n = out$q2best
+    beta2n = out$Rbest %*% shift_f(beta2, out$tau)
+    beta2n = group_action_by_gamma_coord(beta2n, gam)
 
-    # optimize over SO(n) x Gamma using DP
-    out = reparam_curve(beta1, beta2)
-    beta2n = out$R %*% shift_f(beta2, out$tau)
-    gamI = invertGamma(out$gam)
-    beta2n = group_action_by_gamma_coord(beta2n, gamI)
-    q2n = curve_to_q(beta2n)$q
-
-    return(list(beta2n=out$beta2new, q2n=q2n, gam=gamI, q1=q1))
+    return(list(beta2n=beta2n, q2n=q2n, gam=gam, q1=q1, beta1=beta1, beta2=beta2))
 }

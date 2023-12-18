@@ -205,23 +205,23 @@ namespace ROPTLIB{
 			}
 			else
 			{
-				Rprintf("%s is an empty data with size %d", name, size[0]);
+				Rprintf("%s is an empty data with size %ld", name, size[0]);
 			}
 			for (integer i = 1; i < ls; i++)
-				Rprintf(" x %d", size[i]);
+				Rprintf(" x %ld", size[i]);
 			Rprintf("\n");
 		}
 		else
 			if (ls == 1 || (ls > 1 && size[1] * product == 1))
 			{
-				Rprintf("%s , shared times:%d, shared times address:%p\n", name, *sharedtimes, sharedtimes);
+				Rprintf("%s , shared times:%ld, shared times address:%p\n", name, *sharedtimes, sharedtimes);
 				for (integer i = 0; i < length; i++)
 					Rprintf("%.10e\n", Space[i]);
 			}
 			else
 				if (ls == 2 || product == 1)
 				{
-					Rprintf("%s , shared times:%d, shared times address:%p\n", name, *sharedtimes, sharedtimes);
+					Rprintf("%s , shared times:%ld, shared times address:%p\n", name, *sharedtimes, sharedtimes);
 					for (integer j = 0; j < size[0]; j++)
 					{
 						for (integer k = 0; k < size[1]; k++)
@@ -242,8 +242,8 @@ namespace ROPTLIB{
 					{
 						Rprintf("%s(:,:", name);
 						for (integer i = 2; i < ls; i++)
-							Rprintf(",%d", idices[i]);
-						Rprintf("), shared times:%d\n", *sharedtimes);
+							Rprintf(",%ld", idices[i]);
+						Rprintf("), shared times:%ld\n", *sharedtimes);
 						for (integer j = 0; j < row; j++)
 						{
 							for (integer k = 0; k < col; k++)

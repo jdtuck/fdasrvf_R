@@ -54,14 +54,14 @@ namespace ROPTLIB{
 				}
 				else
 				{
-					Rprintf("%s is an empty data with size %d", name, size[0]);
+					Rprintf("%s is an empty data with size %ld", name, size[0]);
 				}
 				for (integer i = 1; i < ls; i++)
-					Rprintf(" x %d", size[i]);
+					Rprintf(" x %ld", size[i]);
 				Rprintf("\n");
 				return;
 			}
-			Rprintf("%s , shared times:%d, shared times address:%p\n", name, *sharedtimes, sharedtimes);
+			Rprintf("%s , shared times:%ld, shared times address:%p\n", name, *sharedtimes, sharedtimes);
 			integer n = elements[0]->Getlength();
 			integer num = numofelements;
 			for (integer i = 0; i < n; i++)

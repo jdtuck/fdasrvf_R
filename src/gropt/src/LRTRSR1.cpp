@@ -508,7 +508,7 @@ namespace ROPTLIB{
 		status = YES;
 		Rprintf("isconvex      :%15d[%s],\t", isconvex, status);
 		status = (LengthSY >= 0) ? YES : NO;
-		Rprintf("LengthSY      :%15d[%s]\n", LengthSY, status);
+		Rprintf("LengthSY      :%15ld[%s]\n", LengthSY, status);
 	};
 
 	void LRTRSR1::HessianEta(Vector *Eta, Vector *result)
@@ -533,7 +533,7 @@ namespace ROPTLIB{
 	void LRTRSR1::PrintGenInfo(void)
 	{
 		Solvers::PrintGenInfo();
-		Rprintf("nH:%d,rho:%.2e,radius:%.3e,tCGstatus:%s,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str());
+		Rprintf("nH:%ld,rho:%.2e,radius:%.3e,tCGstatus:%s,", nH, rho, Delta, tCGstatusSetnames[tCGstatus].c_str());
 	};
 
 	void LRTRSR1::PrintInfo(void)

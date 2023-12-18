@@ -24,7 +24,7 @@ namespace ROPTLIB{
 		iter = 0;
 		if (Debug >= ITERRESULT)
 		{
-			Rprintf("i:%d,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
+			Rprintf("i:%ld,f:%.3e,|gf|:%.3e,\n", iter, f1, ngf);
 			timeSeries[iter] = static_cast<double>(getTickCount() - starttime) / CLK_PS;
 			funSeries[iter] = f1;
 			gradSeries[iter] = ngf;
@@ -145,7 +145,7 @@ namespace ROPTLIB{
 			lengthSeries = iter + 1;
 		if (Debug >= FINALRESULT)
 		{
-			Rprintf("Iter:%d,f:%.3e,", iter, f2);
+			Rprintf("Iter:%ld,f:%.3e,", iter, f2);
 			if (nsubgf != -1)
 			{
 				Rprintf("nsubgf:%.3e,", nsubgf);
@@ -153,17 +153,17 @@ namespace ROPTLIB{
 			Rprintf("|gf|:%.3e,|gf|/|gf0|:%.3e,time:%.2e,", ngf, ngf / ngf0, ComTime);
 			if (subprobtimes != 0)
 			{
-				Rprintf("nsubprob:%d,", subprobtimes);
+				Rprintf("nsubprob:%ld,", subprobtimes);
 			}
-			Rprintf("nf:%d,ng:%d,nR:%d,", nf, ng, nR);
+			Rprintf("nf:%ld,ng:%ld,nR:%ld,", nf, ng, nR);
 
 			if (nH != 0)
 			{
-				Rprintf("nH:%d,", nH);
+				Rprintf("nH:%ld,", nH);
 			}
 			if (nV != 0)
 			{
-				Rprintf("nV(nVp):%d(%d),", nV, nVp);
+				Rprintf("nV(nVp):%ld(%ld),", nV, nVp);
 			}
 			Rprintf("\n");
 		}
@@ -738,11 +738,11 @@ namespace ROPTLIB{
 		status = YES;
 		Rprintf("Finalstepsize :%15g[%s]\n", Finalstepsize, status);
 		status = (Num_pre_funs >= 0) ? YES : NO;
-		Rprintf("Num_pre_funs  :%15d[%s],\t", Num_pre_funs, status);
+		Rprintf("Num_pre_funs  :%15ld[%s],\t", Num_pre_funs, status);
 		status = (InitSteptype >= 0 && InitSteptype < INITSTEPSIZESETLENGTH) ? YES : NO;
 		Rprintf("InitSteptype  :%15s[%s]\n", INITSTEPnames[InitSteptype].c_str(), status);
 		status = (Num_pre_BB >= 0) ? YES : NO;
-		Rprintf("Num_pre_BB    :%15d[%s],\t", Num_pre_BB, status);
+		Rprintf("Num_pre_BB    :%15ld[%s],\t", Num_pre_BB, status);
 		status = (BBratio >= 0 && BBratio <= 1) ? YES : NO;
 		Rprintf("BBratio       :%15g[%s]\n", BBratio, status);
 		if (LineSearch_LS == INPUTFUN)

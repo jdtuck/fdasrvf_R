@@ -420,8 +420,8 @@ namespace ROPTLIB{
 		Rprintf("GENERAL PARAMETERS:\n");
 		Rprintf("name          :%15s,\t", name.c_str());
 		Rprintf("IsIntrApproach:%15d\n", IsIntrApproach);
-		Rprintf("IntrinsicDim  :%15d,\t", IntrinsicDim);
-		Rprintf("ExtrinsicDim  :%15d\n", ExtrinsicDim);
+		Rprintf("IntrinsicDim  :%15ld,\t", IntrinsicDim);
+		Rprintf("ExtrinsicDim  :%15ld\n", ExtrinsicDim);
 		Rprintf("HasHHR        :%15d,\t", HasHHR);
 		Rprintf("UpdBetaAlone  :%15d\n", UpdBetaAlone);
 		Rprintf("HasLockCon    :%15d\n", HasLockCon);

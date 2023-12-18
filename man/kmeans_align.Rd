@@ -64,7 +64,7 @@ filter. Defaults to \code{FALSE}.}
 Defaults to \code{25L}.}
 
 \item{parallel}{A boolean specifying whether parallel mode (using
-\code{\link[foreach:foreach]{foreach::foreach()}} and the \strong{doParallel} package) shoud be activated.
+\code{\link[foreach:foreach]{foreach::foreach()}} and the \strong{doParallel} package) should be activated.
 Defaults to \code{FALSE}.}
 
 \item{alignment}{A boolean specifying whether to perform alignment. Defaults

@@ -57,7 +57,7 @@ namespace ROPTLIB{
 			HessianEta(x, xi, Hv);
 			Y[i] = log(fabs(fy - fx - Domain->Metric(x, gfx, xi) - 0.5 * Domain->Metric(x, xi, Hv)));
 			X[i] = 0.5 * log(Domain->Metric(x, xi, xi));
-			Rprintf("i:%d,|eta|:%.3e,(fy-fx)/<gfx,eta>:%.3e,(fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>:%.3e\n", i,
+			Rprintf("i:%ld,|eta|:%.3e,(fy-fx)/<gfx,eta>:%.3e,(fy-fx-<gfx,eta>)/<0.5 eta, Hessian eta>:%.3e\n", i,
 				sqrt(Domain->Metric(x, xi, xi)), (fy - fx) / Domain->Metric(x, gfx, xi),
 				(fy - fx - Domain->Metric(x, gfx, xi)) / (0.5 * Domain->Metric(x, xi, Hv)));
 			Domain->ScaleTimesVector(x, 0.5, xi, xi);

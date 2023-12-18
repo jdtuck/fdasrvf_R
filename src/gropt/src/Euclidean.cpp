@@ -30,18 +30,18 @@ namespace ROPTLIB{
 		Manifold::CheckParams();
 		Rprintf("%s PARAMETERS:\n", name.c_str());
 		if (col == 1 && num == 1)
-			Rprintf("row           :%15d\n", row);
+			Rprintf("row           :%15ld\n", row);
 		else
 			if (num == 1)
 			{
-				Rprintf("row           :%15d,\t", row);
-				Rprintf("col           :%15d\n", col);
+				Rprintf("row           :%15ld,\t", row);
+				Rprintf("col           :%15ld\n", col);
 			}
 			else
 			{
-				Rprintf("row           :%15d,\t", row);
-				Rprintf("col           :%15d\n", col);
-				Rprintf("num           :%15d\n", num);
+				Rprintf("row           :%15ld,\t", row);
+				Rprintf("col           :%15ld\n", col);
+				Rprintf("num           :%15ld\n", num);
 			}
 	};
 

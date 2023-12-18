@@ -143,9 +143,22 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
   amp.var = trapz(time,std_fn^2)
   phase.var = trapz(time,var_fgam)
 
-  out <- list(f0=f,time=time,fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,gam=gam,
-              orig.var=orig.var,amp.var=amp.var,phase.var=phase.var,
-              qun=0,lambda=lambda,method="mean",omethod=omethod,gamI=gamI,rsamps=F)
+  out <- list(f0=f,time=time,fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,warping_functions=gam,
+              original_variance=orig.var,amplitude_variance=amp.var,phase_variance=phase.var,
+              qun=0,
+              inverse_average_warping_function = gamI,
+              rsamps = FALSE,
+              call = list(
+                lambda = lambda,
+                penalty_method = pen,
+                centroid_type = "mean",
+                center_warpings = FALSE,
+                smooth_data = smooth_data,
+                sparam = sparam,
+                parallel = parallel,
+                optim_method = omethod,
+                max_iter = MaxItr
+              ))
 
   class(out) <- 'fdawarp'
 

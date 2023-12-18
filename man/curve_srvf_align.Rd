@@ -9,6 +9,7 @@ curve_srvf_align(
   mode = "O",
   rotated = T,
   scale = F,
+  lambda = 0,
   maxit = 20,
   ms = "mean"
 )
@@ -21,6 +22,8 @@ curve_srvf_align(
 \item{rotated}{Optimize over rotation (default = T)}
 
 \item{scale}{Include scale (default = F)}
+
+\item{lambda}{A numeric value specifying the elasticity. Defaults to \code{0.0}.}
 
 \item{maxit}{maximum number of iterations}
 
@@ -37,7 +40,8 @@ Aligns a collection of curves using the elastic square-root velocity (srvf) fram
 }
 \examples{
 data("mpeg7")
-out = curve_srvf_align(beta[,,1,1:2],maxit=2) # note: use more shapes, small for speed
+# note: use more shapes and iterations, small for speed
+out = curve_srvf_align(beta[,,1,1:2],maxit=2)
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.

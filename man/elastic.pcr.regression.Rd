@@ -26,7 +26,7 @@ elastic.pcr.regression(
 \item{pca.method}{string specifying pca method (options = "combined",
 "vert", or "horiz", default = "combined")}
 
-\item{no}{scalar specify number of principal components (default=5)}
+\item{no}{scalar specify number of principal components (default = 5)}
 
 \item{smooth_data}{smooth data using box filter (default = F)}
 

@@ -1,4 +1,16 @@
-# fdasrvf 2.0.2.900
+# fdasrvf 2.1.1
+* bugfixes
+
+# fdasrvf 2.1.0
+* added elastic change point functions
+* exposed `SqrtMeanInverse` and `inv_exp_map` to global
+* bugfixes
+
+# fdasrvf 2.0.3
+
+* exposed lam to curve functions
+* added gamma to shooting vector conversion functions
+* bugfixes
 
 # fdasrvf 2.0.2
 

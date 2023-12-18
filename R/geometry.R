@@ -8,8 +8,25 @@ l2_curvenorm <- function(psi, time=seq(0,1,length.out=ncol(psi))){
   sqrt(trapz(time,apply(psi^2,2,sum)))
 }
 
+#' map square root of warping function to tangent space
+#'
+#'
+#' @param Psi vector describing psi function at center of tangent space
+#' @param psi vector describing psi function to map to tangent space
+#'
+#' @return A numeric array of the same length as the input array `psi` storing the
+#'   shooting vector of `psi`
+#'
+#' @keywords srvf alignment
+#' @export
 inv_exp_map<-function(Psi, psi){
-  theta <- acos(inner_product(Psi,psi))
+  ip <- inner_product(Psi, psi)
+  if(ip < -1){
+    ip = -1
+  }else if(ip > 1){
+    ip = 1
+  }
+  theta <- acos(ip)
 
   if (theta < 1e-10){
     exp_inv = rep(0,length(psi))
@@ -20,53 +37,71 @@ inv_exp_map<-function(Psi, psi){
 }
 
 l2_norm<-function(psi, time=seq(0,1,length.out=length(psi))){
-    l2norm <- sqrt(trapz(time,psi*psi))
-    return(l2norm)
+  l2norm <- sqrt(trapz(time,psi*psi))
+  return(l2norm)
 }
 
 inner_product<-function(psi1, psi2, time=seq(0,1,length.out=length(psi1))){
-    ip <- trapz(time,psi1*psi2)
-    return(ip)
+  ip <- trapz(time,psi1*psi2)
+  return(ip)
 }
 
 warp_q_gamma <- function(time, q, gam){
   M = length(gam)
   gam_dev = gradient(gam, 1/(M-1))
   q_tmp = stats::approx(time,q,xout=(time[length(time)]-time[1])*gam +
-               time[1])$y*sqrt(gam_dev)
+                          time[1])$y*sqrt(gam_dev)
   return(q_tmp)
 }
 
 randomGamma <- function(gam,num){
-    out = SqrtMean(gam)
-    mu = out$mu
-    psi = out$psi
-    vec = out$vec
+  out = SqrtMean(gam)
+  mu = out$mu
+  psi = out$psi
+  vec = out$vec
 
-    K = stats::cov(t(vec))
-    out = svd(K)
-    s = out$d
-    U = out$u
-    n = 5
-    TT = nrow(vec)
-    vm = rowMeans(vec)
-    time <- seq(0,1,length.out=TT)
+  K = stats::cov(t(vec))
+  out = svd(K)
+  s = out$d
+  U = out$u
+  n = 5
+  TT = nrow(vec)
+  vm = rowMeans(vec)
+  time <- seq(0,1,length.out=TT)
 
-    rgam = matrix(0,num,TT)
-    for (k in 1:num){
-        a = stats::rnorm(n)
-        v = rep(0,length(vm))
-        for (i in 1:n){
-            v = v + a[i]*sqrt(s[i])*U[,i]
-        }
-        psi <- exp_map(mu,v)
-
-        gam0 <- cumtrapz(time,psi*psi)
-        rgam[k,] = (gam0 - min(gam0))/(max(gam0)-min(gam0))
+  rgam = matrix(0,num,TT)
+  for (k in 1:num){
+    a = stats::rnorm(n)
+    v = rep(0,length(vm))
+    for (i in 1:n){
+      v = v + a[i]*sqrt(s[i])*U[,i]
     }
-    return(rgam)
+    psi <- exp_map(mu,v)
+
+    gam0 <- cumtrapz(time,psi*psi)
+    rgam[k,] = (gam0 - min(gam0))/(max(gam0)-min(gam0))
+  }
+  return(rgam)
 }
 
+#' SRVF transform of warping functions
+#'
+#' This function calculates the srvf of warping functions with corresponding
+#' shooting vectors and finds the inverse of mean
+#'
+#' @param gam matrix (\eqn{N} x \eqn{M}) of \eqn{M} warping functions with \eqn{N} samples
+#' @return `gamI` inverse of Karcher mean warping function
+#'
+#' @keywords srvf alignment
+#' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
+#'  May 2011. Registration of functional data using fisher-rao metric,
+#'  arXiv:1103.3817v2.
+#' @references Tucker, J. D., Wu, W., Srivastava, A.,
+#'  Generative Models for Function Data using Phase and Amplitude Separation,
+#'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
+#' @export
+#' @examples
+#' gamI <- SqrtMeanInverse(simu_warp$warping_functions)
 SqrtMeanInverse <- function(gam){
   TT = nrow(gam)
   n = ncol(gam)
@@ -76,7 +111,7 @@ SqrtMeanInverse <- function(gam){
   psi = matrix(0,TT,n)
   binsize <- mean(diff(time))
   for (i in 1:n){
-      psi[,i] = sqrt(gradient(gam[,i],binsize))
+    psi[,i] = sqrt(gradient(gam[,i],binsize))
   }
 
   # Find Direction
@@ -140,3 +175,104 @@ findkarcherinv <- function(warps, times, round = F){
   revscalevec <- sqrt(diff(invidy))
   return(list(invidy = invidy,revscalevec = revscalevec))
 }
+
+#' map warping function to tangent space at identity
+#'
+#'
+#' @param gam Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the warping functions
+#' @param smooth Apply smoothing before gradient
+#'
+#' @return A numeric array of the same shape as the input array `gamma` storing the
+#'   shooting vectors of `gamma` obtained via finite differences.
+#'
+#' @keywords srvf alignment
+#' @export
+gam_to_v<-function(gam, smooth=TRUE){
+  if (ndims(gam) == 0){
+    TT = length(gam)
+    eps = .Machine$double.eps
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
+
+    psi = rep(0,TT)
+    if (smooth) {
+      tmp.spline <- stats::smooth.spline(gam)
+      g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      g[g<0] = 0
+      psi = sqrt(g)
+    } else {
+        psi = sqrt(gradient(gam,binsize))
+    }
+
+    mu = rep(1,TT)
+    vec <- inv_exp_map(mu, psi)
+
+  } else {
+    TT = nrow(gam)
+    n = ncol(gam)
+    eps = .Machine$double.eps
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
+
+    psi = matrix(0,TT,n)
+    if (smooth) {
+      g <- matrix(0, TT, n)
+      for (i in 1:n) {
+        tmp.spline <- stats::smooth.spline(gam[,i])
+        g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+        g[g[,i]<0, i] = 0
+        psi[,i] = sqrt(g[, i])
+      }
+    } else {
+      for (i in 1:n){
+        psi[,i] = sqrt(gradient(gam[,i],binsize))
+      }
+    }
+
+    mu = rep(1,TT)
+    vec = matrix(0,TT,n)
+    for (i in 1:n){
+      vec[,i] <- inv_exp_map(mu, psi[,i])
+    }
+
+  }
+
+  return(vec)
+}
+
+#' map shooting vector to warping function at identity
+#'
+#'
+#' @param v Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the shooting vectors
+#'
+#' @return A numeric array of the same shape as the input array `v` storing the
+#'   shooting vectors of `v` obtained via finite differences.
+#'
+#' @keywords srvf alignment
+#' @export
+v_to_gam<-function(v){
+  if (ndims(v) == 0){
+    TT = length(v)
+    time <- seq(0,1,length.out=TT)
+    mu = rep(1,TT)
+    psi <- exp_map(mu,v)
+    gam0 <- cumtrapz(time,psi*psi)
+    gam <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+  } else {
+    TT = nrow(v)
+    n = ncol(v)
+    time <- seq(0,1,length.out=TT)
+
+    mu = rep(1,TT)
+    gam = matrix(0,TT,n)
+    for (i in 1:n){
+      psi <- exp_map(mu,v[,i])
+      gam0 <- cumtrapz(time,psi*psi)
+      gam[,i] <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+    }
+  }
+  return(gam)
+}
+

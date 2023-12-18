@@ -49,6 +49,9 @@
 #' @references T. Harris, J. D. Tucker, B. Li, and L. Shand, "Elastic depths for
 #'   detecting shape anomalies in functional data," Technometrics,
 #'   10.1080/00401706.2020.1811156, 2020.
+#' @references J. D. Tucker and D. Yarger, “Elastic Functional Changepoint
+#'   Detection of Climate Impacts from Localized Sources”, Envirometrics,
+#'   10.1002/env.2826, 2023.
 #'
 #' @docType package
 #' @useDynLib fdasrvf, .registration=TRUE

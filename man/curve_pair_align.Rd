@@ -4,18 +4,22 @@
 \alias{curve_pair_align}
 \title{Pairwise align two curves}
 \usage{
-curve_pair_align(beta1, beta2)
+curve_pair_align(beta1, beta2, mode = "O")
 }
 \arguments{
 \item{beta1}{array describing curve 1 (n,T)}
 
 \item{beta2}{array describing curve 2 (n,T)}
+
+\item{mode}{Open ("O") or Closed ("C") curves}
 }
 \value{
 a list containing \item{beta2n}{aligned curve 2 to 1}
 \item{q2n}{aligned srvf 2 to 1}
 \item{gam}{warping function}
 \item{q1}{srvf of curve 1}
+\item{beta1}{centered curve 1}
+\item{beta2}{centered curve 2}
 }
 \description{
 This function aligns to curves using Elastic Framework

@@ -81,7 +81,7 @@ namespace ROPTLIB{
 		status = YES;
 		Rprintf("isconvex      :%15d[%s],\t", isconvex, status);
 		status = (LengthSY >= 0) ? YES : NO;
-		Rprintf("LengthSY      :%15d[%s]\n", LengthSY, status);
+		Rprintf("LengthSY      :%15ld[%s]\n", LengthSY, status);
 	};
 
 	void LRBFGS::GetSearchDir(void)

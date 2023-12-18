@@ -31,7 +31,7 @@ namespace ROPTLIB{
 			{
 				for (integer i = 0; i < num; i++)
 				{
-					Rprintf("(:, :, %d)\n", i);
+					Rprintf("(:, :, %ld)\n", i);
 					for (integer j = 0; j < row; j++)
 					{
 						for (integer k = 0; k < col; k++)
