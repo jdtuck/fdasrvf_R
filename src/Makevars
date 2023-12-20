@@ -1,28 +1,12 @@
 SOURCES1 = registerDynamicSymbol.cpp wrapper.cpp fdasrsf/DP.cpp fdasrsf/dp_grid.cpp fdasrsf/dp_nbhd.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp \
-  fdasrsf/bayesian.cpp fdasrsf/pair_align_functions_expomap.cpp
-SOURCES2 = gropt/src/DriverElasticCurvesRO.cpp gropt/src/LowRank.cpp gropt/src/ProductManifold.cpp gropt/src/SolversTR.cpp \
-	gropt/src/LowRankVariable.cpp gropt/src/randgen.cpp gropt/src/Sphere.cpp \
-	gropt/src/ElasticCurvesReparam.cpp gropt/src/LowRankVector.cpp gropt/src/RBFGS.cpp gropt/src/SphereVariable.cpp \
-	gropt/src/ElasticCurvesRO.cpp gropt/src/LRBFGS.cpp gropt/src/RBroydenFamily.cpp gropt/src/SphereVector.cpp \
-	gropt/src/Element.cpp gropt/src/LRTRSR1.cpp gropt/src/RCG.cpp gropt/src/Spline.cpp gropt/src/MyMatrix.cpp \
-	gropt/src/EucFrechetMean.cpp gropt/src/Manifold.cpp gropt/src/RNewton.cpp gropt/src/nist_spblas.cpp \
-	gropt/src/Euclidean.cpp gropt/src/Oblique.cpp gropt/src/RSD.cpp gropt/src/Stiefel.cpp gropt/src/RTRNewton.cpp \
-	gropt/src/EucVariable.cpp gropt/src/ObliqueVariable.cpp gropt/src/RTRSD.cpp \
-	gropt/src/EucVector.cpp gropt/src/ObliqueVector.cpp gropt/src/RTRSR1.cpp gropt/src/StieVariable.cpp \
-	gropt/src/ForDebug.cpp gropt/src/OrthGroup.cpp gropt/src/RWRBFGS.cpp gropt/src/StieVector.cpp \
-	gropt/src/L2Sphere.cpp gropt/src/OrthGroupVariable.cpp gropt/src/SharedSpace.cpp gropt/src/GrassVector.cpp \
-	gropt/src/GrassVariable.cpp gropt/src/Grassmann.cpp gropt/src/MinPNormConHull.cpp \
-	gropt/src/L2SphereVariable.cpp gropt/src/OrthGroupVector.cpp gropt/src/SmartSpace.cpp gropt/src/Timer.cpp \
-	gropt/src/L2SphereVector.cpp gropt/src/Problem.cpp gropt/src/Solvers.cpp gropt/src/QuasiNewton.cpp \
-	gropt/src/LinearOPE.cpp gropt/src/ProductElement.cpp gropt/src/SolversLS.cpp gropt/src/SphereConvexHull.cpp
+  fdasrsf/bayesian.cpp fdasrsf/pair_align_functions_expomap.cpp fdasrsf/rbfgs.cpp
+SOURCES2 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
 
-SOURCES3 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
-
-SOURCES = $(SOURCES1) $(SOURCES2) $(SOURCES3)
+SOURCES = $(SOURCES1) $(SOURCES2)
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
-PKG_CPPFLAGS = -I. -Igropt/incl/ -Ifdaqmap/incl/
+PKG_CPPFLAGS = -I. -Ifdaqmap/incl/
 PKG_CXXFLAGS = $(SHLIB_OPENMP_CXXFLAGS)
 PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 
