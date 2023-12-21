@@ -23,8 +23,7 @@ reparam_curve(
 \item{lambda}{controls amount of warping (default = 0)}
 
 \item{method}{controls which optimization method (default="DP") options are
-Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-("RBFGS")}
+Dynamic Programming ("DP")}
 
 \item{w}{controls LRBFGS (default = 0.01)}
 

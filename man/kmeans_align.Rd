@@ -72,7 +72,7 @@ to \code{TRUE}.}
 
 \item{omethod}{A string specifying which method should be used to solve the
 optimization problem that provides estimated warping functions. Choices are
-\code{"DP"}, \code{"DP2"} or \code{"RBFGS"}. Defaults to \code{"DP"}.}
+\code{"DP"} or \code{"RBFGS"}. Defaults to \code{"DP"}.}
 
 \item{max_iter}{An integer value specifying the maximum number of iterations.
 Defaults to \code{50L}.}

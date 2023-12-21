@@ -40,7 +40,7 @@ utils::globalVariables("n")
 #'   to `TRUE`.
 #' @param omethod A string specifying which method should be used to solve the
 #'   optimization problem that provides estimated warping functions. Choices are
-#'   `"DP"`, `"DP2"` or `"RBFGS"`. Defaults to `"DP"`.
+#'   `"DP"` or `"RBFGS"`. Defaults to `"DP"`.
 #' @param max_iter An integer value specifying the maximum number of iterations.
 #'   Defaults to `50L`.
 #' @param thresh A numeric value specifying a threshold on the cost function
@@ -185,7 +185,6 @@ kmeans_align <- function(f, time,
             Q2 = q[, , n], T2 = time,
             lambda = lambda,
             method = omethod,
-            w = 0.0,
             f1o = templates[, 1, k],
             f2o = f[, 1, n]
           )

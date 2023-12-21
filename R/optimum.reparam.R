@@ -1,7 +1,7 @@
 #' Align two functions
 #'
 #' This function aligns the SRSFs of two functions defined on an interval
-#' \eqn{[t_{\min}, t_{\max}]} using dynamic programming.
+#' \eqn{[t_{\min}, t_{\max}]} using dynamic programming or RBFGS
 #'
 #' @param Q1 A numeric matrix of shape `n_points x n_dimensions` specifying the
 #'   SRSF of the 1st `n_dimensions`-dimensional function evaluated on a grid of
@@ -19,9 +19,7 @@
 #'   second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 #'   norm from id ("l2gam"), srvf norm from id ("l2psi")
 #' @param method A string specifying the optimization method. Choices are
-#'   `"DP"`, `"DPo"`, `"SIMUL"`,`"DP2"` or `"RBFGS"`. Defaults to `"DP"`.
-#' @param w A scalar value specifying a parameter of the Riemannian BFGS
-#'   algorithm. Defaults to `0.01`. Used only when `method == "RBFGS"`.
+#'   `"DP"`, `"DPo"`, `"SIMUL"`, or `"RBFGS"`. Defaults to `"DP"`.
 #' @param f1o A numeric vector of size `n_dimensions` specifying the value of
 #'   the 1st function at \eqn{t = t_{\min}}. Defaults to `rep(0, n_dimensions)`.
 #' @param f2o A numeric vector of size `n_dimensions` specifying the value of
@@ -47,8 +45,7 @@
 optimum.reparam <- function(Q1,T1,Q2,T2,
                             lambda = 0,
                             pen = "roughness",
-                            method = c("DP", "DPo", "SIMUL", "DP2", "RBFGS"),
-														w = 0.01,
+                            method = c("DP", "DPo", "SIMUL", "RBFGS"),
                             f1o = 0.0,
                             f2o = 0.0,
 														nbhd_dim=7) {
@@ -70,7 +67,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
     stopifnot(!is.null(Q2) && nrow(Q2) == L && ncol(Q2) == M)
   }
 
-  method <- match.arg(method, choices = c("DP", "DPo", "SIMUL", "DP2", "RBFGS"))
+  method <- match.arg(method, choices = c("DP", "DPo", "SIMUL", "RBFGS"))
   if (method == "DPo" && all(T1 != T2))
     method <- "DP"
 
@@ -78,10 +75,6 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
   Q2 <- Q2 / pvecnorm(Q2, 2)
   C1 <- srvf_to_f(Q1, T1, f1o, multidimensional = (L > 1))
   C2 <- srvf_to_f(Q2, T2, f2o, multidimensional = (L > 1))
-  rotated <- FALSE
-  isclosed <- FALSE
-  skipm <- 0
-  auto <- 0
 
   switch(
     method,
@@ -114,50 +107,10 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
       timet2 <- (timet2 - tmin) / (tmax - tmin)
       gam0 <- simul_gam(u, out$g1, out$g2, timet2, out$s1, out$s2, timet2)
     },
-    DP2 = {
-      if (lambda > 0)
-    			warning("penalty not implemented")
-      opt <- rep(0, M + 2)
-      swap <- FALSE
-      fopts <- rep(0, 5)
-      comtime <- rep(0, 5)
-
-      out <- .Call(
-        "opt_reparam", PACKAGE = "fdasrvf",
-        C1, C2, M, L, 0.0, TRUE, rotated, isclosed,
-        skipm, auto, opt, swap, fopts, comtime
-      )
-      gam0 <- out$opt
-      gam0 <- gam0[1:(length(gam0) - 2)]
-
-      if (out$swap) gam0 <- invertGamma(gam0)
-    },
     RBFGS = {
-      if (lambda > 0)
-    			warning("penalty not implemented")
-      opt <- rep(0, M + 2)
-      swap <- FALSE
-      fopts <- rep(0, 5)
-      comtime <- rep(0, 5)
-
-      out <- .Call(
-        "opt_reparam", PACKAGE = "fdasrvf",
-        C1, C2, M, L, w, FALSE, rotated, isclosed,
-        skipm, auto, opt, swap, fopts, comtime
-      )
-
-      if (out$fopts[1] == 1000) {
-        out <- .Call(
-          "opt_reparam", PACKAGE = "fdasrvf",
-          C1, C2, M, L, 0.0, TRUE, rotated, isclosed,
-          skipm, auto, opt, swap, fopts, comtime
-        )
-      }
-
-      gam0 <- out$opt
-      gam0 <- gam0[1:(length(gam0) - 2)]
-
-      if (out$swap) gam0<- invertGamma(gam0)
+      time1 <- seq(0, 1, length.out=length(Q1))
+      gam0 <- .Call("_fdasrvf_rlbfgs_optim", PACKAGE = "fdasrvf", Q1, Q2, time1, 30, lambda, pen-1)
+      gam0 <- c(gam0)
     }
   )
 

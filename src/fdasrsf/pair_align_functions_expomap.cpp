@@ -1,5 +1,4 @@
 #include <RcppArmadillo.h>
-#include <Rcpp.h>
 // Correctly setup the build environment
 // [[Rcpp::depends(RcppArmadillo)]]
 
@@ -38,7 +37,7 @@ RcppExport SEXP cuL2norm2(SEXP R_x, SEXP R_y) {
 
   // get ordering of x
   // borrowed from Hadley Wickhams github.com/hadley/adv-r/blob/master/extras/cpp/order.cpp
-  
+
   vector<pair<double, int> > vals;
   vals.reserve(n);
   for(int i = 0; i < n; i++) {
