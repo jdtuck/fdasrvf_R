@@ -1,41 +1,10 @@
 
 #include "fdasrsf/DynamicProgrammingQ2.h"
 #include "fdasrsf/mlogit_warp_grad.h"
-#include "fdasrsf/rbfgs.h"
 #include "fdasrsf/DP.h"
-#include <iostream>
-#include <RcppArmadillo.h>
-// Correctly setup the build environment
-// [[Rcpp::depends(RcppArmadillo)]]
+#include <Rcpp.h>
 
-using namespace arma;
 using namespace Rcpp;
-
-vec rlbfgs_optim(vec q1, vec q2, vec time, int maxiter=30, double lam=0.0, int penalty=0){
-  uword T = time.n_elem;
-  vec time1 = arma::linspace(0, 1, T);
-
-  rlbfgs myObj(q1, q2, time1);
-  myObj.solve(maxiter, lam, penalty);
-
-  return myObj.gammaOpt;
-}
-
-RcppExport SEXP _fdasrvf_rlbfgs_optim(SEXP q1SEXP, SEXP q2SEXP, SEXP timeSEXP, SEXP maxiterSEXP, SEXP lamSEXP, SEXP penaltySEXP) {
-  BEGIN_RCPP
-  Rcpp::RObject rcpp_result_gen;
-  Rcpp::RNGScope rcpp_rngScope_gen;
-  Rcpp::traits::input_parameter< vec >::type q1(q1SEXP);
-  Rcpp::traits::input_parameter< vec >::type q2(q2SEXP);
-  Rcpp::traits::input_parameter< vec >::type time(timeSEXP);
-  Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-  Rcpp::traits::input_parameter< double >::type lam(lamSEXP);
-  Rcpp::traits::input_parameter< int >::type penalty(penaltySEXP);
-  rcpp_result_gen = Rcpp::wrap(rlbfgs_optim(q1, q2, time, maxiter, lam, penalty));
-  return rcpp_result_gen;
-  END_RCPP
-}
-
 
 RcppExport SEXP mlogit_warp_grad_wrap(SEXP m1, SEXP m2, SEXP alpha, SEXP beta, SEXP ti, SEXP gami, SEXP q, SEXP y, SEXP max_itri, SEXP toli, SEXP deltai, SEXP displayi, SEXP gamout){
   NumericVector alphai(alpha);

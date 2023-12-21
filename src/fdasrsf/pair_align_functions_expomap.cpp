@@ -92,8 +92,9 @@ RcppExport SEXP trapzCpp(SEXP R_x, SEXP R_y) {
 
 // order vectors and calculate l2 norm, for f.L2norm()
 //RcppExport double order_l2norm(NumericVector x, NumericVector y) {
-RcppExport double order_l2norm(vec x, vec y) {
-
+RcppExport SEXP order_l2norm(SEXP R_x, SEXP R_y) {
+  vec x = as<vec>(R_x);
+  vec y = as<vec>(R_y);
   int n = x.size();
   // get ordering of x
   // borrowed from Hadley Wickhams adv-r/extras/cpp/order.cpp
@@ -126,5 +127,5 @@ RcppExport double order_l2norm(vec x, vec y) {
   for (int i = 0; i<(n-1); i++) {
     area2 += (xSort[i+1] - xSort[i]) * (ySortSq[i+1] + ySortSq[i]);
   }
-  return sqrt(area2 / 2.0);
+  return wrap(sqrt(area2 / 2.0));
 }

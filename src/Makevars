@@ -1,4 +1,4 @@
-SOURCES1 = registerDynamicSymbol.cpp wrapper.cpp fdasrsf/DP.cpp fdasrsf/dp_grid.cpp fdasrsf/dp_nbhd.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp \
+SOURCES1 = registerDynamicSymbol.cpp wrapper.cpp wrapper_rbfgs.cpp fdasrsf/DP.cpp fdasrsf/dp_grid.cpp fdasrsf/dp_nbhd.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp \
   fdasrsf/bayesian.cpp fdasrsf/pair_align_functions_expomap.cpp
 SOURCES2 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
 

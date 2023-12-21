@@ -1,8 +1,8 @@
 #ifndef RBFGS_H
 #define RBFGS_H
-
-#include <iostream>
-#include "armadillo"
+#include <RcppArmadillo.h>
+// Correctly setup the build environment
+// [[Rcpp::depends(RcppArmadillo)]]
 
 using namespace arma;
 using namespace std;
@@ -540,5 +540,15 @@ public:
     return z;
   }
 };
+
+vec rlbfgs_optim(vec q1, vec q2, vec time, int maxiter=30, double lam=0.0, int penalty=0){
+  uword T = time.n_elem;
+  vec time1 = arma::linspace(0, 1, T);
+
+  rlbfgs myObj(q1, q2, time1);
+  myObj.solve(maxiter, lam, penalty);
+
+  return myObj.gammaOpt;
+}
 
 #endif // end of RBFGS_H
