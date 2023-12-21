@@ -1,7 +1,7 @@
 #' Align two functions
 #'
 #' This function aligns the SRSFs of two functions defined on an interval
-#' \eqn{[t_{\min}, t_{\max}]} using dynamic programming.
+#' \eqn{[t_{\min}, t_{\max}]} using dynamic programming or RBFGS
 #'
 #' @param Q1 A numeric matrix of shape `n_points x n_dimensions` specifying the
 #'   SRSF of the 1st `n_dimensions`-dimensional function evaluated on a grid of
@@ -20,8 +20,6 @@
 #'   norm from id ("l2gam"), srvf norm from id ("l2psi")
 #' @param method A string specifying the optimization method. Choices are
 #'   `"DP"`, `"DPo"`, `"SIMUL"`, or `"RBFGS"`. Defaults to `"DP"`.
-#' @param w A scalar value specifying a parameter of the Riemannian BFGS
-#'   algorithm. Defaults to `0.01`. Used only when `method == "RBFGS"`.
 #' @param f1o A numeric vector of size `n_dimensions` specifying the value of
 #'   the 1st function at \eqn{t = t_{\min}}. Defaults to `rep(0, n_dimensions)`.
 #' @param f2o A numeric vector of size `n_dimensions` specifying the value of
@@ -78,10 +76,6 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
   Q2 <- Q2 / pvecnorm(Q2, 2)
   C1 <- srvf_to_f(Q1, T1, f1o, multidimensional = (L > 1))
   C2 <- srvf_to_f(Q2, T2, f2o, multidimensional = (L > 1))
-  rotated <- FALSE
-  isclosed <- FALSE
-  skipm <- 0
-  auto <- 0
 
   switch(
     method,

@@ -24,7 +24,7 @@
 #' @param parallel A boolean specifying whether to run calculations in parallel.
 #'   Defaults to `FALSE`.
 #' @param optim_method A string specifying the algorithm used for optimization.
-#'   Choices are `"DP"`, `"DPo"`, `"DP2"`, and `"RBFGS"`. Defaults to `"DP"`.
+#'   Choices are `"DP"`, `"DPo"`, and `"RBFGS"`. Defaults to `"DP"`.
 #' @param max_iter An integer value specifying the maximum number of iterations.
 #'   Defaults to `20L`.
 #'

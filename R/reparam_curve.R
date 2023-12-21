@@ -6,8 +6,7 @@
 #' @param beta2 array defining curve 1
 #' @param lambda controls amount of warping (default = 0)
 #' @param method controls which optimization method (default="DP") options are
-#' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-#' ("RBFGS")
+#' Dynamic Programming ("DP")
 #' @param w controls LRBFGS (default = 0.01)
 #' @param rotated boolean if rotation is desired
 #' @param isclosed boolean if curve is closed
@@ -81,54 +80,6 @@ reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
       q2i = q2
       dim(q2i) = c(M*n1)
       gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n1, M, lambda, 1, 0, rep(0,M))
-    } else if (method=="DP2") {
-        c1 = t(beta1)
-        dim(c1) = c(M*n1)
-        c2 = t(beta2)
-        dim(c2) = c(M*n1)
-        opt = rep(0,M+n1*n1+1)
-        swap = FALSE
-        fopts = rep(0,5)
-        comtime = rep(0,5)
-
-        out = .Call('opt_reparam', PACKAGE = 'fdasrvf', c1,c2,M,n1,0.0,TRUE,
-                    rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
-
-        tmp = length(out$opt)
-        gam0 = out$opt[1:(tmp-5)]
-        R = matrix(out$opt[(tmp-4):(tmp-1)],nrow=2)
-
-        if (out$swap){
-            gam0 = invertGamma(gam0)
-            R = t(R)
-        }
-
-    } else {
-        c1 = t(beta1)
-        dim(c1) = c(M*n1)
-        c2 = t(beta2)
-        dim(c2) = c(M*n1)
-        opt = rep(0,M+n1*n1+1)
-        swap = FALSE
-        fopts = rep(0,5)
-        comtime = rep(0,5)
-
-        out = .Call('opt_reparam', PACKAGE = 'fdasrvf', c1,c2,M,n1,w,FALSE,
-                    rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
-
-        if (out$fopts[1] == 1000){
-            out = .Call('opt_reparam', PACKAGE = 'fdasrvf', c1,c2,M,n1,0.0,TRUE,
-                        rotated,isclosed,skipm,auto,opt,swap,fopts,comtime)
-        }
-
-        tmp = length(out$opt)
-        gam0 = out$opt[1:(tmp-5)]
-        R = matrix(out$opt[(tmp-4):(tmp-1)],nrow=2)
-
-        if (out$swap){
-            gam0 = invertGamma(gam0);
-            R = t(R)
-        }
     }
 
     gam = (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])  # slight change on scale

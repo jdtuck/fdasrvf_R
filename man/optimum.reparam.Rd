@@ -43,9 +43,6 @@ norm from id ("l2gam"), srvf norm from id ("l2psi")}
 \item{method}{A string specifying the optimization method. Choices are
 \code{"DP"}, \code{"DPo"}, \code{"SIMUL"}, or \code{"RBFGS"}. Defaults to \code{"DP"}.}
 
-\item{w}{A scalar value specifying a parameter of the Riemannian BFGS
-algorithm. Defaults to \code{0.01}. Used only when \code{method == "RBFGS"}.}
-
 \item{f1o}{A numeric vector of size \code{n_dimensions} specifying the value of
 the 1st function at \eqn{t = t_{\min}}. Defaults to \code{rep(0, n_dimensions)}.}
 
@@ -61,7 +58,7 @@ grid.
 }
 \description{
 This function aligns the SRSFs of two functions defined on an interval
-\eqn{[t_{\min}, t_{\max}]} using dynamic programming.
+\eqn{[t_{\min}, t_{\max}]} using dynamic programming or RBFGS
 }
 \examples{
 q <- f_to_srvf(simu_data$f, simu_data$time)
