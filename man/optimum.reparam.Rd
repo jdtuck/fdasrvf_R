@@ -11,7 +11,7 @@ optimum.reparam(
   T2,
   lambda = 0,
   pen = "roughness",
-  method = c("DP", "DPo", "SIMUL", "DP2", "RBFGS"),
+  method = c("DP", "DPo", "SIMUL", "RBFGS"),
   w = 0.01,
   f1o = 0,
   f2o = 0,
@@ -41,7 +41,7 @@ second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 norm from id ("l2gam"), srvf norm from id ("l2psi")}
 
 \item{method}{A string specifying the optimization method. Choices are
-\code{"DP"}, \code{"DPo"}, \code{"SIMUL"},\code{"DP2"} or \code{"RBFGS"}. Defaults to \code{"DP"}.}
+\code{"DP"}, \code{"DPo"}, \code{"SIMUL"}, or \code{"RBFGS"}. Defaults to \code{"DP"}.}
 
 \item{w}{A scalar value specifying a parameter of the Riemannian BFGS
 algorithm. Defaults to \code{0.01}. Used only when \code{method == "RBFGS"}.}
