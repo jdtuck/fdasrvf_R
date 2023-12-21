@@ -100,7 +100,6 @@ time_warping <- function(f, time,
   M <- nrow(f)
   N <- ncol(f)
   f0 <- f
-  w <- 0.0
 
   if (smooth_data) f <- smooth.data(f, sparam)
 
@@ -120,7 +119,7 @@ time_warping <- function(f, time,
   gam <- foreach::foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
     gam_tmp <- optimum.reparam(
       Q1 = mq, T1 = time, Q2 = q[, n], T2 = time,
-      lambda = lambda, pen = penalty_method, method = optim_method, w = w,
+      lambda = lambda, pen = penalty_method, method = optim_method,
       f1o = mf[1], f2o = f[1, n]
     )
   }
@@ -168,7 +167,7 @@ time_warping <- function(f, time,
     outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages='fdasrvf') %dopar% {
       gam <- optimum.reparam(
         Q1 = mq[, r], T1 = time, Q2 = q[, n, 1], T2 = time,
-        lambda = lambda, pen = penalty_method, method = optim_method, w = w,
+        lambda = lambda, pen = penalty_method, method = optim_method,
         f1o = mf[1, r], f2o = f[1, n, 1]
       )
       gam_dev <- gradient(gam, 1 / (M - 1))
@@ -251,7 +250,7 @@ time_warping <- function(f, time,
     outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
       gam <- optimum.reparam(
         Q1 = mq[, r], T1 = time, Q2 = q[, n, 1], T2 = time,
-        lambda = lambda, pen = penalty_method, method = optim_method, w = w,
+        lambda = lambda, pen = penalty_method, method = optim_method,
         f1o = mf[1, r], f2o = f[1, n, 1]
       )
       gam_dev <- gradient(gam, 1 / (M - 1))

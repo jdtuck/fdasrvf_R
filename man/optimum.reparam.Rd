@@ -12,7 +12,6 @@ optimum.reparam(
   lambda = 0,
   pen = "roughness",
   method = c("DP", "DPo", "SIMUL", "RBFGS"),
-  w = 0.01,
   f1o = 0,
   f2o = 0,
   nbhd_dim = 7

@@ -46,7 +46,6 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
                             lambda = 0,
                             pen = "roughness",
                             method = c("DP", "DPo", "SIMUL", "RBFGS"),
-														w = 0.01,
                             f1o = 0.0,
                             f2o = 0.0,
 														nbhd_dim=7) {
