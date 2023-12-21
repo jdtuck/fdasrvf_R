@@ -1,3 +1,6 @@
+# fdasrvf 2.1.x
+* add rbfgs c++ code
+
 # fdasrvf 2.1.1
 * bugfixes
 

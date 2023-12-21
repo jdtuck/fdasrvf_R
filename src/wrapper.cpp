@@ -1,10 +1,26 @@
 
-#include "gropt/incl/ElasticCurvesReparam.h"
 #include "fdasrsf/DynamicProgrammingQ2.h"
 #include "fdasrsf/mlogit_warp_grad.h"
+#include "fdasrsf/rbfgs.h"
 #include "fdasrsf/DP.h"
-#include <Rcpp.h>
+#include <iostream>
+#include <RcppArmadillo.h>
+// Correctly setup the build environment
+// [[Rcpp::depends(RcppArmadillo)]]
+
+using namespace arma;
 using namespace Rcpp;
+
+// [[Rcpp::export]]
+vec rlbfgs_optim(vec q1, vec q2, vec time, int maxiter=30, double lam=0.0, int penalty=0){
+  uword T = time.n_elem;
+  vec time1 = arma::linspace(0, 1, T);
+
+  rlbfgs myObj(q1, q2, time1);
+  myObj.solve(maxiter, lam, penalty);
+
+  return myObj.gammaOpt;
+}
 
 RcppExport SEXP mlogit_warp_grad_wrap(SEXP m1, SEXP m2, SEXP alpha, SEXP beta, SEXP ti, SEXP gami, SEXP q, SEXP y, SEXP max_itri, SEXP toli, SEXP deltai, SEXP displayi, SEXP gamout){
   NumericVector alphai(alpha);
@@ -89,41 +105,4 @@ RcppExport SEXP DPQ(SEXP Q1, SEXP Q2, SEXP n1, SEXP N1, SEXP lam1, SEXP pen1, SE
   DP(_Q1i, _Q2i, &_n1, &_N1, &_lam1, &_pen1, &_Disp, _yyi);
 
   return(yyi);
-}
-
-RcppExport SEXP opt_reparam(SEXP C1, SEXP C2, SEXP n, SEXP d, SEXP w,
-                            SEXP onlyDP, SEXP rotated, SEXP isclosed,
-                            SEXP skipm, SEXP autoselectC, SEXP opt, SEXP swap,
-                            SEXP fopts, SEXP comtime){
-
-    NumericVector C1i(C1);
-    NumericVector C2i(C2);
-    NumericVector opti(opt);
-    NumericVector foptsi(fopts);
-    NumericVector comtimei(comtime);
-
-    double *_C1i = &C1i[0];
-    double *_C2i = &C2i[0];
-    double *_opti = &opti[0];
-    double *_foptsi = &foptsi[0];
-    double *_comtimei = &comtimei[0];
-
-    int _n = as<int>(n);
-    int _d = as<int>(d);
-    double _w = as<double>(w);
-    bool _onlyDP = as<bool>(onlyDP);
-    bool _rotated = as<bool>(rotated);
-    bool _isclosed = as<bool>(isclosed);
-    int _skipm = as<int>(skipm);
-    int _autoselectC = as<int>(autoselectC);
-    bool _swap = as<bool>(swap);
-
-
-    optimum_reparam(_C1i, _C2i, _n, _d, _w, _onlyDP, _rotated, _isclosed,
-                    _skipm, _autoselectC, _opti, _swap, _foptsi, _comtimei);
-
-    List ret; ret["opt"] = opti; ret["fopts"] = foptsi;
-    ret["comtime"] = comtimei; ret["swap"] = wrap(_swap);
-
-    return(ret);
 }
