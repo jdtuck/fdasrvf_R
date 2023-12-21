@@ -1,5 +1,4 @@
 #include <RcppArmadillo.h>
-#include <Rcpp.h>
 // Correctly setup the build environment
 // [[Rcpp::depends(RcppArmadillo)]]
 
@@ -38,7 +37,7 @@ RcppExport SEXP cuL2norm2(SEXP R_x, SEXP R_y) {
 
   // get ordering of x
   // borrowed from Hadley Wickhams github.com/hadley/adv-r/blob/master/extras/cpp/order.cpp
-  
+
   vector<pair<double, int> > vals;
   vals.reserve(n);
   for(int i = 0; i < n; i++) {
@@ -93,9 +92,8 @@ RcppExport SEXP trapzCpp(SEXP R_x, SEXP R_y) {
 
 // order vectors and calculate l2 norm, for f.L2norm()
 //RcppExport double order_l2norm(NumericVector x, NumericVector y) {
-RcppExport SEXP order_l2norm(SEXP R_x, SEXP R_y) {
-  vec x = as<vec>(R_x);
-  vec y = as<vec>(R_y);
+RcppExport double order_l2norm(vec x, vec y) {
+
   int n = x.size();
   // get ordering of x
   // borrowed from Hadley Wickhams adv-r/extras/cpp/order.cpp
@@ -128,5 +126,5 @@ RcppExport SEXP order_l2norm(SEXP R_x, SEXP R_y) {
   for (int i = 0; i<(n-1); i++) {
     area2 += (xSort[i+1] - xSort[i]) * (ySortSq[i+1] + ySortSq[i]);
   }
-  return wrap(sqrt(area2 / 2.0));
+  return sqrt(area2 / 2.0);
 }

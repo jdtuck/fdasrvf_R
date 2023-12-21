@@ -1,5 +1,4 @@
 #include <RcppArmadillo.h>
-#include <Rcpp.h>
 // Correctly setup the build environment
 // [[Rcpp::depends(RcppArmadillo)]]
 
@@ -275,7 +274,7 @@ RcppExport SEXP simucode(SEXP R_iter, SEXP R_p, SEXP R_qt1_5, SEXP R_qt2_5,
     logpost = (p/2+alpha)*log(kappa)-kappa*(beta+dist);
     log_collect[j] = logpost;
   }
-  
+
   NumericVector pctaccept = as<NumericVector>(numaccept) / iter;
   vec Rr_best_match = best_match+1;
   mat Rr_match_collect = match_collect+1;
