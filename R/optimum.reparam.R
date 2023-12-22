@@ -1,7 +1,7 @@
 #' Align two functions
 #'
-#' This function aligns the SRSFs of two functions defined on an interval
-#' \eqn{[t_{\min}, t_{\max}]} using dynamic programming or RBFGS
+#' This function aligns the SRVFs of two functions in \eqn{R^1} defined on an
+#' interval \eqn{[t_{\min}, t_{\max}]} using dynamic programming or RBFGS
 #'
 #' @param Q1 A numeric matrix of shape `n_points x n_dimensions` specifying the
 #'   SRSF of the 1st `n_dimensions`-dimensional function evaluated on a grid of
@@ -30,7 +30,7 @@
 #'   the estimated boundary-preserving warping diffeomorphism on the initial
 #'   grid.
 #'
-#' @keywords srsf alignment
+#' @keywords srvf alignment
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'   May 2011. Registration of functional data using Fisher-Rao metric,
 #'   arXiv:1103.3817v2.
@@ -73,8 +73,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
 
   Q1 <- Q1 / pvecnorm(Q1, 2)
   Q2 <- Q2 / pvecnorm(Q2, 2)
-  C1 <- srvf_to_f(Q1, T1, f1o, multidimensional = (L > 1))
-  C2 <- srvf_to_f(Q2, T2, f2o, multidimensional = (L > 1))
+  C1 <- srvf_to_f(Q1, T1, f1o)
+  C2 <- srvf_to_f(Q2, T2, f2o)
 
   switch(
     method,

@@ -37,19 +37,10 @@ f_to_srvf <- function(f, time) {
   g <- gradient(f, binsize)
   # compute norm of g
   dims <- dim(g)
-  if (is.null(dims)) {
-    # g is a single unidimensional curve (M)
-    L <- 1
-    M <- length(g)
-    N <- 1
-    norm_g <- abs(g)
-  } else if (length(dims) == 2) {
-      # g is a collection of unidimensional curves (MxN)
-      L <- 1
-      M <- dims[1]
-      N <- dims[2]
-      norm_g <- abs(g)
+  if (length(dims) > 2 && dims[1] > 1){
+    stop('wrong input dimensions of f')
   }
+  norm_g <- abs(g)
 
   g / sqrt(norm_g + eps)
 }

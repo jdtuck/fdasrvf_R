@@ -17,7 +17,8 @@ kmeans_align(
   sparam = 25L,
   parallel = FALSE,
   alignment = TRUE,
-  omethod = c("DP", "DP2", "RBFGS"),
+  rotation = FALSE,
+  omethod = c("DP", "RBFGS"),
   max_iter = 50L,
   thresh = 0.01,
   use_verbose = FALSE
@@ -33,7 +34,10 @@ interpreted as a sample of \eqn{N} curves observed on a grid of size
 \item If a 3D array, it must be of shape \eqn{L \times M \times N} and it is
 interpreted as a sample of \eqn{N} \eqn{L}-dimensional curves observed on a
 grid of size \eqn{M}.
-}}
+}
+
+If this is multidimensional functional data, it is advised that
+\code{rotation==FALSE}}
 
 \item{time}{A numeric vector of length \eqn{M} specifying the grid on which
 the curves are evaluated.}
@@ -70,6 +74,9 @@ Defaults to \code{FALSE}.}
 \item{alignment}{A boolean specifying whether to perform alignment. Defaults
 to \code{TRUE}.}
 
+\item{rotation}{A boolean specifiying wether to perform roation. Defaults to
+to \code{FALSE}.}
+
 \item{omethod}{A string specifying which method should be used to solve the
 optimization problem that provides estimated warping functions. Choices are
 \code{"DP"} or \code{"RBFGS"}. Defaults to \code{"DP"}.}
@@ -104,7 +111,7 @@ than \code{f0} by clusters in a list;
 }
 \description{
 This function clusters functions and aligns using the elastic square-root
-slope function (SRSF) framework.
+velocity function (SRVF) framework.
 }
 \examples{
 \dontrun{

@@ -4,7 +4,7 @@
 \alias{srvf_to_f}
 \title{Transformation from SRSF Space}
 \usage{
-srvf_to_f(q, time, f0 = 0, multidimensional = FALSE)
+srvf_to_f(q, time, f0 = 0)
 }
 \arguments{
 \item{q}{Either a numeric vector of a numeric matrix or a numeric array
@@ -12,17 +12,11 @@ specifying the SRSFs that need to be transformed.
 \itemize{
 \item If a vector, it must be of shape \eqn{M} and it is interpreted as a
 single \eqn{1}-dimensional curve observed on a grid of size \eqn{M}.
-\item If a matrix and \code{multidimensional == FALSE}, it must be of shape
+\item If a matrix, it must be of shape
 \eqn{M \times N}. In this case, it is interpreted as a sample of \eqn{N}
 curves observed on a grid of size \eqn{M}, unless \eqn{M = 1} in which case
 it is interpreted as a single \eqn{1}-dimensional curve observed on a grid
 of size \eqn{M}.
-\item If a matrix and \code{multidimensional == TRUE},it must be of shape
-\eqn{L \times M} and it is interpreted as a single \eqn{L}-dimensional
-curve observed on a grid of size \eqn{M}.
-\item If a 3D array, it must be of shape \eqn{L \times M \times N} and it is
-interpreted as a sample of \eqn{N} \eqn{L}-dimensional curves observed on a
-grid of size \eqn{M}.
 }}
 
 \item{time}{A numeric vector of length \eqn{M} specifying the grid on which
@@ -32,26 +26,17 @@ SRSFs are evaluated.}
 specifying the initial value of the curves in the original functional
 space. It must be:
 \itemize{
-\item a value if \code{q} represents a single \eqn{1}-dimensional SRSF.
-\item a vector of length \eqn{L} if \code{q} represents a single
-\eqn{L}-dimensional SRSF.
-\item a vector of length \eqn{N} if \code{q} represents a sample of \eqn{N}
-\eqn{1}-dimensional SRSFs.
-\item a matrix of shape \eqn{L \times M} if \code{q} represents a sample of \eqn{N}
-\eqn{L}-dimensional  SRSFs.
+\item a value if \code{q} represents a single SRSF.
+\item a vector of length \eqn{N} if \code{q} represents a sample of \eqn{N} SRVFs
 }}
-
-\item{multidimensional}{A boolean specifying if the curves are
-multi-dimensional. This is useful when \code{q} is provided as a matrix to
-determine whether it is a single multi-dimensional curve or a collection of
-uni-dimensional curves. Defaults to \code{FALSE}.}
 }
 \value{
 A numeric array of the same shape as the input \code{q} storing the
-transformation of the SRSFs \code{q} back to the original functional space.
+transformation of the SRVFs \code{q} back to the original functional space.
 }
 \description{
-This function transforms SRVFs back to the original functional space.
+This function transforms SRVFs back to the original functional space for
+functions in \eqn{R^1}.
 }
 \examples{
 q <- f_to_srvf(simu_data$f, simu_data$time)
@@ -67,4 +52,4 @@ functional data using amplitude and phase separation, Computational
 Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
-\keyword{srsf}
+\keyword{srvf}

@@ -13,9 +13,9 @@ calc_shape_dist(beta1, beta2, mode = "O", rotation = TRUE, scale = FALSE)
 
 \item{mode}{Open ("O") or Closed ("C") curves}
 
-\item{scale}{Include scale (default = FALSE)}
+\item{rotation}{Include rotation (default = TRUE)}
 
-\item{rotatation}{Include rotation (default = TRUE)}
+\item{scale}{Include scale (default = FALSE)}
 }
 \value{
 Returns a list containing \item{d}{geodesic distance}

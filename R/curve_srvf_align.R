@@ -46,7 +46,7 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, lambda = 0.0,
         q1 = q[,,ii]
         beta1 = beta[,,ii]
 
-        out = find_rotation_seed_unqiue(mu,q1,mode,lambda)
+        out = find_rotation_seed_unqiue(mu,q1,mode,rotated,lambda)
         gams[,ii] = out$gambest
         beta1 = out$Rbest%*%beta1
         beta1n = group_action_by_gamma_coord(beta1, out$gambest)

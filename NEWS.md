@@ -1,8 +1,9 @@
 # fdasrvf 2.1.x
 * bugfixes
+* clarification of multivariate functional data
 
 # fdasrvf 2.1.2
-* add rbfgs c++ code
+* add rlbfgs c++ code
 
 # fdasrvf 2.1.1
 * bugfixes

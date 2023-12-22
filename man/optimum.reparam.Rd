@@ -56,8 +56,8 @@ the estimated boundary-preserving warping diffeomorphism on the initial
 grid.
 }
 \description{
-This function aligns the SRSFs of two functions defined on an interval
-\eqn{[t_{\min}, t_{\max}]} using dynamic programming or RBFGS
+This function aligns the SRVFs of two functions in \eqn{R^1} defined on an
+interval \eqn{[t_{\min}, t_{\max}]} using dynamic programming or RBFGS
 }
 \examples{
 q <- f_to_srvf(simu_data$f, simu_data$time)
@@ -73,4 +73,4 @@ functional data using phase and amplitude separation, Computational
 Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 }
 \keyword{alignment}
-\keyword{srsf}
+\keyword{srvf}

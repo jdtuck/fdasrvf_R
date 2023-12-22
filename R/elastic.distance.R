@@ -27,7 +27,7 @@
 #'   f2 = simu_data$f[, 2],
 #'   time = simu_data$time
 #' )
-elastic.distance <- function(f1,f2,time,lambda = 0,pen="roughness"){
+elastic.distance <- function(f1, f2, time, lambda = 0, pen="roughness"){
     q1 <- f_to_srvf(f1,time)
     q2 <- f_to_srvf(f2,time)
     gam <- optimum.reparam(q1,time,q2,time,lambda,pen)

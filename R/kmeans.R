@@ -1,9 +1,7 @@
-utils::globalVariables("n")
-
 #' K-Means Clustering and Alignment
 #'
 #' This function clusters functions and aligns using the elastic square-root
-#' slope function (SRSF) framework.
+#' velocity function (SRVF) framework.
 #'
 #' @param f Either a numeric matrix or a numeric 3D array specifying the
 #'   functions that need to be jointly clustered and aligned.
@@ -14,6 +12,9 @@ utils::globalVariables("n")
 #'   - If a 3D array, it must be of shape \eqn{L \times M \times N} and it is
 #'   interpreted as a sample of \eqn{N} \eqn{L}-dimensional curves observed on a
 #'   grid of size \eqn{M}.
+#'
+#'   If this is multidimensional functional data, it is advised that
+#'   `rotation==FALSE`
 #' @param time A numeric vector of length \eqn{M} specifying the grid on which
 #'   the curves are evaluated.
 #' @param K An integer value specifying the number of clusters. Defaults to
@@ -38,6 +39,8 @@ utils::globalVariables("n")
 #'   Defaults to `FALSE`.
 #' @param alignment A boolean specifying whether to perform alignment. Defaults
 #'   to `TRUE`.
+#' @param rotation A boolean specifiying wether to perform roation. Defaults to
+#'   to `FALSE`.
 #' @param omethod A string specifying which method should be used to solve the
 #'   optimization problem that provides estimated warping functions. Choices are
 #'   `"DP"` or `"RBFGS"`. Defaults to `"DP"`.
@@ -91,7 +94,8 @@ kmeans_align <- function(f, time,
                          sparam = 25L,
                          parallel = FALSE,
                          alignment = TRUE,
-                         omethod = c("DP", "DP2", "RBFGS"),
+                         rotation = FALSE,
+                         omethod = c("DP", "RBFGS"),
                          max_iter = 50L,
                          thresh = 0.01,
                          use_verbose = FALSE) {
@@ -158,7 +162,12 @@ kmeans_align <- function(f, time,
       f[l, , ] <- smooth.data(f[l, , ], sparam = sparam)
   }
 
-  q <- f_to_srvf(f, time, multidimensional = (L > 1))
+  if (L > 1){
+    q <- curve_to_q(f)
+  } else {
+    q <- f_to_srvf(f, time)
+  }
+
   templates.q <- array(0, dim = c(L, M, K))
   for (k in 1:K)
     templates.q[, , k] <- q[, , template.ind[k]]
@@ -180,33 +189,47 @@ kmeans_align <- function(f, time,
     for (k in 1:K) {
       outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
         if (alignment) {
-          gam_tmp <- optimum.reparam(
-            Q1 = templates.q[, , k], T1 = time,
-            Q2 = q[, , n], T2 = time,
-            lambda = lambda,
-            method = omethod,
-            f1o = templates[, 1, k],
-            f2o = f[, 1, n]
-          )
+          if (L > 1){
+            out = find_rotation_seed_unqiue(templates.q[, , k], q[, , n],
+                                            mode='O', rotation=rotation)
+            gam_tmp = out$gambest
+
+          } else{
+            gam_tmp <- optimum.reparam(
+              Q1 = templates.q[, , k], T1 = time,
+              Q2 = q[, , n], T2 = time,
+              lambda = lambda,
+              method = omethod,
+              f1o = templates[, 1, k],
+              f2o = f[, 1, n]
+            )
+          }
+
         }
         else
           gam_tmp <- seq(0, 1, length.out = M)
 
-        for (l in 1:L) {
-          fw[l, ] <- stats::approx(
-            x = time,
-            y = f[l, , n],
-            xout = (time[M] - time[1]) * gam_tmp + time[1]
-          )$y
+        if (L > 1){
+          fw <- group_action_by_gamma_coord(f[, , n], gam_tmp)
+          qw <- curve_to_q(fw)
+        } else {
+          fw <- warp_f_gamma(f[1, , n], time, gam_tmp)
+          qw <- f_to_srvf(fw, time)
         }
 
-        qw <- f_to_srvf(fw, time, multidimensional = (L > 1))
+        if (L > 1){
+          q1dotq2 = innerprod_q2(templates.q[, , k], qw)
+          if (q1dotq2 > 1){
+            q1dotq2 = 1
+          } else if(q1dotq2 < -1){
+            q1dotq2 = -1
+          }
+          dist = acos(q1dotq2)
 
-        dist <- 0
-        for (l in 1:L) {
-          dist <- dist + trapz(time, (qw[l, ] - templates.q[l, , k])^2)
+        } else{
+          dist <- trapz(time, (qw - templates.q[1, , k])^2)
+          dist <- sqrt(dist)
         }
-        dist <- sqrt(dist)
 
         list(gam_tmp, fw, qw, dist)
       }
@@ -260,14 +283,15 @@ kmeans_align <- function(f, time,
 
       fw <- matrix(nrow = L, ncol = M)
       outfor <- foreach::foreach(n = 1:N1, .combine = cbind, .packages = "fdasrvf") %dopar% {
-        for (l in 1:L) {
-          fw[l, ] <- stats::approx(
-            x = time,
-            y = ftmp[l, , n],
-            xout = (time[M] - time[1]) * gamI + time[1]
-          )$y
+
+        if (L > 1){
+          fw <- group_action_by_gamma_coord(ftmp[, , n], gamI)
+          qw <- curve_to_q(fw)
+        } else {
+          fw <- warp_f_gamma(ftmp[1, , n], time, gamI)
+          qw <- f_to_srvf(fw, time)
         }
-        qw <- f_to_srvf(fw, time, multidimensional = (L > 1))
+
         gamt1 <- stats::approx(
           x = time,
           y = gamtmp[, n],
@@ -297,14 +321,26 @@ kmeans_align <- function(f, time,
         next()
       }
 
-      for (l in 1:L) {
+      if (L > 1){
         if (centroid_type == "mean") {
-          templates.q[l, , k] <- rowMeans(qn[[k]][l, , id])
-          templates[l, , k] <- rowMeans(fn[[k]][l, , id])
+          out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation)
+          templates.q[1, , k] <- out$betamean
+          templates[1, , k] <- curve_to_q(out$betamean)
+        } else if (centroid_type == "medoid") {
+          out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation,
+                                   ms='median')
+          templates.q[1, , k] <- out$betamean
+          templates[1, , k] <- curve_to_q(out$betamean)
+        }
+
+      } else {
+        if (centroid_type == "mean") {
+          templates.q[1, , k] <- rowMeans(qn[[k]][1, , id])
+          templates[1, , k] <- rowMeans(fn[[k]][1, , id])
         } else if (centroid_type == "medoid") {
           idx <- which.min(Dy[k, id])
-          templates.q[l, , k] <- qn[[k]][l, , id][, idx]
-          templates[l, , k] <- fn[[k]][l, , id][, idx]
+          templates.q[1, , k] <- qn[[k]][1, , id][, idx]
+          templates[1, , k] <- fn[[k]][1, , id][, idx]
         }
       }
 
