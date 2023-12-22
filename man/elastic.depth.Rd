@@ -7,7 +7,7 @@
 elastic.depth(f, time, lambda = 0, pen = "roughness", parallel = FALSE)
 }
 \arguments{
-\item{f}{matrix of N function of M time points (MxN)}
+\item{f}{matrix of N function of M time points (\eqn{M \times N})}
 
 \item{time}{sample points of functions}
 
@@ -24,13 +24,16 @@ Returns a list containing \item{amp}{amplitude depth}
 \item{phase}{phase depth}
 }
 \description{
-This functions calculates the elastic depth between set of functions
+This functions calculates the elastic depth between set of functions in
+\eqn{R^1}
 }
 \examples{
 depths <- elastic.depth(simu_data$f[, 1:4], simu_data$time)
 }
 \references{
-T. Harris, J. D. Tucker, B. Li, and L. Shand, "Elastic depths for detecting shape anomalies in functional data," Technometrics, 10.1080/00401706.2020.1811156, 2020.
+T. Harris, J. D. Tucker, B. Li, and L. Shand, "Elastic depths for
+detecting shape anomalies in functional data," Technometrics,
+10.1080/00401706.2020.1811156, 2020.
 }
 \concept{srvf alignment}
 \keyword{depth}

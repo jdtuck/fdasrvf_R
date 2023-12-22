@@ -1,8 +1,9 @@
 #' Calculates elastic depth
 #'
-#' This functions calculates the elastic depth between set of functions
+#' This functions calculates the elastic depth between set of functions in
+#' \eqn{R^1}
 #'
-#' @param f matrix of N function of M time points (MxN)
+#' @param f matrix of N function of M time points (\eqn{M \times N})
 #' @param time sample points of functions
 #' @param lambda controls amount of warping (default = 0)
 #' @param pen alignment penalty (default="roughness") options are
@@ -13,11 +14,14 @@
 #' \item{phase}{phase depth}
 #' @keywords depth
 #' @concept srvf alignment
-#' @references T. Harris, J. D. Tucker, B. Li, and L. Shand, "Elastic depths for detecting shape anomalies in functional data," Technometrics, 10.1080/00401706.2020.1811156, 2020.
+#' @references T. Harris, J. D. Tucker, B. Li, and L. Shand, "Elastic depths for
+#'  detecting shape anomalies in functional data," Technometrics,
+#'  10.1080/00401706.2020.1811156, 2020.
 #' @export
 #' @examples
 #' depths <- elastic.depth(simu_data$f[, 1:4], simu_data$time)
-elastic.depth <- function(f,time,lambda = 0, pen="roughness", parallel = FALSE){
+elastic.depth <- function(f, time, lambda = 0, pen="roughness",
+                          parallel = FALSE){
   if (parallel){
     cores = max(parallel::detectCores() - 1, 1)
     cl = parallel::makeCluster(cores)
