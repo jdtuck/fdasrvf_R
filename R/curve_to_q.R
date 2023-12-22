@@ -1,11 +1,16 @@
 #' Convert to SRVF space
 #'
-#' This function converts curves to SRVF
+#' This function converts curves or multidimesional functional data to SRVF
 #'
-#' @param beta array describing curve (n,T)
-#' @return q array describing srvf
+#' @param beta a matrix of shape \eqn{n \times T} describing curve or
+#'  multidimensional functional data in \eqn{R^n} where \eqn{n} is the dimension
+#'  and \eqn{T} is the number of time points
+#' @return a numeric array of the same shape as the input array `beta` storing the
+#'   SRVFs of the original curves.
 #' @keywords srvf alignment
-#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011).
+#'  Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and M
+#'  achine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
 #' q <- curve_to_q(beta[, , 1, 1])$q
