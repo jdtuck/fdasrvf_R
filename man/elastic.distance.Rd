@@ -24,7 +24,7 @@ Returns a list containing \item{Dy}{amplitude distance}
 \item{Dx}{phase distance}
 }
 \description{
-This functions calculates the distances between functions,
+This functions calculates the distances between functions in \eqn{R^1}
 \eqn{D_y} and \eqn{D_x}, where function 1 is aligned to function 2
 }
 \examples{
