@@ -156,7 +156,7 @@ shift_f <- function(f, tau){
 }
 
 
-find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
+find_rotation_seed_coord <- function(beta1, beta2, mode="O", rotation=TRUE){
     n = nrow(beta1)
     T1 = ncol(beta1)
     q1 = curve_to_q(beta1)$q
@@ -179,9 +179,18 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
         } else {
             beta2n = beta2
         }
-        out = find_best_rotation(beta1, beta2n)
-        beta2n = out$q2new
-        q2n = curve_to_q(beta2n)$q
+
+        if (rotation){
+          out = find_best_rotation(beta1, beta2n)
+          beta2n = out$q2new
+          q2n = curve_to_q(beta2n)$q
+          Rbest = out$R
+        } else {
+          beta2n = beta2
+          q2n = curve_to_q(beta2n)$q
+          Rbest = diag(nrow(beta2n))
+        }
+
 
         if (norm(q1-q2n,'F') > 0.0001){
             q1 = q1/sqrt(innerprod_q2(q1, q1))
@@ -213,7 +222,7 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O"){
         }
         Ec = acos(dist)
         if (Ec < minE){
-            Rbest = out$R
+            Rbest = Rbest
             beta2best = beta2new
             q2best = q2new
             gambest = gam

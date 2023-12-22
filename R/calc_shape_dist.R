@@ -1,19 +1,27 @@
 #' Elastic Shape Distance
 #'
-#' Calculate elastic shape distance between two curves beta1 and beta2
+#' Calculate elastic shape distance between two curves beta1 and beta2. If the
+#' curves beta1 and beta2 are describing multidimensional functional data, then
+#' `rotation == FALSE` and `mode == 'O'`
+#'
+#'
 #'
 #' @param beta1 array describing curve1 (n,T)
 #' @param beta2 array describing curve
 #' @param mode Open ("O") or Closed ("C") curves
-#' @param scale Include scale (default =F)
+#' @param rotatation Include rotation (default = TRUE)
+#' @param scale Include scale (default = FALSE)
 #' @return Returns a list containing \item{d}{geodesic distance}
 #' \item{dx}{phase distance}
 #' @keywords distances
-#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+#'  analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
+#'  Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
 #' out <- calc_shape_dist(beta[, , 1, 1], beta[, , 1, 4])
-calc_shape_dist <- function(beta1, beta2, mode="O", scale=F){
+calc_shape_dist <- function(beta1, beta2, mode="O", rotation=TRUE,
+                            scale=FALSE){
     T1 = ncol(beta1)
     centroid1 = calculatecentroid(beta1)
     dim(centroid1) = c(length(centroid1),1)
@@ -27,7 +35,7 @@ calc_shape_dist <- function(beta1, beta2, mode="O", scale=F){
     dim(centroid1) = c(length(centroid1),1)
     beta2 = beta2 - repmat(centroid1,1,T1)
 
-    out = find_rotation_seed_coord(beta1, beta2, mode)
+    out = find_rotation_seed_coord(beta1, beta2, mode, rotation)
     q1dotq2 = innerprod_q2(q1, out$q2best)
 
     if (q1dotq2 > 1){

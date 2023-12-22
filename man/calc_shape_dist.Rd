@@ -4,7 +4,7 @@
 \alias{calc_shape_dist}
 \title{Elastic Shape Distance}
 \usage{
-calc_shape_dist(beta1, beta2, mode = "O", scale = F)
+calc_shape_dist(beta1, beta2, mode = "O", rotation = TRUE, scale = FALSE)
 }
 \arguments{
 \item{beta1}{array describing curve1 (n,T)}
@@ -13,19 +13,25 @@ calc_shape_dist(beta1, beta2, mode = "O", scale = F)
 
 \item{mode}{Open ("O") or Closed ("C") curves}
 
-\item{scale}{Include scale (default =F)}
+\item{scale}{Include scale (default = FALSE)}
+
+\item{rotatation}{Include rotation (default = TRUE)}
 }
 \value{
 Returns a list containing \item{d}{geodesic distance}
 \item{dx}{phase distance}
 }
 \description{
-Calculate elastic shape distance between two curves beta1 and beta2
+Calculate elastic shape distance between two curves beta1 and beta2. If the
+curves beta1 and beta2 are describing multidimensional functional data, then
+\code{rotation == FALSE} and \code{mode == 'O'}
 }
 \examples{
 out <- calc_shape_dist(beta[, , 1, 1], beta[, , 1, 4])
 }
 \references{
-Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
+Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 }
 \keyword{distances}
