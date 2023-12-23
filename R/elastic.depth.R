@@ -3,13 +3,14 @@
 #' This functions calculates the elastic depth between set of functions in
 #' \eqn{R^1}
 #'
-#' @param f matrix of N function of M time points (\eqn{M \times N})
-#' @param time sample points of functions
-#' @param lambda controls amount of warping (default = 0)
-#' @param pen alignment penalty (default="roughness") options are
-#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and
-#' norm from id ("norm")
-#' @param parallel run computation in parallel (default = T)
+#' @param f matrix of sizes \eqn{M \times N}, specifying values of \eqn{N}
+#'    function of \eqn{M} time points
+#' @param time vector of length \eqn{M}, specifying the sample points of functions
+#' @param lambda controls amount of warping (default = `0`)
+#' @param pen alignment penalty (default = `"roughness"`) options are
+#' second derivative (`"roughness"`), geodesic distance from id (`"geodesic"`),
+#' and norm from id (`"norm"`)
+#' @param parallel run computation in parallel (default = `TRUE`)
 #' @return Returns a list containing \item{amp}{amplitude depth}
 #' \item{phase}{phase depth}
 #' @keywords depth

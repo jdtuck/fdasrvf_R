@@ -1,11 +1,14 @@
 #' Align Curves
 #'
-#' Aligns a collection of curves using the elastic square-root velocity (srvf) framework.
+#' Aligns a collection of curves using the elastic square-root velocity (srvf)
+#' framework. If the curves are describing multidimensional functional data, then
+#' `rotated == FALSE` and `mode == 'O'`
 #'
-#' @param beta array (n,T,N) for N number of curves
-#' @param mode Open ("O") or Closed ("C") curves
-#' @param rotated Optimize over rotation (default = T)
-#' @param scale Include scale (default = F)
+#' @param beta Array of sizes \eqn{n \times T \times N} for \eqn{N} curves
+#' of dimension \eqn{T} evaluated on a grid of \eqn{n} points
+#' @param mode Open (`"O"`) or Closed (`"C"`) curves
+#' @param rotated Optimize over rotation (default = `TRUE`)
+#' @param scale Include scale (default = `FALSE`)
 #' @param lambda A numeric value specifying the elasticity. Defaults to `0.0`.
 #' @param maxit maximum number of iterations
 #' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")

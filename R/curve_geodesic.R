@@ -2,9 +2,11 @@
 #'
 #' Form geodesic between two curves using Elastic Method
 #'
-#' @param beta1 array describing curve 1 (n,T)
-#' @param beta2 array describing curve 2 (n,T)
-#' @param k number of curves along geodesic (default 5)
+#' @param beta1 curve 1, provided as a matrix of dimensions \eqn{n \times T} for
+#'  \eqn{T}-dimensional curve evaluated on \eqn{n} sample points
+#' @param beta2 curve 2, provided as a matrix of dimensions \eqn{n \times T} for
+#'  \eqn{T}-dimensional curve evaluated on \eqn{n} sample points
+#' @param k number of curves along geodesic (default `5`)
 #' @return a list containing \item{geod}{curves along geodesic (n,T,k)}
 #' \item{geod_q}{srvf's along geodesic}
 #' @keywords srvf alignment
