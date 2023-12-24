@@ -16,22 +16,24 @@ reparam_curve(
 )
 }
 \arguments{
-\item{beta1}{array defining curve 1}
+\item{beta1}{curve 1, provided as a matrix of dimensions \eqn{n \times M} for
+\eqn{M}-dimensional curve evaluated on \eqn{n} sample points}
 
-\item{beta2}{array defining curve 1}
+\item{beta2}{curve 1, provided as a matrix of dimensions \eqn{n \times M} for
+\eqn{M}-dimensional curve evaluated on \eqn{n} sample points}
 
-\item{lambda}{controls amount of warping (default = 0)}
+\item{lambda}{controls amount of warping (default = \code{0})}
 
-\item{method}{controls which optimization method (default="DP") options are
-Dynamic Programming ("DP")}
+\item{method}{controls which optimization method. Options are
+Dynamic Programming (\code{"DP"}). (default = \code{"DP"})}
 
-\item{w}{controls LRBFGS (default = 0.01)}
+\item{w}{controls LRBFGS (default = \code{0.01})}
 
 \item{rotated}{boolean if rotation is desired}
 
 \item{isclosed}{boolean if curve is closed}
 
-\item{mode}{Open ("O") or Closed ("C") curves}
+\item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
 }
 \value{
 return a List containing \item{gam}{warping function}
@@ -39,7 +41,9 @@ return a List containing \item{gam}{warping function}
 \item{tau}{seed point}
 }
 \description{
-This function aligns two SRVF functions using Dynamic Programming
+This function aligns two SRVF functions using Dynamic Programming. If the
+curves beta1 and beta2 are describing multidimensional functional data, then
+\code{rotation == FALSE} and \code{mode == 'O'}
 }
 \examples{
 gam <- reparam_curve(beta[, , 1, 1], beta[, , 1, 5])$gam

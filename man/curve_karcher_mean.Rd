@@ -15,19 +15,21 @@ curve_karcher_mean(
 )
 }
 \arguments{
-\item{beta}{array (n,T,N) for N number of curves}
+\item{beta}{Array of sizes \eqn{n \times T \times N} describing \eqn{N}
+curves of dimension \eqn{T} evaluated on \eqn{n} points}
 
-\item{mode}{Open ("O") or Closed ("C") curves}
+\item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
 
-\item{rotated}{Optimize over rotation (default = T)}
+\item{rotated}{Optimize over rotation (default = \code{TRUE})}
 
-\item{scale}{Include scale (default = F)}
+\item{scale}{Include scale (default = \code{FALSE})}
 
 \item{lambda}{A numeric value specifying the elasticity. Defaults to \code{0.0}.}
 
 \item{maxit}{maximum number of iterations}
 
-\item{ms}{string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")}
+\item{ms}{string defining whether the Karcher mean (\code{"mean"}) or Karcher
+median (\code{"median"}) is returned (default = \code{"mean"})}
 }
 \value{
 Returns a list containing \item{mu}{mean srvf}
@@ -46,7 +48,8 @@ Returns a list containing \item{mu}{mean srvf}
 \item{qun}{cost function}
 }
 \description{
-Calculates Karcher mean or median of a collection of curves using the elastic square-root velocity (srvf) framework.
+Calculates Karcher mean or median of a collection of curves using the elastic
+square-root velocity (srvf) framework.
 }
 \examples{
 out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)

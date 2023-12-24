@@ -27,7 +27,7 @@ A numeric array of the same shape as the input array \code{f} storing the
 SRVFs of the original curves.
 }
 \description{
-This function transforms functions in R^1 from their original functional
+This function transforms functions in \eqn{R^1} from their original functional
 space to the SRVF space.
 }
 \examples{

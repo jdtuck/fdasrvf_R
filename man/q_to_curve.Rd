@@ -7,9 +7,12 @@
 q_to_curve(q, scale = 1)
 }
 \arguments{
-\item{q}{array describing SRVF (n,T)}
+\item{q}{either a matrix of shape \eqn{n \times T} describing SRVF or SRVF of
+multidimensional functional data in \eqn{R^n}, where \eqn{n} is the dimension
+and \eqn{T} is the number of time points
+\eqn{T} is the number of time points}
 
-\item{scale}{scale of original beta (default 1)}
+\item{scale}{scale of original beta (default = \code{1})}
 }
 \value{
 beta array describing curve

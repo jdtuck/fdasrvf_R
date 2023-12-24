@@ -3,7 +3,7 @@
 #' Calculates Karcher mean or median of a collection of curves using the elastic
 #' square-root velocity (srvf) framework.
 #'
-#' @param beta Array of sizes \eqn{n \times T \times N} describing \enq{N}
+#' @param beta Array of sizes \eqn{n \times T \times N} describing \eqn{N}
 #' curves of dimension \eqn{T} evaluated on \eqn{n} points
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
 #' @param rotated Optimize over rotation (default = `TRUE`)

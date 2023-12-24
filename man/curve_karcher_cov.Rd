@@ -7,9 +7,10 @@
 curve_karcher_cov(v, len = NA)
 }
 \arguments{
-\item{v}{array (n,T,N) for N number of shooting vectors}
+\item{v}{array of sizes \eqn{n \times T \times N} for \eqn{N} shooting
+vectors of dimension \eqn{T} evaluated on a grid of \eqn{n} points}
 
-\item{len}{lengths of curves (default=NA)}
+\item{len}{lengths of curves (default = \code{NA})}
 }
 \value{
 K covariance matrix

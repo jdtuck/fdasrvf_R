@@ -7,19 +7,20 @@
 curve_principal_directions(v, K, mu, len = NA, no = 3, N = 5, mode = "O")
 }
 \arguments{
-\item{v}{array (n,T,N1) of shooting vectors}
+\item{v}{array of sizes \eqn{n \times T \times N} for \eqn{N} shooting
+vectors of dimension \eqn{T} evaluated on a grid of \eqn{n} points}
 
-\item{K}{array (n\emph{T,n}T) covariance matrix}
+\item{K}{matrix of sizes \eqn{nT \times nT} of covariance matrix}
 
-\item{mu}{array (n,T) of mean srvf}
+\item{mu}{matrix of sizes \eqn{n \times T} of mean srvf}
 
-\item{len}{length of original curves (default NA)}
+\item{len}{length of original curves (default = \code{NA})}
 
 \item{no}{number of components}
 
 \item{N}{number of samples on each side of mean}
 
-\item{mode}{Open ("O") or Closed ("C") curves}
+\item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
 }
 \value{
 Returns a list containing \item{s}{singular values}
