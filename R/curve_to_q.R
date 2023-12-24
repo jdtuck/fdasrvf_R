@@ -2,8 +2,8 @@
 #'
 #' This function converts curves or multidimesional functional data to SRVF
 #'
-#' @param beta a matrix of shape \eqn{n \times T} describing curve or
-#'  multidimensional functional data in \eqn{R^n} where \eqn{n} is the dimension
+#' @param beta either a matrix of shape \eqn{n \times T} describing curve or
+#'  multidimensional functional data in \eqn{R^n}, where \eqn{n} is the dimension
 #'  and \eqn{T} is the number of time points
 #' @return a numeric array of the same shape as the input array `beta` storing the
 #'   SRVFs of the original curves.

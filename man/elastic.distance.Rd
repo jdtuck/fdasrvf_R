@@ -7,17 +7,18 @@
 elastic.distance(f1, f2, time, lambda = 0, pen = "roughness")
 }
 \arguments{
-\item{f1}{sample function 1}
+\item{f1}{sample function 1, provided as a vector of length \eqn{M}}
 
-\item{f2}{sample function 2}
+\item{f2}{sample function 2, provided as a vector of length \eqn{M}}
 
-\item{time}{sample points of functions}
+\item{time}{sample points of functions, provided as a vector of length
+\eqn{M}}
 
-\item{lambda}{controls amount of warping (default = 0)}
+\item{lambda}{controls amount of warping (default = \code{0})}
 
-\item{pen}{alignment penalty (default="roughness") options are
-second derivative ("roughness"), geodesic distance from id ("geodesic"), and
-norm from id ("norm")}
+\item{pen}{alignment penalty (default = \code{"roughness"}) options are
+second derivative (\code{"roughness"}), geodesic distance from id (\code{"geodesic"}),
+and norm from id (\code{"norm"})}
 }
 \value{
 Returns a list containing \item{Dy}{amplitude distance}

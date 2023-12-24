@@ -7,8 +7,8 @@
 curve_to_q(beta)
 }
 \arguments{
-\item{beta}{a matrix of shape \eqn{n \times T} describing curve or
-multidimensional functional data in \eqn{R^n} where \eqn{n} is the dimension
+\item{beta}{either a matrix of shape \eqn{n \times T} describing curve or
+multidimensional functional data in \eqn{R^n}, where \eqn{n} is the dimension
 and \eqn{T} is the number of time points}
 }
 \value{

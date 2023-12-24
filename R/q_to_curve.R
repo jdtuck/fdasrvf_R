@@ -2,8 +2,11 @@
 #'
 #' This function converts SRVFs to curves
 #'
-#' @param q array describing SRVF (n,T)
-#' @param scale scale of original beta (default 1)
+#' @param q either a matrix of shape \eqn{n \times T} describing SRVF or SRVF of
+#'  multidimensional functional data in \eqn{R^n}, where \eqn{n} is the dimension
+#'  and \eqn{T} is the number of time points
+#'  \eqn{T} is the number of time points
+#' @param scale scale of original beta (default = `1`)
 #' @return beta array describing curve
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.

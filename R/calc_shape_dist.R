@@ -4,11 +4,13 @@
 #' curves beta1 and beta2 are describing multidimensional functional data, then
 #' `rotation == FALSE` and `mode == 'O'`
 #'
-#' @param beta1 array describing curve1 (n,T)
-#' @param beta2 array describing curve
-#' @param mode Open ("O") or Closed ("C") curves
-#' @param rotation Include rotation (default = TRUE)
-#' @param scale Include scale (default = FALSE)
+#' @param beta1 curve1, provided as a matrix of sizes \eqn{n\times T} for
+#'  \eqn{T}-dimensional curve on \eqn{n} sample points
+#' @param beta2 curve 2, provided as a matrix of sizes \eqn{n\times T} for
+#'  \eqn{T}-dimensional curve on \eqn{n} sample points
+#' @param mode Open (`"O"`) or Closed (`"C"`) curves
+#' @param rotation Include rotation (default = `TRUE`)
+#' @param scale Include scale (default = `FALSE`)
 #' @return Returns a list containing \item{d}{geodesic distance}
 #' \item{dx}{phase distance}
 #' @keywords distances

@@ -1,6 +1,6 @@
 #' Transformation to SRVF Space
 #'
-#' This function transforms functions in R^1 from their original functional
+#' This function transforms functions in \eqn{R^1} from their original functional
 #' space to the SRVF space.
 #'
 #' @param f Either a numeric vector of a numeric matrix or a numeric array

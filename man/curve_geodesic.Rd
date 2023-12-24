@@ -7,11 +7,13 @@
 curve_geodesic(beta1, beta2, k = 5)
 }
 \arguments{
-\item{beta1}{array describing curve 1 (n,T)}
+\item{beta1}{curve 1, provided as a matrix of dimensions \eqn{n \times T} for
+\eqn{T}-dimensional curve evaluated on \eqn{n} sample points}
 
-\item{beta2}{array describing curve 2 (n,T)}
+\item{beta2}{curve 2, provided as a matrix of dimensions \eqn{n \times T} for
+\eqn{T}-dimensional curve evaluated on \eqn{n} sample points}
 
-\item{k}{number of curves along geodesic (default 5)}
+\item{k}{number of curves along geodesic (default \code{5})}
 }
 \value{
 a list containing \item{geod}{curves along geodesic (n,T,k)}

@@ -2,8 +2,9 @@
 #'
 #' Calculate Karcher Covariance of a set of curves
 #'
-#' @param v array (n,T,N) for N number of shooting vectors
-#' @param len lengths of curves (default=NA)
+#' @param v array of sizes \eqn{n \times T \times N} for \eqn{N} shooting
+#' vectors of dimension \eqn{T} evaluated on a grid of \eqn{n} points
+#' @param len lengths of curves (default = `NA`)
 #' @return K covariance matrix
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.

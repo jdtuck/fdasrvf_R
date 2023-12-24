@@ -7,15 +7,17 @@
 calc_shape_dist(beta1, beta2, mode = "O", rotation = TRUE, scale = FALSE)
 }
 \arguments{
-\item{beta1}{array describing curve1 (n,T)}
+\item{beta1}{curve1, provided as a matrix of sizes \eqn{n\times T} for
+\eqn{T}-dimensional curve on \eqn{n} sample points}
 
-\item{beta2}{array describing curve}
+\item{beta2}{curve 2, provided as a matrix of sizes \eqn{n\times T} for
+\eqn{T}-dimensional curve on \eqn{n} sample points}
 
-\item{mode}{Open ("O") or Closed ("C") curves}
+\item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
 
-\item{rotation}{Include rotation (default = TRUE)}
+\item{rotation}{Include rotation (default = \code{TRUE})}
 
-\item{scale}{Include scale (default = FALSE)}
+\item{scale}{Include scale (default = \code{FALSE})}
 }
 \value{
 Returns a list containing \item{d}{geodesic distance}
