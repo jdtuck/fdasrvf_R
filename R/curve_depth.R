@@ -21,7 +21,7 @@
 #' @examples
 #' data("mpeg7")
 #' # note: use more shapes and iterations, small for speed
-#' out = curve_depth(beta[,,1,1:2],maxit=2)
+#' out = curve_depth(beta[,,1,1:2])
 curve_depth <- function(beta, mode="O", rotated=TRUE, scale=FALSE,
                         parallel = FALSE){
   if (parallel){
