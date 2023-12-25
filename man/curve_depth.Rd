@@ -8,7 +8,7 @@ curve_depth(beta, mode = "O", rotated = TRUE, scale = FALSE, parallel = FALSE)
 }
 \arguments{
 \item{beta}{Array of sizes \eqn{n \times T \times N} for \eqn{N} curves
-of dimension \eqn{T} evaluated on a grid of \eqn{n} points}
+of dimension \eqn{n} evaluated on a grid of \eqn{T} points}
 
 \item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
 

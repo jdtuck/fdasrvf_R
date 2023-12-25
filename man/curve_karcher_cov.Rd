@@ -8,7 +8,7 @@ curve_karcher_cov(v, len = NA)
 }
 \arguments{
 \item{v}{array of sizes \eqn{n \times T \times N} for \eqn{N} shooting
-vectors of dimension \eqn{T} evaluated on a grid of \eqn{n} points}
+vectors of dimension \eqn{n} evaluated on a grid of \eqn{T} points}
 
 \item{len}{lengths of curves (default = \code{NA})}
 }

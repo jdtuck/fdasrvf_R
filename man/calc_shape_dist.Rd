@@ -8,10 +8,10 @@ calc_shape_dist(beta1, beta2, mode = "O", rotation = TRUE, scale = FALSE)
 }
 \arguments{
 \item{beta1}{curve1, provided as a matrix of sizes \eqn{n\times T} for
-\eqn{T}-dimensional curve on \eqn{n} sample points}
+\eqn{n}-dimensional curve on \eqn{T} sample points}
 
 \item{beta2}{curve 2, provided as a matrix of sizes \eqn{n\times T} for
-\eqn{T}-dimensional curve on \eqn{n} sample points}
+\eqn{n}-dimensional curve on \eqn{T} sample points}
 
 \item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
 

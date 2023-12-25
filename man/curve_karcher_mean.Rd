@@ -7,8 +7,8 @@
 curve_karcher_mean(
   beta,
   mode = "O",
-  rotated = T,
-  scale = F,
+  rotated = TRUE,
+  scale = FALSE,
   lambda = 0,
   maxit = 20,
   ms = "mean"
@@ -16,7 +16,7 @@ curve_karcher_mean(
 }
 \arguments{
 \item{beta}{Array of sizes \eqn{n \times T \times N} describing \eqn{N}
-curves of dimension \eqn{T} evaluated on \eqn{n} points}
+curves of dimension \eqn{n} evaluated on \eqn{T} points}
 
 \item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
 
