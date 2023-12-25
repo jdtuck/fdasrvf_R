@@ -5,7 +5,7 @@
 #' `rotated == FALSE` and `mode == 'O'`
 #'
 #' @param beta Array of sizes \eqn{n \times T \times N} for \eqn{N} curves
-#' of dimension \eqn{T} evaluated on a grid of \eqn{n} points
+#' of dimension \eqn{n} evaluated on a grid of \eqn{T} points
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
 #' @param rotated Optimize over rotation (default = `TRUE`)
 #' @param scale Include scale (default = `FALSE`)
@@ -23,9 +23,9 @@
 #' data("mpeg7")
 #' # note: use more shapes and iterations, small for speed
 #' out = curve_srvf_align(beta[,,1,1:2],maxit=2)
-curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, lambda = 0.0,
-                             maxit=20, ms = "mean"){
-    if (mode=="C"){
+curve_srvf_align <- function(beta, mode = "O", rotated = TRUE, scale = FALSE,
+                             lambda = 0.0, maxit = 20, ms = "mean"){
+    if (mode == "C"){
       isclosed = TRUE
     }
     tmp = dim(beta)
@@ -39,17 +39,17 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, lambda = 0.0,
     v = out$v
     q = out$q
 
-    qn = array(0, c(n,T1,N))
-    betan = array(0, c(n,T1,N))
-    rotmat = array(0, c(n,n,N))
+    qn = array(0, c(n, T1, N))
+    betan = array(0, c(n, T1, N))
+    rotmat = array(0, c(n, n, N))
     gams = matrix(0, T1, N)
 
     # align to mean
     for (ii in 1:N){
-        q1 = q[,,ii]
-        beta1 = beta[,,ii]
+        q1 = q[ , , ii]
+        beta1 = beta[ , , ii]
 
-        out = find_rotation_seed_unqiue(mu,q1,mode,rotated,lambda)
+        out = find_rotation_seed_unqiue(mu, q1, mode, rotated, lambda)
         gams[,ii] = out$gambest
         beta1 = out$Rbest%*%beta1
         beta1n = group_action_by_gamma_coord(beta1, out$gambest)
@@ -60,5 +60,6 @@ curve_srvf_align <- function(beta, mode="O", rotated=T, scale = F, lambda = 0.0,
         betan[,,ii] = out$R%*%beta1n
         rotmat[,,ii] = out$R
     }
-    return(list(betan=betan, qn=qn, betamean=betamean, q_mu=mu, rotmat = rotmat,gams = gams,v=v))
+    return(list(betan = betan, qn = qn, betamean = betamean, q_mu = mu,
+                rotmat = rotmat, gams = gams, v = v))
 }

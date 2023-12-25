@@ -5,9 +5,9 @@
 #' `rotation == FALSE` and `mode == 'O'`
 #'
 #' @param beta1 curve 1, provided as a matrix of dimensions \eqn{n \times M} for
-#'  \eqn{M}-dimensional curve evaluated on \eqn{n} sample points
+#'  \eqn{n}-dimensional curve evaluated on \eqn{M} sample points
 #' @param beta2 curve 1, provided as a matrix of dimensions \eqn{n \times M} for
-#'  \eqn{M}-dimensional curve evaluated on \eqn{n} sample points
+#'  \eqn{n}-dimensional curve evaluated on \eqn{M} sample points
 #' @param lambda controls amount of warping (default = `0`)
 #' @param method controls which optimization method. Options are
 #' Dynamic Programming (`"DP"`). (default = `"DP"`)
@@ -23,8 +23,8 @@
 #' @export
 #' @examples
 #' gam <- reparam_curve(beta[, , 1, 1], beta[, , 1, 5])$gam
-reparam_curve <- function(beta1,beta2,lambda=0,method="DP",w=0.01,rotated=T,
-                          isclosed=F, mode="O"){
+reparam_curve <- function(beta1, beta2, lambda = 0, method = "DP", w = 0.01,
+                          rotated = TRUE, isclosed = FALSE, mode = "O"){
     n1 = nrow(beta2)
     M = ncol(beta2)
     timet = seq(0,1,length.out=M)
