@@ -1,16 +1,17 @@
 # fdasrvf 2.1.x
 * bugfixes
-* clarification of multivariate functional data
+* added `curve_depth` function (#31)
+* clarification of multivariate functional data (#31 and #32)
 
 # fdasrvf 2.1.2
-* add rlbfgs c++ code
+* add rlbfgs c++ code (#30)
 
 # fdasrvf 2.1.1
-* bugfixes
+* bugfixes (#27)
 
 # fdasrvf 2.1.0
 * added elastic change point functions
-* exposed `SqrtMeanInverse` and `inv_exp_map` to global
+* exposed `SqrtMeanInverse` and `inv_exp_map` to global (#29)
 * bugfixes
 
 # fdasrvf 2.0.3
