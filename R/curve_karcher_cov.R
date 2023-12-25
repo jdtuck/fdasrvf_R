@@ -3,7 +3,7 @@
 #' Calculate Karcher Covariance of a set of curves
 #'
 #' @param v array of sizes \eqn{n \times T \times N} for \eqn{N} shooting
-#' vectors of dimension \eqn{T} evaluated on a grid of \eqn{n} points
+#' vectors of dimension \eqn{n} evaluated on a grid of \eqn{T} points
 #' @param len lengths of curves (default = `NA`)
 #' @return K covariance matrix
 #' @keywords srvf alignment
@@ -13,20 +13,20 @@
 #' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' # note: use more shapes, small for speed
 #' K <- curve_karcher_cov(out$v)
-curve_karcher_cov <- function(v, len=NA){
+curve_karcher_cov <- function(v, len = NA){
     tmp = dim(v)
-    M = tmp[1]
-    N = tmp[2]
-    K = tmp[3]
+    n = tmp[1]
+    T = tmp[2]
+    N = tmp[3]
 
     # Compute Karcher covariance of uniformly sampled mean
     if (!all(is.na(len))){
-        N1 = M*N+1
+        N1 = n*T + 1
     } else {
-        N1 = M*N
+        N1 = n*T
     }
-    tmpv = matrix(0,N1,K)
-    for (i in 1:K){
+    tmpv = matrix(0, N1, N)
+    for (i in 1:N){
         tmp = v[, , i]
         if (!all(is.na(len))){
             tmp = c(tmp, len[i])

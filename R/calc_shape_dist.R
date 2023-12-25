@@ -5,9 +5,9 @@
 #' `rotation == FALSE` and `mode == 'O'`
 #'
 #' @param beta1 curve1, provided as a matrix of sizes \eqn{n\times T} for
-#'  \eqn{T}-dimensional curve on \eqn{n} sample points
+#'  \eqn{n}-dimensional curve on \eqn{T} sample points
 #' @param beta2 curve 2, provided as a matrix of sizes \eqn{n\times T} for
-#'  \eqn{T}-dimensional curve on \eqn{n} sample points
+#'  \eqn{n}-dimensional curve on \eqn{T} sample points
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
 #' @param rotation Include rotation (default = `TRUE`)
 #' @param scale Include scale (default = `FALSE`)

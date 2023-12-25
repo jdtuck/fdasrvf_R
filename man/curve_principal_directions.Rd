@@ -7,8 +7,8 @@
 curve_principal_directions(v, K, mu, len = NA, no = 3, N = 5, mode = "O")
 }
 \arguments{
-\item{v}{array of sizes \eqn{n \times T \times N} for \eqn{N} shooting
-vectors of dimension \eqn{T} evaluated on a grid of \eqn{n} points}
+\item{v}{array of sizes \eqn{n \times T \times N1} for \eqn{N1} shooting
+vectors of dimension \eqn{n} evaluated on a grid of \eqn{T} points}
 
 \item{K}{matrix of sizes \eqn{nT \times nT} of covariance matrix}
 

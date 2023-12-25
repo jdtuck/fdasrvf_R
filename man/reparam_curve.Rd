@@ -10,17 +10,17 @@ reparam_curve(
   lambda = 0,
   method = "DP",
   w = 0.01,
-  rotated = T,
-  isclosed = F,
+  rotated = TRUE,
+  isclosed = FALSE,
   mode = "O"
 )
 }
 \arguments{
 \item{beta1}{curve 1, provided as a matrix of dimensions \eqn{n \times M} for
-\eqn{M}-dimensional curve evaluated on \eqn{n} sample points}
+\eqn{n}-dimensional curve evaluated on \eqn{M} sample points}
 
 \item{beta2}{curve 1, provided as a matrix of dimensions \eqn{n \times M} for
-\eqn{M}-dimensional curve evaluated on \eqn{n} sample points}
+\eqn{n}-dimensional curve evaluated on \eqn{M} sample points}
 
 \item{lambda}{controls amount of warping (default = \code{0})}
 

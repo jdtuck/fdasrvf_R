@@ -8,10 +8,10 @@ curve_pair_align(beta1, beta2, mode = "O")
 }
 \arguments{
 \item{beta1}{curve 1, provided as a matrix of dimensions \eqn{n \times T} for
-\eqn{T}-dimensional curve evaluated on \eqn{n} sample points}
+\eqn{n}-dimensional curve evaluated on \eqn{T} sample points}
 
 \item{beta2}{curve 2, provided as a matrix of dimensions \eqn{n \times T} for
-\eqn{T}-dimensional curve evaluated on \eqn{n} sample points}
+\eqn{n}-dimensional curve evaluated on \eqn{T} sample points}
 
 \item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
 }

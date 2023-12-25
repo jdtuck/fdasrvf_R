@@ -5,7 +5,7 @@
 #' `rotated == FALSE` and `mode == 'O'`
 #'
 #' @param beta Array of sizes \eqn{n \times T \times N} for \eqn{N} curves
-#' of dimension \eqn{T} evaluated on a grid of \eqn{n} points
+#' of dimension \eqn{n} evaluated on a grid of \eqn{T} points
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
 #' @param rotated Include rotation (default = `TRUE`)
 #' @param scale Include scale (default = `FALSE`)
@@ -46,17 +46,17 @@ curve_depth <- function(beta, mode="O", rotated=TRUE, scale=FALSE,
 
     dist<-foreach::foreach(k = c1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
 
-      out <- calc_shape_dist(beta[,,c1], beta[,,k], mode=mode, rotation=rotated,
-                              scale=scale)
+      out <- calc_shape_dist(beta[ , , c1], beta[ , , k], mode = mode,
+                             rotation = rotated, scale = scale)
 
-      list(out$d,out$dx)
+      list(out$d, out$dx)
     }
 
-    NN = N-c1+1
-    phs = unlist(dist[2,])
-    dim(phs)=c(1,NN)
-    amp = unlist(dist[1,])
-    dim(amp)=c(1,NN)
+    NN = N - c1 + 1
+    phs = unlist(dist[2, ])
+    dim(phs) = c(1, NN)
+    amp = unlist(dist[1, ])
+    dim(amp) = c(1, NN)
 
     phs_dist[c1, c1:N] = phs
     amp_dist[c1, c1:N] = amp

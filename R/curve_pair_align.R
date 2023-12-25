@@ -3,9 +3,9 @@
 #' This function aligns to curves using Elastic Framework
 #'
 #' @param beta1 curve 1, provided as a matrix of dimensions \eqn{n \times T} for
-#'  \eqn{T}-dimensional curve evaluated on \eqn{n} sample points
+#'  \eqn{n}-dimensional curve evaluated on \eqn{T} sample points
 #' @param beta2 curve 2, provided as a matrix of dimensions \eqn{n \times T} for
-#'  \eqn{T}-dimensional curve evaluated on \eqn{n} sample points
+#'  \eqn{n}-dimensional curve evaluated on \eqn{T} sample points
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
 #' @return a list containing \item{beta2n}{aligned curve 2 to 1}
 #' \item{q2n}{aligned srvf 2 to 1}

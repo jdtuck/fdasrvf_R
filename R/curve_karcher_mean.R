@@ -4,7 +4,7 @@
 #' square-root velocity (srvf) framework.
 #'
 #' @param beta Array of sizes \eqn{n \times T \times N} describing \eqn{N}
-#' curves of dimension \eqn{T} evaluated on \eqn{n} points
+#' curves of dimension \eqn{n} evaluated on \eqn{T} points
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
 #' @param rotated Optimize over rotation (default = `TRUE`)
 #' @param scale Include scale (default = `FALSE`)
@@ -32,29 +32,29 @@
 #' @examples
 #' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' # note: use more shapes, small for speed
-curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F,
+curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = FALSE,
                                 lambda = 0.0, maxit = 20, ms = "mean")
 {
   if(ms!="mean"&ms!="median"){warning("ms must be either \"mean\" or \"median\". ms has been set to \"mean\"",immediate. = T)}
   if(ms!="median"){ms = "mean"}
 
-  mean_scale=NA
-  mean_scale_q=NA
+  mean_scale = NA
+  mean_scale_q = NA
   tmp = dim(beta)
   n = tmp[1]
   T1 = tmp[2]
   N = tmp[3]
   q = array(0, c(n, T1, N))
-  len = rep(0,N)
-  len_q = rep(0,N)
-  cent = matrix(0,n,N)
+  len = rep(0, N)
+  len_q = rep(0, N)
+  cent = matrix(0, n, N)
   for (ii in 1:N) {
-    beta1 = beta[,,ii]
+    beta1 = beta[ , , ii]
     centroid1 = calculatecentroid(beta1)
-    cent[,ii] = -1*centroid1
-    dim(centroid1) = c(length(centroid1),1)
-    beta1 = beta1 - repmat(centroid1,1,T1)
-    beta[,,ii] = beta1
+    cent[ , ii] = -1 * centroid1
+    dim(centroid1) = c(length(centroid1), 1)
+    beta1 = beta1 - repmat(centroid1, 1, T1)
+    beta[ , , ii] = beta1
     out = curve_to_q(beta1)
     q[, , ii] = out$q
     len[ii] = out$len
@@ -81,7 +81,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F,
   gam = matrix(0,T1,N)
   for (k in 1:N) {
     out = find_rotation_seed_unqiue(mu,q[, , k],mode,rotated,lambda)
-    gam[,k] = out$gambest
+    gam[, k] = out$gambest
   }
 
   gam = t(gam)
@@ -116,7 +116,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = T, scale = F,
       dist = acos(q1dotq2)
 
       u = qn_t - q1dotq2 * q1
-      normu = sqrt(innerprod_q2(u,u))
+      normu = sqrt(innerprod_q2(u, u))
       if (normu > 1e-4){
         w = u*acos(q1dotq2)/normu
       } else {

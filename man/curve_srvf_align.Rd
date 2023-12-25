@@ -7,8 +7,8 @@
 curve_srvf_align(
   beta,
   mode = "O",
-  rotated = T,
-  scale = F,
+  rotated = TRUE,
+  scale = FALSE,
   lambda = 0,
   maxit = 20,
   ms = "mean"
@@ -16,7 +16,7 @@ curve_srvf_align(
 }
 \arguments{
 \item{beta}{Array of sizes \eqn{n \times T \times N} for \eqn{N} curves
-of dimension \eqn{T} evaluated on a grid of \eqn{n} points}
+of dimension \eqn{n} evaluated on a grid of \eqn{T} points}
 
 \item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
 
