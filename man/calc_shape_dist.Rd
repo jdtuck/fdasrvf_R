@@ -32,6 +32,8 @@ this only applies if \code{scale=TRUE}}
 \value{
 Returns a list containing \item{d}{geodesic distance}
 \item{dx}{phase distance}
+\item{q1}{srvf of curve 1}
+\item{q2n}{srvf of aligned curve 2}
 }
 \description{
 Calculate elastic shape distance between two curves beta1 and beta2. If the

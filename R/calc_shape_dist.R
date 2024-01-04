@@ -15,6 +15,8 @@
 #'                       this only applies if `scale=TRUE`
 #' @return Returns a list containing \item{d}{geodesic distance}
 #' \item{dx}{phase distance}
+#' \item{q1}{srvf of curve 1}
+#' \item{q2n}{srvf of aligned curve 2}
 #' @keywords distances
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
 #'  analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
@@ -68,5 +70,5 @@ calc_shape_dist <- function(beta1, beta2, mode="O", rotation=TRUE,
   v <- inv_exp_map(rep(1,length(gam)), psi)
   dx <- sqrt(trapz(time1, v^2))
 
-  return(list(d=d,dx=dx))
+  return(list(d=d,dx=dx,q1=q1,q2n=out$q2best))
 }

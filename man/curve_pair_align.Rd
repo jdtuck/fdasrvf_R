@@ -4,7 +4,7 @@
 \alias{curve_pair_align}
 \title{Pairwise align two curves}
 \usage{
-curve_pair_align(beta1, beta2, mode = "O")
+curve_pair_align(beta1, beta2, mode = "O", rotation = TRUE, scale = TRUE)
 }
 \arguments{
 \item{beta1}{curve 1, provided as a matrix of dimensions \eqn{n \times T} for
@@ -14,6 +14,10 @@ curve_pair_align(beta1, beta2, mode = "O")
 \eqn{n}-dimensional curve evaluated on \eqn{T} sample points}
 
 \item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
+
+\item{rotation}{Include rotation (default = \code{TRUE})}
+
+\item{scale}{scale curves to unit length (default = \code{TRUE})}
 }
 \value{
 a list containing \item{beta2n}{aligned curve 2 to 1}
