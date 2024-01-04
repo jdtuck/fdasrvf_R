@@ -82,7 +82,7 @@ multivariate_karcher_mean <- function (beta, lambda = 0.0, maxit = 20, ms = "mea
       q1 = q[, , i]
 
       out = find_rotation_seed_unqiue(mu,q1, 'O', FALSE, FALSE, lambda)
-      d = sqrt(trapz(time1, (mu-out$q2best)^2))
+      dist = sqrt(sum((mu-out$q2best)^2)/T1)
 
       qn[, , i] = out$q2best
       betan[, , i] = q_to_curve(out$q2best)
@@ -103,8 +103,8 @@ multivariate_karcher_mean <- function (beta, lambda = 0.0, maxit = 20, ms = "mea
       vbar = sumv/N
     }
 
-    normvbar[itr] = sqrt(innerprod_q2(vbar, vbar))
-    normv = normvbar[itr]
+    normbar[itr] = sqrt(innerprod_q2(vbar, vbar))
+    normv = normbar[itr]
     if ((sumd[itr]-sumd[itr+1]) < 0){
       break
     } else if ((normv > tolv) && (abs(sumd[itr + 1] - sumd[itr]) > told)) {
@@ -118,7 +118,7 @@ multivariate_karcher_mean <- function (beta, lambda = 0.0, maxit = 20, ms = "mea
   }
 
   ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")
-  return(list(beta = beta, mu = mu, type = type, betamean = betamean, v = v, q = q,
-              E=normvbar[1:itr], cent = cent, len = len, len_q = len_q,
-              qun = sumd[1:itr], mean_scale = mean_scale, mean_scale_q=mean_scale_q))
+  return(list(beta = beta, mu = mu, type = type, betamean = betamean, q = q,
+              E=normbar[1:itr], qn = qn, betan = betan,
+              qun = sumd[1:itr]))
 }
