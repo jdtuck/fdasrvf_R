@@ -4,12 +4,14 @@
 \alias{curve_to_q}
 \title{Convert to SRVF space}
 \usage{
-curve_to_q(beta)
+curve_to_q(beta, scale = TRUE)
 }
 \arguments{
 \item{beta}{either a matrix of shape \eqn{n \times T} describing curve or
 multidimensional functional data in \eqn{R^n}, where \eqn{n} is the dimension
 and \eqn{T} is the number of time points}
+
+\item{scale}{scale curve to unit length (default = \code{TRUE})}
 }
 \value{
 a numeric array of the same shape as the input array \code{beta} storing the

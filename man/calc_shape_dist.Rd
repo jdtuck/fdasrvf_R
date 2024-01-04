@@ -4,7 +4,14 @@
 \alias{calc_shape_dist}
 \title{Elastic Shape Distance}
 \usage{
-calc_shape_dist(beta1, beta2, mode = "O", rotation = TRUE, scale = FALSE)
+calc_shape_dist(
+  beta1,
+  beta2,
+  mode = "O",
+  rotation = TRUE,
+  scale = TRUE,
+  include.length = FALSE
+)
 }
 \arguments{
 \item{beta1}{curve1, provided as a matrix of sizes \eqn{n\times T} for
@@ -17,7 +24,10 @@ calc_shape_dist(beta1, beta2, mode = "O", rotation = TRUE, scale = FALSE)
 
 \item{rotation}{Include rotation (default = \code{TRUE})}
 
-\item{scale}{Include scale (default = \code{FALSE})}
+\item{scale}{scale curves to unit length (default = \code{TRUE})}
+
+\item{include.length}{include length in distance calculation (default = \code{FALSE})
+this only applies if \code{scale=TRUE}}
 }
 \value{
 Returns a list containing \item{d}{geodesic distance}
@@ -35,5 +45,9 @@ out <- calc_shape_dist(beta[, , 1, 1], beta[, , 1, 4])
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
 analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
 Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+
+Kurtek, S., Srivastava, A., Klassen, E., and Ding, Z. (2012),
+“Statistical Modeling of Curves Using Shapes and Related Features,” Journal
+of the American Statistical Association, 107, 1152–1165.
 }
 \keyword{distances}

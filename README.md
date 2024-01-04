@@ -64,6 +64,10 @@ S. Kurtek, A. Srivastava, and W. Wu. Signal estimation under random
 time-warpings and nonlinear signal alignment. In Proceedings of Neural
 Information Processing Systems (NIPS), 2011.
 
+Kurtek, S., Srivastava, A., Klassen, E., and Ding, Z. (2012), “Statistical 
+Modeling of Curves Using Shapes and Related Features,” Journal of the American
+Statistical Association, 107, 1152–1165.
+
 Wen Huang, Kyle A. Gallivan, Anuj Srivastava, Pierre-Antoine Absil. "Riemannian
 Optimization for Elastic Shape Analysis", Short version, The 21st International
 Symposium on Mathematical Theory of Networks and Systems (MTNS 2014).

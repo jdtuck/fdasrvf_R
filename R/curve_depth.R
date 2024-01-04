@@ -8,7 +8,7 @@
 #' of dimension \eqn{n} evaluated on a grid of \eqn{T} points
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
 #' @param rotated Include rotation (default = `TRUE`)
-#' @param scale Include scale (default = `FALSE`)
+#' @param scale scale curves to unit length (default = `TRUE`)
 #' @param parallel run computation in parallel (default = `TRUE`)
 #' @return Returns a list containing \item{amp}{amplitude depth}
 #' \item{phase}{phase depth}
@@ -22,7 +22,7 @@
 #' data("mpeg7")
 #' # note: use more shapes and iterations, small for speed
 #' out = curve_depth(beta[,,1,1:2])
-curve_depth <- function(beta, mode="O", rotated=TRUE, scale=FALSE,
+curve_depth <- function(beta, mode="O", rotated=TRUE, scale=TRUE,
                         parallel = FALSE){
   if (parallel){
     cores = max(parallel::detectCores() - 1, 1)

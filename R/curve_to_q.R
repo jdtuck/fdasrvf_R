@@ -5,6 +5,7 @@
 #' @param beta either a matrix of shape \eqn{n \times T} describing curve or
 #'  multidimensional functional data in \eqn{R^n}, where \eqn{n} is the dimension
 #'  and \eqn{T} is the number of time points
+#' @param scale scale curve to unit length (default = `TRUE`)
 #' @return a numeric array of the same shape as the input array `beta` storing the
 #'   SRVFs of the original curves.
 #' @keywords srvf alignment
@@ -14,7 +15,7 @@
 #' @export
 #' @examples
 #' q <- curve_to_q(beta[, , 1, 1])$q
-curve_to_q <- function(beta){
+curve_to_q <- function(beta, scale=TRUE){
     n = nrow(beta)
     T1 = ncol(beta)
     v = apply(beta,1,gradient, 1.0/T1)
@@ -32,7 +33,9 @@ curve_to_q <- function(beta){
     }
 
     len_q = sqrt(innerprod_q2(q, q))
-    q = q/len_q
+    if (scale){
+      q = q/len_q
+    }
 
     return(list(q=q,len=len,lenq=len_q))
 }

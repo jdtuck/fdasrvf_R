@@ -34,6 +34,10 @@ Robinson, D. T. 2012, Function Data Analysis and Partial Shape
 Matching in the Square Root Velocity Framework. Ph.D. Thesis, Florida State
 University.
 
+Kurtek, S., Srivastava, A., Klassen, E., and Ding, Z. (2012),
+“Statistical Modeling of Curves Using Shapes and Related Features,” Journal
+of the American Statistical Association, 107, 1152–1165.
+
 Huang, W. 2014, Optimization Algorithms on Riemannian Manifolds
 with Applications. Ph.D. Thesis, Florida State University.
 

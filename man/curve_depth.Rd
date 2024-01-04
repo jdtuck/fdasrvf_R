@@ -4,7 +4,7 @@
 \alias{curve_depth}
 \title{Calculates elastic depth for a set of curves}
 \usage{
-curve_depth(beta, mode = "O", rotated = TRUE, scale = FALSE, parallel = FALSE)
+curve_depth(beta, mode = "O", rotated = TRUE, scale = TRUE, parallel = FALSE)
 }
 \arguments{
 \item{beta}{Array of sizes \eqn{n \times T \times N} for \eqn{N} curves
@@ -14,7 +14,7 @@ of dimension \eqn{n} evaluated on a grid of \eqn{T} points}
 
 \item{rotated}{Include rotation (default = \code{TRUE})}
 
-\item{scale}{Include scale (default = \code{FALSE})}
+\item{scale}{scale curves to unit length (default = \code{TRUE})}
 
 \item{parallel}{run computation in parallel (default = \code{TRUE})}
 }
