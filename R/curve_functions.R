@@ -196,7 +196,7 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O", rotation=TRUE,
             q1i = q1/sqrt(innerprod_q2(q1, q1))
             q2ni = q2n/sqrt(innerprod_q2(q2n, q2n))
             dim(q1i) = c(T1*n)
-            dim(q2i) = c(T1*n)
+            dim(q2ni) = c(T1*n)
             gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni, n, T1, 0, 1, 0, rep(0,T1))
             gamI = invertGamma(gam0)
             gam = (gamI-gamI[1])/(gamI[length(gamI)]-gamI[1])
