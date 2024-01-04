@@ -35,6 +35,7 @@ multivariate_karcher_mean <- function (beta, lambda = 0.0, maxit = 20, ms = "mea
   tmp = dim(beta)
   n = tmp[1]
   T1 = tmp[2]
+  time1 <- seq(0,1,length.out=T1)
   N = tmp[3]
   q = array(0, c(n, T1, N))
   for (ii in 1:N) {
@@ -63,74 +64,42 @@ multivariate_karcher_mean <- function (beta, lambda = 0.0, maxit = 20, ms = "mea
   cat("\nInitializing...\n")
   gam = matrix(0,T1,N)
   for (k in 1:N) {
-    out = find_rotation_seed_unqiue(mu, q[, , k], 'O', FALSE, lambda)
+    out = find_rotation_seed_unqiue(mu, q[, , k], 'O', FALSE, FALSE, lambda)
     gam[, k] = out$gambest
   }
 
   gam = t(gam)
   gamI = SqrtMeanInverse(t(gam))
   bmu = group_action_by_gamma_coord(bmu, gamI)
-  mu = curve_to_q(bmu, scale)$q
+  mu = curve_to_q(bmu, FALSE)$q
   mu[is.nan(mu)] <- 0
 
   while (itr < maxit) {
     cat(sprintf("Iteration: %d\n", itr))
-    mu = mu/sqrt(innerprod_q2(mu, mu))
-
-    if (mode=="C"){
-      basis = find_basis_normal(mu)
-    }
+    mu = mu
 
     for (i in 1:N) {
       q1 = q[, , i]
 
-      out = find_rotation_seed_unqiue(mu,q1,mode,rotated,lambda)
-      qn_t = out$q2best/sqrt(innerprod_q2(out$q2best,out$q2best))
+      out = find_rotation_seed_unqiue(mu,q1, 'O', FALSE, FALSE, lambda)
+      d = sqrt(trapz(time1, (mu-out$q2best)^2))
 
-      q1dotq2 = innerprod_q2(mu,qn_t)
-
-      if (q1dotq2 > 1){
-        q1dotq2 = 1
-      }
-      if (q1dotq2 < -1){
-        q1dotq2 = -1
-      }
-
-      dist = acos(q1dotq2)
-
-      u = qn_t - q1dotq2 * q1
-      normu = sqrt(innerprod_q2(u, u))
-      if (normu > 1e-4){
-        w = u*acos(q1dotq2)/normu
-      } else {
-        w = matrix(0, nrow(beta1), T1)
-      }
-
-      if (mode=="O"){
-        v[, , i] = w
-      } else {
-        v[, , i] = project_tangent(w, q1, basis)
-      }
+      qn[, , i] = out$q2best
+      betan[, , i] = q_to_curve(out$q2best)
 
       if(ms == "median"){ #run for median only, saves computation time if getting mean
-        d_i[i] = sqrt(innerprod_q2(v[,,i], v[,,i])) #calculate sqrt of norm of v_i
-        if (d_i[i]>0){
-          v_d[,,i] = v[,,i]/d_i[i] #normalize v_i
-        } else{
-          v_d[,,i] = v[,,i]
-        }
-
+        d_i[i] = sqrt(innerprod_q2(qn[,,i], qn[,,i])) #calculate sqrt of norm of v_i
       }
       sumd[itr + 1] = sumd[itr + 1] + dist^2
     }
 
     if(ms == "median"){#run for median only
-      sumv = rowSums(v_d, dims = 2)
+      sumv = rowSums(qn, dims = 2)
       sum_dinv = sum(1/d_i)
       vbar = sumv/sum_dinv
     }
     else{ #run for mean only
-      sumv = rowSums(v, dims = 2)
+      sumv = rowSums(qn, dims = 2)
       vbar = sumv/N
     }
 
@@ -139,26 +108,13 @@ multivariate_karcher_mean <- function (beta, lambda = 0.0, maxit = 20, ms = "mea
     if ((sumd[itr]-sumd[itr+1]) < 0){
       break
     } else if ((normv > tolv) && (abs(sumd[itr + 1] - sumd[itr]) > told)) {
-      mu = cos(delta * normvbar[itr]) * mu + sin(delta *
-                                                   normvbar[itr]) * vbar/normvbar[itr]
-      if (mode == "C") {
-        mu = project_curve(mu)
-      }
-      x = q_to_curve(mu)
-      a = -1 * calculatecentroid(x)
-      dim(a) = c(length(a), 1)
-      betamean = x + repmat(a, 1, T1)
+      mu = rowMeans(qn, dims = 2)
+      betamean = q_to_curve(mu)
     }
     else {
       break
     }
     itr = itr + 1
-  }
-
-  if (scale){
-    mean_scale = prod(len)^(1/length(len))
-    mean_scale_q = prod(len_q)^(1/length(len))
-    betamean = mean_scale*betamean
   }
 
   ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")

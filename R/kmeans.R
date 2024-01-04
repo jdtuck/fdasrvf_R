@@ -194,7 +194,7 @@ kmeans_align <- function(f, time,
         if (alignment) {
           if (L > 1){
             out = find_rotation_seed_unqiue(templates.q[, , k], q[, , n],
-                                            mode='O', rotation=rotation)
+                                            mode='O', rotation=rotation, scale=scale)
             gam_tmp = out$gambest
 
           } else{
