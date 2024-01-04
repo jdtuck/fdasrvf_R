@@ -7,6 +7,8 @@
 #' @param beta2 curve 2, provided as a matrix of dimensions \eqn{n \times T} for
 #'  \eqn{n}-dimensional curve evaluated on \eqn{T} sample points
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
+#' @param rotation Include rotation (default = `TRUE`)
+#' @param scale scale curves to unit length (default = `TRUE`)
 #' @return a list containing \item{beta2n}{aligned curve 2 to 1}
 #' \item{q2n}{aligned srvf 2 to 1}
 #' \item{gam}{warping function}
@@ -18,7 +20,7 @@
 #' @export
 #' @examples
 #' out <- curve_pair_align(beta[, , 1, 1], beta[, , 1, 5])
-curve_pair_align <- function(beta1, beta2, mode="O"){
+curve_pair_align <- function(beta1, beta2, mode="O", rotation=TRUE, scale=TRUE){
     T1 = ncol(beta1)
     centroid1 = calculatecentroid(beta1)
     dim(centroid1) = c(length(centroid1),1)
@@ -27,8 +29,8 @@ curve_pair_align <- function(beta1, beta2, mode="O"){
     dim(centroid2) = c(length(centroid2),1)
     beta2 = beta2 - repmat(centroid2, 1, T1)
 
-    q1 = curve_to_q(beta1)$q
-    out = find_rotation_seed_coord(beta1, beta2, mode)
+    q1 = curve_to_q(beta1, scale)$q
+    out = find_rotation_seed_coord(beta1, beta2, mode, rotation, scale)
     gam = out$gambest
     q2n = out$q2best
     beta2n = out$Rbest %*% shift_f(beta2, out$tau)
