@@ -257,7 +257,7 @@ find_rotation_seed_unqiue <- function(q1, q2, mode="O", rotation=TRUE, scale=TRU
           q2n = out$q2new
           Rbest = out$R
         } else {
-          Rbest = diag(nrow(beta2n))
+          Rbest = diag(nrow(q2n))
         }
 
 
