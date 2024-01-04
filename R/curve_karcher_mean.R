@@ -7,7 +7,7 @@
 #' curves of dimension \eqn{n} evaluated on \eqn{T} points
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
 #' @param rotated Optimize over rotation (default = `TRUE`)
-#' @param scale Include scale (default = `FALSE`)
+#' @param scale scale curves to unit length (default = `TRUE`)
 #' @param lambda A numeric value specifying the elasticity. Defaults to `0.0`.
 #' @param maxit maximum number of iterations
 #' @param ms string defining whether the Karcher mean (`"mean"`) or Karcher
@@ -27,12 +27,14 @@
 #' \item{E}{energy}
 #' \item{qun}{cost function}
 #' @keywords srvf alignment
-#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+#'    analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
+#'    Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
 #' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' # note: use more shapes, small for speed
-curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = FALSE,
+curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
                                 lambda = 0.0, maxit = 20, ms = "mean")
 {
   if(ms!="mean"&ms!="median"){warning("ms must be either \"mean\" or \"median\". ms has been set to \"mean\"",immediate. = T)}
@@ -55,7 +57,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = FALSE,
     dim(centroid1) = c(length(centroid1), 1)
     beta1 = beta1 - repmat(centroid1, 1, T1)
     beta[ , , ii] = beta1
-    out = curve_to_q(beta1)
+    out = curve_to_q(beta1, scale)
     q[, , ii] = out$q
     len[ii] = out$len
     len_q[ii] = out$lenq
@@ -87,7 +89,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = FALSE,
   gam = t(gam)
   gamI = SqrtMeanInverse(t(gam))
   bmu = group_action_by_gamma_coord(bmu, gamI)
-  mu = curve_to_q(bmu)$q
+  mu = curve_to_q(bmu, scale)$q
   mu[is.nan(mu)] <- 0
 
   while (itr < maxit) {

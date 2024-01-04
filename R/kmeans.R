@@ -28,19 +28,21 @@
 #'   cluster during the assignment step. Set it to a positive value to avoid the
 #'   problem of empty clusters. Defaults to `0L`.
 #' @param lambda A numeric value specifying the elasticity. Defaults to `0.0`.
-#' @param showplot A boolean specifying whether to show plots. Defaults to
+#' @param showplot A Boolean specifying whether to show plots. Defaults to
 #'   `FALSE`.
-#' @param smooth_data A boolean specifying whether to smooth data using a box
+#' @param smooth_data A Boolean specifying whether to smooth data using a box
 #'   filter. Defaults to `FALSE`.
 #' @param sparam An integer value specifying the number of box filters applied.
 #'   Defaults to `25L`.
-#' @param parallel A boolean specifying whether parallel mode (using
+#' @param parallel A Boolean specifying whether parallel mode (using
 #'   [foreach::foreach()] and the **doParallel** package) should be activated.
 #'   Defaults to `FALSE`.
-#' @param alignment A boolean specifying whether to perform alignment. Defaults
+#' @param alignment A Boolean specifying whether to perform alignment. Defaults
 #'   to `TRUE`.
-#' @param rotation A boolean specifiying wether to perform roation. Defaults to
+#' @param rotation A Boolean specifying whether to perform rotation. Defaults to
 #'   to `FALSE`.
+#' @param scale A Boolean specifying whether to scale curves to unit length. Defaults
+#'   to `TRUE`.
 #' @param omethod A string specifying which method should be used to solve the
 #'   optimization problem that provides estimated warping functions. Choices are
 #'   `"DP"` or `"RBFGS"`. Defaults to `"DP"`.
@@ -48,7 +50,7 @@
 #'   Defaults to `50L`.
 #' @param thresh A numeric value specifying a threshold on the cost function
 #'   below which convergence is assumed. Defaults to `0.01`.
-#' @param use_verbose A boolean specifying whether to display information about
+#' @param use_verbose A Boolean specifying whether to display information about
 #'   the calculations in the console. Defaults to `FALSE`.
 #'
 #' @return An object of class `fdakma` which is a list containing:
@@ -95,6 +97,7 @@ kmeans_align <- function(f, time,
                          parallel = FALSE,
                          alignment = TRUE,
                          rotation = FALSE,
+                         scale = TRUE,
                          omethod = c("DP", "RBFGS"),
                          max_iter = 50L,
                          thresh = 0.01,
@@ -163,7 +166,7 @@ kmeans_align <- function(f, time,
   }
 
   if (L > 1){
-    q <- curve_to_q(f)
+    q <- curve_to_q(f, scale)
   } else {
     q <- f_to_srvf(f, time)
   }
@@ -211,7 +214,7 @@ kmeans_align <- function(f, time,
 
         if (L > 1){
           fw <- group_action_by_gamma_coord(f[, , n], gam_tmp)
-          qw <- curve_to_q(fw)
+          qw <- curve_to_q(fw, scale)
         } else {
           fw <- warp_f_gamma(f[1, , n], time, gam_tmp)
           qw <- f_to_srvf(fw, time)
@@ -224,8 +227,12 @@ kmeans_align <- function(f, time,
           } else if(q1dotq2 < -1){
             q1dotq2 = -1
           }
-          dist = acos(q1dotq2)
-
+          if (scale){
+            dist = acos(q1dotq2)
+          } else {
+            time1 <- seq(0,1,length.out=M)
+            d = sqrt(trapz(time1, (templates.q[, , k]-qw)^2))
+          }
         } else{
           dist <- trapz(time, (qw - templates.q[1, , k])^2)
           dist <- sqrt(dist)
@@ -286,7 +293,7 @@ kmeans_align <- function(f, time,
 
         if (L > 1){
           fw <- group_action_by_gamma_coord(ftmp[, , n], gamI)
-          qw <- curve_to_q(fw)
+          qw <- curve_to_q(fw, scale)
         } else {
           fw <- warp_f_gamma(ftmp[1, , n], time, gamI)
           qw <- f_to_srvf(fw, time)
@@ -325,12 +332,12 @@ kmeans_align <- function(f, time,
         if (centroid_type == "mean") {
           out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation)
           templates.q[1, , k] <- out$betamean
-          templates[1, , k] <- curve_to_q(out$betamean)
+          templates[1, , k] <- curve_to_q(out$betamean, scale)
         } else if (centroid_type == "medoid") {
           out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation,
                                    ms='median')
           templates.q[1, , k] <- out$betamean
-          templates[1, , k] <- curve_to_q(out$betamean)
+          templates[1, , k] <- curve_to_q(out$betamean, scale)
         }
 
       } else {

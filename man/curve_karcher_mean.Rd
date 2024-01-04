@@ -8,7 +8,7 @@ curve_karcher_mean(
   beta,
   mode = "O",
   rotated = TRUE,
-  scale = FALSE,
+  scale = TRUE,
   lambda = 0,
   maxit = 20,
   ms = "mean"
@@ -22,7 +22,7 @@ curves of dimension \eqn{n} evaluated on \eqn{T} points}
 
 \item{rotated}{Optimize over rotation (default = \code{TRUE})}
 
-\item{scale}{Include scale (default = \code{FALSE})}
+\item{scale}{scale curves to unit length (default = \code{TRUE})}
 
 \item{lambda}{A numeric value specifying the elasticity. Defaults to \code{0.0}.}
 
@@ -56,7 +56,9 @@ out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 # note: use more shapes, small for speed
 }
 \references{
-Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
+Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 }
 \keyword{alignment}
 \keyword{srvf}
