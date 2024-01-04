@@ -58,9 +58,7 @@ calc_shape_dist <- function(beta1, beta2, mode="O", rotation=TRUE,
       d = acos(q1dotq2)
     }
   } else {
-    time1 <- seq(0,1,length.out=T1)
-    d = sqrt(trapz(time1, (q1-out$q2best)^2))
-
+    d = sqrt(sum((q1-out$q2best)^2)/T1)
   }
 
   gam = out$gambest
