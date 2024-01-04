@@ -2,6 +2,8 @@
 * bugfixes
 * added `curve_depth` function (#31)
 * clarification of multivariate functional data (#31 and #32)
+* expanded `calc_shape_dist` for different pre-shape spaces
+* expanded curve functions for different pre-shape spaces
 
 # fdasrvf 2.1.2
 * add rlbfgs c++ code (#30)
