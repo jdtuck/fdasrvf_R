@@ -230,9 +230,8 @@ kmeans_align <- function(f, time,
           if (scale){
             dist = acos(q1dotq2)
           } else {
-            time1 <- seq(0,1,length.out=M)
-            templates.q[, , k]-qw
-            dist = sqrt(sum((templates.q[, , k]-qw)^2)/M)
+            v = templates.q[, , k]-qw
+            dist = sqrt(innerprod_q2(v, v))
           }
         } else{
           dist <- trapz(time, (qw - templates.q[1, , k])^2)
