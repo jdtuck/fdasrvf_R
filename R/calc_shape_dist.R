@@ -58,7 +58,8 @@ calc_shape_dist <- function(beta1, beta2, mode="O", rotation=TRUE,
       d = acos(q1dotq2)
     }
   } else {
-    d = sqrt(sum((q1-out$q2best)^2)/T1)
+    v = q1-out$q2best
+    d = sqrt(innerprod_q2(v, v))
   }
 
   gam = out$gambest
