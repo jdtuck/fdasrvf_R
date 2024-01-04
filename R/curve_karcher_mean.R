@@ -117,9 +117,6 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
 
       dist = acos(q1dotq2)
 
-      time1 <- seq(0,1,length.out=T1)
-      d = sqrt(trapz(time1, (mu-out$q2best)^2))
-
       u = qn_t - q1dotq2 * q1
       normu = sqrt(innerprod_q2(u, u))
       if (normu > 1e-4){
