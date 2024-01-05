@@ -30,11 +30,12 @@ curve_pair_align <- function(beta1, beta2, mode="O", rotation=TRUE, scale=TRUE){
     beta2 = beta2 - repmat(centroid2, 1, T1)
 
     q1 = curve_to_q(beta1, scale)$q
-    out = find_rotation_seed_coord(beta1, beta2, mode, rotation, scale)
+    out = find_rotation_seed_coord(beta1, beta2, mode, rotation)
     gam = out$gambest
-    q2n = out$q2best
     beta2n = out$Rbest %*% shift_f(beta2, out$tau)
     beta2n = group_action_by_gamma_coord(beta2n, gam)
+    q2n = curve_to_q(beta2n, scale)$q
 
-    return(list(beta2n=beta2n, q2n=q2n, gam=gam, q1=q1, beta1=beta1, beta2=beta2))
+    return(list(beta2n=beta2n, q2n=q2n, gam=gam, q1=q1, beta1=beta1, beta2=beta2,
+                R=out$Rbest, tau=out$tau))
 }

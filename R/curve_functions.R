@@ -185,10 +185,10 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O", rotation=TRUE,
           out = find_best_rotation(beta1, beta2n)
           beta2n = out$q2new
           q2n = curve_to_q(beta2n, scale)$q
-          Rbest = out$R
+          Rout = out$R
         } else {
           q2n = curve_to_q(beta2n, scale)$q
-          Rbest = diag(nrow(beta2n))
+          Rout = diag(nrow(beta2n))
         }
 
 
@@ -220,7 +220,7 @@ find_rotation_seed_coord <- function(beta1, beta2, mode="O", rotation=TRUE,
         }
         Ec = acos(dist)
         if (Ec < minE){
-            Rbest = Rbest
+            Rbest = Rout
             beta2best = beta2new
             q2best = q2new
             gambest = gam
