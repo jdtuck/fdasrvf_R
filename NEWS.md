@@ -4,6 +4,7 @@
 * clarification of multivariate functional data (#31 and #32)
 * expanded `calc_shape_dist` for different pre-shape spaces
 * expanded curve functions for different pre-shape spaces
+* added predict functions to fpca to project new samples onto basis
 
 # fdasrvf 2.1.2
 * add rlbfgs c++ code (#30)

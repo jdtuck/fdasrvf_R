@@ -6,7 +6,8 @@
 \usage{
 jointFPCA(
   warp_data,
-  no,
+  no = 3,
+  var_exp = NULL,
   id = round(length(warp_data$time)/2),
   C = NULL,
   ci = c(-1, 0, 1),
@@ -16,7 +17,10 @@ jointFPCA(
 \arguments{
 \item{warp_data}{fdawarp object from \link{time_warping} of aligned data}
 
-\item{no}{number of principal components to extract}
+\item{no}{number of principal components to extract (default = 3)}
+
+\item{var_exp}{compute no based on value percent variance explained (example: 0.95)
+will overwride \code{no}}
 
 \item{id}{integration point for f0 (default = midpoint)}
 
