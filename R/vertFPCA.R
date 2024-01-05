@@ -5,6 +5,8 @@
 #'
 #' @param warp_data fdawarp object from [time_warping] of aligned data
 #' @param no number of principal components to extract
+#' @param var_exp compute no based on value percent variance explained (example: 0.95)
+#'                will override `no`
 #' @param id point to use for f(0) (default = midpoint)
 #' @param ci geodesic standard deviations (default = c(-1,0,1))
 #' @param showplot show plots of principal directions (default = T)
@@ -21,12 +23,14 @@
 #' @export
 #' @examples
 #' vfpca <- vertFPCA(simu_warp, no = 3)
-vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),ci=c(-1,0,1),showplot = TRUE){
+vertFPCA <- function(warp_data, no=3, var_exp=NULL,
+                     id=round(length(warp_data$time)/2),
+                     ci=c(-1,0,1), showplot = TRUE){
     # Parameters
     fn <- warp_data$fn
     time <- warp_data$time
     qn <- warp_data$qn
-    NP = 1:no  # number of principal components
+
     Nstd = length(ci)
 
     # FPCA
@@ -39,6 +43,13 @@ vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),ci=c(-1,0,1
     s = out$d
     stdS = sqrt(s)
     U = out$u
+
+    if (!is.null(var_exp)){
+      cumm_coef <- cumsum(s)/sum(s)
+      tmp = which(cumm_coef <= var_exp)
+      no = tmp[length(tmp)]
+    }
+    NP = 1:no  # number of principal components
 
     # compute the PCA in the q domain
     q_pca = array(0,dim=c((length(mq_new)+1),Nstd,no))
@@ -85,6 +96,7 @@ vertFPCA <- function(warp_data,no,id=round(length(warp_data$time)/2),ci=c(-1,0,1
     vfpca$id <- id
     vfpca$mqn <- mqn
     vfpca$time <- time
+    vfpca$warp_data <- warp_data
 
     class(vfpca) <- "vfpca"
 

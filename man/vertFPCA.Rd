@@ -6,7 +6,8 @@
 \usage{
 vertFPCA(
   warp_data,
-  no,
+  no = 3,
+  var_exp = NULL,
   id = round(length(warp_data$time)/2),
   ci = c(-1, 0, 1),
   showplot = TRUE
@@ -16,6 +17,9 @@ vertFPCA(
 \item{warp_data}{fdawarp object from \link{time_warping} of aligned data}
 
 \item{no}{number of principal components to extract}
+
+\item{var_exp}{compute no based on value percent variance explained (example: 0.95)
+will override \code{no}}
 
 \item{id}{point to use for f(0) (default = midpoint)}
 
