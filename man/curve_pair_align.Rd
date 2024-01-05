@@ -26,6 +26,8 @@ a list containing \item{beta2n}{aligned curve 2 to 1}
 \item{q1}{srvf of curve 1}
 \item{beta1}{centered curve 1}
 \item{beta2}{centered curve 2}
+\item{R}{rotation matrix}
+\item{tau}{seed}
 }
 \description{
 This function aligns to curves using Elastic Framework
