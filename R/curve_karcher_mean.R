@@ -82,7 +82,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
   cat("\nInitializing...\n")
   gam = matrix(0,T1,N)
   for (k in 1:N) {
-    out = find_rotation_seed_unqiue(mu,q[, , k],mode,rotated,lambda)
+    out = find_rotation_seed_unqiue(mu,q[, , k],mode,rotated,TRUE,lambda)
     gam[, k] = out$gambest
   }
 
@@ -103,7 +103,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
     for (i in 1:N) {
       q1 = q[, , i]
 
-      out = find_rotation_seed_unqiue(mu,q1,mode,rotated,lambda)
+      out = find_rotation_seed_unqiue(mu,q1,mode,rotated,TRUE,lambda)
       qn_t = out$q2best/sqrt(innerprod_q2(out$q2best,out$q2best))
 
       q1dotq2 = innerprod_q2(mu,qn_t)
