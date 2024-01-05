@@ -18,7 +18,9 @@
 #' \item{R}{rotation matrix}
 #' \item{tau}{seed}
 #' @keywords srvf alignment
-#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+#'    analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
+#'    Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
 #' out <- curve_pair_align(beta[, , 1, 1], beta[, , 1, 5])

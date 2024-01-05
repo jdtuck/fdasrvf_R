@@ -329,17 +329,28 @@ kmeans_align <- function(f, time,
       }
 
       if (L > 1){
-        if (centroid_type == "mean") {
-          out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation)
-          templates.q[1, , k] <- out$betamean
-          templates[1, , k] <- curve_to_q(out$betamean, scale)
-        } else if (centroid_type == "medoid") {
-          out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation,
-                                   ms='median')
-          templates.q[1, , k] <- out$betamean
-          templates[1, , k] <- curve_to_q(out$betamean, scale)
+        if (scale == FALSE){
+          if (centroid_type == "mean") {
+            out <- multivariate_karcher_mean(fn[[k]][l, , id])
+            templates[1, , k] <- out$betamean
+            templates.q[1, , k] <- curve_to_q(out$betamean, scale)
+          } else if (centroid_type == "medoid") {
+            out <- multivariate_karcher_mean(fn[[k]][l, , id], ms='median')
+            templates.q[1, , k] <- out$betamean
+            templates[1, , k] <- curve_to_q(out$betamean, scale)
+          }
+        } else {
+          if (centroid_type == "mean") {
+            out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation)
+            templates[1, , k] <- out$betamean
+            templates.q[1, , k] <- curve_to_q(out$betamean, scale)
+          } else if (centroid_type == "medoid") {
+            out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation,
+                                     ms='median')
+            templates[1, , k] <- out$betamean
+            templates.q[1, , k] <- curve_to_q(out$betamean, scale)
+          }
         }
-
       } else {
         if (centroid_type == "mean") {
           templates.q[1, , k] <- rowMeans(qn[[k]][1, , id])
