@@ -37,6 +37,7 @@ curve_pair_align <- function(beta1, beta2, mode="O", rotation=TRUE, scale=TRUE){
   q2n = out$q2best
   beta2n = out$Rbest %*% shift_f(beta2, out$tau)
   beta2n = group_action_by_gamma_coord(beta2n, gam)
+  q2n = curve_to_q(beta2n, scale)$q
 
   return(list(beta2n=beta2n, q2n=q2n, gam=gam, q1=q1, beta1=beta1, beta2=beta2,
               R=out$Rbest, tau=out$tau))
