@@ -20,7 +20,7 @@ jointFPCA(
 \item{no}{number of principal components to extract (default = 3)}
 
 \item{var_exp}{compute no based on value percent variance explained (example: 0.95)
-will overwride \code{no}}
+will override \code{no}}
 
 \item{id}{integration point for f0 (default = midpoint)}
 

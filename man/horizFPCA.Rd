@@ -4,12 +4,15 @@
 \alias{horizFPCA}
 \title{Horizontal Functional Principal Component Analysis}
 \usage{
-horizFPCA(warp_data, no, ci = c(-1, 0, 1), showplot = TRUE)
+horizFPCA(warp_data, no = 3, var_exp = NULL, ci = c(-1, 0, 1), showplot = TRUE)
 }
 \arguments{
 \item{warp_data}{fdawarp object from \link{time_warping} of aligned data}
 
 \item{no}{number of principal components to extract}
+
+\item{var_exp}{compute no based on value percent variance explained (example: 0.95)
+will override \code{no}}
 
 \item{ci}{geodesic standard deviations (default = c(-1,0,1))}
 
