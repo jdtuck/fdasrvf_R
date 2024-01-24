@@ -78,3 +78,20 @@ J. D. Tucker and D. Yarger, “Elastic Functional Changepoint
 Detection of Climate Impacts from Localized Sources”, Envirometrics,
 10.1002/env.2826, 2023.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/jdtuck/fdasrvf_R}
+  \item Report bugs at \url{https://github.com/jdtuck/fdasrvf_R/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: J. Derek Tucker \email{jdtuck@sandia.gov} (\href{https://orcid.org/0000-0001-8844-2169}{ORCID})
+
+Other contributors:
+\itemize{
+  \item Aymeric Stamm \email{aymeric.stamm@math.cnrs.fr} (\href{https://orcid.org/0000-0002-8725-3654}{ORCID}) [contributor]
+}
+
+}

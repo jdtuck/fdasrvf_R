@@ -56,9 +56,9 @@
 #'   Detection of Climate Impacts from Localized Sources”, Envirometrics,
 #'   10.1002/env.2826, 2023.
 #'
-#' @docType package
 #' @useDynLib fdasrvf, .registration=TRUE
 #' @importFrom Rcpp sourceCpp
 #' @importFrom foreach %dopar%
 #' @aliases fdasrvf fdasrvf-package
+"_PACKAGE"
 NULL
