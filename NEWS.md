@@ -1,4 +1,6 @@
-# fdasrvf 2.1.x
+# fdasrvf 2.2.X
+
+# fdasrvf 2.2.0
 * bugfixes
 * added `curve_depth` function (#31)
 * clarification of multivariate functional data (#31 and #32)
