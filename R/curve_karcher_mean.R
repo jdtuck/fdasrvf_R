@@ -174,7 +174,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
     itr = itr + 1
   }
 
-  if (scale){
+  if (!scale){
     mean_scale = prod(len)^(1/length(len))
     mean_scale_q = prod(len_q)^(1/length(len))
     betamean = mean_scale*betamean
