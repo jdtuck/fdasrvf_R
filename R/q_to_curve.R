@@ -16,6 +16,7 @@
 q_to_curve <- function(q, scale=1){
   T1 = ncol(q)
   n = nrow(q)
+  q = scale * q
   qnorm = rep(0, T1)
   for (i in 1:T1) {
     qnorm[i] = pvecnorm(q[, i], 2)
@@ -23,8 +24,6 @@ q_to_curve <- function(q, scale=1){
   integrand = matrix(0, n, T1)
   integrand=t(apply(q,1,function(qrow) qrow*qnorm ))
   beta = cumtrapz(1:T1, integrand, 2)/T1
-
-  beta = scale * beta
 
   return(beta)
 }
