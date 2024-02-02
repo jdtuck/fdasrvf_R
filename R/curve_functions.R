@@ -661,6 +661,22 @@ karcher_calc <- function(q1, mu, basis, rotated=T, mode="O",
 }
 
 
+curve_align_sub <- function(beta1, q1, mu, mode, rotated, lambda){
+  out = find_rotation_seed_unqiue(mu, q1, mode, rotated, TRUE, lambda)
+  gam = out$gambest
+  beta1 = out$Rbest%*%beta1
+  beta1n = group_action_by_gamma_coord(beta1, gam)
+  q1n = curve_to_q(beta1n)$q
+
+  out = find_best_rotation(mu, q1n)
+  qn = out$q2new
+  betan = out$R%*%beta1n
+  rotmat = out$R
+
+  return(list(qn=qn,betan=betan,rotmat=rotmat,gam=gam))
+}
+
+
 elastic_shooting <- function(q1, v,mode="O"){
     d = sqrt(innerprod_q2(v,v))
     if (d < 0.00001){

@@ -29,6 +29,7 @@
 curve_srvf_align <- function(beta, mode = "O", rotated = TRUE, scale = FALSE,
                              lambda = 0.0, maxit = 20, ms = "mean",
                              parallel=TRUE){
+
     if (mode == "C"){
       isclosed = TRUE
     }
@@ -48,22 +49,34 @@ curve_srvf_align <- function(beta, mode = "O", rotated = TRUE, scale = FALSE,
     rotmat = array(0, c(n, n, N))
     gams = matrix(0, T1, N)
 
+    if (parallel) {
+      cores <- max(parallel::detectCores() - 1, 1)
+      cl <- parallel::makeCluster(cores)
+      doParallel::registerDoParallel(cl)
+    } else
+      foreach::registerDoSEQ()
+
     # align to mean
-    for (ii in 1:N){
-        q1 = q[ , , ii]
-        beta1 = beta[ , , ii]
+    outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages='fdasrvf') %dopar% {
+      out <- curve_align_sub(beta[, , n], q[, , n], mu, mode, rotated, lambda)
 
-        out = find_rotation_seed_unqiue(mu, q1, mode, rotated, TRUE, lambda)
-        gams[,ii] = out$gambest
-        beta1 = out$Rbest%*%beta1
-        beta1n = group_action_by_gamma_coord(beta1, out$gambest)
-        q1n = curve_to_q(beta1n)$q
-
-        out = find_best_rotation(mu, q1n)
-        qn[,,ii] = out$q2new
-        betan[,,ii] = out$R%*%beta1n
-        rotmat[,,ii] = out$R
+      list(out$qn, out$betan, out$rotmat, out$gam)
     }
+
+    qn <- unlist(outfor[1, ])
+    dim(qn) <- c(n, T1, N)
+
+    betan <- unlist(outfor[2, ])
+    dim(betan) <- c(n, T1, N)
+
+    rotmat <- unlist(outfor[3, ])
+    dim(rotmat) <- c(n, n, N)
+
+    gams <- unlist(outfor[4, ])
+    dim(gams) <- c(T1, N)
+
+    if (parallel) parallel::stopCluster(cl)
+
     return(list(betan = betan, qn = qn, betamean = betamean, q_mu = mu,
                 rotmat = rotmat, gams = gams, v = v))
 }

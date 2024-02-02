@@ -11,7 +11,7 @@ q_to_curve(q, scale = 1)
 multidimensional functional data in \eqn{R^n}, where \eqn{n} is the dimension
 and \eqn{T} is the number of time points}
 
-\item{scale}{scale of original beta (default = \code{1})}
+\item{scale}{scale of from curve_to_q (default = \code{1})}
 }
 \value{
 beta array describing curve

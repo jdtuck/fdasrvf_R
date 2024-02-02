@@ -1,4 +1,6 @@
 # fdasrvf 2.2.X
+* fixed scaling in `curve_karcher_mean`
+* parallelized `curve_karcher_mean` and `curve_srvf_align`
 
 # fdasrvf 2.2.0
 * bugfixes
