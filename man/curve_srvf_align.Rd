@@ -11,7 +11,8 @@ curve_srvf_align(
   scale = FALSE,
   lambda = 0,
   maxit = 20,
-  ms = "mean"
+  ms = "mean",
+  parallel = TRUE
 )
 }
 \arguments{
@@ -28,7 +29,11 @@ of dimension \eqn{n} evaluated on a grid of \eqn{T} points}
 
 \item{maxit}{maximum number of iterations}
 
-\item{ms}{string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")}
+\item{ms}{string defining whether the Karcher mean ("mean") or Karcher median
+("median") is returned (default = "mean")}
+
+\item{parallel}{A boolean specifying whether to run calculations in parallel.
+Defaults to \code{TRUE}.}
 }
 \value{
 Returns a list containing \item{betan}{aligned curves}

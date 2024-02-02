@@ -11,7 +11,8 @@ curve_karcher_mean(
   scale = TRUE,
   lambda = 0,
   maxit = 20,
-  ms = "mean"
+  ms = "mean",
+  parallel = TRUE
 )
 }
 \arguments{
@@ -30,6 +31,9 @@ curves of dimension \eqn{n} evaluated on \eqn{T} points}
 
 \item{ms}{string defining whether the Karcher mean (\code{"mean"}) or Karcher
 median (\code{"median"}) is returned (default = \code{"mean"})}
+
+\item{parallel}{A boolean specifying whether to run calculations in parallel.
+Defaults to \code{TRUE}.}
 }
 \value{
 Returns a list containing \item{mu}{mean srvf}

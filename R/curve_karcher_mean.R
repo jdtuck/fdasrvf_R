@@ -12,6 +12,8 @@
 #' @param maxit maximum number of iterations
 #' @param ms string defining whether the Karcher mean (`"mean"`) or Karcher
 #' median (`"median"`) is returned (default = `"mean"`)
+#' @param parallel A boolean specifying whether to run calculations in parallel.
+#'   Defaults to `TRUE`.
 #' @return Returns a list containing \item{mu}{mean srvf}
 #' \item{beta}{centered data}
 #' \item{betamean}{mean or median curve}
@@ -35,8 +37,17 @@
 #' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' # note: use more shapes, small for speed
 curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
-                                lambda = 0.0, maxit = 20, ms = "mean")
+                                lambda = 0.0, maxit = 20, ms = "mean",
+                                parallel = TRUE)
 {
+
+  if (parallel) {
+    cores <- max(parallel::detectCores() - 1, 1)
+    cl <- parallel::makeCluster(cores)
+    doParallel::registerDoParallel(cl)
+  } else
+    foreach::registerDoSEQ()
+
   if(ms!="mean"&ms!="median"){warning("ms must be either \"mean\" or \"median\". ms has been set to \"mean\"",immediate. = T)}
   if(ms!="median"){ms = "mean"}
 
@@ -80,10 +91,8 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
 
 
   cat("\nInitializing...\n")
-  gam = matrix(0,T1,N)
-  for (k in 1:N) {
-    out = find_rotation_seed_unqiue(mu,q[, , k],mode,rotated,TRUE,lambda)
-    gam[, k] = out$gambest
+  gam <- foreach::foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
+    gam_tmp <- find_rotation_seed_unqiue(mu, q[, , n], mode, rotated, TRUE, lambda)$gambest
   }
 
   gam = t(gam)
@@ -100,48 +109,25 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
       basis = find_basis_normal(mu)
     }
 
-    for (i in 1:N) {
-      q1 = q[, , i]
+    outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages='fdasrvf') %dopar% {
+      out <- karcher_calc(q[, , n], mu, basis, rotated, mode, lambda, ms)
+      v <- out$v
+      v_d <- out$v_d
+      dist <- out$dist
 
-      out = find_rotation_seed_unqiue(mu,q1,mode,rotated,TRUE,lambda)
-      qn_t = out$q2best/sqrt(innerprod_q2(out$q2best,out$q2best))
-
-      q1dotq2 = innerprod_q2(mu,qn_t)
-
-      if (q1dotq2 > 1){
-        q1dotq2 = 1
-      }
-      if (q1dotq2 < -1){
-        q1dotq2 = -1
-      }
-
-      dist = acos(q1dotq2)
-
-      u = qn_t - q1dotq2 * q1
-      normu = sqrt(innerprod_q2(u, u))
-      if (normu > 1e-4){
-        w = u*acos(q1dotq2)/normu
-      } else {
-        w = matrix(0, nrow(beta1), T1)
-      }
-
-      if (mode=="O"){
-        v[, , i] = w
-      } else {
-        v[, , i] = project_tangent(w, q1, basis)
-      }
-
-      if(ms == "median"){ #run for median only, saves computation time if getting mean
-        d_i[i] = sqrt(innerprod_q2(v[,,i], v[,,i])) #calculate sqrt of norm of v_i
-        if (d_i[i]>0){
-          v_d[,,i] = v[,,i]/d_i[i] #normalize v_i
-        } else{
-          v_d[,,i] = v[,,i]
-        }
-
-      }
-      sumd[itr + 1] = sumd[itr + 1] + dist^2
+      list(v, v_d, dist)
     }
+
+    v <- unlist(outfor[1, ])
+    dim(v) <- c(n, T1, N)
+
+    v_d <- unlist(outfor[2, ])
+    dim(v_d) <- c(n, T1, N)
+
+    dist <- unlist(outfor[3, ])
+    dim(dist) <- c(N)
+
+    sumd[itr + 1] = sumd[itr + 1] + sum(dist^2)
 
     if(ms == "median"){#run for median only
       sumv = rowSums(v_d, dims = 2)
@@ -177,7 +163,10 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
   if (!scale){
     mean_scale = prod(len)^(1/length(len))
     mean_scale_q = prod(len_q)^(1/length(len))
-    betamean = mean_scale*betamean
+    x = q_to_curve(mu, mean_scale_q)
+    a = -1 * calculatecentroid(x)
+    dim(a) = c(length(a), 1)
+    betamean = x + repmat(a, 1, T1)
   }
 
   ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")

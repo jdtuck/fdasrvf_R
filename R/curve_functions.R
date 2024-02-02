@@ -610,21 +610,54 @@ rot_mat <- function(theta){
 }
 
 
-karcher_calc <- function(beta, q, betamean, mu, rotated=T, mode="O"){
-    if (mode=="C"){
-        basis = find_basis_normal(mu)
-    }
-    # Compute shooting vector form mu to q_i
-    out = inverse_exp_coord(betamean, beta, mode, rotated)
+karcher_calc <- function(q1, mu, basis, rotated=T, mode="O",
+                         lambda=0.0, ms="mean"){
 
-    # Project to tangent space of manifold to obtain v_i
-    if (mode=="O"){
-        v = out$v
+    tmp = dim(q1)
+    n = tmp[1]
+    T1 = tmp[2]
+    out = find_rotation_seed_unqiue(mu,q1,mode,rotated,TRUE,lambda)
+    qn_t = out$q2best/sqrt(innerprod_q2(out$q2best,out$q2best))
+
+    q1dotq2 = innerprod_q2(mu,qn_t)
+
+    if (q1dotq2 > 1){
+      q1dotq2 = 1
+    }
+    if (q1dotq2 < -1){
+      q1dotq2 = -1
+    }
+
+    dist = acos(q1dotq2)
+
+    u = qn_t - q1dotq2 * q1
+    normu = sqrt(innerprod_q2(u, u))
+    if (normu > 1e-4){
+      w = u*acos(q1dotq2)/normu
     } else {
-        v = project_tangent(out$v, q, basis)
+      w = matrix(0, n, T1)
     }
 
-    return(list(v=v,d=out$dist,gam=out$gam))
+    if (mode=="O"){
+      v = w
+    } else {
+      v = project_tangent(w, q1, basis)
+    }
+
+
+    if(ms == "median"){ #run for median only, saves computation time if getting mean
+      d_i = sqrt(innerprod_q2(v, v)) #calculate sqrt of norm of v_i
+      if (d_i>0){
+        v_d = v/d_i #normalize v_i
+      } else{
+        v_d = v
+      }
+
+    } else {
+      v_d = matrix(0, n, T1)
+    }
+
+    return(list(v=v,v_d=v_d,dist=dist))
 }
 
 

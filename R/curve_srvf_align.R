@@ -11,7 +11,10 @@
 #' @param scale Include scale (default = `FALSE`)
 #' @param lambda A numeric value specifying the elasticity. Defaults to `0.0`.
 #' @param maxit maximum number of iterations
-#' @param ms string defining whether the Karcher mean ("mean") or Karcher median ("median") is returned (default = "mean")
+#' @param ms string defining whether the Karcher mean ("mean") or Karcher median
+#'   ("median") is returned (default = "mean")
+#' @param parallel A boolean specifying whether to run calculations in parallel.
+#'   Defaults to `TRUE`.
 #' @return Returns a list containing \item{betan}{aligned curves}
 #' \item{qn}{aligned srvfs}
 #' \item{betamean}{mean curve}
@@ -24,7 +27,8 @@
 #' # note: use more shapes and iterations, small for speed
 #' out = curve_srvf_align(beta[,,1,1:2],maxit=2)
 curve_srvf_align <- function(beta, mode = "O", rotated = TRUE, scale = FALSE,
-                             lambda = 0.0, maxit = 20, ms = "mean"){
+                             lambda = 0.0, maxit = 20, ms = "mean",
+                             parallel=TRUE){
     if (mode == "C"){
       isclosed = TRUE
     }
@@ -32,7 +36,7 @@ curve_srvf_align <- function(beta, mode = "O", rotated = TRUE, scale = FALSE,
     n = tmp[1]
     T1 = tmp[2]
     N = tmp[3]
-    out = curve_karcher_mean(beta, mode, rotated, scale, lambda, maxit, ms)
+    out = curve_karcher_mean(beta, mode, rotated, scale, lambda, maxit, ms, parallel)
     beta<-out$beta
     mu = out$mu
     betamean = out$betamean
