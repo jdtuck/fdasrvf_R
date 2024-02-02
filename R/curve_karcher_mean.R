@@ -34,7 +34,7 @@
 #'    Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+#' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
 #' # note: use more shapes, small for speed
 curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
                                 lambda = 0.0, maxit = 20, ms = "mean",

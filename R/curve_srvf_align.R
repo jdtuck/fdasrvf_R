@@ -25,7 +25,7 @@
 #' @examples
 #' data("mpeg7")
 #' # note: use more shapes and iterations, small for speed
-#' out = curve_srvf_align(beta[,,1,1:2],maxit=2)
+#' out = curve_srvf_align(beta[,,1,1:2],maxit=2,parallel=FALSE)
 curve_srvf_align <- function(beta, mode = "O", rotated = TRUE, scale = FALSE,
                              lambda = 0.0, maxit = 20, ms = "mean",
                              parallel=TRUE){

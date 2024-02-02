@@ -56,7 +56,7 @@ Calculates Karcher mean or median of a collection of curves using the elastic
 square-root velocity (srvf) framework.
 }
 \examples{
-out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
 # note: use more shapes, small for speed
 }
 \references{

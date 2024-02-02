@@ -49,7 +49,7 @@ framework. If the curves are describing multidimensional functional data, then
 \examples{
 data("mpeg7")
 # note: use more shapes and iterations, small for speed
-out = curve_srvf_align(beta[,,1,1:2],maxit=2)
+out = curve_srvf_align(beta[,,1,1:2],maxit=2,parallel=FALSE)
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
