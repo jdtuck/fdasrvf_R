@@ -24,7 +24,7 @@ samples list of sample curves
 Sample shapes from model
 }
 \examples{
-out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
 # note: use more shapes, small for speed
 K <- curve_karcher_cov(out$v)
 samples <- sample_shapes(out$mu, K)
