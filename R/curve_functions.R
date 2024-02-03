@@ -661,19 +661,26 @@ karcher_calc <- function(q1, mu, basis, rotated=T, mode="O",
 }
 
 
-curve_align_sub <- function(beta1, q1, mu, mode, rotated, lambda){
+curve_align_sub <- function(beta1, q1, mu, mode, rotated, scale, lambda){
   out = find_rotation_seed_unqiue(mu, q1, mode, rotated, TRUE, lambda)
   gam = out$gambest
-  beta1 = out$Rbest%*%beta1
-  beta1n = group_action_by_gamma_coord(beta1, gam)
-  q1n = curve_to_q(beta1n)$q
+  rotmat = out$Rbest
 
-  out = find_best_rotation(mu, q1n)
-  qn = out$q2new
-  betan = out$R%*%beta1n
-  rotmat = out$R
+  if (scale){
+    q1n = out$q2best
+    beta1n = q_to_curve(q1n)
+  } else {
+    beta1 = rotmat%*%beta1
+    beta1n = group_action_by_gamma_coord(beta1, gam)
+    q1n = curve_to_q(beta1n, scale)$q
+  }
 
-  return(list(qn=qn,betan=betan,rotmat=rotmat,gam=gam))
+  T1 = ncol(beta1)
+  centroid1 = calculatecentroid(beta1n)
+  dim(centroid1) = c(length(centroid1), 1)
+  beta1n = beta1n - repmat(centroid1, 1, T1)
+
+  return(list(qn=q1n,betan=beta1n,rotmat=rotmat,gam=gam))
 }
 
 

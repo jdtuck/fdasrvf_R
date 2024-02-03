@@ -68,7 +68,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
     dim(centroid1) = c(length(centroid1), 1)
     beta1 = beta1 - repmat(centroid1, 1, T1)
     beta[ , , ii] = beta1
-    out = curve_to_q(beta1, scale)
+    out = curve_to_q(beta1)
     q[, , ii] = out$q
     len[ii] = out$len
     len_q[ii] = out$lenq
@@ -98,7 +98,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
   gam = t(gam)
   gamI = SqrtMeanInverse(t(gam))
   bmu = group_action_by_gamma_coord(bmu, gamI)
-  mu = curve_to_q(bmu, scale)$q
+  mu = curve_to_q(bmu)$q
   mu[is.nan(mu)] <- 0
 
   while (itr < maxit) {
@@ -168,6 +168,8 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
     dim(a) = c(length(a), 1)
     betamean = x + repmat(a, 1, T1)
   }
+
+  if (parallel) parallel::stopCluster(cl)
 
   ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")
   return(list(beta = beta, mu = mu, type = type, betamean = betamean, v = v, q = q,
