@@ -167,6 +167,7 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
     a = -1 * calculatecentroid(x)
     dim(a) = c(length(a), 1)
     betamean = x + repmat(a, 1, T1)
+    mu = curve_to_q(betamean, scale)
   }
 
   if (parallel) parallel::stopCluster(cl)
