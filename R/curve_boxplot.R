@@ -26,7 +26,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' out <- time_warping(beta[, , 1, ])
+#' out <- curve_srvf_align(beta[, , 1, ], ms="median")
 #' curve_boxplot(out, what = "stats")
 #' }
 curve_boxplot <- function(x,
@@ -38,7 +38,7 @@ curve_boxplot <- function(x,
 
   # Compute Karcher Median
 
-  if (x$type != "median") {
+  if (x$ms != "median") {
     cli::cli_alert_warning(
       "The argument {.arg x} is of class {.cls fdacurve} but has not been
       computed using the median as centroid type."
@@ -118,14 +118,14 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
   fn <- align_median$betan
   median_y <- align_median$betamean
   qn <- align_median$qn
-  qmedian <- align_median$q_mu
+  qmedian <- align_median$mu
 
   if (align_median$rsamps) {
     fn <- align_median$betas
     qn <- align_median$qs
   }
 
-  tmp = dim(beta)
+  tmp = dim(fn)
   n = tmp[1]
   M = tmp[2]
   N = tmp[3]
@@ -133,7 +133,7 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
 
   # compute shape distances
   dy <- rep(0, N)
-  for (i in 1:N)
+  for (i in 1:N){
     q1dotq2 = innerprod_q2(qmedian, qn[, ,i])
 
     if (q1dotq2 > 1){
@@ -142,11 +142,12 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
       q1dotq2 = -1
     }
     dy[i] <- acos(q1dotq2)
+  }
   dy_ordering <- sort(dy, index.return = TRUE)$ix
   CR_50 <- dy_ordering[1:round(N / 2)]  # 50% central region
   m <- max(dy[CR_50])  # maximal amplitude distance with 50% central region
 
-  # identify  quartiles
+  # identify quartiles
   angle <- matrix(0, nrow = length(CR_50), ncol = length(CR_50))
   energy <- matrix(0, nrow = length(CR_50), ncol = length(CR_50))
 

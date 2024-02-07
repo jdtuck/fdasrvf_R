@@ -116,8 +116,9 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
       v <- out$v
       v_d <- out$v_d
       dist <- out$dist
+      d_i <- out$d_i
 
-      list(v, v_d, dist)
+      list(v, v_d, dist, d_i)
     }
 
     v <- unlist(outfor[1, ])
@@ -128,6 +129,9 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
 
     dist <- unlist(outfor[3, ])
     dim(dist) <- c(N)
+
+    d_i <- unlist(outfor[4, ])
+    dim(d_i) <- c(N)
 
     sumd[itr + 1] = sumd[itr + 1] + sum(dist^2)
 
@@ -179,7 +183,8 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
   out <- list(beta = beta, mu = mu, type = type, betamean = betamean, v = v, q = q,
               E=normvbar[1:itr], cent = cent, len = len, len_q = len_q,
               qun = sumd[1:itr], mean_scale = mean_scale, mean_scale_q=mean_scale_q,
-              mode=mode, rotated=rotated, scale=scale, type=ms, lambda=lambda)
+              mode=mode, rotated=rotated, scale=scale, ms=ms, lambda=lambda,
+              rsamps=FALSE)
 
   class(out) <- "fdacurve"
   return(out)

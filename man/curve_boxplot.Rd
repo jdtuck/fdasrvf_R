@@ -43,7 +43,7 @@ The function returns optionally an object of class either
 }
 \examples{
 \dontrun{
-out <- time_warping(beta[, , 1, ])
+out <- curve_srvf_align(beta[, , 1, ], ms="median")
 curve_boxplot(out, what = "stats")
 }
 }
