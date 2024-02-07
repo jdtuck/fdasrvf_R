@@ -7,7 +7,9 @@
 #' @param numSamp number of samples
 #' @return samples list of sample curves
 #' @keywords srvf alignment
-#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+#'    analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
+#'    Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
 #' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
