@@ -79,7 +79,7 @@ boxplot.curvebox <- function(x, ...) {
        type = "l",
   )
   graphics::lines(Q1[1,], Q1[2,], col = "blue")
-  graphics::lines(Q3[1.], Q3[2,], col = "blue")
+  graphics::lines(Q3[1,], Q3[2,], col = "blue")
   graphics::lines(Q1a[1,], Q1a[2,], col = "green")
   graphics::lines(Q3a[1,], Q3a[2,], col = "green")
   graphics::lines(maxx[1,], maxx[2,], col = "red")
