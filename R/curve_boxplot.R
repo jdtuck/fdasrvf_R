@@ -30,10 +30,6 @@
 #' curve_boxplot(out, what = "stats")
 #' }
 curve_boxplot <- function(x,
-                          mode = 'O',
-                          rotated = TRUE,
-                          scale = TRUE,
-                          lambda = 0.0,
                           alpha = 0.05,
                           range = 1.0,
                           what = c("plot", "stats", "plot+stats"),

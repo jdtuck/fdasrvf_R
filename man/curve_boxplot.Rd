@@ -6,10 +6,6 @@
 \usage{
 curve_boxplot(
   x,
-  mode = "O",
-  rotated = TRUE,
-  scale = TRUE,
-  lambda = 0,
   alpha = 0.05,
   range = 1,
   what = c("plot", "stats", "plot+stats"),
