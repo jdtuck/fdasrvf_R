@@ -18,7 +18,8 @@ sample_shapes(mu, K, mode = "O", no = 3, numSamp = 10)
 \item{numSamp}{number of samples}
 }
 \value{
-samples list of sample curves
+Returns a list containing \item{samples}{sample curves}
+\item{samples.q}{samples srvfs}
 }
 \description{
 Sample shapes from model
@@ -27,7 +28,7 @@ Sample shapes from model
 out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
 # note: use more shapes, small for speed
 K <- curve_karcher_cov(out$v)
-samples <- sample_shapes(out$mu, K)
+out.samples <- sample_shapes(out$mu, K)
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape

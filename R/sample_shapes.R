@@ -5,7 +5,8 @@
 #' @param mode Open ("O") or Closed ("C") curves
 #' @param no number of principal components
 #' @param numSamp number of samples
-#' @return samples list of sample curves
+#' @return Returns a list containing \item{samples}{sample curves}
+#' \item{samples.q}{samples srvfs}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
 #'    analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
@@ -15,7 +16,7 @@
 #' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
 #' # note: use more shapes, small for speed
 #' K <- curve_karcher_cov(out$v)
-#' samples <- sample_shapes(out$mu, K)
+#' out.samples <- sample_shapes(out$mu, K)
 sample_shapes <- function(mu, K, mode="O", no=3, numSamp=10){
     n = nrow(mu)
     T1 = ncol(mu)
@@ -35,7 +36,8 @@ sample_shapes <- function(mu, K, mode="O", no=3, numSamp=10){
 
     q1 = mu
     q2 = mu
-    samples = array(list(),numSamp)
+    samples = array(0,dim=c(n,T1,numSamp))
+    samples.q = array(0,dim=c(n,T1,numSamp))
 
     for (i in 1:numSamp){
         v = matrix(0, 2, T1)
@@ -63,8 +65,13 @@ sample_shapes <- function(mu, K, mode="O", no=3, numSamp=10){
             q1 = q2
         }
 
-        samples[[i]] = q_to_curve(q2)
+        beta = q_to_curve(q2)
+        centroid = calculatecentroid(beta)
+        dim(centroid) = c(length(centroid),1)
+        beta = beta - repmat(centroid,1,T1)
+        samples[,,i] = beta
+        samples.q[,,i] = curve_to_q(beta)$q
     }
 
-    return(samples)
+    return(list(samples=samples,samples.q=samples.q))
 }
