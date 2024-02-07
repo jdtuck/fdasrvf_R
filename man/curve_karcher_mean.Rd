@@ -36,20 +36,24 @@ median (\code{"median"}) is returned (default = \code{"mean"})}
 Defaults to \code{TRUE}.}
 }
 \value{
-Returns a list containing \item{mu}{mean srvf}
-\item{beta}{centered data}
-\item{betamean}{mean or median curve}
-\item{type}{string indicating whether mean or median is returned}
-\item{v}{shooting vectors}
-\item{q}{array of srvfs}
-\item{gam}{array of warping functions}
-\item{cent}{centers of original curves}
-\item{len}{length of curves}
-\item{len_q}{length of srvfs}
-\item{mean_scale}{mean length}
-\item{mean_scale_q}{mean length srvf}
-\item{E}{energy}
-\item{qun}{cost function}
+An object of class \code{fdacurve} which is a list with the following
+components:
+\itemize{
+\item \code{mu}: mean srvf
+\item \code{beta}: centered curves
+\item \code{betamean}: mean or median curve
+\item \code{type}: string indicating whether mean or median is returned
+\item \code{v}: shooting vectors
+\item \code{q}: array of srvfs
+\item \code{gam}: array of warping functions
+\item \code{cent}: centers of original curves
+\item \code{len}: length of curves
+\item \code{len_q}: length of srvfs
+\item \code{mean_scale}: mean length
+\item \code{mean_scale_q}: mean length srvf
+\item \code{E}: energy
+\item \code{qun}: cost function
+}
 }
 \description{
 Calculates Karcher mean or median of a collection of curves using the elastic

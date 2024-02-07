@@ -15,10 +15,24 @@
 #'   ("median") is returned (default = "mean")
 #' @param parallel A boolean specifying whether to run calculations in parallel.
 #'   Defaults to `TRUE`.
-#' @return Returns a list containing \item{betan}{aligned curves}
-#' \item{qn}{aligned srvfs}
-#' \item{betamean}{mean curve}
-#' \item{q_mu}{mean SRVFs}
+#' @return An object of class `fdacurve` which is a list with the following
+#'   components:
+#' - `mu`: mean srvf
+#' - `beta`: centered curves
+#' - `betamean`: mean or median curve
+#' - `betan`: aligned curves
+#' - `qn`: aligned srvfs
+#' - `type`: string indicating whether mean or median is returned
+#' - `v`: shooting vectors
+#' - `q`: array of srvfs
+#' - `gam`: array of warping functions
+#' - `cent`: centers of original curves
+#' - `len`: length of curves
+#' - `len_q`: length of srvfs
+#' - `mean_scale`: mean length
+#' - `mean_scale_q`: mean length srvf
+#' - `E`: energy
+#' - `qun`: cost function
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
 #'    analysis of elastic curves in euclidean spaces. Pattern Analysis and
@@ -88,6 +102,10 @@ curve_srvf_align <- function(beta, mode = "O", rotated = TRUE, scale = TRUE,
 
     if (parallel) parallel::stopCluster(cl)
 
-    return(list(betan = betan, qn = qn, betamean = betamean, q_mu = mu,
-                rotmat = rotmat, gams = gams, v = v))
+    out$betan = betan
+    out$qn = qn
+    out$rotmat = rotmat
+    out$gams = gams
+
+    return(out)
 }

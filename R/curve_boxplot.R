@@ -6,12 +6,7 @@
 #' The function returns optionally an object of class either
 #' `campbox`
 #'
-#' @param beta Array of sizes \eqn{n \times T \times N} describing \eqn{N}
-#' curves of dimension \eqn{n} evaluated on \eqn{T} points
-#' @param mode Open (`"O"`) or Closed (`"C"`) curves
-#' @param rotated Optimize over rotation (default = `TRUE`)
-#' @param scale scale curves to unit length (default = `TRUE`)
-#' @param lambda A numeric value specifying the elasticity. Defaults to `0.0`.
+#' @param x An object of class `fdacurve` typically produced by [curve_karcher_mean()]
 #' @param alpha A numeric value specifying the quantile value. Defaults to
 #'   \eqn{0.05} which uses the \eqn{95\%} quantile.
 #' @param range A positive numeric value specifying how far the plot whiskers
@@ -34,7 +29,7 @@
 #' out <- time_warping(beta[, , 1, ])
 #' curve_boxplot(out, what = "stats")
 #' }
-curve_boxplot <- function(beta,
+curve_boxplot <- function(x,
                           mode = 'O',
                           rotated = TRUE,
                           scale = TRUE,
@@ -46,9 +41,19 @@ curve_boxplot <- function(beta,
   what <- rlang::arg_match(what)
 
   # Compute Karcher Median
-  out <- curve_srvf_align(beta, mode, rotated, scale, lambda, ms="median")
 
-  plot_data <- curvebox_data(out, alpha = alpha, ka = range)
+  if (x$type != "median") {
+    cli::cli_alert_warning(
+      "The argument {.arg x} is of class {.cls fdacurve} but has not been
+      computed using the median as centroid type."
+    )
+    cli::cli_alert_info(
+      'Rerunning {.fn curve_karcher_mean} with {.code ms = "median"}...'
+    )
+    x <- curve_srvf_align(x$beta, x$mode, x$rotated, x$scale, x$lambda, ms="median")
+  }
+
+  plot_data <- curvebox_data(x, alpha = alpha, ka = range)
 
   if (what == "plot" || what == "plot+stats")
     boxplot(plot_data)

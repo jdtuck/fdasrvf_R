@@ -36,10 +36,26 @@ of dimension \eqn{n} evaluated on a grid of \eqn{T} points}
 Defaults to \code{TRUE}.}
 }
 \value{
-Returns a list containing \item{betan}{aligned curves}
-\item{qn}{aligned srvfs}
-\item{betamean}{mean curve}
-\item{q_mu}{mean SRVFs}
+An object of class \code{fdacurve} which is a list with the following
+components:
+\itemize{
+\item \code{mu}: mean srvf
+\item \code{beta}: centered curves
+\item \code{betamean}: mean or median curve
+\item \code{betan}: aligned curves
+\item \code{qn}: aligned srvfs
+\item \code{type}: string indicating whether mean or median is returned
+\item \code{v}: shooting vectors
+\item \code{q}: array of srvfs
+\item \code{gam}: array of warping functions
+\item \code{cent}: centers of original curves
+\item \code{len}: length of curves
+\item \code{len_q}: length of srvfs
+\item \code{mean_scale}: mean length
+\item \code{mean_scale_q}: mean length srvf
+\item \code{E}: energy
+\item \code{qun}: cost function
+}
 }
 \description{
 Aligns a collection of curves using the elastic square-root velocity (srvf)

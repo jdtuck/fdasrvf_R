@@ -5,7 +5,7 @@
 \title{Curve Boxplot}
 \usage{
 curve_boxplot(
-  beta,
+  x,
   mode = "O",
   rotated = TRUE,
   scale = TRUE,
@@ -17,16 +17,7 @@ curve_boxplot(
 )
 }
 \arguments{
-\item{beta}{Array of sizes \eqn{n \times T \times N} describing \eqn{N}
-curves of dimension \eqn{n} evaluated on \eqn{T} points}
-
-\item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
-
-\item{rotated}{Optimize over rotation (default = \code{TRUE})}
-
-\item{scale}{scale curves to unit length (default = \code{TRUE})}
-
-\item{lambda}{A numeric value specifying the elasticity. Defaults to \code{0.0}.}
+\item{x}{An object of class \code{fdacurve} typically produced by \code{\link[=curve_karcher_mean]{curve_karcher_mean()}}}
 
 \item{alpha}{A numeric value specifying the quantile value. Defaults to
 \eqn{0.05} which uses the \eqn{95\%} quantile.}
