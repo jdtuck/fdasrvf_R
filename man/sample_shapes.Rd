@@ -4,22 +4,18 @@
 \alias{sample_shapes}
 \title{Sample shapes from model}
 \usage{
-sample_shapes(mu, K, mode = "O", no = 3, numSamp = 10)
+sample_shapes(x, no = 3, numSamp = 10)
 }
 \arguments{
-\item{mu}{array (n,T) of mean srvf}
-
-\item{K}{array (2\emph{T,2}T) covariance matrix}
-
-\item{mode}{Open ("O") or Closed ("C") curves}
+\item{x}{An object of class \code{fdacurve} typically produced by \code{\link[=curve_srvf_align]{curve_srvf_align()}}}
 
 \item{no}{number of principal components}
 
 \item{numSamp}{number of samples}
 }
 \value{
-Returns a list containing \item{samples}{sample curves}
-\item{samples.q}{samples srvfs}
+Returns a \code{fdacurve} object containing \item{betas}{random curves}
+\item{qs}{random srvfs}
 }
 \description{
 Sample shapes from model
@@ -27,8 +23,7 @@ Sample shapes from model
 \examples{
 out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
 # note: use more shapes, small for speed
-K <- curve_karcher_cov(out$v)
-out.samples <- sample_shapes(out$mu, K)
+out.samples <- sample_shapes(out)
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape

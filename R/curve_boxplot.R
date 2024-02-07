@@ -4,9 +4,9 @@
 #' the aligned curve data. The computed boxplot focuses on the aligned curves.
 #'
 #' The function returns optionally an object of class either
-#' `campbox`
+#' `curvebox`
 #'
-#' @param x An object of class `fdacurve` typically produced by [curve_karcher_mean()]
+#' @param x An object of class `fdacurve` typically produced by [curve_srvf_align()]
 #' @param alpha A numeric value specifying the quantile value. Defaults to
 #'   \eqn{0.05} which uses the \eqn{95\%} quantile.
 #' @param range A positive numeric value specifying how far the plot whiskers
@@ -48,7 +48,7 @@ curve_boxplot <- function(x,
       computed using the median as centroid type."
     )
     cli::cli_alert_info(
-      'Rerunning {.fn curve_karcher_mean} with {.code ms = "median"}...'
+      'Rerunning {.fn curve_srvf_align} with {.code ms = "median"}...'
     )
     x <- curve_srvf_align(x$beta, x$mode, x$rotated, x$scale, x$lambda, ms="median")
   }
@@ -125,7 +125,7 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
   qmedian <- align_median$q_mu
 
   if (align_median$rsamps) {
-    fn <- align_median$fs
+    fn <- align_median$betas
     qn <- align_median$qs
   }
 

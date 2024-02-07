@@ -17,7 +17,7 @@ curve_boxplot(
 )
 }
 \arguments{
-\item{x}{An object of class \code{fdacurve} typically produced by \code{\link[=curve_karcher_mean]{curve_karcher_mean()}}}
+\item{x}{An object of class \code{fdacurve} typically produced by \code{\link[=curve_srvf_align]{curve_srvf_align()}}}
 
 \item{alpha}{A numeric value specifying the quantile value. Defaults to
 \eqn{0.05} which uses the \eqn{95\%} quantile.}
@@ -43,7 +43,7 @@ the aligned curve data. The computed boxplot focuses on the aligned curves.
 }
 \details{
 The function returns optionally an object of class either
-\code{campbox}
+\code{curvebox}
 }
 \examples{
 \dontrun{

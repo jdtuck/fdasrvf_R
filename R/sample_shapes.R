@@ -1,12 +1,10 @@
 #' Sample shapes from model
 #'
-#' @param mu array (n,T) of mean srvf
-#' @param K array (2*T,2*T) covariance matrix
-#' @param mode Open ("O") or Closed ("C") curves
+#' @param x An object of class `fdacurve` typically produced by [curve_srvf_align()]
 #' @param no number of principal components
 #' @param numSamp number of samples
-#' @return Returns a list containing \item{samples}{sample curves}
-#' \item{samples.q}{samples srvfs}
+#' @return Returns a `fdacurve` object containing \item{betas}{random curves}
+#' \item{qs}{random srvfs}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
 #'    analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
@@ -15,9 +13,14 @@
 #' @examples
 #' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
 #' # note: use more shapes, small for speed
-#' K <- curve_karcher_cov(out$v)
-#' out.samples <- sample_shapes(out$mu, K)
-sample_shapes <- function(mu, K, mode="O", no=3, numSamp=10){
+#' out.samples <- sample_shapes(out)
+sample_shapes <- function(x, no=3, numSamp=10){
+
+    mode = x$mode
+
+    K <- curve_karcher_cov(x$v)
+    mu <- x$mu
+
     n = nrow(mu)
     T1 = ncol(mu)
 
@@ -73,5 +76,9 @@ sample_shapes <- function(mu, K, mode="O", no=3, numSamp=10){
         samples.q[,,i] = curve_to_q(beta)$q
     }
 
-    return(list(samples=samples,samples.q=samples.q))
+    x$rsamps = TRUE
+    x$betas = samples
+    x$qs = samples.q
+
+    return(x)
 }
