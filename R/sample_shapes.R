@@ -97,9 +97,10 @@ sample_shapes <- function(x, no=3, numSamp=10){
         theta[i] = acos(x$rotmat[1,1,i])
       }
       mu_theta = mean(theta)
+      sd_theta = sd(theta)
       R = array(0, dim=c(2,2,numSamp))
       for (k in 1:numSamp){
-        theta = sample_vonmises(mu_theta, .05)
+        theta = sample_vonmises(mu_theta, sd_theta)
         R[,,k] = matrix(c(cos(theta), sin(theta), -sin(theta), cos(theta)),2,2)
       }
     } else {
