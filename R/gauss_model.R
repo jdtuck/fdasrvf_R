@@ -105,7 +105,7 @@ gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
     warp_data$gams = rgam
     warp_data$ft = ft
     warp_data$qs = q_s[1:(end-1),]
-    warp_data$rsamps=T
+    warp_data$rsamps=TRUE
 
     return(warp_data)
 }
