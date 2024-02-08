@@ -15,7 +15,7 @@
 #'    Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
+#' out <- curve_srvf_align(beta[, , 1, 1:5], maxit = 2, parallel=FALSE)
 #' # note: use more shapes, small for speed
 #' out.samples <- sample_shapes(out)
 sample_shapes <- function(x, no=3, numSamp=10){
@@ -97,7 +97,7 @@ sample_shapes <- function(x, no=3, numSamp=10){
         theta[i] = acos(x$rotmat[1,1,i])
       }
       mu_theta = mean(theta)
-      sd_theta = sd(theta)
+      sd_theta = stats::sd(theta)
       R = array(0, dim=c(2,2,numSamp))
       for (k in 1:numSamp){
         theta = sample_vonmises(mu_theta, sd_theta)
@@ -134,8 +134,8 @@ sample_shapes <- function(x, no=3, numSamp=10){
 
 sample_vonmises <- function(mu, sigma){
   while (TRUE){
-    u1 = runif(1)
-    u2 = runif(1)
+    u1 = stats::runif(1)
+    u2 = stats::runif(1)
     phi = 2 * pi * u1
 
     R = exp((cos(phi-mu) - 1)/ sigma^2)

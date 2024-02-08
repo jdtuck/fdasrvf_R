@@ -25,7 +25,7 @@ Returns a \code{fdacurve} object containing \item{betans}{random aligned curves}
 Sample shapes from model
 }
 \examples{
-out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
+out <- curve_srvf_align(beta[, , 1, 1:5], maxit = 2, parallel=FALSE)
 # note: use more shapes, small for speed
 out.samples <- sample_shapes(out)
 }
