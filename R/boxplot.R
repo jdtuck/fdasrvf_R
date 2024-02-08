@@ -358,7 +358,7 @@ ampbox_data <- function(warp_median, alpha = 0.05, ka = 1) {
   lower_dis <- sqrt(trapz(time, (lower_q - qmedian)^2))
   whisker_dis <- max(c(upper_dis, lower_dis))
 
-  # indentify amplitude outliers
+  # identify amplitude outliers
   outlier_index <- c()
   for (i in 1:N) {
     if (dy[dy_ordering[N + 1 - i]] > whisker_dis)
@@ -367,7 +367,7 @@ ampbox_data <- function(warp_median, alpha = 0.05, ka = 1) {
       break
   }
 
-  # identify ampitude extremes
+  # identify amplitude extremes
   distance_to_upper <- rep(Inf, N)
   distance_to_lower <- rep(Inf, N)
   out_50_CR <- setdiff(setdiff(1:N, CR_50), outlier_index)

@@ -119,6 +119,7 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
   median_y <- align_median$betamean
   qn <- align_median$qn
   qmedian <- align_median$mu
+  scale <- align_median$scale
 
   if (align_median$rsamps) {
     fn <- align_median$betas
@@ -134,14 +135,20 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
   # compute shape distances
   dy <- rep(0, N)
   for (i in 1:N){
-    q1dotq2 = innerprod_q2(qmedian, qn[, ,i])
+    if (scale){
+      q1dotq2 = innerprod_q2(qmedian, qn[, ,i])
 
-    if (q1dotq2 > 1){
-      q1dotq2 = 1
-    } else if(q1dotq2 < -1){
-      q1dotq2 = -1
+      if (q1dotq2 > 1){
+        q1dotq2 = 1
+      } else if(q1dotq2 < -1){
+        q1dotq2 = -1
+      }
+      dy[i] = acos(q1dotq2)
+    } else {
+      v = qmedian-qn[, ,i]
+      dy[i] = sqrt(innerprod_q2(v, v))
     }
-    dy[i] <- acos(q1dotq2)
+
   }
   dy_ordering <- sort(dy, index.return = TRUE)$ix
   CR_50 <- dy_ordering[1:round(N / 2)]  # 50% central region
@@ -155,8 +162,10 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
     for (j in (i + 1):length(CR_50)) {
       q1 <- qn[, , CR_50[i]] - qmedian
       q3 <- qn[, , CR_50[j]] - qmedian
-      q1 <- q1 / sqrt(innerprod_q2(q1, q1))
-      q3 <- q3 / sqrt(innerprod_q2(q3, q3))
+      if (scale){
+        q1 <- q1 / sqrt(innerprod_q2(q1, q1))
+        q3 <- q3 / sqrt(innerprod_q2(q3, q3))
+      }
       angle[i, j] <- innerprod_q2(q1, q3)
       energy[i, j] <- (1 - lambda) * (dy[CR_50[i]] / m + dy[CR_50[j]] / m) -
         lambda * (angle[i, j] + 1)
@@ -183,8 +192,10 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
     for (j in (i + 1):length(CR_alpha)) {
       q1 <- qn[, , CR_alpha[i]] - qmedian
       q3 <- qn[, , CR_alpha[j]] - qmedian
-      q1 <- q1 / sqrt(innerprod_q2(q1, q1))
-      q3 <- q3 / sqrt(innerprod_q2(q3, q3))
+      if (scale){
+        q1 <- q1 / sqrt(innerprod_q2(q1, q1))
+        q3 <- q3 / sqrt(innerprod_q2(q3, q3))
+      }
       angle[i, j] <- innerprod_q2(q1, q3)
       energy[i, j] <- (1 - lambda) * (dy[CR_alpha[i]] / m + dy[CR_alpha[j]] / m) -
         lambda * (angle[i, j] + 1)
@@ -209,24 +220,37 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
   upper <- q_to_curve(upper_q)
   lower <- q_to_curve(lower_q)
 
-  q1dotq2 = innerprod_q2(upper_q, qmedian)
-  if (q1dotq2 > 1){
-    q1dotq2 = 1
-  } else if(q1dotq2 < -1){
-    q1dotq2 = -1
-  }
-  upper_dis <- acos(q1dotq2)
+  if (scale){
+    q1dotq2 = innerprod_q2(upper_q, qmedian)
 
-  q1dotq2 = innerprod_q2(lower_q, qmedian)
-  if (q1dotq2 > 1){
-    q1dotq2 = 1
-  } else if(q1dotq2 < -1){
-    q1dotq2 = -1
+    if (q1dotq2 > 1){
+      q1dotq2 = 1
+    } else if(q1dotq2 < -1){
+      q1dotq2 = -1
+    }
+    upper_dis = acos(q1dotq2)
+  } else {
+    v = upper_q-qmedian
+    upper_dis = sqrt(innerprod_q2(v, v))
   }
-  lower_dis <- acos(q1dotq2)
+
+  if (scale){
+    q1dotq2 = innerprod_q2(lower_q, qmedian)
+
+    if (q1dotq2 > 1){
+      q1dotq2 = 1
+    } else if(q1dotq2 < -1){
+      q1dotq2 = -1
+    }
+    lower_dis = acos(q1dotq2)
+  } else {
+    v = lower_q-qmedian
+    lower_dis = sqrt(innerprod_q2(v, v))
+  }
+
   whisker_dis <- max(c(upper_dis, lower_dis))
 
-  # indentify shape outliers
+  # identify shape outliers
   outlier_index <- c()
   for (i in 1:N) {
     if (dy[dy_ordering[N + 1 - i]] > whisker_dis)
@@ -242,21 +266,34 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
 
   for (i in 1:length(out_50_CR)) {
     j <- out_50_CR[i]
-    q1dotq2 = innerprod_q2(upper_q, qn[, ,j])
-    if (q1dotq2 > 1){
-      q1dotq2 = 1
-    } else if(q1dotq2 < -1){
-      q1dotq2 = -1
-    }
-    distance_to_upper[j] = acos(q1dotq2)
 
-    q1dotq2 = innerprod_q2(lower_q, qn[, ,j])
-    if (q1dotq2 > 1){
-      q1dotq2 = 1
-    } else if(q1dotq2 < -1){
-      q1dotq2 = -1
+    if (scale){
+      q1dotq2 = innerprod_q2(upper_q, qn[, ,j])
+
+      if (q1dotq2 > 1){
+        q1dotq2 = 1
+      } else if(q1dotq2 < -1){
+        q1dotq2 = -1
+      }
+      distance_to_upper[j] = acos(q1dotq2)
+    } else {
+      v = upper_q-qn[, ,j]
+      distance_to_upper[j] = sqrt(innerprod_q2(v, v))
     }
-    distance_to_lower[j] = acos(q1dotq2)
+
+    if (scale){
+      q1dotq2 = innerprod_q2(lower_q, qn[, ,j])
+
+      if (q1dotq2 > 1){
+        q1dotq2 = 1
+      } else if(q1dotq2 < -1){
+        q1dotq2 = -1
+      }
+      distance_to_lower[j] = acos(q1dotq2)
+    } else {
+      v = upper_q-qn[, ,j]
+      distance_to_lower[j] = sqrt(innerprod_q2(v, v))
+    }
   }
 
   max_index <- which.min(distance_to_upper)
