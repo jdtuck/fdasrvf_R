@@ -4,7 +4,16 @@
 \alias{bootTB}
 \title{Tolerance Bound Calculation using Bootstrap Sampling}
 \usage{
-bootTB(f, time, a = 0.05, p = 0.99, B = 500, no = 5, Nsamp = 100, parallel = T)
+bootTB(
+  f,
+  time,
+  a = 0.05,
+  p = 0.99,
+  B = 500,
+  no = 5,
+  Nsamp = 100,
+  parallel = TRUE
+)
 }
 \arguments{
 \item{f}{matrix of functions}
@@ -21,7 +30,7 @@ bootTB(f, time, a = 0.05, p = 0.99, B = 500, no = 5, Nsamp = 100, parallel = T)
 
 \item{Nsamp}{number of functions per bootstrap (default = 100)}
 
-\item{parallel}{enable parallel processing (default = T)}
+\item{parallel}{enable parallel processing (default = TRUE)}
 }
 \value{
 Returns a list containing \item{amp}{amplitude tolerance bounds}

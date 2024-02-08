@@ -22,7 +22,7 @@
 #'   which is no more than `range` times the interquartile range from the box.
 #'   Defaults to `1.0`.
 #' @param what A string specifying what the function should return. Choices are
-#'   `"plot"`, `"stats"` or `"plot+stats"`. Defaults to `"plot"`.
+#'   `"plot"`, `"stats"` or `"plot+stats"`. Defaults to `"stats"`.
 #' @param ... Unused here.
 #'
 #' @return If `what` contains `stats`, a list containing the computed statistics
@@ -41,7 +41,7 @@ boxplot.fdawarp <- function(x,
                             variability_type = c("amplitude", "phase"),
                             alpha = 0.05,
                             range = 1.0,
-                            what = c("plot", "stats", "plot+stats"),
+                            what = c("stats", "plot", "plot+stats"),
                             ...) {
   variability_type <- rlang::arg_match(variability_type)
   what <- rlang::arg_match(what)

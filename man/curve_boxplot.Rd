@@ -8,7 +8,7 @@ curve_boxplot(
   x,
   alpha = 0.05,
   range = 1,
-  what = c("plot", "stats", "plot+stats"),
+  what = c("stats", "plot", "plot+stats"),
   ...
 )
 }

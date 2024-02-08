@@ -12,7 +12,7 @@
   variability_type = c("amplitude", "phase"),
   alpha = 0.05,
   range = 1,
-  what = c("plot", "stats", "plot+stats"),
+  what = c("stats", "plot", "plot+stats"),
   ...
 )
 
@@ -39,7 +39,7 @@ which is no more than \code{range} times the interquartile range from the box.
 Defaults to \code{1.0}.}
 
 \item{what}{A string specifying what the function should return. Choices are
-\code{"plot"}, \code{"stats"} or \code{"plot+stats"}. Defaults to \code{"plot"}.}
+\code{"plot"}, \code{"stats"} or \code{"plot+stats"}. Defaults to \code{"stats"}.}
 
 \item{...}{Unused here.}
 }
