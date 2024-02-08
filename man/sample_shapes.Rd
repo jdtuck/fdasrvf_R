@@ -14,8 +14,12 @@ sample_shapes(x, no = 3, numSamp = 10)
 \item{numSamp}{number of samples}
 }
 \value{
-Returns a \code{fdacurve} object containing \item{betas}{random curves}
+Returns a \code{fdacurve} object containing \item{betans}{random aligned curves}
+\item{qns}{random aligned srvfs}
+\item{betans}{random curves}
 \item{qs}{random srvfs}
+\item{gams}{random reparametrization functions}
+\item{R}{random rotation matrices}
 }
 \description{
 Sample shapes from model

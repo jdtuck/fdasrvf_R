@@ -105,7 +105,7 @@ curve_srvf_align <- function(beta, mode = "O", rotated = TRUE, scale = TRUE,
     out$betan = betan
     out$qn = qn
     out$rotmat = rotmat
-    out$gams = gams
+    out$gam = gams
 
     return(out)
 }
