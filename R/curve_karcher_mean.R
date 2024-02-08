@@ -14,20 +14,22 @@
 #' median (`"median"`) is returned (default = `"mean"`)
 #' @param parallel A boolean specifying whether to run calculations in parallel.
 #'   Defaults to `TRUE`.
-#' @return Returns a list containing \item{mu}{mean srvf}
-#' \item{beta}{centered data}
-#' \item{betamean}{mean or median curve}
-#' \item{type}{string indicating whether mean or median is returned}
-#' \item{v}{shooting vectors}
-#' \item{q}{array of srvfs}
-#' \item{gam}{array of warping functions}
-#' \item{cent}{centers of original curves}
-#' \item{len}{length of curves}
-#' \item{len_q}{length of srvfs}
-#' \item{mean_scale}{mean length}
-#' \item{mean_scale_q}{mean length srvf}
-#' \item{E}{energy}
-#' \item{qun}{cost function}
+#' @return An object of class `fdacurve` which is a list with the following
+#'   components:
+#' - `mu`: mean srvf
+#' - `beta`: centered curves
+#' - `betamean`: mean or median curve
+#' - `type`: string indicating whether mean or median is returned
+#' - `v`: shooting vectors
+#' - `q`: array of srvfs
+#' - `gam`: array of warping functions
+#' - `cent`: centers of original curves
+#' - `len`: length of curves
+#' - `len_q`: length of srvfs
+#' - `mean_scale`: mean length
+#' - `mean_scale_q`: mean length srvf
+#' - `E`: energy
+#' - `qun`: cost function
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
 #'    analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
@@ -114,8 +116,9 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
       v <- out$v
       v_d <- out$v_d
       dist <- out$dist
+      d_i <- out$d_i
 
-      list(v, v_d, dist)
+      list(v, v_d, dist, d_i)
     }
 
     v <- unlist(outfor[1, ])
@@ -126,6 +129,9 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
 
     dist <- unlist(outfor[3, ])
     dim(dist) <- c(N)
+
+    d_i <- unlist(outfor[4, ])
+    dim(d_i) <- c(N)
 
     sumd[itr + 1] = sumd[itr + 1] + sum(dist^2)
 
@@ -173,7 +179,13 @@ curve_karcher_mean <- function (beta, mode = "O", rotated = TRUE, scale = TRUE,
   if (parallel) parallel::stopCluster(cl)
 
   ifelse(ms=="median",type<-"Karcher Median",type<-"Karcher Mean")
-  return(list(beta = beta, mu = mu, type = type, betamean = betamean, v = v, q = q,
+
+  out <- list(beta = beta, mu = mu, type = type, betamean = betamean, v = v, q = q,
               E=normvbar[1:itr], cent = cent, len = len, len_q = len_q,
-              qun = sumd[1:itr], mean_scale = mean_scale, mean_scale_q=mean_scale_q))
+              qun = sumd[1:itr], mean_scale = mean_scale, mean_scale_q=mean_scale_q,
+              mode=mode, rotated=rotated, scale=scale, ms=ms, lambda=lambda,
+              rsamps=FALSE)
+
+  class(out) <- "fdacurve"
+  return(out)
 }

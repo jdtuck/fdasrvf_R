@@ -4,33 +4,35 @@
 \alias{sample_shapes}
 \title{Sample shapes from model}
 \usage{
-sample_shapes(mu, K, mode = "O", no = 3, numSamp = 10)
+sample_shapes(x, no = 3, numSamp = 10)
 }
 \arguments{
-\item{mu}{array (n,T) of mean srvf}
-
-\item{K}{array (2\emph{T,2}T) covariance matrix}
-
-\item{mode}{Open ("O") or Closed ("C") curves}
+\item{x}{An object of class \code{fdacurve} typically produced by \code{\link[=curve_srvf_align]{curve_srvf_align()}}}
 
 \item{no}{number of principal components}
 
 \item{numSamp}{number of samples}
 }
 \value{
-samples list of sample curves
+Returns a \code{fdacurve} object containing \item{betans}{random aligned curves}
+\item{qns}{random aligned srvfs}
+\item{betans}{random curves}
+\item{qs}{random srvfs}
+\item{gams}{random reparametrization functions}
+\item{R}{random rotation matrices}
 }
 \description{
 Sample shapes from model
 }
 \examples{
-out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
+out <- curve_srvf_align(beta[, , 1, 1:5], maxit = 2, parallel=FALSE)
 # note: use more shapes, small for speed
-K <- curve_karcher_cov(out$v)
-samples <- sample_shapes(out$mu, K)
+out.samples <- sample_shapes(out)
 }
 \references{
-Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
+Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 }
 \keyword{alignment}
 \keyword{srvf}
