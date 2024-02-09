@@ -27,6 +27,7 @@ Imports:
     doParallel,
     fields,
     foreach,
+    furrr,
     lpSolve,
     Matrix,
     mvtnorm,

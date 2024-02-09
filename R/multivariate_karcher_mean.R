@@ -56,17 +56,24 @@ multivariate_karcher_mean <- function(beta,
 {
   ms <- rlang::arg_match(ms)
 
-  dims = dim(beta)
+  dims <- dim(beta)
   L <- dims[1] # Dimension of codomain
   M <- dims[2] # Size of the evaluation grid
   N <- dims[3] # Sample size
   q <- array(dim = c(L, M, N)) # Array for hosting SRVFs
-  for (ii in 1:N) {
-    beta1 = beta[ , , ii]
-    out = curve_to_q(beta1, scale = scale)
-    q[, , ii] = out$q
+
+  preproc <- furrr::future_map(1:N, \(n) {
+    beta1 <- beta[ , , n]
+    out <- curve_to_q(beta1, scale = scale)
+    q1 <- out$q
     if (scale)
-      beta[ , , ii] <- beta1 / out$len
+      beta1 <- beta1 / out$len
+    list(q1 = q1, beta1 = beta1)
+  }, .options = furrr::furrr_options(seed = TRUE))
+
+  for (n in 1:N) {
+    q[ , , n] <- preproc[[n]]$q1
+    beta[ , , n] <- preproc[[n]]$beta1
   }
 
   # Initialize mean as the pointwise mean of the curves
@@ -91,9 +98,8 @@ multivariate_karcher_mean <- function(beta,
   while (itr < maxit) {
     cli::cli_alert_info("Iteration {itr}/{maxit}...")
 
-    for (i in 1:N) {
-      beta_i <- beta[, , i]
-
+    alignment_step <- furrr::future_map(1:N, \(n) {
+      beta_i <- beta[ , , n]
       out <- calc_shape_dist(
         beta1 = betamean,
         beta2 = beta_i,
@@ -101,17 +107,15 @@ multivariate_karcher_mean <- function(beta,
         rotation = rotation,
         scale = scale
       )
+      list(d = out$d, q2n = out$q2n, beta2n = out$beta2n)
+    }, .options = furrr::furrr_options(seed = TRUE))
 
-      qt[, , i] <- out$q2n
-      betat[, , i] <- out$beta2n
-
-      if (ms == "median") {
-        # run for median only, saves computation time if getting mean
-        # AST: probably different when scale is true
-        d_i[i] <- sqrt(innerprod_q2(qt[, , i], qt[, , i])) # calculate sqrt of norm of v_i
-      }
-
-      sumd[itr + 1] <- sumd[itr + 1] + out$d^2
+    for (n in 1:N) {
+      qt[ , , n] <- alignment_step[[n]]$q2n
+      betat[ , , n] <- alignment_step[[n]]$beta2n
+      if (ms == "median")
+        d_i[n] <- sqrt(innerprod_q2(qt[ , , n], qt[ , , n]))
+      sumd[itr + 1] <- sumd[itr + 1] + alignment_step[[n]]$d^2
     }
 
     # AST: stopping criteria should probably be modified when scale is true
@@ -129,19 +133,18 @@ multivariate_karcher_mean <- function(beta,
     normbar[itr] <- sqrt(innerprod_q2(vbar, vbar))
     normv <- normbar[itr]
 
-    if ((sumd[itr] - sumd[itr + 1]) < 0)
+    if (sumd[itr] - sumd[itr + 1] < 0 ||
+        normv < tolv ||
+        abs(sumd[itr + 1] - sumd[itr]) < told)
       break
-    else if ((normv > tolv) && (abs(sumd[itr + 1] - sumd[itr]) > told)) {
-      qn <- qt
-      betan <- betat
-      qmean <- rowMeans(qn, dims = 2)
-      # Should be something like this, but numerical integration is huge and it
-      # requires to record value at first time point
-      # betamean <- q_to_curve(qmean) + rowMeans(beta[, 1, ])
-      betamean <- rowMeans(betan, dims = 2)
-    }
-    else
-      break
+
+    qn <- qt
+    betan <- betat
+    qmean <- rowMeans(qn, dims = 2)
+    # Should be something like this, but numerical integration is huge and it
+    # requires to record value at first time point
+    # betamean <- q_to_curve(qmean) + rowMeans(beta[, 1, ])
+    betamean <- rowMeans(betan, dims = 2)
 
     itr <- itr + 1
   }
