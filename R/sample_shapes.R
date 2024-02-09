@@ -24,6 +24,7 @@ sample_shapes <- function(x, no=3, numSamp=10){
 
     K <- curve_karcher_cov(x$v)
     mu <- x$mu
+    mu <- mu/sqrt(innerprod_q2(mu, mu))
 
     n = nrow(mu)
     T1 = ncol(mu)
@@ -45,6 +46,14 @@ sample_shapes <- function(x, no=3, numSamp=10){
     q2 = mu
     samples = array(0,dim=c(n,T1,numSamp))
     samples.q = array(0,dim=c(n,T1,numSamp))
+
+    # distribution if scales
+    scale = rep(1, numSamp)
+    scale_min = min(x$len_q)
+    scale_max = max(x$len_q)
+    if (!x$scale){
+      scale = runif(numSamp,scale_min,scale_max)
+    }
 
     for (i in 1:numSamp){
         v = matrix(0, 2, T1)
@@ -72,7 +81,7 @@ sample_shapes <- function(x, no=3, numSamp=10){
             # q1 = q2
         }
 
-        beta = q_to_curve(q2)
+        beta = q_to_curve(q2, scale[i])
         centroid = calculatecentroid(beta)
         dim(centroid) = c(length(centroid),1)
         beta = beta - repmat(centroid,1,T1)

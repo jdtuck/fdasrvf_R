@@ -162,10 +162,8 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
     for (j in (i + 1):length(CR_50)) {
       q1 <- qn[, , CR_50[i]] - qmedian
       q3 <- qn[, , CR_50[j]] - qmedian
-      if (scale){
-        q1 <- q1 / sqrt(innerprod_q2(q1, q1))
-        q3 <- q3 / sqrt(innerprod_q2(q3, q3))
-      }
+      q1 <- q1 / sqrt(innerprod_q2(q1, q1))
+      q3 <- q3 / sqrt(innerprod_q2(q3, q3))
       angle[i, j] <- innerprod_q2(q1, q3)
       energy[i, j] <- (1 - lambda) * (dy[CR_50[i]] / m + dy[CR_50[j]] / m) -
         lambda * (angle[i, j] + 1)
@@ -192,10 +190,8 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
     for (j in (i + 1):length(CR_alpha)) {
       q1 <- qn[, , CR_alpha[i]] - qmedian
       q3 <- qn[, , CR_alpha[j]] - qmedian
-      if (scale){
-        q1 <- q1 / sqrt(innerprod_q2(q1, q1))
-        q3 <- q3 / sqrt(innerprod_q2(q3, q3))
-      }
+      q1 <- q1 / sqrt(innerprod_q2(q1, q1))
+      q3 <- q3 / sqrt(innerprod_q2(q3, q3))
       angle[i, j] <- innerprod_q2(q1, q3)
       energy[i, j] <- (1 - lambda) * (dy[CR_alpha[i]] / m + dy[CR_alpha[j]] / m) -
         lambda * (angle[i, j] + 1)
