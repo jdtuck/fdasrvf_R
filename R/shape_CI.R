@@ -33,6 +33,6 @@ shape_CI <- function(beta, a=.95, no = 5, Nsamp=100,
   samples <- sample_shapes(out.med, no, Nsamp)
   box <- curve_boxplot(samples, alpha = 1 - a)
 
-  return(list(Q1a=box$Q1a,Q3a=box$Q3a))
+  return(list(Q1a=box$Q1a,Q3a=box$Q3a, samples=samples, out.med=out.med, box=box))
 
 }
