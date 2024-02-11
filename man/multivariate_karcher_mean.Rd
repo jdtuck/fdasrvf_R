@@ -9,7 +9,8 @@ multivariate_karcher_mean(
   rotation = FALSE,
   scale = FALSE,
   maxit = 20,
-  ms = c("mean", "median")
+  ms = c("mean", "median"),
+  ncores = 1L
 )
 }
 \arguments{
@@ -27,6 +28,11 @@ Defaults to \code{FALSE}.}
 
 \item{ms}{A character string specifying whether the Karcher mean ("mean") or
 Karcher median ("median") is returned. Defaults to \code{"mean"}.}
+
+\item{ncores}{An integer value specifying the number of cores to use for
+parallel computation. Defaults to \code{1L}. The maximum number of available
+cores is determined by the \strong{parallel} package. One core is always left
+out to avoid overloading the system.}
 }
 \value{
 A list with the following components:

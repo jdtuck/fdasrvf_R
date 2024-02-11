@@ -16,6 +16,10 @@
 #' @param maxit An integer value specifying the maximum number of iterations.
 #' @param ms A character string specifying whether the Karcher mean ("mean") or
 #'   Karcher median ("median") is returned. Defaults to `"mean"`.
+#' @param ncores An integer value specifying the number of cores to use for
+#'   parallel computation. Defaults to `1L`. The maximum number of available
+#'   cores is determined by the **parallel** package. One core is always left
+#'   out to avoid overloading the system.
 #'
 #' @return A list with the following components:
 #' - `beta`: A numeric array of shape \eqn{L \times M \times N} storing the
@@ -52,8 +56,25 @@ multivariate_karcher_mean <- function(beta,
                                       rotation = FALSE,
                                       scale = FALSE,
                                       maxit = 20,
-                                      ms = c("mean", "median"))
+                                      ms = c("mean", "median"),
+                                      ncores = 1L)
 {
+  navail <- max(parallel::detectCores() - 1, 1)
+
+  if (ncores > navail) {
+    cli::cli_alert_warning(
+      "The number of requested ncores ({ncores}) is larger than the number of
+      available cores ({navail}). Using the maximum number of available cores..."
+    )
+    ncores <- navail
+  }
+
+  if (ncores > 1L) {
+    cl <- parallel::makeCluster(ncores)
+    doParallel::registerDoParallel(cl)
+  } else
+    foreach::registerDoSEQ()
+
   ms <- rlang::arg_match(ms)
 
   dims <- dim(beta)
@@ -62,19 +83,22 @@ multivariate_karcher_mean <- function(beta,
   N <- dims[3] # Sample size
   q <- array(dim = c(L, M, N)) # Array for hosting SRVFs
 
-  preproc <- furrr::future_map(1:N, \(n) {
+  preprocessing_step <- foreach::foreach(n = 1:N,
+                                         .combine = cbind,
+                                         .packages = "fdasrvf") %dopar% {
     beta1 <- beta[ , , n]
     out <- curve_to_q(beta1, scale = scale)
     q1 <- out$q
     if (scale)
       beta1 <- beta1 / out$len
     list(q1 = q1, beta1 = beta1)
-  }, .options = furrr::furrr_options(seed = TRUE))
-
-  for (n in 1:N) {
-    q[ , , n] <- preproc[[n]]$q1
-    beta[ , , n] <- preproc[[n]]$beta1
   }
+
+  q <- unlist(preprocessing_step[1, ])
+  dim(q) <- c(L, M, N)
+
+  beta <- unlist(preprocessing_step[2, ])
+  dim(beta) <- c(L, M, N)
 
   # Initialize mean as the pointwise mean of the curves
   # AST: improve with medoid, meaning compute distance matrix first.
@@ -98,25 +122,33 @@ multivariate_karcher_mean <- function(beta,
   while (itr < maxit) {
     cli::cli_alert_info("Iteration {itr}/{maxit}...")
 
-    alignment_step <- furrr::future_map(1:N, \(n) {
-      beta_i <- beta[ , , n]
-      out <- calc_shape_dist(
-        beta1 = betamean,
-        beta2 = beta_i,
-        mode = "O",
-        rotation = rotation,
-        scale = scale
-      )
-      list(d = out$d, q2n = out$q2n, beta2n = out$beta2n)
-    }, .options = furrr::furrr_options(seed = TRUE))
+    alignment_step <- foreach::foreach(
+      n = 1:N,
+      .combine = cbind,
+      .packages = "fdasrvf") %dopar% {
+        beta_i <- beta[ , , n]
+        out <- calc_shape_dist(
+          beta1 = betamean,
+          beta2 = beta_i,
+          mode = "O",
+          rotation = rotation,
+          scale = scale
+        )
+        list(d = out$d, q2n = out$q2n, beta2n = out$beta2n)
+      }
 
-    for (n in 1:N) {
-      qt[ , , n] <- alignment_step[[n]]$q2n
-      betat[ , , n] <- alignment_step[[n]]$beta2n
-      if (ms == "median")
-        d_i[n] <- sqrt(innerprod_q2(qt[ , , n], qt[ , , n]))
-      sumd[itr + 1] <- sumd[itr + 1] + alignment_step[[n]]$d^2
-    }
+    d <- unlist(alignment_step[1, ])
+    dim(d) <- c(N, 1)
+    sumd[itr + 1] <- sum(d^2)
+
+    qt <- unlist(alignment_step[2, ])
+    dim(qt) <- c(L, M, N)
+
+    if (ms == "median")
+      d_i[n] <- sqrt(innerprod_q2(qt[ , , n], qt[ , , n]))
+
+    betat <- unlist(alignment_step[3, ])
+    dim(betat) <- c(L, M, N)
 
     # AST: stopping criteria should probably be modified when scale is true
     if (ms == "median") {
@@ -150,6 +182,8 @@ multivariate_karcher_mean <- function(beta,
   }
 
   type <- ifelse(ms == "median", "Karcher Median", "Karcher Mean")
+
+  if (ncores > 1L) parallel::stopCluster(cl)
 
   list(
     beta = beta,
