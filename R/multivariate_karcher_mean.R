@@ -63,7 +63,7 @@ multivariate_karcher_mean <- function(beta,
 
   if (ncores > navail) {
     cli::cli_alert_warning(
-      "The number of requested ncores ({ncores}) is larger than the number of
+      "The number of requested cores ({ncores}) is larger than the number of
       available cores ({navail}). Using the maximum number of available cores..."
     )
     ncores <- navail
