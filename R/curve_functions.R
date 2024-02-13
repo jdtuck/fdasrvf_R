@@ -166,7 +166,7 @@ find_rotation_seed_coord <- function(beta1, beta2,
   len1 <- out$len
 
   scl <- 4
-  minE <- 1000
+  minE <- Inf
   if (mode == "C")
     end_idx <- floor(T1 / scl)
   else
@@ -212,11 +212,16 @@ find_rotation_seed_coord <- function(beta1, beta2,
       gam <- seq(0, 1, length.out = T1)
     }
 
-    dist <- innerprod_q2(q1, q2new)
-    if (dist < -1) dist <- -1
-    if (dist >  1) dist <-  1
+    if (scale) {
+      dist <- innerprod_q2(q1, q2new)
+      if (dist < -1) dist <- -1
+      if (dist >  1) dist <-  1
+      Ec <- acos(dist)
+    } else {
+      v <- q1 - q2new
+      Ec <- sqrt(innerprod_q2(v, v))
+    }
 
-    Ec <- acos(dist)
     if (Ec < minE) {
       Rbest <- Rout
       beta2best <- beta2new

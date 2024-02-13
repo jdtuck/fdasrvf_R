@@ -76,12 +76,11 @@ calc_shape_dist <- function(beta1, beta2,
     scale = scale
   )
 
-  q1dotq2 <- innerprod_q2(q1, out$q2best)
-
-  if (q1dotq2 >  1) q1dotq2 <-  1
-  if (q1dotq2 < -1) q1dotq2 <- -1
-
+  # Compute amplitude distance
   if (scale) {
+    q1dotq2 <- innerprod_q2(q1, out$q2best)
+    if (q1dotq2 >  1) q1dotq2 <-  1
+    if (q1dotq2 < -1) q1dotq2 <- -1
     if (include.length)
       d <- sqrt(acos(q1dotq2) ^ 2 + log(lenq1 / lenq2) ^ 2)
     else
@@ -91,6 +90,7 @@ calc_shape_dist <- function(beta1, beta2,
     d <- sqrt(innerprod_q2(v, v))
   }
 
+  # Compute phase distance
   gam <- out$gambest
   time1 <- seq(0, 1, length.out = T1)
   binsize <- mean(diff(time1))
@@ -98,6 +98,7 @@ calc_shape_dist <- function(beta1, beta2,
   v <- inv_exp_map(rep(1, length(gam)), psi)
   dx <- sqrt(trapz(time1, v ^ 2))
 
+  # Return results
   list(
     d = d,
     dx = dx,
