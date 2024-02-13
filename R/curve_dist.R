@@ -46,12 +46,13 @@ curve_dist <- function(beta,
   N <- dims[3]
   K <- N * (N - 1) / 2
 
+  k <- NULL
   out <- foreach::foreach(k = 0:(K - 1), .combine = cbind, .packages = "fdasrvf") %dopar% {
     # Compute indices i and j of distance matrix from linear index k
     i <- N - 2 - floor(sqrt(-8 * k + 4 * N * (N - 1) - 7) / 2.0 - 0.5)
     j <- k + i + 1 - N * (N - 1) / 2 + (N - i) * ((N - i) - 1) / 2
-    # Increment indices as prevous ones are 0-based while R expects 1-based
-    out <- calc_shape_dist(
+    # Increment indices as previous ones are 0-based while R expects 1-based
+    res <- calc_shape_dist(
       beta1 = beta[, , i + 1],
       beta2 = beta[, , j + 1],
       mode = mode,
@@ -59,11 +60,10 @@ curve_dist <- function(beta,
       scale = scale,
       include.length = include.length
     )
-    list(out$d, out$dx)
+    matrix(c(res$d, res$dx), ncol = 1)
   }
 
-  Da <- unlist(out[1, ])
-  Da <- as.numeric(Da)
+  Da <- out[1, ]
   attributes(Da) <- NULL
   attr(Da, "Labels") <- 1:N
   attr(Da, "Size") <- N
@@ -73,8 +73,7 @@ curve_dist <- function(beta,
   attr(Da, "method") <- "calc_shape_dist (amplitude)"
   class(Da) <- "dist"
 
-  Dp <- unlist(out[2, ])
-  Dp <- as.numeric(Dp)
+  Dp <- out[2, ]
   attributes(Dp) <- NULL
   attr(Dp, "Labels") <- 1:N
   attr(Dp, "Size") <- N

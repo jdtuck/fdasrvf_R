@@ -95,6 +95,7 @@ multivariate_karcher_mean <- function(beta,
   N <- dims[3] # Sample size
   q <- array(dim = c(L, M, N)) # Array for hosting SRVFs
 
+  n <- NULL
   preprocessing_step <- foreach::foreach(n = 1:N,
                                          .combine = cbind,
                                          .packages = "fdasrvf") %dopar% {
