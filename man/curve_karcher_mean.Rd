@@ -11,62 +11,91 @@ curve_karcher_mean(
   scale = TRUE,
   lambda = 0,
   maxit = 20,
-  ms = "mean",
+  ms = c("mean", "median"),
   parallel = TRUE
 )
 }
 \arguments{
-\item{beta}{Array of sizes \eqn{n \times T \times N} describing \eqn{N}
-curves of dimension \eqn{n} evaluated on \eqn{T} points}
+\item{beta}{A numeric array of shape \eqn{L \times M \times N} specifying an
+\eqn{N}-sample of \eqn{L}-dimensional curves evaluated on \eqn{M} points.}
 
-\item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
+\item{mode}{A character string specifying whether the input curves should be
+considered open (\code{mode == "O"}) or closed (\code{mode == "C"}). Defaults to
+\code{"O"}.}
 
-\item{rotated}{Optimize over rotation (default = \code{TRUE})}
+\item{rotated}{A boolean specifying whether to make the metric
+rotation-invariant. Defaults to \code{FALSE}.}
 
-\item{scale}{scale curves to unit length (default = \code{TRUE})}
+\item{scale}{A boolean specifying whether the distance should be made
+invariant by scaling. This is effectively achieved by making SRVFs having
+unit length and switching to an appropriate metric on the sphere between
+normalized SRVFs. Defaults to \code{TRUE}.}
 
 \item{lambda}{A numeric value specifying the elasticity. Defaults to \code{0.0}.}
 
-\item{maxit}{maximum number of iterations}
+\item{maxit}{An integer value specifying the maximum number of iterations.
+Defaults to \code{20L}.}
 
-\item{ms}{string defining whether the Karcher mean (\code{"mean"}) or Karcher
-median (\code{"median"}) is returned (default = \code{"mean"})}
+\item{ms}{A character string specifying whether the Karcher mean ("mean") or
+Karcher median ("median") is returned. Defaults to \code{"mean"}.}
 
-\item{parallel}{A boolean specifying whether to run calculations in parallel.
-Defaults to \code{TRUE}.}
+\item{ncores}{An integer value specifying the number of cores to use for
+parallel computation. Defaults to \code{1L}. The maximum number of available
+cores is determined by the \strong{parallel} package. One core is always left
+out to avoid overloading the system.}
 }
 \value{
 An object of class \code{fdacurve} which is a list with the following
 components:
 \itemize{
-\item \code{mu}: mean srvf
-\item \code{beta}: centered curves
-\item \code{betamean}: mean or median curve
-\item \code{type}: string indicating whether mean or median is returned
-\item \code{v}: shooting vectors
-\item \code{q}: array of srvfs
-\item \code{gam}: array of warping functions
-\item \code{cent}: centers of original curves
-\item \code{len}: length of curves
-\item \code{len_q}: length of srvfs
-\item \code{mean_scale}: mean length
-\item \code{mean_scale_q}: mean length srvf
-\item \code{E}: energy
-\item \code{qun}: cost function
+\item beta: A numeric array of shape \eqn{L \times M \times N} specifying the
+\eqn{N}-sample of \eqn{L}-dimensional curves evaluated on \eqn{M} points.
+The curves might be slightly different from the input curves as they have
+been centered.
+\item \code{mu}: A numeric array of shape \eqn{L \times M} specifying the Karcher
+mean or median of the SRVFs of the input curves.
+\item \code{type}: A character string specifying whether the Karcher mean or median
+is returned.
+\item \code{betamean}: A numeric array of shape \eqn{L \times M} specifying the
+Karcher mean or median of the input curves.
+\item \code{v}: A numeric array of shape \eqn{L \times M \times N} specifying the
+shooting vectors.
+\item \code{q}: A numeric array of shape \eqn{L \times M \times N} specifying the
+SRVFs of the input curves.
+\item \code{E}: A numeric vector of shape \eqn{N} specifying XXX (TO DO)
+\item \code{cent}: A numeric array of shape \eqn{L \times M} specifying the centers
+of the input curves.
+\item \code{len}: A numeric vector of shape \eqn{N} specifying the length of the
+input curves.
+\item \code{len_q}: A numeric vector of shape \eqn{N} specifying the length of the
+SRVFs of the input curves.
+\item \code{qun}: A numeric vector of shape \eqn{maxit} specifying the consecutive
+values of the cost function.
+\item \code{mean_scale}: A numeric value specifying the mean length of the input
+curves.
+\item \code{mean_scale_q}: A numeric value specifying the mean length of the SRVFs
+of the input curves.
+\item \code{mode}: A character string specifying the mode of the input curves.
+\item \code{rotated}: A boolean specifying whether the metric is rotation-invariant.
+\item \code{scale}: A boolean specifying whether the metric is scale-invariant.
+\item \code{ms}: A character string specifying whether the Karcher mean or median is
+returned.
+\item \code{lambda}: A numeric value specifying the elasticity ??? (TO DO).
+\item \code{rsamps}: ??? (TO DO).
 }
 }
 \description{
 Calculates Karcher mean or median of a collection of curves using the elastic
-square-root velocity (srvf) framework.
+square-root velocity (SRVF) framework.
 }
 \examples{
-out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
+out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 # note: use more shapes, small for speed
 }
 \references{
 Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
-analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine
-Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+analysis of elastic curves in Euclidean spaces. Pattern Analysis and
+Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 }
 \keyword{alignment}
 \keyword{srvf}

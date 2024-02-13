@@ -14,6 +14,7 @@
 #' @param scale A boolean specifying whether to make the metric scale-invariant.
 #'   Defaults to `FALSE`.
 #' @param maxit An integer value specifying the maximum number of iterations.
+#'   Defaults to `20L`.
 #' @param ms A character string specifying whether the Karcher mean ("mean") or
 #'   Karcher median ("median") is returned. Defaults to `"mean"`.
 #' @param ncores An integer value specifying the number of cores to use for
@@ -55,7 +56,7 @@
 multivariate_karcher_mean <- function(beta,
                                       rotation = FALSE,
                                       scale = FALSE,
-                                      maxit = 20,
+                                      maxit = 20L,
                                       ms = c("mean", "median"),
                                       ncores = 1L)
 {

@@ -193,7 +193,7 @@ kmeans_align <- function(f, time,
       outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
         if (alignment) {
           if (L > 1){
-            out = find_rotation_seed_unqiue(templates.q[, , k], q[, , n],
+            out = find_rotation_seed_unique(templates.q[, , k], q[, , n],
                                             mode='O', rotation=rotation, scale=scale)
             gam_tmp = out$gambest
 

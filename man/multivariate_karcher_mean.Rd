@@ -8,7 +8,7 @@ multivariate_karcher_mean(
   beta,
   rotation = FALSE,
   scale = FALSE,
-  maxit = 20,
+  maxit = 20L,
   ms = c("mean", "median"),
   ncores = 1L
 )
@@ -24,7 +24,8 @@ rotation-invariant. Defaults to \code{FALSE}.}
 \item{scale}{A boolean specifying whether to make the metric scale-invariant.
 Defaults to \code{FALSE}.}
 
-\item{maxit}{An integer value specifying the maximum number of iterations.}
+\item{maxit}{An integer value specifying the maximum number of iterations.
+Defaults to \code{20L}.}
 
 \item{ms}{A character string specifying whether the Karcher mean ("mean") or
 Karcher median ("median") is returned. Defaults to \code{"mean"}.}
