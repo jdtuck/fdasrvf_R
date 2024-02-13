@@ -158,7 +158,8 @@ shift_f <- function(f, tau){
 find_rotation_seed_coord <- function(beta1, beta2,
                                      mode = "O",
                                      rotation = TRUE,
-                                     scale = TRUE) {
+                                     scale = TRUE,
+                                     lambda = 0.0) {
   n <- nrow(beta1)
   T1 <- ncol(beta1)
   out <- curve_to_q(beta1, scale = scale)
@@ -197,7 +198,8 @@ find_rotation_seed_coord <- function(beta1, beta2,
       q2ni <- q2n / sqrt(innerprod_q2(q2n, q2n))
       dim(q1i) <- c(T1 * n)
       dim(q2ni) <- c(T1 * n)
-      gam0 <- .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni, n, T1, 0, 1, 0, rep(0,T1))
+      gam0 <- .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni,
+                    n, T1, lambda, 1, 0, rep(0,T1))
       gamI <- invertGamma(gam0)
       gam <- (gamI - gamI[1]) / (gamI[length(gamI)] - gamI[1])
       beta2new <- group_action_by_gamma_coord(beta2n, gam)
@@ -250,7 +252,7 @@ find_rotation_seed_unique <- function(q1, q2,
                                       mode = "O",
                                       rotation = TRUE,
                                       scale = TRUE,
-                                      lam = 0.0) {
+                                      lambda = 0.0) {
     n1 <- nrow(q1)
     T1 <- ncol(q1)
     scl <- 4
@@ -280,7 +282,7 @@ find_rotation_seed_unique <- function(q1, q2,
         dim(q1i) <- c(T1 * n1)
         dim(q2ni) <- c(T1 * n1)
         gam0 <- .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni,
-                      n1, T1, lam, 1, 0, rep(0, T1))
+                      n1, T1, lambda, 1, 0, rep(0, T1))
         gamI <- invertGamma(gam0)
         gam <- (gamI - gamI[1]) / (gamI[length(gamI)] - gamI[1])
         beta2n <- q_to_curve(q2n)
@@ -289,8 +291,7 @@ find_rotation_seed_unique <- function(q1, q2,
 
         if (mode == "C")
           q2new <- project_curve(q2new)
-      }
-      else {
+      } else {
         q2new <- q2n
         gam <- seq(0, 1, length.out = T1)
       }
@@ -642,7 +643,7 @@ karcher_calc <- function(q1, mu, basis,
       mode = mode,
       rotation = rotated,
       scale = TRUE,
-      lam = lambda
+      lambda = lambda
     )
 
     qn_t <- out$q2best / sqrt(innerprod_q2(out$q2best, out$q2best))

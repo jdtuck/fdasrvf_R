@@ -12,7 +12,7 @@ curve_karcher_mean(
   lambda = 0,
   maxit = 20,
   ms = c("mean", "median"),
-  parallel = TRUE
+  ncores = 1L
 )
 }
 \arguments{

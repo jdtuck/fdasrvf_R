@@ -73,7 +73,7 @@ curve_karcher_mean <- function(beta,
                                lambda = 0.0,
                                maxit = 20,
                                ms = c("mean", "median"),
-                               parallel = TRUE)
+                               ncores = 1L)
 {
   navail <- max(parallel::detectCores() - 1, 1)
 

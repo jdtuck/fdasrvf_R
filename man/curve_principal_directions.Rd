@@ -32,7 +32,7 @@ Returns a list containing \item{s}{singular values}
 Calculate principal directions of a set of curves
 }
 \examples{
-out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2, parallel=FALSE)
+out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 # note: use more shapes, small for speed
 K <- curve_karcher_cov(out$v)
 out <- curve_principal_directions(out$v, K, out$mu)
