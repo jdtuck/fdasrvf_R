@@ -69,9 +69,21 @@ multivariate_karcher_mean <- function(beta,
     ncores <- navail
   }
 
+  # Find medoid
+  out <- curve_dist(
+    beta = beta,
+    mode = "O",
+    rotation = rotation,
+    scale = scale,
+    ncores = ncores
+  )
+  dists <- as.numeric(rowSums(as.matrix(out$Da)))
+  medoid_idx <- which.min(dists)
+
   if (ncores > 1L) {
     cl <- parallel::makeCluster(ncores)
     doParallel::registerDoParallel(cl)
+    on.exit(parallel::stopCluster(cl))
   } else
     foreach::registerDoSEQ()
 
@@ -100,10 +112,9 @@ multivariate_karcher_mean <- function(beta,
   beta <- unlist(preprocessing_step[2, ])
   dim(beta) <- c(L, M, N)
 
-  # Initialize mean as the pointwise mean of the curves
-  # AST: improve with medoid, meaning compute distance matrix first.
-  qmean <- rowMeans(q, dims = 2)
-  betamean <- rowMeans(beta, dims = 2)
+  # Initialize mean as the medoid
+  qmean <- q[, , medoid_idx]
+  betamean <- beta[, , medoid_idx]
   delta <- 0.5
   tolv <- 1e-04
   told <- 5 * 0.001
@@ -182,8 +193,6 @@ multivariate_karcher_mean <- function(beta,
   }
 
   type <- ifelse(ms == "median", "Karcher Median", "Karcher Mean")
-
-  if (ncores > 1L) parallel::stopCluster(cl)
 
   list(
     beta = beta,
