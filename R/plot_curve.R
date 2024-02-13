@@ -12,8 +12,8 @@
 plot_curve <- function(beta, add=FALSE, ...){
 
   if (add){
-    lines(beta[1,], beta[2,], ...)
+    graphics::lines(beta[1,], beta[2,], ...)
   } else {
-    plot(beta[1,], beta[2,], type="l", ...)
+    graphics::plot(beta[1,], beta[2,], type="l", ...)
   }
 }

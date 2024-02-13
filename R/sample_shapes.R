@@ -52,7 +52,7 @@ sample_shapes <- function(x, no=3, numSamp=10){
     scale_min = min(x$len_q)
     scale_max = max(x$len_q)
     if (!x$scale){
-      scale = runif(numSamp,scale_min,scale_max)
+      scale = stats::runif(numSamp,scale_min,scale_max)
     }
 
     for (i in 1:numSamp){
