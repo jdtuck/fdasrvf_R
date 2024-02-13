@@ -7,14 +7,14 @@
 gauss_model(warp_data, n = 1, sort_samples = FALSE)
 }
 \arguments{
-\item{warp_data}{fdawarp object from \link{time_warping} of aligned data}
+\item{warp_data}{\code{fdawarp} object from \link{time_warping} of aligned data}
 
 \item{n}{number of random samples (n = 1)}
 
 \item{sort_samples}{sort samples (default = F)}
 }
 \value{
-Returns a fdawarp object containing \item{fs}{random aligned samples}
+Returns a \code{fdawarp} object containing \item{fs}{random aligned samples}
 \item{gams}{random warping function samples}
 \item{ft}{random function samples}
 }

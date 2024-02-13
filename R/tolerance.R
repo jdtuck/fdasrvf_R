@@ -10,7 +10,7 @@
 #' @param B number of bootstrap samples (default = 500)
 #' @param no number of principal components (default = 5)
 #' @param Nsamp number of functions per bootstrap (default = 100)
-#' @param parallel enable parallel processing (default = T)
+#' @param parallel enable parallel processing (default = TRUE)
 #' @return Returns a list containing \item{amp}{amplitude tolerance bounds}
 #' \item{ph}{phase tolerance bounds}
 #' @keywords tolerance bootstrap
@@ -28,7 +28,8 @@
 #' \dontrun{
 #'   out1 <- bootTB(simu_data$f, simu_data$time)
 #' }
-bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100, parallel=T){
+bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100,
+                   parallel=TRUE){
 
   M <- nrow(f)
   N <- ncol(f)

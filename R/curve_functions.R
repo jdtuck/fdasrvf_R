@@ -653,6 +653,7 @@ karcher_calc <- function(q1, mu, basis, rotated=T, mode="O",
     }
 
 
+    d_i = 0
     if(ms == "median"){ #run for median only, saves computation time if getting mean
       d_i = sqrt(innerprod_q2(v, v)) #calculate sqrt of norm of v_i
       if (d_i>0){
@@ -665,7 +666,9 @@ karcher_calc <- function(q1, mu, basis, rotated=T, mode="O",
       v_d = matrix(0, n, T1)
     }
 
-    return(list(v=v,v_d=v_d,dist=dist))
+    out = list(v=v,v_d=v_d,dist=dist,d_i=d_i)
+
+    return(out)
 }
 
 

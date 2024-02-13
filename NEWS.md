@@ -1,6 +1,8 @@
 # fdasrvf 2.2.X
 * fixed scaling in `curve_karcher_mean`
 * parallelized `curve_karcher_mean` and `curve_srvf_align`
+* updated `sample_shapes` and created `curveboxplot` (#39)
+* bugfixes (#38)
 
 # fdasrvf 2.2.0
 * bugfixes
