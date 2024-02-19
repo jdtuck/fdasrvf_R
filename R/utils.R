@@ -827,3 +827,16 @@ vandermonde_matrix <- function(alpha, n)  {
   res <- cbind(rep(1, length(alpha)), res)
   res
 }
+
+pairwise_amplitude_distance <- function(q1, q2, scale = FALSE) {
+  if (scale) {
+    q1dotq2 <- innerprod_q2(q1, q2)
+    if (q1dotq2 >  1) q1dotq2 <-  1
+    if (q1dotq2 < -1) q1dotq2 <- -1
+    d <- acos(q1dotq2)
+  } else {
+    v <- q1 - q2
+    d <- sqrt(innerprod_q2(v, v))
+  }
+  d
+}
