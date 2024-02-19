@@ -18,13 +18,10 @@ calculatecentroid <- function(beta,returnlength = F){
   return(centroid)
 }
 
-
-innerprod_q2 <- function(q1, q2){
-    T1 = ncol(q1)
-    val = sum(q1*q2)/T1
-    return(val)
+innerprod_q2 <- function(q1, q2) {
+  T1 <- ncol(q1)
+  sum(q1 * q2) / T1
 }
-
 
 find_best_rotation <- function(q1, q2){
     eps = .Machine$double.eps
@@ -175,7 +172,7 @@ find_rotation_seed_coord <- function(beta1, beta2,
 
   for (ctr in 0:end_idx) {
     if (mode == "C") {
-      if ((scl*ctr) <= end_idx)
+      if (scl * ctr <= end_idx)
         beta2n <- shift_f(beta2, scl * ctr)
       else
         break
@@ -311,12 +308,17 @@ find_rotation_seed_unique <- function(q1, q2,
         q2best <- q2new
         gambest <- gam
         minE <- Ec
+        tau <- scl * ctr
       }
     }
 
-    list(q2best = q2best, Rbest = Rbest, gambest = gambest)
+    list(
+      q2best = q2best,
+      Rbest = Rbest,
+      gambest = gambest,
+      tau = tau
+    )
 }
-
 
 find_rotation_and_seed_q <- function(q1,q2){
     n = nrow(q1)

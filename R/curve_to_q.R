@@ -1,41 +1,45 @@
-#' Convert to SRVF space
+#' Curve to SRVF Space
 #'
-#' This function converts curves or multidimesional functional data to SRVF
+#' This function computes the SRVF of a given curve. The function also outputs
+#' the length of the original curve and the \eqn{L^2} norm of the SRVF.
 #'
-#' @param beta either a matrix of shape \eqn{n \times T} describing curve or
-#'  multidimensional functional data in \eqn{R^n}, where \eqn{n} is the dimension
-#'  and \eqn{T} is the number of time points
-#' @param scale scale curve to unit length (default = `TRUE`)
-#' @return a numeric array of the same shape as the input array `beta` storing the
-#'   SRVFs of the original curves.
+#' @param beta A numeric matrix of shape \eqn{L \times M} specifying a curve on
+#'   an \eqn{L}-dimensional space observed on \eqn{M} points.
+#' @param scale A boolean value specifying whether the output SRVF function
+#'   should be scaled to the hypersphere of \eqn{L^2}. When `scale` is `TRUE`,
+#'   the length of the original curve becomes irrelevant. Defaults to `TRUE`.
+#'
+#' @return A list with the following components:
+#' - `q`: A numeric matrix of the same shape as the input matrix `beta` storing
+#' the (possibly scaled) SRVF of the original curve `beta`;
+#' - `len`: A numeric value specifying the length of the original curve;
+#' - `lenq`: A numeric value specifying the \eqn{L^2} norm of the SRVF of the
+#' original curve.
+#'
 #' @keywords srvf alignment
-#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011).
-#'  Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and M
-#'  achine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+#'
+#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+#'   analysis of elastic curves in Euclidean spaces. IEEE Transactions on
+#'   Pattern Analysis and Machine Intelligence, **33**(7), 1415-1428.
+#'
 #' @export
+#'
 #' @examples
 #' q <- curve_to_q(beta[, , 1, 1])$q
-curve_to_q <- function(beta, scale=TRUE){
-    n = nrow(beta)
-    T1 = ncol(beta)
-    v = apply(beta,1,gradient, 1.0/T1)
-    v = t(v)
+curve_to_q <- function(beta, scale = TRUE) {
+  n <- nrow(beta)
+  T1 <- ncol(beta)
+  v <- t(apply(beta, 1, gradient, binsize = 1.0 / T1))
 
-    q = matrix(0,n,T1)
-    len = sqrt(innerprod_q2(v, v))
-    for (i in 1:T1){
-        L = sqrt(pvecnorm(v[,i],2))
-        if (L>0.0001){
-            q[,i] = v[,i]/L
-        } else {
-            q[,i] = v[,i]*0.0001
-        }
-    }
+  q <- matrix(0, n, T1)
+  for (i in 1:T1) {
+    L <- max(sqrt(pvecnorm(v[, i], p = 2)), 1e-4)
+    q[, i] <- v[, i] / L
+  }
 
-    len_q = sqrt(innerprod_q2(q, q))
-    if (scale){
-      q = q/len_q
-    }
+  len <- innerprod_q2(q, q)
+  len_q <- sqrt(len)
+  if (scale) q <- q / len_q
 
-    return(list(q=q,len=len,lenq=len_q))
+  list(q = q, len = len, lenq = len_q)
 }

@@ -2,31 +2,39 @@
 % Please edit documentation in R/curve_to_q.R
 \name{curve_to_q}
 \alias{curve_to_q}
-\title{Convert to SRVF space}
+\title{Curve to SRVF Space}
 \usage{
 curve_to_q(beta, scale = TRUE)
 }
 \arguments{
-\item{beta}{either a matrix of shape \eqn{n \times T} describing curve or
-multidimensional functional data in \eqn{R^n}, where \eqn{n} is the dimension
-and \eqn{T} is the number of time points}
+\item{beta}{A numeric matrix of shape \eqn{L \times M} specifying a curve on
+an \eqn{L}-dimensional space observed on \eqn{M} points.}
 
-\item{scale}{scale curve to unit length (default = \code{TRUE})}
+\item{scale}{A boolean value specifying whether the output SRVF function
+should be scaled to the hypersphere of \eqn{L^2}. When \code{scale} is \code{TRUE},
+the length of the original curve becomes irrelevant. Defaults to \code{TRUE}.}
 }
 \value{
-a numeric array of the same shape as the input array \code{beta} storing the
-SRVFs of the original curves.
+A list with the following components:
+\itemize{
+\item \code{q}: A numeric matrix of the same shape as the input matrix \code{beta} storing
+the (possibly scaled) SRVF of the original curve \code{beta};
+\item \code{len}: A numeric value specifying the length of the original curve;
+\item \code{lenq}: A numeric value specifying the \eqn{L^2} norm of the SRVF of the
+original curve.
+}
 }
 \description{
-This function converts curves or multidimesional functional data to SRVF
+This function computes the SRVF of a given curve. The function also outputs
+the length of the original curve and the \eqn{L^2} norm of the SRVF.
 }
 \examples{
 q <- curve_to_q(beta[, , 1, 1])$q
 }
 \references{
-Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011).
-Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and M
-achine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+analysis of elastic curves in Euclidean spaces. IEEE Transactions on
+Pattern Analysis and Machine Intelligence, \strong{33}(7), 1415-1428.
 }
 \keyword{alignment}
 \keyword{srvf}
