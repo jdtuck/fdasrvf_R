@@ -5,6 +5,8 @@
 #'
 #' @param beta A numeric array of shape \eqn{L \times M \times N} specifying the
 #'   set of \eqn{N} curves of length \eqn{M} in \eqn{L}-dimensional space.
+#' @param alignment A boolean value specifying whether the curves should be
+#'  aligned before computing the distance matrix. Defaults to `TRUE`.
 #' @inheritParams calc_shape_dist
 #' @param ncores An integer value specifying the number of cores to use for
 #'   parallel computation. If `ncores` is greater than the number of available
@@ -19,6 +21,7 @@
 #' out <- curve_dist(beta[, , 1, 1:4])
 curve_dist <- function(beta,
                        mode = "O",
+                       alignment = TRUE,
                        rotation = FALSE,
                        scale = FALSE,
                        include.length = FALSE,
@@ -44,6 +47,12 @@ curve_dist <- function(beta,
   L <- dims[1]
   M <- dims[2]
   N <- dims[3]
+
+  if (!alignment) {
+    for (n in 1:N)
+      beta[ , , n] <- curve_to_q(beta[, , n], scale = scale)$q
+  }
+
   K <- N * (N - 1) / 2
 
   k <- NULL
@@ -51,16 +60,26 @@ curve_dist <- function(beta,
     # Compute indices i and j of distance matrix from linear index k
     i <- N - 2 - floor(sqrt(-8 * k + 4 * N * (N - 1) - 7) / 2.0 - 0.5)
     j <- k + i + 1 - N * (N - 1) / 2 + (N - i) * ((N - i) - 1) / 2
+
     # Increment indices as previous ones are 0-based while R expects 1-based
-    res <- calc_shape_dist(
-      beta1 = beta[, , i + 1],
-      beta2 = beta[, , j + 1],
-      mode = mode,
-      rotation = rotation,
-      scale = scale,
-      include.length = include.length
+    if (alignment) {
+      res <- calc_shape_dist(
+        beta1 = beta[, , i + 1],
+        beta2 = beta[, , j + 1],
+        mode = mode,
+        rotation = rotation,
+        scale = scale,
+        include.length = include.length
+      )
+      return(matrix(c(res$d, res$dx), ncol = 1))
+    }
+
+    d <- pairwise_amplitude_distance(
+      q1 = beta[, , i + 1],
+      q2 = beta[, , j + 1],
+      scale = scale
     )
-    matrix(c(res$d, res$dx), ncol = 1)
+    matrix(c(d, 0), ncol = 1)
   }
 
   Da <- out[1, ]

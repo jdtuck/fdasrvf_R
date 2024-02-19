@@ -7,6 +7,7 @@
 curve_dist(
   beta,
   mode = "O",
+  alignment = TRUE,
   rotation = FALSE,
   scale = FALSE,
   include.length = FALSE,
@@ -20,6 +21,9 @@ set of \eqn{N} curves of length \eqn{M} in \eqn{L}-dimensional space.}
 \item{mode}{A character string specifying whether the input curves should be
 considered open (\code{mode == "O"}) or closed (\code{mode == "C"}). Defaults to
 \code{"O"}.}
+
+\item{alignment}{A boolean value specifying whether the curves should be
+aligned before computing the distance matrix. Defaults to \code{TRUE}.}
 
 \item{rotation}{A boolean specifying whether the distance should be made
 invariant by rotation. Defaults to \code{TRUE}.}
