@@ -175,11 +175,7 @@ kmeans_align <- function(f, time,
 
   templates.q <- array(0, dim = c(L, M, K))
   for (k in 1:K)
-  {
-    print(template.ind[k])
     templates.q[, , k] <- q[, , template.ind[k]]
-  }
-
 
   # For storing final distances to center
   dtc <- rep(NA, N)
