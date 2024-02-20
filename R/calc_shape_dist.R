@@ -36,9 +36,9 @@
 #' - `beta2n`: the input curve `beta2` after alignment and possible optimal
 #' rotation and scaling.
 #' - `R`: the optimal rotation matrix that has been applied to the second curve;
-#' - `betascale`: the optimal scaling factor that has been applied to the second
-#' curve;
 #' - `gam`: the optimal warping function that has been applied to the second
+#' curve;
+#' - `betascale`: the optimal scaling factor that has been applied to the second
 #' curve.
 #'
 #' @keywords distances
@@ -62,47 +62,23 @@ calc_shape_dist <- function(beta1, beta2,
   srvf1 <- curve_to_srvf(beta1, scale = scale)
   srvf2 <- curve_to_srvf(beta2, scale = scale)
 
-  out <- find_rotation_seed_unique(
-    srvf1$q, srvf2$q,
+  out <- match_f2_to_f1(
+    srvf1, srvf2, beta2,
     mode = mode,
     alignment = alignment,
     rotation = rotation,
     scale = scale
   )
 
-  # Compute amplitude distance
-  d <- out$d
-
-  # Compute phase distance
-  gam <- out$gambest
-  dx <- phase_distance(gam)
-
-  # Compute beta2n
-  qscale <- 1
-  if (scale)
-    qscale <- srvf1$qnorm / srvf2$qnorm
-  betascale <- qscale^2
-
-  if (mode == "C") {
-    beta2n <- q_to_curve(out$q2best, scale = qscale)
-  } else {
-    beta2n <- beta2 - srvf2$centroid
-    beta2n <- out$Rbest %*% beta2n
-    beta2n <- group_action_by_gamma_coord(beta2n, gam)
-    beta2n <- beta2n * betascale
-  }
-  beta2n <- beta2n + srvf1$centroid
-
-  # Return results
   list(
-    d = d,
-    dx = dx,
+    d = out$d,
+    dx = out$dx,
     q1 = srvf1$q,
-    q2n = out$q2best,
+    q2n = out$q2n,
     beta1 = beta1,
-    beta2n = beta2n,
+    beta2n = out$beta2n,
     R = out$Rbest,
-    betascale = betascale,
-    gam = gam
+    gam = out$gambest,
+    betascale = out$betascale
   )
 }

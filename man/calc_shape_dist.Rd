@@ -54,9 +54,9 @@ and scaling;
 \item \code{beta2n}: the input curve \code{beta2} after alignment and possible optimal
 rotation and scaling.
 \item \code{R}: the optimal rotation matrix that has been applied to the second curve;
-\item \code{betascale}: the optimal scaling factor that has been applied to the second
-curve;
 \item \code{gam}: the optimal warping function that has been applied to the second
+curve;
+\item \code{betascale}: the optimal scaling factor that has been applied to the second
 curve.
 }
 }

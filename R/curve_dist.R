@@ -58,11 +58,11 @@ curve_dist <- function(beta,
     j <- k + i + 1 - N * (N - 1) / 2 + (N - i) * ((N - i) - 1) / 2
 
     # Increment indices as previous ones are 0-based while R expects 1-based
-    beta1 <- beta[, , i + 1]
-    beta2 <- beta[, , j + 1]
+    q1 <- beta[, , i + 1]
+    q2 <- beta[, , j + 1]
 
     out <- find_rotation_seed_unique(
-      beta1, beta2,
+      q1, q2,
       mode = mode,
       alignment = alignment,
       rotation = rotation,
