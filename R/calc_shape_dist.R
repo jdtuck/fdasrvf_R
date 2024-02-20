@@ -13,6 +13,8 @@
 #' @param mode A character string specifying whether the input curves should be
 #'   considered open (`mode == "O"`) or closed (`mode == "C"`). Defaults to
 #'   `"O"`.
+#' @param alignment A boolean value specifying whether the curves should be
+#'  aligned before computing the distance matrix. Defaults to `TRUE`.
 #' @param rotation A boolean specifying whether the distance should be made
 #'   invariant by rotation. Defaults to `TRUE`.
 #' @param scale A boolean specifying whether the distance should be made
@@ -53,61 +55,54 @@
 #' out <- calc_shape_dist(beta[, , 1, 1], beta[, , 1, 4])
 calc_shape_dist <- function(beta1, beta2,
                             mode = "O",
+                            alignment = TRUE,
                             rotation = TRUE,
                             scale = TRUE,
                             include.length = FALSE) {
-  T1 <- ncol(beta1)
-  centroid1 <- calculatecentroid(beta1)
-  dim(centroid1) <- c(length(centroid1), 1)
-  beta1 <- beta1 - repmat(centroid1, 1, T1)
-  out1 <- curve_to_q(beta1, scale = scale)
-  q1 <- out1$q
-  lenq1 <- out1$lenq
-  lenq2 <- curve_to_q(beta2, scale = scale)$lenq
+  srvf1 <- curve_to_srvf(beta1, scale = scale)
+  srvf2 <- curve_to_srvf(beta2, scale = scale)
 
-  centroid1 <- calculatecentroid(beta2)
-  dim(centroid1) <- c(length(centroid1), 1)
-  beta2 <- beta2 - repmat(centroid1, 1, T1)
-
-  out <- find_rotation_seed_coord(
-    beta1, beta2,
+  out <- find_rotation_seed_unique(
+    srvf1$q, srvf2$q,
     mode = mode,
+    alignment = alignment,
     rotation = rotation,
     scale = scale
   )
 
   # Compute amplitude distance
-  if (scale) {
-    q1dotq2 <- innerprod_q2(q1, out$q2best)
-    if (q1dotq2 >  1) q1dotq2 <-  1
-    if (q1dotq2 < -1) q1dotq2 <- -1
-    if (include.length)
-      d <- sqrt(acos(q1dotq2) ^ 2 + log(lenq1 / lenq2) ^ 2)
-    else
-      d <- acos(q1dotq2)
-  } else {
-    v <- q1 - out$q2best
-    d <- sqrt(innerprod_q2(v, v))
-  }
+  d <- out$d
 
   # Compute phase distance
   gam <- out$gambest
-  time1 <- seq(0, 1, length.out = T1)
-  binsize <- mean(diff(time1))
-  psi <- sqrt(gradient(gam, binsize))
-  v <- inv_exp_map(rep(1, length(gam)), psi)
-  dx <- sqrt(trapz(time1, v ^ 2))
+  dx <- phase_distance(gam)
+
+  # Compute beta2n
+  qscale <- 1
+  if (scale)
+    qscale <- srvf1$qnorm / srvf2$qnorm
+  betascale <- qscale^2
+
+  if (mode == "C") {
+    beta2n <- q_to_curve(out$q2best, scale = qscale)
+  } else {
+    beta2n <- beta2 - srvf2$centroid
+    beta2n <- out$Rbest %*% beta2n
+    beta2n <- group_action_by_gamma_coord(beta2n, gam)
+    beta2n <- beta2n * betascale
+  }
+  beta2n <- beta2n + srvf1$centroid
 
   # Return results
   list(
     d = d,
     dx = dx,
-    q1 = q1,
+    q1 = srvf1$q,
     q2n = out$q2best,
     beta1 = beta1,
-    beta2n = out$beta2best,
+    beta2n = beta2n,
     R = out$Rbest,
-    betascale = out$scale,
-    gam = out$gambest
+    betascale = betascale,
+    gam = gam
   )
 }

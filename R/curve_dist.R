@@ -5,8 +5,6 @@
 #'
 #' @param beta A numeric array of shape \eqn{L \times M \times N} specifying the
 #'   set of \eqn{N} curves of length \eqn{M} in \eqn{L}-dimensional space.
-#' @param alignment A boolean value specifying whether the curves should be
-#'  aligned before computing the distance matrix. Defaults to `TRUE`.
 #' @inheritParams calc_shape_dist
 #' @param ncores An integer value specifying the number of cores to use for
 #'   parallel computation. If `ncores` is greater than the number of available
@@ -48,10 +46,8 @@ curve_dist <- function(beta,
   M <- dims[2]
   N <- dims[3]
 
-  if (!alignment) {
-    for (n in 1:N)
-      beta[ , , n] <- curve_to_q(beta[, , n], scale = scale)$q
-  }
+  for (n in 1:N)
+    beta[ , , n] <- curve_to_srvf(beta[, , n], scale = scale)$q
 
   K <- N * (N - 1) / 2
 
@@ -62,24 +58,21 @@ curve_dist <- function(beta,
     j <- k + i + 1 - N * (N - 1) / 2 + (N - i) * ((N - i) - 1) / 2
 
     # Increment indices as previous ones are 0-based while R expects 1-based
-    if (alignment) {
-      res <- calc_shape_dist(
-        beta1 = beta[, , i + 1],
-        beta2 = beta[, , j + 1],
-        mode = mode,
-        rotation = rotation,
-        scale = scale,
-        include.length = include.length
-      )
-      return(matrix(c(res$d, res$dx), ncol = 1))
-    }
+    beta1 <- beta[, , i + 1]
+    beta2 <- beta[, , j + 1]
 
-    d <- pairwise_amplitude_distance(
-      q1 = beta[, , i + 1],
-      q2 = beta[, , j + 1],
+    out <- find_rotation_seed_unique(
+      beta1, beta2,
+      mode = mode,
+      alignment = alignment,
+      rotation = rotation,
       scale = scale
     )
-    matrix(c(d, 0), ncol = 1)
+    if (alignment)
+      dx <- phase_distance(out$gambest)
+    else
+      dx <- 0
+    matrix(c(out$d, dx), ncol = 1)
   }
 
   Da <- out[1, ]

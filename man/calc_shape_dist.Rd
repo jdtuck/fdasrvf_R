@@ -8,6 +8,7 @@ calc_shape_dist(
   beta1,
   beta2,
   mode = "O",
+  alignment = TRUE,
   rotation = TRUE,
   scale = TRUE,
   include.length = FALSE
@@ -24,6 +25,9 @@ will be aligned to \code{beta1}.}
 \item{mode}{A character string specifying whether the input curves should be
 considered open (\code{mode == "O"}) or closed (\code{mode == "C"}). Defaults to
 \code{"O"}.}
+
+\item{alignment}{A boolean value specifying whether the curves should be
+aligned before computing the distance matrix. Defaults to \code{TRUE}.}
 
 \item{rotation}{A boolean specifying whether the distance should be made
 invariant by rotation. Defaults to \code{TRUE}.}

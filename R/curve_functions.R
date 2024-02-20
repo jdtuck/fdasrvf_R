@@ -23,27 +23,24 @@ innerprod_q2 <- function(q1, q2) {
   sum(q1 * q2) / T1
 }
 
-find_best_rotation <- function(q1, q2){
-    eps = .Machine$double.eps
-    n = nrow(q1)
-    T1 = ncol(q1)
-    A = q1%*%t(q2)
-    out = svd(A)
-    s = out$d
-    U = out$u
-    V = out$v
-    if (det(A)>0){
-        S = diag(1,n)
-    } else {
-        S = diag(1,n)
-        S[,n] = -S[,n]
+find_best_rotation <- function(q1, q2) {
+    eps <- .Machine$double.eps
+    L <- nrow(q1)
+    A <- q1 %*% t(q2)
+    out <- svd(A)
+    s <- out$d
+    U <- out$u
+    V <- out$v
+    if (det(A) > 0)
+      S <- diag(1, L)
+    else {
+      S <- diag(1, L)
+      S[, L] <- -S[, L]
     }
-    R = U%*%S%*%t(V)
-    q2new = R%*%q2
-
-    return(list(q2new=q2new, R=R))
+    R <- U %*% S %*% t(V)
+    q2new <- R %*% q2
+    list(q2new = q2new, R = R)
 }
-
 
 calculate_variance <- function(beta){
     n = nrow(beta)
@@ -157,8 +154,8 @@ find_rotation_seed_coord <- function(beta1, beta2,
                                      rotation = TRUE,
                                      scale = TRUE,
                                      lambda = 0.0) {
-  n <- nrow(beta1)
-  T1 <- ncol(beta1)
+  L <- nrow(beta1)
+  M <- ncol(beta1)
   out <- curve_to_q(beta1, scale = scale)
   q1 <- out$q
   len1 <- out$len
@@ -166,7 +163,7 @@ find_rotation_seed_coord <- function(beta1, beta2,
   scl <- 4
   minE <- Inf
   if (mode == "C")
-    end_idx <- floor(T1 / scl)
+    end_idx <- floor(M / scl)
   else
     end_idx <- 0
 
@@ -191,35 +188,34 @@ find_rotation_seed_coord <- function(beta1, beta2,
     len2 <- out$len
 
     if (norm(q1 - q2n, 'F') > 0.0001) {
-      q1i <- q1 / sqrt(innerprod_q2(q1, q1))
-      q2ni <- q2n / sqrt(innerprod_q2(q2n, q2n))
-      dim(q1i) <- c(T1 * n)
-      dim(q2ni) <- c(T1 * n)
+      if (scale) {
+        q1i <- q1
+        q2ni <- q2n
+      } else {
+        q1i <- q1 / sqrt(innerprod_q2(q1, q1))
+        q2ni <- q2n / sqrt(innerprod_q2(q2n, q2n))
+      }
+      dim(q1i) <- M * L
+      dim(q2ni) <- M * L
       gam0 <- .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni,
-                    n, T1, lambda, 1, 0, rep(0,T1))
+                    L, M, lambda, 1, 0, rep(0, M))
       gamI <- invertGamma(gam0)
       gam <- (gamI - gamI[1]) / (gamI[length(gamI)] - gamI[1])
       beta2new <- group_action_by_gamma_coord(beta2n, gam)
       out <- curve_to_q(beta2new, scale = scale)
       q2new <- out$q
       len2 <- out$len
-      if (mode == "C")
+      if (mode == "C") {
         q2new <- project_curve(q2new)
+        beta2new <- q_to_curve(q2new)
+      }
     } else {
       q2new <- q2n
       beta2new <- beta2n
-      gam <- seq(0, 1, length.out = T1)
+      gam <- seq(0, 1, length.out = M)
     }
 
-    if (scale) {
-      dist <- innerprod_q2(q1, q2new)
-      if (dist < -1) dist <- -1
-      if (dist >  1) dist <-  1
-      Ec <- acos(dist)
-    } else {
-      v <- q1 - q2new
-      Ec <- sqrt(innerprod_q2(v, v))
-    }
+    Ec <- amplitude_distance(q1, q2new, scale = scale)
 
     if (Ec < minE) {
       Rbest <- Rout
@@ -247,77 +243,74 @@ find_rotation_seed_coord <- function(beta1, beta2,
 
 find_rotation_seed_unique <- function(q1, q2,
                                       mode = "O",
+                                      alignment = TRUE,
                                       rotation = TRUE,
                                       scale = TRUE,
                                       lambda = 0.0) {
-    n1 <- nrow(q1)
-    T1 <- ncol(q1)
-    scl <- 4
-    minE <- Inf
+  L <- nrow(q1)
+  M <- ncol(q1)
+  scl <- 4
+  minE <- Inf
 
+  if (mode == "C")
+    end_idx <- floor(M / scl)
+  else
+    end_idx <- 0
+
+  for (ctr in 0:end_idx) {
     if (mode == "C")
-      end_idx <- floor(T1 / scl)
+      q2n <- shift_f(q2, scl * ctr)
     else
-      end_idx <- 0
+      q2n <- q2
 
-    for (ctr in 0:end_idx) {
-      if (mode == "C")
-        q2n <- shift_f(q2, scl * ctr)
-      else
-        q2n <- q2
+    if (rotation) {
+      out <- find_best_rotation(q1, q2n)
+      q2n <- out$q2new
+      Rbest <- out$R
+    } else
+      Rbest <- diag(nrow(q2n))
 
-      if (rotation) {
-        out <- find_best_rotation(q1, q2n)
-        q2n <- out$q2new
-        Rbest <- out$R
-      } else
-        Rbest <- diag(nrow(q2n))
-
-      if (norm(q1 - q2n, 'F') > 0.0001) {
+    if (norm(q1 - q2n, 'F') > 0.0001 && alignment) {
+      if (scale) {
+        q1i <- q1
+        q2ni <- q2n
+      } else {
         q1i <- q1 / sqrt(innerprod_q2(q1, q1))
         q2ni <- q2n / sqrt(innerprod_q2(q2n, q2n))
-        dim(q1i) <- c(T1 * n1)
-        dim(q2ni) <- c(T1 * n1)
-        gam0 <- .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni,
-                      n1, T1, lambda, 1, 0, rep(0, T1))
-        gamI <- invertGamma(gam0)
-        gam <- (gamI - gamI[1]) / (gamI[length(gamI)] - gamI[1])
-        beta2n <- q_to_curve(q2n)
-        beta2new <- group_action_by_gamma_coord(beta2n, gam)
-        q2new <- curve_to_q(beta2new)$q
-
-        if (mode == "C")
-          q2new <- project_curve(q2new)
-      } else {
-        q2new <- q2n
-        gam <- seq(0, 1, length.out = T1)
       }
+      dim(q1i) <- M * L
+      dim(q2ni) <- M * L
+      gam0 <- .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni,
+                    L, M, lambda, 1, 0, rep(0, M))
+      gamI <- invertGamma(gam0)
+      gam <- (gamI - gamI[1]) / (gamI[length(gamI)] - gamI[1])
+      q2new <- group_action_by_gamma(q2n, gam, scale = scale)
 
-      if (scale) {
-        dist <- innerprod_q2(q1, q2new)
-        if (dist < -1) dist <- -1
-        if (dist >  1) dist <-  1
-        Ec <- acos(dist)
-      } else {
-        v <- q1 - q2new
-        Ec <- sqrt(innerprod_q2(v, v))
-      }
-
-      if (Ec < minE) {
-        Rbest <- Rbest
-        q2best <- q2new
-        gambest <- gam
-        minE <- Ec
-        tau <- scl * ctr
-      }
+      if (mode == "C")
+        q2new <- project_curve(q2new)
+    } else {
+      q2new <- q2n
+      gam <- seq(0, 1, length.out = M)
     }
 
-    list(
-      q2best = q2best,
-      Rbest = Rbest,
-      gambest = gambest,
-      tau = tau
-    )
+    Ec <- amplitude_distance(q1, q2new, scale = scale)
+
+    if (Ec < minE) {
+      Rbest <- Rbest
+      q2best <- q2new
+      gambest <- gam
+      minE <- Ec
+      tau <- scl * ctr
+    }
+  }
+
+  list(
+    q2best = q2best,
+    Rbest = Rbest,
+    gambest = gambest,
+    tau = tau,
+    d = minE
+  )
 }
 
 find_rotation_and_seed_q <- function(q1,q2){
@@ -340,35 +333,32 @@ find_rotation_and_seed_q <- function(q1,q2){
     return(list(q2new=q2new,O_hat=O_hat,tau=tau))
 }
 
+group_action_by_gamma <- function(q, gamma, scale = TRUE) {
+  L <- nrow(q)
+  M <- ncol(q)
+  gammadot <- gradient(gamma, 1.0 / M)
+  qn <- matrix(nrow = L, ncol = M)
+  grd <- seq(0, 1, length.out = M)
 
-group_action_by_gamma <- function(q, gamma){
-    n = nrow(q)
-    T1 = ncol(q)
-    gammadot = gradient(gamma, 1.0/T1)
-    qn = matrix(0, n, T1)
-    timet = seq(0, 1, length.out = T1)
+  for (l in 1:L)
+    qn[l, ] <- stats::spline(grd, q[l, ], xout = gamma)$y * sqrt(gammadot)
 
-    for (j in 1:n){
-        qn[j,] = stats::spline(timet, q[j,], xout=gamma)$y * sqrt(gammadot)
-    }
+  if (scale)
+    qn <- qn / sqrt(innerprod_q2(qn, qn))
 
-    qn = qn/sqrt(innerprod_q2(qn,qn))
-
-    return(qn)
+  qn
 }
 
+group_action_by_gamma_coord <- function(f, gamma) {
+  L <- nrow(f)
+  M <- ncol(f)
+  fn <- matrix(nrow = L, ncol = M)
+  grd <- seq(0, 1, length.out = M)
 
-group_action_by_gamma_coord <- function(f, gamma){
-    n = nrow(f)
-    T1 = ncol(f)
-    fn = matrix(0, n, T1)
-    timet = seq(0, 1, length.out = T1)
+  for (l in 1:L)
+    fn[l, ] <- stats::spline(grd, f[l, ], xout = gamma)$y
 
-    for (j in 1:n){
-        fn[j,] = stats::spline(timet, f[j,], xout=gamma)$y
-    }
-
-    return(fn)
+  fn
 }
 
 
@@ -718,4 +708,11 @@ elastic_shooting <- function(q1, v,mode="O"){
     }
 
     return(q2n)
+}
+
+curve_to_srvf <- function(beta, scale = TRUE) {
+  centroid <- calculatecentroid(beta)
+  beta <- beta - centroid
+  out <- curve_to_q(beta, scale = scale)
+  list(q = out$q, qnorm = out$lenq, centroid = centroid)
 }
