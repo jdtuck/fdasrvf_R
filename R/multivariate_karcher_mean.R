@@ -9,18 +9,20 @@
 #' @param beta A numeric array of shape \eqn{L \times M \times N} specifying an
 #'   \eqn{N}-sample of \eqn{L}-dimensional functional data evaluated on a same
 #'   grid of size \eqn{M}.
-#' @param rotation A boolean specifying whether to make the metric
-#'   rotation-invariant. Defaults to `FALSE`.
-#' @param scale A boolean specifying whether to make the metric scale-invariant.
-#'   Defaults to `FALSE`.
+#' @inheritParams calc_shape_dist
 #' @param maxit An integer value specifying the maximum number of iterations.
 #'   Defaults to `20L`.
 #' @param ms A character string specifying whether the Karcher mean ("mean") or
 #'   Karcher median ("median") is returned. Defaults to `"mean"`.
+#' @param exact_medoid A boolean specifying whether to compute the exact medoid
+#'   from the distance matrix or as the input curve closest to the pointwise
+#'   mean. Defaults to `FALSE` for saving computational time.
 #' @param ncores An integer value specifying the number of cores to use for
 #'   parallel computation. Defaults to `1L`. The maximum number of available
 #'   cores is determined by the **parallel** package. One core is always left
 #'   out to avoid overloading the system.
+#' @param verbose A boolean specifying whether to print the progress of the
+#'  algorithm. Defaults to `FALSE`.
 #'
 #' @return A list with the following components:
 #' - `beta`: A numeric array of shape \eqn{L \times M \times N} storing the
@@ -45,21 +47,37 @@
 #' @keywords srvf alignment
 #'
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
-#'   analysis of elastic curves in euclidean spaces. Pattern Analysis and
-#'   Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+#'   analysis of elastic curves in euclidean spaces. IEEE Transactions on
+#'   Pattern Analysis and Machine Intelligence, **33** (7), 1415-1428.
 #'
 #' @export
 #'
 #' @examples
-#' out <- multivariate_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+#' out <- karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' # note: use more functions, small for speed
-multivariate_karcher_mean <- function(beta,
-                                      rotation = FALSE,
-                                      scale = FALSE,
-                                      maxit = 20L,
-                                      ms = c("mean", "median"),
-                                      ncores = 1L)
+karcher_mean <- function(beta,
+                         mode = "O",
+                         alignment = TRUE,
+                         rotation = FALSE,
+                         scale = FALSE,
+                         lambda = 0.0,
+                         maxit = 20L,
+                         ms = c("mean", "median"),
+                         exact_medoid = FALSE,
+                         ncores = 1L,
+                         verbose = FALSE)
 {
+  if (mode == "C" && !scale)
+    cli::cli_abort("Closed curves are currently handled only on the L2
+                   hypersphere. Please set `scale = TRUE`.")
+
+  dims <- dim(beta)
+  L <- dims[1] # Dimension of codomain
+  M <- dims[2] # Size of the evaluation grid
+  N <- dims[3] # Sample size
+  ms <- rlang::arg_match(ms)
+
+  # Compute number of cores to use
   navail <- max(parallel::detectCores() - 1, 1)
 
   if (ncores > navail) {
@@ -70,16 +88,24 @@ multivariate_karcher_mean <- function(beta,
     ncores <- navail
   }
 
+  # Computes SRVFs
+  srvfs <- lapply(1:N, \(n) curve_to_srvf(beta[ , , n], scale = scale))
+  q <- array(dim = c(L, M, N))
+  for (n in 1:N)
+    q[ , , n] <- srvfs[[n]]$q
+
   # Find medoid
-  out <- curve_dist(
-    beta = beta,
-    mode = "O",
-    rotation = rotation,
-    scale = scale,
-    ncores = ncores
-  )
-  dists <- as.numeric(rowSums(as.matrix(out$Da)))
-  medoid_idx <- which.min(dists)
+  if (exact_medoid) {
+    out <- curve_dist(
+      beta = beta,
+      mode = mode,
+      alignment = alignment,
+      rotation = rotation,
+      scale = scale,
+      ncores = ncores
+    )
+    dists <- as.numeric(rowSums(as.matrix(out$Da)))
+  }
 
   if (ncores > 1L) {
     cl <- parallel::makeCluster(ncores)
@@ -88,95 +114,73 @@ multivariate_karcher_mean <- function(beta,
   } else
     foreach::registerDoSEQ()
 
-  ms <- rlang::arg_match(ms)
-
-  dims <- dim(beta)
-  L <- dims[1] # Dimension of codomain
-  M <- dims[2] # Size of the evaluation grid
-  N <- dims[3] # Sample size
-  q <- array(dim = c(L, M, N)) # Array for hosting SRVFs
-
-  n <- NULL
-  preprocessing_step <- foreach::foreach(n = 1:N,
-                                         .combine = cbind,
-                                         .packages = "fdasrvf") %dopar% {
-    beta1 <- beta[ , , n]
-    out <- curve_to_q(beta1, scale = scale)
-    q1 <- out$q
-    if (scale)
-      beta1 <- beta1 / out$len
-    list(q1 = q1, beta1 = beta1)
+  if (!exact_medoid) {
+    qmean <- rowMeans(q, dims = 2)
+    n <- NULL
+    dists <- foreach::foreach(n = 1:N, .combine = "c", .packages = 'fdasrvf') %dopar% {
+      find_rotation_seed_unique(
+        qmean, srvfs[[n]]$q,
+        mode = mode,
+        alignment = alignment,
+        rotation = rotation,
+        scale = scale
+      )$d
+    }
   }
 
-  q <- unlist(preprocessing_step[1, ])
-  dim(q) <- c(L, M, N)
-
-  beta <- unlist(preprocessing_step[2, ])
-  dim(beta) <- c(L, M, N)
+  medoid_idx <- which.min(dists)
 
   # Initialize mean as the medoid
   qmean <- q[, , medoid_idx]
-  betamean <- beta[, , medoid_idx]
   delta <- 0.5
   tolv <- 1e-04
   told <- 5 * 0.001
   itr <- 1
+  qn <- qt <- array(0, c(L, M, N))
+  normbar <- rep(0, maxit)
   sumd <- rep(0, maxit + 1)
   sumd[1] <- Inf
-  betan <- betat <- array(0, c(L, M, N))
-  qn <- qt <- array(0, c(L, M, N))
-  normbar <- rep(0, maxit + 1)
-  if (ms == "median") {
-    # run for median only, saves memory if getting mean
-    d_i <- rep(0, N) #include vector for norm calculations
-    v_d <- array(0, c(L, M, N)) # include array to hold v_i / d_i
-  }
 
   while (itr < maxit) {
-    cli::cli_alert_info("Iteration {itr}/{maxit}...")
+    if (verbose)
+      cli::cli_alert_info("Iteration {itr}/{maxit}...")
+
+    if (mode == "O" || !scale)
+      basis <- NULL
+    else
+      basis <- find_basis_normal(qmean)
 
     alignment_step <- foreach::foreach(
       n = 1:N,
       .combine = cbind,
       .packages = "fdasrvf") %dopar% {
-        beta_i <- beta[ , , n]
-        out <- calc_shape_dist(
-          beta1 = betamean,
-          beta2 = beta_i,
-          mode = "O",
+        out <- find_rotation_seed_unique(
+          q1 = qmean,
+          q2 = q[ , , n],
+          mode = mode,
+          alignment = alignment,
           rotation = rotation,
-          scale = scale
+          scale = scale,
+          lambda = lambda
         )
-        list(d = out$d, q2n = out$q2n, beta2n = out$beta2n)
+        list(d = out$d, q2n = out$q2best)
       }
 
     d <- unlist(alignment_step[1, ])
-    dim(d) <- c(N, 1)
+    dim(d) <- N
     sumd[itr + 1] <- sum(d^2)
 
     qt <- unlist(alignment_step[2, ])
     dim(qt) <- c(L, M, N)
 
-    if (ms == "median")
-      d_i[n] <- sqrt(innerprod_q2(qt[ , , n], qt[ , , n]))
+    out <- pointwise_karcher_mean(qt, qmean,
+                                  basis = basis,
+                                  scale = scale,
+                                  ms = ms,
+                                  delta = delta)
 
-    betat <- unlist(alignment_step[3, ])
-    dim(betat) <- c(L, M, N)
-
-    # AST: stopping criteria should probably be modified when scale is true
-    if (ms == "median") {
-      # run for median only
-      sumv <- rowSums(qt, dims = 2)
-      sum_dinv <- sum(1 / d_i)
-      vbar <- sumv / sum_dinv
-    } else {
-      # run for mean only
-      sumv <- rowSums(qt, dims = 2)
-      vbar <- sumv / N
-    }
-
-    normbar[itr] <- sqrt(innerprod_q2(vbar, vbar))
-    normv <- normbar[itr]
+    normv <- sqrt(innerprod_q2(out$vbar, out$vbar))
+    normbar[itr] <- normv
 
     if (sumd[itr] - sumd[itr + 1] < 0 ||
         normv < tolv ||
@@ -184,14 +188,24 @@ multivariate_karcher_mean <- function(beta,
       break
 
     qn <- qt
-    betan <- betat
-    qmean <- rowMeans(qn, dims = 2)
-    # Should be something like this, but numerical integration is huge and it
-    # requires to record value at first time point
-    # betamean <- q_to_curve(qmean) + rowMeans(beta[, 1, ])
-    betamean <- rowMeans(betan, dims = 2)
+    qmean <- out$qmean
 
     itr <- itr + 1
+  }
+
+  len_q <- sapply(srvfs, \(x) x$qnorm)
+  qmean_norm <- prod(len_q) ^ (1 / length(len_q))
+  betamean <- q_to_curve(qmean)
+  betamean <- betamean - calculatecentroid(betamean)
+
+  # Compute beta2n
+  betan <- array(dim = c(L, M, N))
+  for (n in 1:N) {
+    scl <- 1
+    if (scale)
+      scl <- qmean_norm / len_q[n]
+    betan[ , , n] <- q_to_curve(qn[ , , n], scale = scl)
+    betan[ , , n] <- betan[ , , n] - calculatecentroid(betan[ , , n])
   }
 
   type <- ifelse(ms == "median", "Karcher Median", "Karcher Mean")
@@ -205,6 +219,6 @@ multivariate_karcher_mean <- function(beta,
     qmean = qmean,
     type = type,
     E = normbar[1:itr],
-    qun = sumd[1:itr]
+    qun = sumd[1:(itr + 1)]
   )
 }

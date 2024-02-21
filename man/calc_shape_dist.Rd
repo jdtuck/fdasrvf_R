@@ -11,7 +11,8 @@ calc_shape_dist(
   alignment = TRUE,
   rotation = TRUE,
   scale = TRUE,
-  include.length = FALSE
+  include.length = FALSE,
+  lambda = 0
 )
 }
 \arguments{
@@ -41,6 +42,10 @@ normalized SRVFs. Defaults to \code{TRUE}.}
 about the actual length of the SRVFs in the metric when using normalized
 SRVFs to achieve scale invariance. This only applies if \code{scale == TRUE}.
 Defaults to \code{FALSE}.}
+
+\item{lambda}{A numeric value specifying the weight of a penalty term that
+constraints the warping function to be not too far from the identity.
+Defaults to \code{0.0}.}
 }
 \value{
 A list with the following components:
@@ -62,9 +67,14 @@ curve.
 }
 \description{
 Calculates the elastic shape distance between two curves \code{beta1} and \code{beta2}.
-If the input curves are describing multidimensional functional data, then
-most of the time the user should set \code{rotation == FALSE}, \code{scale == FALSE}
-and \code{mode == "O"}.
+}
+\details{
+Distances are computed between the SRVFs of the original curves. Hence, they
+are intrinsically invariant to position. The user can then choose to make
+distances invariant to rotation and scaling by setting \code{rotation} and \code{scale}
+accordingly. Distances can also be made invariant to reparametrization by
+setting \code{alignment = TRUE}, in which case curves are aligned using an
+appropriate action of the diffeomorphism group on the space of SRVFs.
 }
 \examples{
 out <- calc_shape_dist(beta[, , 1, 1], beta[, , 1, 4])
@@ -77,5 +87,8 @@ Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 Kurtek, S., Srivastava, A., Klassen, E., and Ding, Z. (2012),
 “Statistical Modeling of Curves Using Shapes and Related Features,” Journal
 of the American Statistical Association, 107, 1152–1165.
+
+Srivastava, A., Klassen, E. P. (2016). Functional and shape
+data analysis, 1. New York: Springer.
 }
 \keyword{distances}

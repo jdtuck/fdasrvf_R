@@ -1,9 +1,13 @@
 #' Elastic Shape Distance
 #'
 #' Calculates the elastic shape distance between two curves `beta1` and `beta2`.
-#' If the input curves are describing multidimensional functional data, then
-#' most of the time the user should set `rotation == FALSE`, `scale == FALSE`
-#' and `mode == "O"`.
+#'
+#' Distances are computed between the SRVFs of the original curves. Hence, they
+#' are intrinsically invariant to position. The user can then choose to make
+#' distances invariant to rotation and scaling by setting `rotation` and `scale`
+#' accordingly. Distances can also be made invariant to reparametrization by
+#' setting `alignment = TRUE`, in which case curves are aligned using an
+#' appropriate action of the diffeomorphism group on the space of SRVFs.
 #'
 #' @param beta1 A numeric matrix of shape \eqn{L \times M} specifying an
 #'   \eqn{L}-dimensional curve evaluated on \eqn{M} sample points.
@@ -25,6 +29,9 @@
 #'   about the actual length of the SRVFs in the metric when using normalized
 #'   SRVFs to achieve scale invariance. This only applies if `scale == TRUE`.
 #'   Defaults to `FALSE`.
+#' @param lambda A numeric value specifying the weight of a penalty term that
+#'   constraints the warping function to be not too far from the identity.
+#'   Defaults to `0.0`.
 #'
 #' @return A list with the following components:
 #' - `d`: the amplitude (geodesic) distance;
@@ -49,6 +56,8 @@
 #' @references Kurtek, S., Srivastava, A., Klassen, E., and Ding, Z. (2012),
 #'   “Statistical Modeling of Curves Using Shapes and Related Features,” Journal
 #'   of the American Statistical Association, 107, 1152–1165.
+#' @references Srivastava, A., Klassen, E. P. (2016). Functional and shape
+#'   data analysis, 1. New York: Springer.
 #'
 #' @export
 #' @examples
@@ -58,7 +67,12 @@ calc_shape_dist <- function(beta1, beta2,
                             alignment = TRUE,
                             rotation = TRUE,
                             scale = TRUE,
-                            include.length = FALSE) {
+                            include.length = FALSE,
+                            lambda = 0.0) {
+  if (mode == "C" && !scale)
+    cli::cli_abort("Closed curves are currently handled only on the L2
+                   hypersphere. Please set `scale = TRUE`.")
+
   srvf1 <- curve_to_srvf(beta1, scale = scale)
   srvf2 <- curve_to_srvf(beta2, scale = scale)
 
@@ -67,7 +81,9 @@ calc_shape_dist <- function(beta1, beta2,
     mode = mode,
     alignment = alignment,
     rotation = rotation,
-    scale = scale
+    scale = scale,
+    lambda = lambda,
+    include_length = include.length
   )
 
   list(

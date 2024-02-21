@@ -333,11 +333,11 @@ kmeans_align <- function(f, time,
       if (L > 1) {
         if (!scale) {
           if (centroid_type == "mean") {
-            out <- multivariate_karcher_mean(fn[[k]][, , id])
+            out <- karcher_mean(fn[[k]][, , id])
             templates[, , k] <- out$betamean
             templates.q[, , k] <- curve_to_q(out$betamean, scale)$q
           } else if (centroid_type == "medoid") {
-            out <- multivariate_karcher_mean(fn[[k]][, , id], ms='median')
+            out <- karcher_mean(fn[[k]][, , id], ms='median')
             templates.q[, , k] <- out$betamean
             templates[, , k] <- curve_to_q(out$betamean, scale)$q
           }

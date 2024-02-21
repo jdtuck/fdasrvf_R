@@ -246,6 +246,7 @@ find_rotation_seed_unique <- function(q1, q2,
                                       alignment = TRUE,
                                       rotation = TRUE,
                                       scale = TRUE,
+                                      norm_ratio = 1.0,
                                       lambda = 0.0) {
   L <- nrow(q1)
   M <- ncol(q1)
@@ -293,7 +294,7 @@ find_rotation_seed_unique <- function(q1, q2,
       gam <- seq(0, 1, length.out = M)
     }
 
-    Ec <- amplitude_distance(q1, q2new, scale = scale)
+    Ec <- amplitude_distance(q1, q2new, scale = scale, norm_ratio = norm_ratio)
 
     if (Ec < minE) {
       Rbest <- Rbest
@@ -721,13 +722,20 @@ match_f2_to_f1 <- function(srvf1, srvf2, beta2,
                            mode = "O",
                            alignment = TRUE,
                            rotation = FALSE,
-                           scale = FALSE) {
+                           scale = FALSE,
+                           include_length = FALSE,
+                           lambda = 0.0) {
+  norm_ratio <- 1
+  if (include_length)
+    norm_ratio <- srvf1$qnorm / srvf2$qnorm
   out <- find_rotation_seed_unique(
     srvf1$q, srvf2$q,
     mode = mode,
     alignment = alignment,
     rotation = rotation,
-    scale = scale
+    scale = scale,
+    lambda = lambda,
+    norm_ratio = norm_ratio
   )
 
   # Compute amplitude distance
@@ -743,7 +751,7 @@ match_f2_to_f1 <- function(srvf1, srvf2, beta2,
     qscale <- srvf1$qnorm / srvf2$qnorm
   betascale <- qscale^2
 
-  if (mode == "C") {
+  if (mode == "C" && scale) {
     beta2n <- q_to_curve(out$q2best, scale = qscale)
   } else {
     beta2n <- beta2 - srvf2$centroid

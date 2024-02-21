@@ -3,6 +3,8 @@
 #' Computes the pairwise distance matrix between a set of curves using the
 #' elastic shape distance as computed by [`calc_shape_dist()`].
 #'
+#' @inherit calc_shape_dist details
+#'
 #' @param beta A numeric array of shape \eqn{L \times M \times N} specifying the
 #'   set of \eqn{N} curves of length \eqn{M} in \eqn{L}-dimensional space.
 #' @inheritParams calc_shape_dist
@@ -15,6 +17,17 @@
 #'   the amplitude and phase distances, respectively.
 #' @export
 #'
+#' @keywords distances
+#'
+#' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+#'   analysis of elastic curves in euclidean spaces. Pattern Analysis and
+#'   Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+#' @references Kurtek, S., Srivastava, A., Klassen, E., and Ding, Z. (2012),
+#'   “Statistical Modeling of Curves Using Shapes and Related Features,” Journal
+#'   of the American Statistical Association, 107, 1152–1165.
+#' @references Srivastava, A., Klassen, E. P. (2016). Functional and shape
+#'   data analysis, 1. New York: Springer.
+#'
 #' @examples
 #' out <- curve_dist(beta[, , 1, 1:4])
 curve_dist <- function(beta,
@@ -23,7 +36,12 @@ curve_dist <- function(beta,
                        rotation = FALSE,
                        scale = FALSE,
                        include.length = FALSE,
+                       lambda = 0.0,
                        ncores = 1L) {
+  if (mode == "C" && !scale)
+    cli::cli_abort("Closed curves are currently handled only on the L2
+                   hypersphere. Please set `scale = TRUE`.")
+
   navail <- max(parallel::detectCores() - 1, 1)
 
   if (ncores > navail) {
@@ -46,8 +64,9 @@ curve_dist <- function(beta,
   M <- dims[2]
   N <- dims[3]
 
+  srvfs <- lapply(1:N, \(n) curve_to_srvf(beta[, , n], scale = scale))
   for (n in 1:N)
-    beta[ , , n] <- curve_to_srvf(beta[, , n], scale = scale)$q
+    beta[ , , n] <- srvfs[[n]]$q
 
   K <- N * (N - 1) / 2
 
@@ -61,12 +80,18 @@ curve_dist <- function(beta,
     q1 <- beta[, , i + 1]
     q2 <- beta[, , j + 1]
 
+    norm_ratio <- 1
+    if (scale)
+      norm_ratio <- srvfs[[i + 1]]$qnorm / srvfs[[j + 1]]$qnorm
+
     out <- find_rotation_seed_unique(
       q1, q2,
       mode = mode,
       alignment = alignment,
       rotation = rotation,
-      scale = scale
+      scale = scale,
+      norm_ratio = norm_ratio,
+      lambda = lambda
     )
     if (alignment)
       dx <- phase_distance(out$gambest)
