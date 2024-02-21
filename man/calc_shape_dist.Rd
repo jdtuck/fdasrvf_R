@@ -8,6 +8,7 @@ calc_shape_dist(
   beta1,
   beta2,
   mode = "O",
+  alignment = TRUE,
   rotation = TRUE,
   scale = TRUE,
   include.length = FALSE
@@ -24,6 +25,9 @@ will be aligned to \code{beta1}.}
 \item{mode}{A character string specifying whether the input curves should be
 considered open (\code{mode == "O"}) or closed (\code{mode == "C"}). Defaults to
 \code{"O"}.}
+
+\item{alignment}{A boolean value specifying whether the curves should be
+aligned before computing the distance matrix. Defaults to \code{TRUE}.}
 
 \item{rotation}{A boolean specifying whether the distance should be made
 invariant by rotation. Defaults to \code{TRUE}.}
@@ -50,9 +54,9 @@ and scaling;
 \item \code{beta2n}: the input curve \code{beta2} after alignment and possible optimal
 rotation and scaling.
 \item \code{R}: the optimal rotation matrix that has been applied to the second curve;
-\item \code{betascale}: the optimal scaling factor that has been applied to the second
-curve;
 \item \code{gam}: the optimal warping function that has been applied to the second
+curve;
+\item \code{betascale}: the optimal scaling factor that has been applied to the second
 curve.
 }
 }

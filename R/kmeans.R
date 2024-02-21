@@ -165,8 +165,10 @@ kmeans_align <- function(f, time,
       f[l, , ] <- smooth.data(f[l, , ], sparam = sparam)
   }
 
-  if (L > 1){
-    q <- curve_to_q(f, scale)
+  if (L > 1) {
+    q <- array(dim = c(L, M, N))
+    for (n in 1:N)
+      q[, , n] <- curve_to_q(f[, , n], scale)$q
   } else {
     q <- f_to_srvf(f, time)
   }
@@ -193,7 +195,7 @@ kmeans_align <- function(f, time,
       outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
         if (alignment) {
           if (L > 1){
-            out = find_rotation_seed_unqiue(templates.q[, , k], q[, , n],
+            out = find_rotation_seed_unique(templates.q[, , k], q[, , n],
                                             mode='O', rotation=rotation, scale=scale)
             gam_tmp = out$gambest
 
@@ -214,7 +216,7 @@ kmeans_align <- function(f, time,
 
         if (L > 1){
           fw <- group_action_by_gamma_coord(f[, , n], gam_tmp)
-          qw <- curve_to_q(fw, scale)
+          qw <- curve_to_q(fw, scale)$q
         } else {
           fw <- warp_f_gamma(f[1, , n], time, gam_tmp)
           qw <- f_to_srvf(fw, time)
@@ -293,7 +295,7 @@ kmeans_align <- function(f, time,
 
         if (L > 1){
           fw <- group_action_by_gamma_coord(ftmp[, , n], gamI)
-          qw <- curve_to_q(fw, scale)
+          qw <- curve_to_q(fw, scale)$q
         } else {
           fw <- warp_f_gamma(ftmp[1, , n], time, gamI)
           qw <- f_to_srvf(fw, time)
@@ -328,27 +330,27 @@ kmeans_align <- function(f, time,
         next()
       }
 
-      if (L > 1){
-        if (scale == FALSE){
+      if (L > 1) {
+        if (!scale) {
           if (centroid_type == "mean") {
-            out <- multivariate_karcher_mean(fn[[k]][l, , id])
-            templates[1, , k] <- out$betamean
-            templates.q[1, , k] <- curve_to_q(out$betamean, scale)
+            out <- multivariate_karcher_mean(fn[[k]][, , id])
+            templates[, , k] <- out$betamean
+            templates.q[, , k] <- curve_to_q(out$betamean, scale)$q
           } else if (centroid_type == "medoid") {
-            out <- multivariate_karcher_mean(fn[[k]][l, , id], ms='median')
-            templates.q[1, , k] <- out$betamean
-            templates[1, , k] <- curve_to_q(out$betamean, scale)
+            out <- multivariate_karcher_mean(fn[[k]][, , id], ms='median')
+            templates.q[, , k] <- out$betamean
+            templates[, , k] <- curve_to_q(out$betamean, scale)$q
           }
         } else {
           if (centroid_type == "mean") {
-            out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation)
-            templates[1, , k] <- out$betamean
-            templates.q[1, , k] <- curve_to_q(out$betamean, scale)
+            out = curve_karcher_mean(fn[[k]][, , id], mode = "O", rotated = rotation)
+            templates[, , k] <- out$betamean
+            templates.q[, , k] <- curve_to_q(out$betamean, scale)$q
           } else if (centroid_type == "medoid") {
-            out = curve_karcher_mean(fn[[k]][l, , id], mode = "O", rotated = rotation,
+            out = curve_karcher_mean(fn[[k]][, , id], mode = "O", rotated = rotation,
                                      ms='median')
-            templates[1, , k] <- out$betamean
-            templates.q[1, , k] <- curve_to_q(out$betamean, scale)
+            templates[, , k] <- out$betamean
+            templates.q[, , k] <- curve_to_q(out$betamean, scale)$q
           }
         }
       } else {

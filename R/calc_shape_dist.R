@@ -13,6 +13,8 @@
 #' @param mode A character string specifying whether the input curves should be
 #'   considered open (`mode == "O"`) or closed (`mode == "C"`). Defaults to
 #'   `"O"`.
+#' @param alignment A boolean value specifying whether the curves should be
+#'  aligned before computing the distance matrix. Defaults to `TRUE`.
 #' @param rotation A boolean specifying whether the distance should be made
 #'   invariant by rotation. Defaults to `TRUE`.
 #' @param scale A boolean specifying whether the distance should be made
@@ -34,9 +36,9 @@
 #' - `beta2n`: the input curve `beta2` after alignment and possible optimal
 #' rotation and scaling.
 #' - `R`: the optimal rotation matrix that has been applied to the second curve;
-#' - `betascale`: the optimal scaling factor that has been applied to the second
-#' curve;
 #' - `gam`: the optimal warping function that has been applied to the second
+#' curve;
+#' - `betascale`: the optimal scaling factor that has been applied to the second
 #' curve.
 #'
 #' @keywords distances
@@ -53,61 +55,30 @@
 #' out <- calc_shape_dist(beta[, , 1, 1], beta[, , 1, 4])
 calc_shape_dist <- function(beta1, beta2,
                             mode = "O",
+                            alignment = TRUE,
                             rotation = TRUE,
                             scale = TRUE,
                             include.length = FALSE) {
-  T1 <- ncol(beta1)
-  centroid1 <- calculatecentroid(beta1)
-  dim(centroid1) <- c(length(centroid1), 1)
-  beta1 <- beta1 - repmat(centroid1, 1, T1)
-  out1 <- curve_to_q(beta1, scale = scale)
-  q1 <- out1$q
-  lenq1 <- out1$lenq
-  lenq2 <- curve_to_q(beta2, scale = scale)$lenq
+  srvf1 <- curve_to_srvf(beta1, scale = scale)
+  srvf2 <- curve_to_srvf(beta2, scale = scale)
 
-  centroid1 <- calculatecentroid(beta2)
-  dim(centroid1) <- c(length(centroid1), 1)
-  beta2 <- beta2 - repmat(centroid1, 1, T1)
-
-  out <- find_rotation_seed_coord(
-    beta1, beta2,
+  out <- match_f2_to_f1(
+    srvf1, srvf2, beta2,
     mode = mode,
+    alignment = alignment,
     rotation = rotation,
     scale = scale
   )
 
-  # Compute amplitude distance
-  if (scale) {
-    q1dotq2 <- innerprod_q2(q1, out$q2best)
-    if (q1dotq2 >  1) q1dotq2 <-  1
-    if (q1dotq2 < -1) q1dotq2 <- -1
-    if (include.length)
-      d <- sqrt(acos(q1dotq2) ^ 2 + log(lenq1 / lenq2) ^ 2)
-    else
-      d <- acos(q1dotq2)
-  } else {
-    v <- q1 - out$q2best
-    d <- sqrt(innerprod_q2(v, v))
-  }
-
-  # Compute phase distance
-  gam <- out$gambest
-  time1 <- seq(0, 1, length.out = T1)
-  binsize <- mean(diff(time1))
-  psi <- sqrt(gradient(gam, binsize))
-  v <- inv_exp_map(rep(1, length(gam)), psi)
-  dx <- sqrt(trapz(time1, v ^ 2))
-
-  # Return results
   list(
-    d = d,
-    dx = dx,
-    q1 = q1,
-    q2n = out$q2best,
+    d = out$d,
+    dx = out$dx,
+    q1 = srvf1$q,
+    q2n = out$q2n,
     beta1 = beta1,
-    beta2n = out$beta2best,
+    beta2n = out$beta2n,
     R = out$Rbest,
-    betascale = out$scale,
-    gam = out$gambest
+    gam = out$gambest,
+    betascale = out$betascale
   )
 }
