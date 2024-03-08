@@ -61,4 +61,3 @@
 #' @importFrom foreach %dopar%
 #' @aliases fdasrvf fdasrvf-package
 "_PACKAGE"
-NULL

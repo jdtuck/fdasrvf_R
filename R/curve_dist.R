@@ -84,7 +84,7 @@ curve_dist <- function(beta,
     if (scale)
       norm_ratio <- srvfs[[i + 1]]$qnorm / srvfs[[j + 1]]$qnorm
 
-    out <- find_rotation_seed_unique(
+    res12 <- find_rotation_seed_unique(
       q1, q2,
       mode = mode,
       alignment = alignment,
@@ -93,11 +93,28 @@ curve_dist <- function(beta,
       norm_ratio = norm_ratio,
       lambda = lambda
     )
+
+    res21 <- find_rotation_seed_unique(
+      q2, q1,
+      mode = mode,
+      alignment = alignment,
+      rotation = rotation,
+      scale = scale,
+      norm_ratio = norm_ratio,
+      lambda = lambda
+    )
+
+    if (res12$d < res21$d)
+      res <- res12
+    else
+      res <- res21
+
     if (alignment)
-      dx <- phase_distance(out$gambest)
+      dx <- phase_distance(res$gambest)
     else
       dx <- 0
-    matrix(c(out$d, dx), ncol = 1)
+
+    matrix(c(res$d, dx), ncol = 1)
   }
 
   Da <- out[1, ]

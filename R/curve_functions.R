@@ -250,6 +250,14 @@ find_rotation_seed_unique <- function(q1, q2,
                                       lambda = 0.0) {
   L <- nrow(q1)
   M <- ncol(q1)
+
+  # Variables for DPQ2 algorithm
+  grd <- seq(0, 1, length.out = M)
+  nbhd_dim <- 21L
+  Gvec <- rep(0, M)
+  Tvec <- rep(0, M)
+  size <- 0
+
   scl <- 4
   minE <- Inf
 
@@ -281,9 +289,20 @@ find_rotation_seed_unique <- function(q1, q2,
       }
       dim(q1i) <- M * L
       dim(q2ni) <- M * L
-      gam0 <- .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni,
-                    L, M, lambda, 1, 0, rep(0, M))
-      gamI <- invertGamma(gam0)
+
+      # gam0 <- .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni,
+      #               L, M, lambda, 1, 0, rep(0, M))
+      # gamI <- invertGamma(gam0)
+
+      ret <- .Call(
+        "DPQ2", PACKAGE = "fdasrvf",
+        q1i, grd, q2ni, grd, L, M, M, grd, grd, M,
+        M, Gvec, Tvec, size, lambda, nbhd_dim
+      )
+      Gvec <- ret$G[1:ret$size]
+      Tvec <- ret$T[1:ret$size]
+      gamI <- stats::approx(Tvec, Gvec, xout = grd)$y
+
       gam <- (gamI - gamI[1]) / (gamI[length(gamI)] - gamI[1])
       q2new <- group_action_by_gamma(q2n, gam, scale = scale)
 
@@ -337,9 +356,9 @@ find_rotation_and_seed_q <- function(q1,q2){
 group_action_by_gamma <- function(q, gamma, scale = TRUE) {
   L <- nrow(q)
   M <- ncol(q)
+  grd <- seq(0, 1, length.out = M)
   gammadot <- gradient(gamma, 1.0 / M)
   qn <- matrix(nrow = L, ncol = M)
-  grd <- seq(0, 1, length.out = M)
 
   for (l in 1:L)
     qn[l, ] <- stats::spline(grd, q[l, ], xout = gamma)$y * sqrt(gammadot)
