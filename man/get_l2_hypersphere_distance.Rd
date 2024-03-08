@@ -22,7 +22,7 @@ Computes the geodesic distance between two SRVFs on the \eqn{L^2} hypersphere
 \examples{
 q1 <- curve2srvf(beta[, , 1, 1])
 q2 <- curve2srvf(beta[, , 1, 2])
-q1 <- to_hypersphere(q1)
-q2 <- to_hypersphere(q2)
-get_l2_hypersphere_distance(q1, q2)
+q1p <- to_hypersphere(q1)
+q2p <- to_hypersphere(q2)
+get_l2_hypersphere_distance(q1p, q2p)
 }

@@ -28,6 +28,5 @@ Applies a warping function to a given SRVF
 }
 \examples{
 q <- curve2srvf(beta[, , 1, 1])
-g <- function(s) s^2
-qg <- apply_warping(q, g)
+warp_srvf(q, get_identity_warping())
 }

@@ -12,6 +12,10 @@ get_l2_distance(q1fun, q2fun, method = "quadrature")
 
 \item{q2fun}{A function that takes a numeric vector \eqn{s} of values in
 \eqn{[0, 1]} as input and returns the values of the second SRVF at \eqn{s}.}
+
+\item{method}{A character string specifying the method to use for computing
+the \eqn{L^2} distance. Options are \code{"quadrature"} and \code{"trapz"}. Defaults
+to \code{"quadrature"}.}
 }
 \value{
 A numeric value storing the \eqn{L^2} distance between the two SRVFs.

@@ -17,8 +17,8 @@
 invertGamma <- function(gam) {
     N <- length(gam)
     x <- seq(0, 1, len = N)
-    gamI = stats::spline(gam, x, xout = x, method = "hyman")$y
-    # gamI[N] = 1
-    # gamI = gamI/gamI[N]
+    gamI = stats::approx(gam, x, xout = x)$y
+    gamI[N] = 1
+    gamI = gamI/gamI[N]
     return(gamI)
 }

@@ -172,8 +172,7 @@ warp_curve <- function(betafun, gamfun) {
 #'
 #' @examples
 #' q <- curve2srvf(beta[, , 1, 1])
-#' g <- function(s) s^2
-#' qg <- apply_warping(q, g)
+#' warp_srvf(q, get_identity_warping())
 warp_srvf <- function(qfun, gamfun, betafun = NULL) {
   if (is.null(betafun)) {
     L <- nrow(qfun(0))
@@ -203,9 +202,12 @@ warp_srvf <- function(qfun, gamfun, betafun = NULL) {
 #' Computes the \eqn{L^2} distance between two SRVFs
 #'
 #' @param q1fun A function that takes a numeric vector \eqn{s} of values in
-#'  \eqn{[0, 1]} as input and returns the values of the first SRVF at \eqn{s}.
+#'   \eqn{[0, 1]} as input and returns the values of the first SRVF at \eqn{s}.
 #' @param q2fun A function that takes a numeric vector \eqn{s} of values in
-#' \eqn{[0, 1]} as input and returns the values of the second SRVF at \eqn{s}.
+#'   \eqn{[0, 1]} as input and returns the values of the second SRVF at \eqn{s}.
+#' @param method A character string specifying the method to use for computing
+#'   the \eqn{L^2} distance. Options are `"quadrature"` and `"trapz"`. Defaults
+#'   to `"quadrature"`.
 #'
 #' @return A numeric value storing the \eqn{L^2} distance between the two SRVFs.
 #' @export
@@ -226,11 +228,7 @@ get_l2_distance <- function(q1fun, q2fun, method = "quadrature") {
     grd <- seq(0, 1, length = 10000)
     sqrt(trapz(grd, colSums_ext((q1fun(grd) - q2fun(grd))^2)))
   } else {
-    sqrt(cubature::cubintegrate(
-      f = \(s) colSums_ext((q1fun(s) - q2fun(s))^2),
-      lower = 0, upper = 1,
-      method = method
-    )$integral)
+    cli::cli_abort("Invalid method")
   }
 }
 
@@ -294,9 +292,9 @@ to_hypersphere <- function(qfun) {
 #' @examples
 #' q1 <- curve2srvf(beta[, , 1, 1])
 #' q2 <- curve2srvf(beta[, , 1, 2])
-#' q1 <- to_hypersphere(q1)
-#' q2 <- to_hypersphere(q2)
-#' get_l2_hypersphere_distance(q1, q2)
+#' q1p <- to_hypersphere(q1)
+#' q2p <- to_hypersphere(q2)
+#' get_l2_hypersphere_distance(q1p, q2p)
 get_l2_hypersphere_distance <- function(q1fun, q2fun) {
   ip_value <- get_l2_inner_product(q1fun, q2fun)
   if (ip_value >  1) ip_value <-  1
