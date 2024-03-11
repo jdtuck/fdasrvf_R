@@ -11,6 +11,7 @@ curve_dist(
   rotation = FALSE,
   scale = FALSE,
   include.length = FALSE,
+  lambda = 0,
   ncores = 1L
 )
 }
@@ -38,6 +39,10 @@ about the actual length of the SRVFs in the metric when using normalized
 SRVFs to achieve scale invariance. This only applies if \code{scale == TRUE}.
 Defaults to \code{FALSE}.}
 
+\item{lambda}{A numeric value specifying the weight of a penalty term that
+constraints the warping function to be not too far from the identity.
+Defaults to \code{0.0}.}
+
 \item{ncores}{An integer value specifying the number of cores to use for
 parallel computation. If \code{ncores} is greater than the number of available
 cores, a warning is issued and the maximum number of available cores is
@@ -51,6 +56,27 @@ the amplitude and phase distances, respectively.
 Computes the pairwise distance matrix between a set of curves using the
 elastic shape distance as computed by \code{\link[=calc_shape_dist]{calc_shape_dist()}}.
 }
+\details{
+Distances are computed between the SRVFs of the original curves. Hence, they
+are intrinsically invariant to position. The user can then choose to make
+distances invariant to rotation and scaling by setting \code{rotation} and \code{scale}
+accordingly. Distances can also be made invariant to reparametrization by
+setting \code{alignment = TRUE}, in which case curves are aligned using an
+appropriate action of the diffeomorphism group on the space of SRVFs.
+}
 \examples{
 out <- curve_dist(beta[, , 1, 1:4])
 }
+\references{
+Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
+analysis of elastic curves in euclidean spaces. Pattern Analysis and
+Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
+
+Kurtek, S., Srivastava, A., Klassen, E., and Ding, Z. (2012),
+“Statistical Modeling of Curves Using Shapes and Related Features,” Journal
+of the American Statistical Association, 107, 1152–1165.
+
+Srivastava, A., Klassen, E. P. (2016). Functional and shape
+data analysis, 1. New York: Springer.
+}
+\keyword{distances}

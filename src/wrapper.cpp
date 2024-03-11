@@ -1,4 +1,3 @@
-
 #include "fdasrsf/DynamicProgrammingQ2.h"
 #include "fdasrsf/mlogit_warp_grad.h"
 #include "fdasrsf/DP.h"
@@ -35,7 +34,22 @@ RcppExport SEXP mlogit_warp_grad_wrap(SEXP m1, SEXP m2, SEXP alpha, SEXP beta, S
   return(gamouti);
 }
 
-RcppExport SEXP DPQ2(SEXP Q1, SEXP T1, SEXP Q2, SEXP T2, SEXP m1, SEXP n1, SEXP n2, SEXP tv1, SEXP tv2, SEXP n1v, SEXP n2v, SEXP G, SEXP T, SEXP size, SEXP lam1, SEXP nbhd_dim){
+RcppExport SEXP DPQ2(SEXP Q1,
+                     SEXP T1,
+                     SEXP Q2,
+                     SEXP T2,
+                     SEXP m1,
+                     SEXP n1,
+                     SEXP n2,
+                     SEXP tv1,
+                     SEXP tv2,
+                     SEXP n1v,
+                     SEXP n2v,
+                     SEXP G,
+                     SEXP T,
+                     SEXP size,
+                     SEXP lam1,
+                     SEXP nbhd_dim){
 
   NumericVector Q1i(Q1);
   NumericVector Q2i(Q2);
@@ -70,7 +84,14 @@ RcppExport SEXP DPQ2(SEXP Q1, SEXP T1, SEXP Q2, SEXP T2, SEXP m1, SEXP n1, SEXP 
   return(ret);
 }
 
-RcppExport SEXP DPQ(SEXP Q1, SEXP Q2, SEXP n1, SEXP N1, SEXP lam1, SEXP pen1, SEXP Disp, SEXP yy){
+RcppExport SEXP DPQ(SEXP Q1,
+                    SEXP Q2,
+                    SEXP n1,
+                    SEXP N1,
+                    SEXP lam1,
+                    SEXP pen1,
+                    SEXP Disp,
+                    SEXP yy) {
 
   NumericVector Q1i(Q1);
   NumericVector Q2i(Q2);

@@ -14,10 +14,10 @@
 #' @export
 #' @examples
 #' out <- invertGamma(simu_warp$warping_functions[, 1])
-invertGamma <- function(gam){
-    N = length(gam)
-    x = (0:(N-1))/(N-1)
-    gamI = stats::approx(gam,x,xout=x)$y
+invertGamma <- function(gam) {
+    N <- length(gam)
+    x <- seq(0, 1, len = N)
+    gamI = stats::approx(gam, x, xout = x)$y
     gamI[N] = 1
     gamI = gamI/gamI[N]
     return(gamI)
