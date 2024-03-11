@@ -3,6 +3,15 @@ colSums_ext <- function(x, na.rm = FALSE, dims = 1) {
   colSums(x, na.rm = na.rm, dims = dims)
 }
 
+find_zero <- function(f, lower = 0, upper = 1, tol = 1e-8, maxiter = 1000L, ...) {
+  C_zeroin2 <- utils::getFromNamespace("C_zeroin2", "stats")
+  f.lower <- f(lower, ...)
+  f.upper <- f(upper, ...)
+  val <- .External2(C_zeroin2, \(arg) f(arg, ...),
+                    lower, upper, f.lower, f.upper, tol, as.integer(maxiter))
+  return(val[1])
+}
+
 #' Converts a curve from matrix to functional data object
 #'
 #' @param beta A numeric matrix of size \eqn{L \times M} specifying a curve on
@@ -51,9 +60,17 @@ discrete2warping <- function(gam) {
 }
 
 inverse_warping <- function(gamfun) {
-  M <- 10000L
-  s <- seq(0, 1, length = M)
-  stats::splinefun(gamfun(s), s, method = "hyman")
+  \(s, deriv = 0) {
+    if (deriv > 1)
+      cli::cli_abort("The argument {.arg deriv} must be 0 or 1.")
+    # Get gamma inverse
+    gaminverse <- sapply(s, \(.s) {
+      find_zero(\(t) gamfun(t) - .s, lower = 0, upper = 1, tol = 1e-8)
+    })
+    if (deriv == 0)
+      return(gaminverse)
+    1 / gamfun(gaminverse, deriv = 1)
+  }
 }
 
 #' Converts a curve to its SRVF representation
@@ -174,8 +191,8 @@ warp_curve <- function(betafun, gamfun) {
 #' q <- curve2srvf(beta[, , 1, 1])
 #' warp_srvf(q, get_identity_warping())
 warp_srvf <- function(qfun, gamfun, betafun = NULL) {
+  L <- nrow(qfun(0))
   if (is.null(betafun)) {
-    L <- nrow(qfun(0))
     return(\(s) {
       gammaprime <- gamfun(s, deriv = 1)
       gammaprime[abs(gammaprime) < 1e-10] <- 0
@@ -189,7 +206,6 @@ warp_srvf <- function(qfun, gamfun, betafun = NULL) {
       qfun(gamfun(s)) * sqrt_gammaprime
     })
   }
-  L <- nrow(betafun(0))
   betaprime <- \(s) {
     gp_vals <- gamfun(s, deriv = 1)
     gp_vals <- matrix(gp_vals, nrow = L, ncol = length(s), byrow = TRUE)
@@ -248,8 +264,6 @@ get_l2_distance <- function(q1fun, q2fun, method = "quadrature") {
 #' q2 <- curve2srvf(beta[, , 1, 2])
 #' get_l2_inner_product(q1, q2)
 get_l2_inner_product <- function(q1fun, q2fun) {
-  # s <- seq(0, 1, length = 10000)
-  # trapz(s, colSums_ext(q1fun(s) * q2fun(s)))
   integrand <- \(s) colSums_ext(q1fun(s) * q2fun(s))
   stats::integrate(
     f = integrand,
@@ -263,6 +277,8 @@ get_l2_inner_product <- function(q1fun, q2fun) {
 #'
 #' @param qfun A function that takes a numeric vector \eqn{s} of values in
 #'   \eqn{[0, 1]} as input and returns the values of the SRVF at \eqn{s}.
+#' @param qnorm A numeric value specifying the \eqn{L^2} norm of the SRVF.
+#'   Defaults to \eqn{\sqrt{\langle q, q \rangle}}.
 #'
 #' @return A function that takes a numeric vector \eqn{s} of values in \eqn{[0,
 #'   1]} as input and returns the values of the SRVF projected onto the
@@ -272,10 +288,11 @@ get_l2_inner_product <- function(q1fun, q2fun) {
 #' @examples
 #' q <- curve2srvf(beta[, , 1, 1])
 #' to_hypersphere(q)
-to_hypersphere <- function(qfun) {
+to_hypersphere <- function(qfun,
+                           qnorm = sqrt(get_l2_inner_product(qfun, qfun))) {
   \(s) {
     q <- qfun(s)
-    q / sqrt(get_l2_inner_product(qfun, qfun))
+    q / qnorm
   }
 }
 
@@ -389,9 +406,14 @@ get_shape_distance <- function(q1fun, q2fun,
   if (nrow(q2fun(0)) != L)
     cli::cli_abort("The two input SRVFs should have the same dimension.")
 
+  if (alignment || scale) {
+    q1norm <- sqrt(get_l2_inner_product(q1fun, q1fun))
+    q2norm <- sqrt(get_l2_inner_product(q2fun, q2fun))
+  }
+
   if (scale) {
-    q1fun_scaled <- to_hypersphere(q1fun)
-    q2fun_scaled <- to_hypersphere(q2fun)
+    q1fun_scaled <- to_hypersphere(q1fun, q1norm)
+    q2fun_scaled <- to_hypersphere(q2fun, q2norm)
   } else {
     q1fun_scaled <- q1fun
     q2fun_scaled <- q2fun
@@ -414,8 +436,8 @@ get_shape_distance <- function(q1fun, q2fun,
       Q1 <- q1fun_scaled(grd)
       Q2 <- q2fun_scaled_rotated(grd)
     } else {
-      Q1 <- to_hypersphere(q1fun_scaled)(grd)
-      Q2 <- to_hypersphere(q2fun_scaled_rotated)(grd)
+      Q1 <- to_hypersphere(q1fun_scaled, q1norm)(grd)
+      Q2 <- to_hypersphere(q2fun_scaled_rotated, q2norm)(grd)
     }
     dim(Q1) <- M * L
     dim(Q2) <- M * L
@@ -538,8 +560,11 @@ get_distance_matrix <- function(qfuns,
   }
 
   # Handles projection to hypersphere if requested
+  if (alignment || scale)
+    qnorms <- sapply(qfuns, \(qfun) sqrt(get_l2_distance(qfun)))
+
   if (scale)
-    qfuns_scaled <- lapply(qfuns, to_hypersphere)
+    qfuns_scaled <- mapply(to_hypersphere, qfuns, qnorms, SIMPLIFY = FALSE)
   else
     qfuns_scaled <- qfuns
 
@@ -574,8 +599,8 @@ get_distance_matrix <- function(qfuns,
         Q1 <- q1fun_scaled(grd)
         Q2 <- q2fun_scaled_rotated(grd)
       } else {
-        Q1 <- to_hypersphere(q1fun_scaled)(grd)
-        Q2 <- to_hypersphere(q2fun_scaled_rotated)(grd)
+        Q1 <- to_hypersphere(q1fun_scaled, qnorms[i + 1])(grd)
+        Q2 <- to_hypersphere(q2fun_scaled_rotated, qnorms[j + 1])(grd)
       }
       dim(Q1) <- M * L
       dim(Q2) <- M * L

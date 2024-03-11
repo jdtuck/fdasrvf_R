@@ -4,11 +4,14 @@
 \alias{to_hypersphere}
 \title{Projects an SRVF onto the \eqn{L^2} hypersphere}
 \usage{
-to_hypersphere(qfun)
+to_hypersphere(qfun, qnorm = sqrt(get_l2_inner_product(qfun, qfun)))
 }
 \arguments{
 \item{qfun}{A function that takes a numeric vector \eqn{s} of values in
 \eqn{[0, 1]} as input and returns the values of the SRVF at \eqn{s}.}
+
+\item{qnorm}{A numeric value specifying the \eqn{L^2} norm of the SRVF.
+Defaults to \eqn{\sqrt{\langle q, q \rangle}}.}
 }
 \value{
 A function that takes a numeric vector \eqn{s} of values in \eqn{[0,
