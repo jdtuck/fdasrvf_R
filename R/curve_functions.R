@@ -253,7 +253,7 @@ find_rotation_seed_unique <- function(q1, q2,
 
   # Variables for DPQ2 algorithm
   grd <- seq(0, 1, length.out = M)
-  nbhd_dim <- 21L
+  nbhd_dim <- 7L
   Gvec <- rep(0, M)
   Tvec <- rep(0, M)
   size <- 0
@@ -289,10 +289,6 @@ find_rotation_seed_unique <- function(q1, q2,
       }
       dim(q1i) <- M * L
       dim(q2ni) <- M * L
-
-      # gam0 <- .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2ni,
-      #               L, M, lambda, 1, 0, rep(0, M))
-      # gamI <- invertGamma(gam0)
 
       ret <- .Call(
         "DPQ2", PACKAGE = "fdasrvf",
