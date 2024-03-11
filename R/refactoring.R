@@ -14,8 +14,8 @@ colSums_ext <- function(x, na.rm = FALSE, dims = 1) {
 #' @export
 #'
 #' @examples
-#' matrix2curve(beta[, , 1, 1])
-matrix2curve <- function(beta) {
+#' discrete2curve(beta[, , 1, 1])
+discrete2curve <- function(beta) {
   dims <- dim(beta)
   L <- dims[1]
   M <- dims[2]
@@ -43,8 +43,8 @@ matrix2curve <- function(beta) {
 #' @export
 #'
 #' @examples
-#' vector2warping(toy_warp$gam[, 1])
-vector2warping <- function(gam) {
+#' discrete2warping(toy_warp$gam[, 1])
+discrete2warping <- function(gam) {
   M <- length(gam)
   grd <- seq(0, 1, length = M)
   stats::splinefun(grd, gam, method = "hyman")
@@ -74,7 +74,7 @@ inverse_warping <- function(gamfun) {
 curve2srvf <- function(beta, is_derivative = FALSE) {
   if (!is_derivative) {
     if (is.matrix(beta))
-      betafun <- matrix2curve(beta)
+      betafun <- discrete2curve(beta)
     else if (rlang::is_function(beta))
       betafun <- beta
     else
@@ -145,8 +145,8 @@ srvf2curve <- function(qfun, beta0 = NULL) {
 #' @export
 #'
 #' @examples
-#' curv <- matrix2curve(beta[, , 1, 1])
-#' gamf <- vector2warping(seq(0, 1, length = 100)^2)
+#' curv <- discrete2curve(beta[, , 1, 1])
+#' gamf <- discrete2warping(seq(0, 1, length = 100)^2)
 #' warp_curve(curv, gamf)
 warp_curve <- function(betafun, gamfun) {
   \(s) {
@@ -333,8 +333,8 @@ get_identity_warping <- function() {
 #' @export
 #'
 #' @examples
-#' gam1 <- vector2warping(toy_warp$gam[, 1])
-#' gam2 <- vector2warping(toy_warp$gam[, 2])
+#' gam1 <- discrete2warping(toy_warp$gam[, 1])
+#' gam2 <- discrete2warping(toy_warp$gam[, 2])
 #' get_warping_distance(gam1, gam2)
 #' get_warping_distance(gam1, get_identity_warping())
 get_warping_distance <- function(gam1fun, gam2fun) {

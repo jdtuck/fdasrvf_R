@@ -23,7 +23,7 @@ A function that takes a numeric vector \eqn{s} of values in \eqn{[0,
 Applies a warping function to a given curve
 }
 \examples{
-curv <- matrix2curve(beta[, , 1, 1])
-gamf <- vector2warping(seq(0, 1, length = 100)^2)
+curv <- discrete2curve(beta[, , 1, 1])
+gamf <- discrete2warping(seq(0, 1, length = 100)^2)
 warp_curve(curv, gamf)
 }

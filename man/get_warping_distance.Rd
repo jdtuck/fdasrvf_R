@@ -23,8 +23,8 @@ functions.
 Computes the distance between two warping functions
 }
 \examples{
-gam1 <- vector2warping(toy_warp$gam[, 1])
-gam2 <- vector2warping(toy_warp$gam[, 2])
+gam1 <- discrete2warping(toy_warp$gam[, 1])
+gam2 <- discrete2warping(toy_warp$gam[, 2])
 get_warping_distance(gam1, gam2)
 get_warping_distance(gam1, get_identity_warping())
 }
