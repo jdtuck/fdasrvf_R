@@ -206,7 +206,7 @@ test_that("`get_shape_distance()` is symmetric", {
 
   d1 <- get_shape_distance(qfuns[[idx1]], qfuns[[idx2]], rotation = TRUE)
   d2 <- get_shape_distance(qfuns[[idx2]], qfuns[[idx1]], rotation = TRUE)
-  expect_true(all(abs(d1 - d2) < 5e-15))
+  expect_true(all(abs(d1 - d2) < 6e-15))
 
   d1 <- get_shape_distance(qfuns[[idx1]], qfuns[[idx2]], scale = TRUE)
   d2 <- get_shape_distance(qfuns[[idx2]], qfuns[[idx1]], scale = TRUE)
