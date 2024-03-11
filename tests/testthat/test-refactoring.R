@@ -143,22 +143,22 @@ test_that("`get_warping_distance()` is symmetric", {
   expect_true(abs(d1 - d2) < 2e-6)
 })
 
-test_that("`get_l2_hypersphere_distance()` is symmetric", {
+test_that("`get_hilbert_sphere_distance()` is symmetric", {
   N <- dim(fdasrvf::beta)[4]
   betafuns <- lapply(1:N, \(n) discrete2curve(fdasrvf::beta[, , 1, n]))
   qfuns <- lapply(betafuns, curve2srvf)
   idx1 <- 1
   idx2 <- 6
 
-  q1p <- to_hypersphere(qfuns[[idx1]])
-  q2p <- to_hypersphere(qfuns[[idx2]])
+  q1p <- to_hilbert_sphere(qfuns[[idx1]])
+  q2p <- to_hilbert_sphere(qfuns[[idx2]])
 
-  d1 <- get_l2_hypersphere_distance(q1p, q2p)
-  d2 <- get_l2_hypersphere_distance(q2p, q1p)
+  d1 <- get_hilbert_sphere_distance(q1p, q2p)
+  d2 <- get_hilbert_sphere_distance(q2p, q1p)
   expect_true(abs(d1 - d2) < .Machine$double.eps)
 })
 
-test_that("`get_l2_hypersphere_distance()` is Gamma-invariant", {
+test_that("`get_hilbert_sphere_distance()` is Gamma-invariant", {
   N <- dim(fdasrvf::beta)[4]
   betafuns <- lapply(1:N, \(n) discrete2curve(fdasrvf::beta[, , 1, n]))
   qfuns <- lapply(betafuns, curve2srvf)
@@ -166,10 +166,10 @@ test_that("`get_l2_hypersphere_distance()` is Gamma-invariant", {
   idx2 <- 6
   gamfun <- discrete2warping(toy_warp$gam[, 1])
 
-  q1p <- to_hypersphere(qfuns[[idx1]])
-  q2p <- to_hypersphere(qfuns[[idx2]])
+  q1p <- to_hilbert_sphere(qfuns[[idx1]])
+  q2p <- to_hilbert_sphere(qfuns[[idx2]])
 
-  d1 <- get_l2_hypersphere_distance(q1p, q2p)
+  d1 <- get_hilbert_sphere_distance(q1p, q2p)
 
   q1 <- warp_srvf(
     qfun = qfuns[[idx1]],
@@ -182,9 +182,9 @@ test_that("`get_l2_hypersphere_distance()` is Gamma-invariant", {
     betafun = betafuns[[idx2]]
   )
 
-  q1p <- to_hypersphere(q1)
-  q2p <- to_hypersphere(q2)
-  d2 <- get_l2_hypersphere_distance(q1p, q2p)
+  q1p <- to_hilbert_sphere(q1)
+  q2p <- to_hilbert_sphere(q2)
+  d2 <- get_hilbert_sphere_distance(q1p, q2p)
 
   expect_true(abs(d1 - d2) < 4e-7)
 })

@@ -273,7 +273,7 @@ get_l2_inner_product <- function(q1fun, q2fun) {
   )$value
 }
 
-#' Projects an SRVF onto the \eqn{L^2} hypersphere
+#' Projects an SRVF onto the Hilbert sphere
 #'
 #' @param qfun A function that takes a numeric vector \eqn{s} of values in
 #'   \eqn{[0, 1]} as input and returns the values of the SRVF at \eqn{s}.
@@ -281,22 +281,22 @@ get_l2_inner_product <- function(q1fun, q2fun) {
 #'   Defaults to \eqn{\sqrt{\langle q, q \rangle}}.
 #'
 #' @return A function that takes a numeric vector \eqn{s} of values in \eqn{[0,
-#'   1]} as input and returns the values of the SRVF projected onto the
-#'   \eqn{L^2} hypersphere.
+#'   1]} as input and returns the values of the SRVF projected onto the Hilbert
+#'   sphere.
 #' @export
 #'
 #' @examples
 #' q <- curve2srvf(beta[, , 1, 1])
-#' to_hypersphere(q)
-to_hypersphere <- function(qfun,
-                           qnorm = sqrt(get_l2_inner_product(qfun, qfun))) {
+#' to_hilbert_sphere(q)
+to_hilbert_sphere <- function(qfun,
+                              qnorm = sqrt(get_l2_inner_product(qfun, qfun))) {
   \(s) {
     q <- qfun(s)
     q / qnorm
   }
 }
 
-#' Computes the geodesic distance between two SRVFs on the \eqn{L^2} hypersphere
+#' Computes the geodesic distance between two SRVFs on the Hilbert sphere
 #'
 #' @param q1fun A function that takes a numeric vector \eqn{s} of values in
 #'   \eqn{[0, 1]} as input and returns the values of the first SRVF at \eqn{s}.
@@ -309,10 +309,10 @@ to_hypersphere <- function(qfun,
 #' @examples
 #' q1 <- curve2srvf(beta[, , 1, 1])
 #' q2 <- curve2srvf(beta[, , 1, 2])
-#' q1p <- to_hypersphere(q1)
-#' q2p <- to_hypersphere(q2)
-#' get_l2_hypersphere_distance(q1p, q2p)
-get_l2_hypersphere_distance <- function(q1fun, q2fun) {
+#' q1p <- to_hilbert_sphere(q1)
+#' q2p <- to_hilbert_sphere(q2)
+#' get_hilbert_sphere_distance(q1p, q2p)
+get_hilbert_sphere_distance <- function(q1fun, q2fun) {
   ip_value <- get_l2_inner_product(q1fun, q2fun)
   if (ip_value >  1) ip_value <-  1
   if (ip_value < -1) ip_value <- -1
@@ -365,7 +365,7 @@ get_warping_distance <- function(gam1fun, gam2fun) {
     gam2prime[abs(gam2prime) < 1e-10] <- 0
     sqrt(gam2prime)
   }
-  theta <- get_l2_hypersphere_distance(psi1, psi2)
+  theta <- get_hilbert_sphere_distance(psi1, psi2)
   if (theta < 1e-10) return(0)
   vfun <- \(s) theta / sin(theta) * (psi2(s) - cos(theta) * psi1(s))
   sqrt(get_l2_inner_product(vfun, vfun))
@@ -382,8 +382,8 @@ get_warping_distance <- function(gam1fun, gam2fun) {
 #' @param rotation A boolean value specifying whether the two SRVFs should be
 #'   optimally rotated before computing the distance. Defaults to `FALSE`.
 #' @param scale A boolean value specifying whether the two SRVFs should be
-#'   projected onto the \eqn{L^2} hypersphere before computing the distance.
-#'   Defaults to `FALSE`.
+#'   projected onto the Hilbert sphere before computing the distance. Defaults
+#'   to `FALSE`.
 #' @param lambda A numeric value specifying the regularization parameter for the
 #'   optimal alignment. Defaults to `0`.
 #' @param M An integer value specifying the number of points to use when
@@ -412,8 +412,8 @@ get_shape_distance <- function(q1fun, q2fun,
   }
 
   if (scale) {
-    q1fun_scaled <- to_hypersphere(q1fun, q1norm)
-    q2fun_scaled <- to_hypersphere(q2fun, q2norm)
+    q1fun_scaled <- to_hilbert_sphere(q1fun, q1norm)
+    q2fun_scaled <- to_hilbert_sphere(q2fun, q2norm)
   } else {
     q1fun_scaled <- q1fun
     q2fun_scaled <- q2fun
@@ -436,8 +436,8 @@ get_shape_distance <- function(q1fun, q2fun,
       Q1 <- q1fun_scaled(grd)
       Q2 <- q2fun_scaled_rotated(grd)
     } else {
-      Q1 <- to_hypersphere(q1fun_scaled, q1norm)(grd)
-      Q2 <- to_hypersphere(q2fun_scaled_rotated, q2norm)(grd)
+      Q1 <- to_hilbert_sphere(q1fun_scaled, q1norm)(grd)
+      Q2 <- to_hilbert_sphere(q2fun_scaled_rotated, q2norm)(grd)
     }
     dim(Q1) <- M * L
     dim(Q2) <- M * L
@@ -470,14 +470,14 @@ get_shape_distance <- function(q1fun, q2fun,
     work_q21 <- warp_srvf(q2fun_scaled_rotated, gamfun1) # q2 o gamfun1
 
     work_dist1 <- if (scale)
-      get_l2_hypersphere_distance(q1fun_scaled, work_q21)
+      get_hilbert_sphere_distance(q1fun_scaled, work_q21)
     else
       get_l2_distance(q1fun_scaled, work_q21)
 
     work_q22 <- warp_srvf(q2fun_scaled_rotated, gamfun2_inv) # q2 o gamfun2_inv
 
     work_dist2 <- if (scale)
-      get_l2_hypersphere_distance(q1fun_scaled, work_q22)
+      get_hilbert_sphere_distance(q1fun_scaled, work_q22)
     else
       get_l2_distance(q1fun_scaled, work_q22)
 
@@ -494,7 +494,7 @@ get_shape_distance <- function(q1fun, q2fun,
     gamfun <- get_identity_warping()
     q2fun_scaled_rotated_aligned <- q2fun_scaled_rotated
     dist_amplitude <- if (scale)
-      get_l2_hypersphere_distance(q1fun_scaled, q2fun_scaled_rotated_aligned)
+      get_hilbert_sphere_distance(q1fun_scaled, q2fun_scaled_rotated_aligned)
     else
       get_l2_distance(q1fun_scaled, q2fun_scaled_rotated_aligned)
   }
@@ -559,12 +559,12 @@ get_distance_matrix <- function(qfuns,
     scalar or an object of class {.cls cluster}.")
   }
 
-  # Handles projection to hypersphere if requested
+  # Handles projection to Hilbert sphere if requested
   if (alignment || scale)
     qnorms <- sapply(qfuns, \(qfun) sqrt(get_l2_distance(qfun)))
 
   if (scale)
-    qfuns_scaled <- mapply(to_hypersphere, qfuns, qnorms, SIMPLIFY = FALSE)
+    qfuns_scaled <- mapply(to_hilbert_sphere, qfuns, qnorms, SIMPLIFY = FALSE)
   else
     qfuns_scaled <- qfuns
 
@@ -599,8 +599,8 @@ get_distance_matrix <- function(qfuns,
         Q1 <- q1fun_scaled(grd)
         Q2 <- q2fun_scaled_rotated(grd)
       } else {
-        Q1 <- to_hypersphere(q1fun_scaled, qnorms[i + 1])(grd)
-        Q2 <- to_hypersphere(q2fun_scaled_rotated, qnorms[j + 1])(grd)
+        Q1 <- to_hilbert_sphere(q1fun_scaled, qnorms[i + 1])(grd)
+        Q2 <- to_hilbert_sphere(q2fun_scaled_rotated, qnorms[j + 1])(grd)
       }
       dim(Q1) <- M * L
       dim(Q2) <- M * L
@@ -633,14 +633,14 @@ get_distance_matrix <- function(qfuns,
       work_q21 <- warp_srvf(q2fun_scaled_rotated, gamfun1) # q2 o gamfun1
 
       work_dist1 <- if (scale)
-        get_l2_hypersphere_distance(q1fun_scaled, work_q21)
+        get_hilbert_sphere_distance(q1fun_scaled, work_q21)
       else
         get_l2_distance(q1fun_scaled, work_q21)
 
       work_q22 <- warp_srvf(q2fun_scaled_rotated, gamfun2_inv) # q2 o gamfun2_inv
 
       work_dist2 <- if (scale)
-        get_l2_hypersphere_distance(q1fun_scaled, work_q22)
+        get_hilbert_sphere_distance(q1fun_scaled, work_q22)
       else
         get_l2_distance(q1fun_scaled, work_q22)
 
@@ -657,7 +657,7 @@ get_distance_matrix <- function(qfuns,
       gamfun <- get_identity_warping()
       q2fun_scaled_rotated_aligned <- q2fun_scaled_rotated
       dist_amplitude <- if (scale)
-        get_l2_hypersphere_distance(q1fun_scaled, q2fun_scaled_rotated_aligned)
+        get_hilbert_sphere_distance(q1fun_scaled, q2fun_scaled_rotated_aligned)
       else
         get_l2_distance(q1fun_scaled, q2fun_scaled_rotated_aligned)
     }

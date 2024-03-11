@@ -26,8 +26,8 @@ optimally aligned before computing the distance. Defaults to \code{FALSE}.}
 optimally rotated before computing the distance. Defaults to \code{FALSE}.}
 
 \item{scale}{A boolean value specifying whether the two SRVFs should be
-projected onto the \eqn{L^2} hypersphere before computing the distance.
-Defaults to \code{FALSE}.}
+projected onto the Hilbert sphere before computing the distance. Defaults
+to \code{FALSE}.}
 
 \item{lambda}{A numeric value specifying the regularization parameter for the
 optimal alignment. Defaults to \code{0}.}
