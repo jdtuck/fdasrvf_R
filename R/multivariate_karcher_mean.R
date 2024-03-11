@@ -53,23 +53,23 @@
 #' @export
 #'
 #' @examples
-#' out <- karcher_mean(beta[, , 1, 1:2], maxit = 2)
+#' out <- multivariate_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' # note: use more functions, small for speed
-karcher_mean <- function(beta,
-                         mode = "O",
-                         alignment = TRUE,
-                         rotation = FALSE,
-                         scale = FALSE,
-                         lambda = 0.0,
-                         maxit = 20L,
-                         ms = c("mean", "median"),
-                         exact_medoid = FALSE,
-                         ncores = 1L,
-                         verbose = FALSE)
+multivariate_karcher_mean <- function(beta,
+                                      mode = "O",
+                                      alignment = TRUE,
+                                      rotation = FALSE,
+                                      scale = FALSE,
+                                      lambda = 0.0,
+                                      maxit = 20L,
+                                      ms = c("mean", "median"),
+                                      exact_medoid = FALSE,
+                                      ncores = 1L,
+                                      verbose = FALSE)
 {
   if (mode == "C" && !scale)
-    cli::cli_abort("Closed curves are currently handled only on the L2
-                   hypersphere. Please set `scale = TRUE`.")
+    cli::cli_abort("Closed curves are currently handled only on the Hilbert
+                   sphere. Please set `scale = TRUE`.")
 
   dims <- dim(beta)
   L <- dims[1] # Dimension of codomain
