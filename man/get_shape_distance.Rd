@@ -38,7 +38,22 @@ optimal alignment. Defaults to \code{0}.}
 searching for the optimal rotation and alignment. Defaults to \code{200L}.}
 }
 \value{
-A numeric value storing the distance between the two shapes.
+A list with the following components:
+\itemize{
+\item \code{amplitude_distance}: A numeric value storing the amplitude distance
+between the two SRVFs.
+\item \code{phase_distance}: A numeric value storing the phase distance between the
+two SRVFs.
+\item \code{optimal_warping}: A function that takes a numeric vector \eqn{s} of values
+in \eqn{[0, 1]} as input and returns the optimal warping function evaluated
+at \eqn{s}.
+\item \code{q1fun_modified}: A function that takes a numeric vector \eqn{s} of values
+in \eqn{[0, 1]} as input and returns the first SRVF modified according to the
+optimal alignment, rotation, and scaling.
+\item \code{q2fun_modified}: A function that takes a numeric vector \eqn{s} of values
+in \eqn{[0, 1]} as input and returns the second SRVF modified according to
+the optimal alignment, rotation, and scaling.
+}
 }
 \description{
 Computes the distance between two shapes

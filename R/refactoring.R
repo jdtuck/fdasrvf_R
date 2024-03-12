@@ -73,6 +73,48 @@ inverse_warping <- function(gamfun) {
   }
 }
 
+#' Computes the centroid of a curve
+#'
+#' @param betafun A function that takes a numeric vector \eqn{s} of values in
+#'   \eqn{[0, 1]} as input and returns its values at \eqn{s}.
+#'
+#' @return A numeric vector of length \eqn{L} storing the centroid of the curve.
+#' @export
+#'
+#' @examples
+#' betafun <- discrete2curve(beta[, , 1, 1])
+#' get_curve_centroid(betafun)
+get_curve_centroid <- function(betafun) {
+  denom_integrand <- \(s) {
+    betaprimevals <- betafun(s, deriv = 1)
+    sqrt(apply(betaprimevals, 2, \(.x) sum(.x^2)))
+  }
+  denom_value <- stats::integrate(
+    f = denom_integrand,
+    lower = 0,
+    upper = 1,
+    subdivisions = 10000L,
+    stop.on.error = FALSE
+  )$value
+  L <- dim(betafun(0))[1]
+  num_values <- sapply(1:L, \(l) {
+    num_integrand <- \(s) {
+      betavals <- betafun(s)
+      betaprimevals <- betafun(s, deriv = 1)
+      normbetaprimevals <- sqrt(apply(betaprimevals, 2, \(.x) sum(.x^2)))
+      betavals[l, ] * normbetaprimevals
+    }
+    stats::integrate(
+      f = num_integrand,
+      lower = 0,
+      upper = 1,
+      subdivisions = 10000L,
+      stop.on.error = FALSE
+    )$value
+  })
+  num_values / denom_value
+}
+
 #' Converts a curve to its SRVF representation
 #'
 #' @param beta A numeric matrix of size \eqn{L \times M} specifying a curve on
@@ -403,7 +445,20 @@ get_warping_distance <- function(gam1fun, gam2fun) {
 #' @param M An integer value specifying the number of points to use when
 #'   searching for the optimal rotation and alignment. Defaults to `200L`.
 #'
-#' @return A numeric value storing the distance between the two shapes.
+#' @return A list with the following components:
+#' - `amplitude_distance`: A numeric value storing the amplitude distance
+#' between the two SRVFs.
+#' - `phase_distance`: A numeric value storing the phase distance between the
+#' two SRVFs.
+#' - `optimal_warping`: A function that takes a numeric vector \eqn{s} of values
+#' in \eqn{[0, 1]} as input and returns the optimal warping function evaluated
+#' at \eqn{s}.
+#' - `q1fun_modified`: A function that takes a numeric vector \eqn{s} of values
+#' in \eqn{[0, 1]} as input and returns the first SRVF modified according to the
+#' optimal alignment, rotation, and scaling.
+#' - `q2fun_modified`: A function that takes a numeric vector \eqn{s} of values
+#' in \eqn{[0, 1]} as input and returns the second SRVF modified according to
+#' the optimal alignment, rotation, and scaling.
 #' @export
 #'
 #' @examples
@@ -515,7 +570,13 @@ get_shape_distance <- function(q1fun, q2fun,
 
   dist_phase <- get_warping_distance(gamfun, get_identity_warping())
 
-  c(ampitude = dist_amplitude, phase = dist_phase)
+  list(
+    ampitude_distance = dist_amplitude,
+    phase_distance = dist_phase,
+    optimal_warping = gamfun,
+    q1fun_modified = q1fun_scaled,
+    q2fun_modified = q2fun_scaled_rotated_aligned
+  )
 }
 
 #' Computes the distance matrix between a set of shapes.
