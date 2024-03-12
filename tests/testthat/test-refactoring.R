@@ -213,7 +213,7 @@ test_that("`get_shape_distance()` is symmetric", {
   expect_true(all(abs(d1 - d2) < .Machine$double.eps))
 })
 
-test_that("`get_shape_distance()` works", {
+test_that("`get_distance_matrix()` works", {
   N <- 4L
   srvfs <- lapply(1:N, \(n) curve2srvf(fdasrvf::beta[, , 1, n]))
   out <- get_distance_matrix(srvfs)

@@ -273,6 +273,21 @@ get_l2_inner_product <- function(q1fun, q2fun) {
   )$value
 }
 
+#' Computes the \eqn{L^2} norm of an SRVF
+#'
+#' @param qfun A function that takes a numeric vector \eqn{s} of values in
+#'   \eqn{[0, 1]} as input and returns the values of the SRVF at \eqn{s}.
+#'
+#' @return A numeric value storing the \eqn{L^2} norm of the SRVF.
+#' @export
+#'
+#' @examples
+#' q <- curve2srvf(beta[, , 1, 1])
+#' get_l2_norm(q)
+get_l2_norm <- function(qfun) {
+  sqrt(get_l2_inner_product(qfun, qfun))
+}
+
 #' Projects an SRVF onto the Hilbert sphere
 #'
 #' @param qfun A function that takes a numeric vector \eqn{s} of values in
@@ -288,8 +303,7 @@ get_l2_inner_product <- function(q1fun, q2fun) {
 #' @examples
 #' q <- curve2srvf(beta[, , 1, 1])
 #' to_hilbert_sphere(q)
-to_hilbert_sphere <- function(qfun,
-                              qnorm = sqrt(get_l2_inner_product(qfun, qfun))) {
+to_hilbert_sphere <- function(qfun, qnorm = get_l2_norm(qfun)) {
   \(s) {
     q <- qfun(s)
     q / qnorm
@@ -407,8 +421,8 @@ get_shape_distance <- function(q1fun, q2fun,
     cli::cli_abort("The two input SRVFs should have the same dimension.")
 
   if (alignment || scale) {
-    q1norm <- sqrt(get_l2_inner_product(q1fun, q1fun))
-    q2norm <- sqrt(get_l2_inner_product(q2fun, q2fun))
+    q1norm <- get_l2_norm(q1fun)
+    q2norm <- get_l2_norm(q2fun)
   }
 
   if (scale) {
@@ -561,7 +575,7 @@ get_distance_matrix <- function(qfuns,
 
   # Handles projection to Hilbert sphere if requested
   if (alignment || scale)
-    qnorms <- sapply(qfuns, \(qfun) sqrt(get_l2_distance(qfun)))
+    qnorms <- sapply(qfuns, get_l2_norm)
 
   if (scale)
     qfuns_scaled <- mapply(to_hilbert_sphere, qfuns, qnorms, SIMPLIFY = FALSE)
