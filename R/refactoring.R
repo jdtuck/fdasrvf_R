@@ -12,6 +12,16 @@ find_zero <- function(f, lower = 0, upper = 1, tol = 1e-8, maxiter = 1000L, ...)
   return(val[1])
 }
 
+integrate <- function(f, upper = 1) {
+  stats::integrate(
+    f = f,
+    lower = 0,
+    upper = upper,
+    subdivisions = 10000L,
+    stop.on.error = FALSE
+  )$value
+}
+
 #' Converts a curve from matrix to functional data object
 #'
 #' @param beta A numeric matrix of size \eqn{L \times M} specifying a curve on
@@ -89,13 +99,7 @@ get_curve_centroid <- function(betafun) {
     betaprimevals <- betafun(s, deriv = 1)
     sqrt(apply(betaprimevals, 2, \(.x) sum(.x^2)))
   }
-  denom_value <- stats::integrate(
-    f = denom_integrand,
-    lower = 0,
-    upper = 1,
-    subdivisions = 10000L,
-    stop.on.error = FALSE
-  )$value
+  denom_value <- integrate(denom_integrand)
   L <- dim(betafun(0))[1]
   num_values <- sapply(1:L, \(l) {
     num_integrand <- \(s) {
@@ -104,13 +108,7 @@ get_curve_centroid <- function(betafun) {
       normbetaprimevals <- sqrt(apply(betaprimevals, 2, \(.x) sum(.x^2)))
       betavals[l, ] * normbetaprimevals
     }
-    stats::integrate(
-      f = num_integrand,
-      lower = 0,
-      upper = 1,
-      subdivisions = 10000L,
-      stop.on.error = FALSE
-    )$value
+    integrate(num_integrand)
   })
   num_values / denom_value
 }
@@ -276,12 +274,7 @@ warp_srvf <- function(qfun, gamfun, betafun = NULL) {
 #' get_l2_distance(q1, q2)
 get_l2_distance <- function(q1fun, q2fun, method = "quadrature") {
   if (method == "quadrature") {
-    sqrt(stats::integrate(
-      f = \(s) colSums_ext((q1fun(s) - q2fun(s))^2),
-      lower = 0, upper = 1,
-      subdivisions = 10000L,
-      stop.on.error = FALSE
-    )$value)
+    sqrt(integrate(\(s) colSums_ext((q1fun(s) - q2fun(s))^2)))
   } else if (method == "trapz") {
     grd <- seq(0, 1, length = 100000L)
     sqrt(trapz(grd, colSums_ext((q1fun(grd) - q2fun(grd))^2)))
@@ -311,21 +304,8 @@ get_l2_distance <- function(q1fun, q2fun, method = "quadrature") {
 #' q1 <- curve2srvf(beta[, , 1, 1])
 #' q2 <- curve2srvf(beta[, , 1, 2])
 #' get_l2_inner_product(q1, q2)
-get_l2_inner_product <- function(q1fun, q2fun, method = "quadrature") {
-  integrand <- \(s) colSums_ext(q1fun(s) * q2fun(s))
-  if (method == "quadrature") {
-    stats::integrate(
-      f = integrand,
-      lower = 0, upper = 1,
-      subdivisions = 10000L,
-      stop.on.error = FALSE
-    )$value
-  } else if (method == "trapz") {
-    grd <- seq(0, 1, length = 100000L)
-    sqrt(trapz(grd, integrand(grd)))
-  } else {
-    cli::cli_abort("Invalid method")
-  }
+get_l2_inner_product <- function(q1fun, q2fun) {
+  integrate(\(s) colSums_ext(q1fun(s) * q2fun(s)))
 }
 
 #' Computes the \eqn{L^2} norm of an SRVF
@@ -620,7 +600,6 @@ get_distance_matrix <- function(qfuns,
                                 M = 200L,
                                 parallel_setup = 1L) {
   # Handles parallel computing strategy
-  cli::cli_alert_info("Setting up parallel computing...")
   if (inherits(parallel_setup, "cluster")) {
     doParallel::registerDoParallel(parallel_setup)
     on.exit(parallel::stopCluster(parallel_setup))

@@ -17,4 +17,4 @@ void GramSchmitd(double *x, int &n, int d);
 double innerSquare(const double *u, const double *v, int n, int t, int d);
 void GramSchmitdSquare(double *x, int &n, int n1, int n2, int d);
 
-#endif
+#endif /* MYVECTOR_H */
