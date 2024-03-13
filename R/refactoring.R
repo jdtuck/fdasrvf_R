@@ -283,8 +283,14 @@ get_l2_distance <- function(q1fun, q2fun, method = "quadrature") {
       stop.on.error = FALSE
     )$value)
   } else if (method == "trapz") {
-    grd <- seq(0, 1, length = 10000)
+    grd <- seq(0, 1, length = 100000L)
     sqrt(trapz(grd, colSums_ext((q1fun(grd) - q2fun(grd))^2)))
+  } else if (method == "simpson") {
+    grd <- seq(0, 1, length = 100000L)
+    sqrt(simpson(grd, colSums_ext((q1fun(grd) - q2fun(grd))^2)))
+  } else if (method == "trapzCpp") {
+    grd <- seq(0, 1, length = 100000L)
+    sqrt(trapzCpp(grd, colSums_ext((q1fun(grd) - q2fun(grd))^2)))
   } else {
     cli::cli_abort("Invalid method")
   }
@@ -305,14 +311,21 @@ get_l2_distance <- function(q1fun, q2fun, method = "quadrature") {
 #' q1 <- curve2srvf(beta[, , 1, 1])
 #' q2 <- curve2srvf(beta[, , 1, 2])
 #' get_l2_inner_product(q1, q2)
-get_l2_inner_product <- function(q1fun, q2fun) {
+get_l2_inner_product <- function(q1fun, q2fun, method = "quadrature") {
   integrand <- \(s) colSums_ext(q1fun(s) * q2fun(s))
-  stats::integrate(
-    f = integrand,
-    lower = 0, upper = 1,
-    subdivisions = 10000L,
-    stop.on.error = FALSE
-  )$value
+  if (method == "quadrature") {
+    stats::integrate(
+      f = integrand,
+      lower = 0, upper = 1,
+      subdivisions = 10000L,
+      stop.on.error = FALSE
+    )$value
+  } else if (method == "trapz") {
+    grd <- seq(0, 1, length = 100000L)
+    sqrt(trapz(grd, integrand(grd)))
+  } else {
+    cli::cli_abort("Invalid method")
+  }
 }
 
 #' Computes the \eqn{L^2} norm of an SRVF

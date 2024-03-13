@@ -1,4 +1,4 @@
-/* Trapzodial Numerical Integration */
+/* Trapezoidal Numerical Integration */
 void trapz(int *m, int *n, double *x, double *y, double *out);
 
 /* Trapezoidal numerical integration in third dimension. */
@@ -17,7 +17,7 @@ void col_gradient(int nrows, int ncols, double *f, double step, double *df);
 /* Matrix product operation (c = a*b) */
 void product(int m, int n, int nn, double *a, double *b, double *c);
 
-/* Cummulative Trapzodial Numerical Integration */
+/* Cumulative Trapezoidal Numerical Integration */
 void cumtrapz(int *n, double *x, double *y, double *z);
 
 /* Simpson Numerical Integration */
@@ -37,7 +37,7 @@ void spline(int n, double *x, double *y, int nu, double *xi, double *yi);
 void spline_coef(int n, double *x, double *y, double *b, double *c, double *d);
 void spline_eval(int nu, double *u, double *v, int n, double *x, double *y, double *b, double *c, double *d);
 
-/* Linear Interpoloation */
+/* Linear Interpolation */
 void approx(double *x, double *y, int nxy, double *xout, double *yout, int nout, int method, double yleft, double yright, double f);
 
 /* Invert Gamma */

@@ -4,7 +4,7 @@
 \alias{get_l2_inner_product}
 \title{Computes the \eqn{L^2} inner product between two SRVFs}
 \usage{
-get_l2_inner_product(q1fun, q2fun)
+get_l2_inner_product(q1fun, q2fun, method = "quadrature")
 }
 \arguments{
 \item{q1fun}{A function that takes a numeric vector \eqn{s} of values in
