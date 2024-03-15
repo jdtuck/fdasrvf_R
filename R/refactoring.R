@@ -7,8 +7,8 @@ find_zero <- function(f, lower = 0, upper = 1, tol = 1e-8, maxiter = 1000L, ...)
   # C_zeroin2 <- utils::getFromNamespace("C_zeroin2", "stats")
   # f.lower <- f(lower, ...)
   # f.upper <- f(upper, ...)
-  # val <- .External2(C_zeroin2, \(arg) f(arg, ...),
-  #                   lower, upper, f.lower, f.upper, tol, as.integer(maxiter))
+  # ff <- function(x) f(x, ...)
+  # val <- .External2(C_zeroin2, ff, as.double(lower), as.double(upper), as.double(f.lower), as.double(f.upper), as.double(tol), as.integer(maxiter))
   val <- stats::uniroot(f, lower = lower, upper = upper, tol = tol, maxiter = maxiter, ...)$root
   return(val[1])
 }
@@ -66,22 +66,30 @@ discrete2curve <- function(beta) {
 #' discrete2warping(toy_warp$gam[, 1])
 discrete2warping <- function(gam) {
   M <- length(gam)
+  # step <- 1 / (M - 1)
+  # left_slope <- (gam[2] - gam[1]) * step
+  # right_slope <- (gam[M] - gam[M - 1]) * step
+  # # y(x) = a (x - x0) + y0
+  # gam <- c(gam[1] - step * left_slope , gam, gam[M] + step * right_slope)
+  # grd <- seq(-step, 1 + step, length = M + 2)
   grd <- seq(0, 1, length = M)
   stats::splinefun(grd, gam, method = "hyman")
 }
 
 inverse_warping <- function(gamfun) {
-  \(s, deriv = 0) {
-    if (deriv > 1)
-      cli::cli_abort("The argument {.arg deriv} must be 0 or 1.")
-    # Get gamma inverse
-    gaminverse <- sapply(s, \(.s) {
-      find_zero(\(t) gamfun(t) - .s, lower = 0, upper = 1, tol = 1e-8)
-    })
-    if (deriv == 0)
-      return(gaminverse)
-    1 / gamfun(gaminverse, deriv = 1)
-  }
+  s <- seq(0, 1, length = 10000L)
+  stats::splinefun(gamfun(s), s, method = "hyman")
+  # \(s, deriv = 0) {
+  #   if (deriv > 1)
+  #     cli::cli_abort("The argument {.arg deriv} must be 0 or 1.")
+  #   # Get gamma inverse
+  #   gaminverse <- sapply(s, \(.s) {
+  #     find_zero(\(t) gamfun(t) - .s, lower = 0, upper = 1, tol = 1e-8)
+  #   })
+  #   if (deriv == 0)
+  #     return(gaminverse)
+  #   1 / gamfun(gaminverse, deriv = 1)
+  # }
 }
 
 #' Computes the centroid of a curve
