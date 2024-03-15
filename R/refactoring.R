@@ -4,11 +4,12 @@ colSums_ext <- function(x, na.rm = FALSE, dims = 1) {
 }
 
 find_zero <- function(f, lower = 0, upper = 1, tol = 1e-8, maxiter = 1000L, ...) {
-  C_zeroin2 <- utils::getFromNamespace("C_zeroin2", "stats")
-  f.lower <- f(lower, ...)
-  f.upper <- f(upper, ...)
-  val <- .External2(C_zeroin2, \(arg) f(arg, ...),
-                    lower, upper, f.lower, f.upper, tol, as.integer(maxiter))
+  # C_zeroin2 <- utils::getFromNamespace("C_zeroin2", "stats")
+  # f.lower <- f(lower, ...)
+  # f.upper <- f(upper, ...)
+  # val <- .External2(C_zeroin2, \(arg) f(arg, ...),
+  #                   lower, upper, f.lower, f.upper, tol, as.integer(maxiter))
+  val <- stats::uniroot(f, lower = lower, upper = upper, tol = tol, maxiter = maxiter, ...)$root
   return(val[1])
 }
 
@@ -148,6 +149,9 @@ curve2srvf <- function(beta, is_derivative = FALSE) {
     else
       fprime <- betaprime(s)
     sqrt_fprime_norm <- sqrt(apply(fprime, 2, \(.x) sqrt(sum(.x^2))))
+    is_zero <- sqrt_fprime_norm < sqrt(.Machine$double.eps)
+    fprime[, is_zero] <- 0
+    sqrt_fprime_norm[is_zero] <- 1
     fprime / matrix(
       data = sqrt_fprime_norm,
       nrow = nrow(fprime),
@@ -510,11 +514,8 @@ get_shape_distance <- function(q1fun, q2fun,
     Tvec <- rep(0, M)
     size <- 0
 
-    ret <- .Call(
-      "DPQ2", PACKAGE = "fdasrvf",
-      Q1, grd, Q2, grd, L, M, M, grd, grd, M,
-      M, Gvec, Tvec, size, lambda, nbhd_dim
-    )
+    ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, Gvec, Tvec, size,
+                lambda, nbhd_dim)
 
     Gvec <- ret$G[1:ret$size]
     Tvec <- ret$T[1:ret$size]
@@ -678,11 +679,8 @@ get_distance_matrix <- function(qfuns,
       Tvec <- rep(0, M)
       size <- 0
 
-      ret <- .Call(
-        "DPQ2", PACKAGE = "fdasrvf",
-        Q1, grd, Q2, grd, L, M, M, grd, grd, M,
-        M, Gvec, Tvec, size, lambda, nbhd_dim
-      )
+      ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, Gvec, Tvec, size,
+                  lambda, nbhd_dim)
 
       Gvec <- ret$G[1:ret$size]
       Tvec <- ret$T[1:ret$size]

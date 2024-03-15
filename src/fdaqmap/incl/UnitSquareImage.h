@@ -1,14 +1,6 @@
 #ifndef UNITSQUAREIMAGE_H
 #define UNITSQUAREIMAGE_H
 
-#include <cstring>
-#include <cmath>
-#include <iostream>
-#include "ImageRegister.h"
-
-using namespace std;
-
-
 void findgrad(double *dfdu, double *dfdv, const double *f, int n, int t);
 void findgrad2D(double *dfdu, double *dfdv, double *f, int n, int t, int d);
 void multfact_image(double *multfact, const double *dfdu, const double *dfdv,

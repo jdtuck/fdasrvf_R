@@ -135,7 +135,7 @@ compgrad2D <- function(f){
         dfdv = array(0,dim=dim(f))
     }
 
-    out = .Call('find_grad_2D', PACKAGE = 'fdasrvf', dfdu, dfdv, f, n, t, d)
+    out <- find_grad_2D(dfdu, dfdv, f, n, t, d)
 
     return(list(dfdu=out$dfdu,dfdv=out$dfdv))
 }
@@ -269,7 +269,7 @@ findphistar <- function(q, b){
 
     w = array(0,dim=c(n,t,d,K))
 
-    out = .Call('find_phistar', PACKAGE = 'fdasrvf', w, q, b, n, t, d, K)
+    out <- find_phistar(w, q, b, n, t, d, K)
 
     return (out)
 }
@@ -300,7 +300,7 @@ check_crossing <- function(f) {
     if (D!=2)
         stop("Third dimension of first argument to be 2")
 
-    diffeo = .Call('check_cross', PACKAGE = 'fdasrvf', f, n, t, D)
+    diffeo <- check_cross(f, n, t, D)
 
     if (diffeo == 0)
         is_diffeo = F

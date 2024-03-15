@@ -82,19 +82,14 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
       G <- rep(0, M)
       T <- rep(0, M)
       size <- 0
-      ret <- .Call(
-        "DPQ2", PACKAGE = "fdasrvf",
-        Q1, T1, Q2, T2, L, M, M, T1, T2, M, M, G, T, size, lambda, nbhd_dim
-      )
+      ret <- DPQ2(Q1, T1, Q2, T2, L, M, M, T1, T2, M, M, G, T, size, lambda,
+                  nbhd_dim)
       G <- ret$G[1:ret$size]
       Tf <- ret$T[1:ret$size]
       gam0 <- stats::approx(Tf, G, xout = T2)$y
     },
     DPo = {
-      gam0 <- .Call(
-        "DPQ", PACKAGE = "fdasrvf",
-        Q2, Q1, L, M, lambda, pen, 0, rep(0, M)
-      )
+      gam0 <- DPQ(Q2, Q1, L, M, lambda, pen, 0)
     },
     SIMUL = {
       if (lambda > 0)
@@ -109,7 +104,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
     },
     RBFGS = {
       time1 <- seq(0, 1, length.out=length(Q1))
-      gam0 <- .Call("_fdasrvf_rlbfgs_optim", PACKAGE = "fdasrvf", Q1, Q2, time1, 30, lambda, pen-1)
+      gam0 <- rlbfgs(Q1, Q2, time1, 30, lambda, pen - 1)
       gam0 <- c(gam0)
     }
   )

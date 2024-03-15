@@ -55,7 +55,9 @@ reparam_curve <- function(beta1, beta2, lambda = 0, method = "DP", w = 0.01,
         G = rep(0,M)
         T1 = rep(0,M)
         size = 0
-        ret = .Call('DPQ2', PACKAGE = 'fdasrvf', q1i, timet, q2i, timet, n1, M, M, timet, timet, M, M, G, T1, size, lambda, 1);
+        ret <- DPQ2(Q1 = q1i, T1 = timet, Q2 = q2i, T2 = timet, m1 = n1, n1 = M,
+                    n2 = M, tv1 = timet, tv2 = timet, n1v = M, n2v = M, G = G,
+                    T = T1, size = size, lam1 = lambda, nbhd_dim = 1)
 
         G = ret$G[1:ret$size]
         Tf = ret$T[1:ret$size]
@@ -83,7 +85,7 @@ reparam_curve <- function(beta1, beta2, lambda = 0, method = "DP", w = 0.01,
       dim(q1i) = c(M*n1)
       q2i = q2
       dim(q2i) = c(M*n1)
-      gam0 = .Call('DPQ', PACKAGE = 'fdasrvf', q1i, q2i, n1, M, lambda, 1, 0, rep(0,M))
+      gam0 <- DPQ(q1i, q2i, n1, M, lambda, 1, 0)
     }
 
     gam = (gam0-gam0[1])/(gam0[length(gam0)]-gam0[1])  # slight change on scale

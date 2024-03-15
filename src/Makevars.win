@@ -1,9 +1,11 @@
 ##split sources to ensure the commands for linking are not too long!
-SOURCES1 = registerDynamicSymbol.cpp wrapper.cpp wrapper_rbfgs.cpp fdasrsf/DP.cpp fdasrsf/dp_grid.cpp fdasrsf/dp_nbhd.cpp fdasrsf/DynamicProgrammingQ2.cpp fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp \
-  fdasrsf/bayesian.cpp fdasrsf/pair_align_functions_expomap.cpp
+SOURCES1 = RcppExports.cpp wrapperSRSF.cpp wrapperQMAP.cpp bayesian.cpp \
+	pair_align_functions_expomap.cpp fdasrsf/DP.cpp fdasrsf/dp_grid.cpp \
+	fdasrsf/dp_nbhd.cpp fdasrsf/DynamicProgrammingQ2.cpp \
+	fdasrsf/misc_funcs.cpp fdasrsf/mlogit_warp_grad.cpp
 SOURCES2 = fdaqmap/src/myVector.cpp fdaqmap/src/UnitSquareImage.cpp
 
-OBJECTS = wrapper.o
+OBJECTS = RcppExports.o
 OBJS1 = $(SOURCES1:.cpp=.o)
 OBJS2 = $(SOURCES2:.cpp=.o)
 
