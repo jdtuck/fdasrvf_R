@@ -31,11 +31,11 @@ test_that("`curve2srvf()` and `srvf2curve()` are inverses", {
 
   q <- curve2srvf(fdasrvf::beta[, , 1, 1])
   beta_recon <- srvf2curve(q, beta0 = fdasrvf::beta[, 1, 1, 1])
-  expect_true(get_l2_distance(betafuns[[1]], beta_recon) < 3e-5)
+  expect_true(get_l2_distance(betafuns[[1]], beta_recon) < 6e-6)
 
   q <- curve2srvf(betafuns[[1]])
   beta_recon <- srvf2curve(q, beta0 = fdasrvf::beta[, 1, 1, 1])
-  expect_true(get_l2_distance(betafuns[[1]], beta_recon) < 3e-5)
+  expect_true(get_l2_distance(betafuns[[1]], beta_recon) < 6e-6)
 })
 
 test_that("`get_l2_distance()` is symmetric", {

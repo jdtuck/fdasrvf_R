@@ -191,9 +191,18 @@ srvf2curve <- function(qfun, beta0 = NULL) {
     v * matrix(v_norm, nrow = L, ncol = length(s), byrow = TRUE)
   }
   Vectorize(\(t) {
-    s <- seq(0, t, length = 10000L)
-    integrand_matrix <- integrand(s)
-    out <- trapz(s, integrand_matrix, dims = 2)
+    out <- numeric(L)
+    for (l in 1:L) {
+      integrand1 <- \(s) integrand(s)[l, ]
+      out[l] <- stats::integrate(
+        f = integrand1,
+        lower = 0,
+        upper = t,
+        rel.tol = 1e-8,
+        subdivisions = 10000L,
+        stop.on.error = FALSE
+      )$value
+    }
     if (!is.null(beta0))
       out <- out + beta0
     out
