@@ -11,7 +11,7 @@ regression_warp <- function(beta, time, q, y, alpha){
   if (y > alpha + y_M){
     gamma_new = gam_M
   }else if (y < alpha + y_m){
-    gamma_new - gam_m
+    gamma_new = gam_m
   }else{
     gamma_new = zero_crossing(y-alpha, q, beta, time, y_M, y_m, gam_M, gam_m)
   }
