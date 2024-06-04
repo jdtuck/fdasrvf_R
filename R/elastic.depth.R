@@ -13,6 +13,8 @@
 #' @param parallel run computation in parallel (default = `TRUE`)
 #' @return Returns a list containing \item{amp}{amplitude depth}
 #' \item{phase}{phase depth}
+#' \item{amp_dist}{amplitude distance matrix}
+#' \item{phs_dist}{phase distance matrix}
 #' @keywords depth
 #' @concept srvf alignment
 #' @references T. Harris, J. D. Tucker, B. Li, and L. Shand, "Elastic depths for
@@ -67,5 +69,5 @@ elastic.depth <- function(f, time, lambda = 0, pen="roughness",
 
     if (parallel) parallel::stopCluster(cl)
 
-    return(list(amp=amp,phase=phase))
+    return(list(amp=amp,phase=phase, amp_dist=amp_dist, phs_dist=phs_dist))
 }

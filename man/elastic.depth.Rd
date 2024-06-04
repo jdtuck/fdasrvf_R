@@ -23,6 +23,8 @@ and norm from id (\code{"norm"})}
 \value{
 Returns a list containing \item{amp}{amplitude depth}
 \item{phase}{phase depth}
+\item{amp_dist}{amplitude distance matrix}
+\item{phs_dist}{phase distance matrix}
 }
 \description{
 This functions calculates the elastic depth between set of functions in
