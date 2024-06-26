@@ -53,7 +53,7 @@ elastic_amp_change_ff <- function(f, time, d = 1000, h = 0, smooth_data=FALSE, s
   Sn <- (1:N1)
   Sn[1] <- 0
   for (j in (2:N1)) {
-    Sn[j] <- 1/M * pvecnorm(1/sqrt(N1)*(mu_f[,j-1]-(j/N1)*mu_f[,N1]))^2
+    Sn[j] <- 1/M * pvecnorm(1/sqrt(N1)*(mu_f[,j]-(j/N1)*mu_f[,N1]))^2
   }
   k.star <- min(which(Sn == max(Sn)))
   Tn <- max(Sn)
@@ -190,7 +190,7 @@ elastic_ph_change_ff <- function(f, time, d = 1000, h = 0, smooth_data=FALSE, sp
   Sn <- (1:N1)
   Sn[1] <- 0
   for (j in (2:N1)) {
-    Sn[j] <- 1/M * pvecnorm(1/sqrt(N1)*(mu[,j-1]-(j/N1)*mu[,N1]))^2
+    Sn[j] <- 1/M * pvecnorm(1/sqrt(N1)*(mu[,j]-(j/N1)*mu[,N1]))^2
   }
   k.star <- min(which(Sn == max(Sn)))
   Tn <- max(Sn)
