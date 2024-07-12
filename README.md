@@ -53,8 +53,25 @@ ggplot(beta_df, aes(x = X1, y = X2, color = factor(fig))) + geom_point() + scale
 ```
 
 <img src="man/figures/README-2d_curve_plot-1.png" width="100%" /> We can
-see that each entry is a functionally a close 2D curve and we will
-proceed with
+see that each entry is a functionally a close 2D curve. We will now
+proceed with curve alignment :
+
+``` r
+aligned_lst = curve_srvf_align(beta[,,1,1:20],maxit=5)
+#> 
+#> Initializing...
+#> Iteration: 1
+#> Iteration: 2
+```
+
+Let’s plot the result
+
+``` r
+aligned_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(aligned_lst$betan[,,.x] |> t()), fig = .x) ) 
+ggplot(aligned_df, aes(x = X1, y = X2, color = factor(fig))) + geom_point() + scale_color_viridis_d()
+```
+
+<img src="man/figures/README-2d_aligned_plot-1.png" width="100%" />
 
 ## References
 
