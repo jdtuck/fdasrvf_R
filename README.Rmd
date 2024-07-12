@@ -56,6 +56,7 @@ For that we first turn on class of curve present in the `beta` matrix into `beta
 ```{r 2d_curve_plot}
 library(fdasrvf)
 library(ggplot2)
+
 class = 1
 beta_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(beta[,,class,.x] |> t()), curve = as.character(.x)) ) 
 ggplot(beta_df, aes(x = X1, y = X2, color = curve)) +
@@ -76,13 +77,12 @@ ggplot(aligned_df, aes(x = X1, y = X2, color = curve)) +
   geom_point(alpha = 0.5) +
   scale_color_viridis_d() + theme_void()
 ```
-The result contains also the mean curve and the curves transformed into the SRVF space : 
+The result contains also the mean curve (scaled here) : 
 ```{r 2d-meean-and-srvf}
 mean_curve <- data.frame(aligned_lst$betamean |> t()) 
 ggplot(mean_curve, aes(x = X1, y = X2)) + 
   geom_point(size = 1, color = "darkred") +
   scale_color_viridis_d() + theme_void()
-
 ```
 
 

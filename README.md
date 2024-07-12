@@ -49,6 +49,7 @@ into `beta_df` to ease the visualization:
 ``` r
 library(fdasrvf)
 library(ggplot2)
+
 class = 1
 beta_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(beta[,,class,.x] |> t()), curve = as.character(.x)) ) 
 ggplot(beta_df, aes(x = X1, y = X2, color = curve)) +
@@ -81,8 +82,7 @@ ggplot(aligned_df, aes(x = X1, y = X2, color = curve)) +
 ```
 
 <img src="man/figures/README-2d_aligned_plot-1.png" width="100%" /> The
-result contains also the mean curve and the curves transformed into the
-SRVF space :
+result contains also the mean curve (scaled here) :
 
 ``` r
 mean_curve <- data.frame(aligned_lst$betamean |> t()) 
