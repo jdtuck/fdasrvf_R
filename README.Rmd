@@ -52,22 +52,37 @@ The package contains `beta` dataset that is handy to experiment with the availab
 
 We first visualize this curve dataset:
 
-For that we first turn `beta` into `beta_df` to ease the visualization:
+For that we first turn on class of curve present in the `beta` matrix into `beta_df` to ease the visualization:
 ```{r 2d_curve_plot}
 library(fdasrvf)
 library(ggplot2)
-beta_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(beta[,,1,.x] |> t()), fig = .x) ) 
-ggplot(beta_df, aes(x = X1, y = X2, color = factor(fig))) + geom_point() + scale_color_viridis_d()
+class = 1
+beta_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(beta[,,class,.x] |> t()), curve = as.character(.x)) ) 
+ggplot(beta_df, aes(x = X1, y = X2, color = curve)) +
+  geom_point(alpha = 0.5) +
+  scale_color_viridis_d() + theme_void()
 ```
-We can see that each entry is a functionally a close 2D curve.
-We will now proceed with curve alignment : 
+We can see that each `curve` is a functionally closed 2D curve. And we distinguish different patterns
+of miss-alignment, like X values shrinking, small displacement, and many others.
+
+We will now proceed with curve alignment for the curves of this class 1: 
 ```{r}
-aligned_lst = curve_srvf_align(beta[,,1,1:20],maxit=5)
+aligned_lst = curve_srvf_align(beta[,,class,],maxit=5)
 ```
 Let's plot the result 
 ```{r 2d_aligned_plot}
-aligned_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(aligned_lst$betan[,,.x] |> t()), fig = .x) ) 
-ggplot(aligned_df, aes(x = X1, y = X2, color = factor(fig))) + geom_point() + scale_color_viridis_d()
+aligned_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(aligned_lst$betan[,,.x] |> t()), curve = as.character(.x)) ) 
+ggplot(aligned_df, aes(x = X1, y = X2, color = curve)) +
+  geom_point(alpha = 0.5) +
+  scale_color_viridis_d() + theme_void()
+```
+The result contains also the mean curve and the curves transformed into the SRVF space : 
+```{r 2d-meean-and-srvf}
+mean_curve <- data.frame(aligned_lst$betamean |> t()) 
+ggplot(mean_curve, aes(x = X1, y = X2)) + 
+  geom_point(size = 1, color = "darkred") +
+  scale_color_viridis_d() + theme_void()
+
 ```
 
 
