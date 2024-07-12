@@ -37,55 +37,39 @@ install.packages("fdasrvf")`
 ```
 
 For a more up to date, but may not be stable version from git repository.
-This version has RBFGS while CRAN does not.
 
 1. Download zip or tar.gz of package or clone repository
 2. Install into R (> 4.3.0)
 
 ``` r
-install.packages("fdasrvf.tar.gz", repos = NULL)
+library(devtools)
+install_github("jdtuck/fdasrvf_R")
 ```
 
 ## Example
 
-The package contains `beta` dataset that is handy to experiment with the available functions.
+The package contains `simu` dataset that is handy to experiment with the available functions for functions in $\mathbb{R}^1$.
 
-We first visualize this curve dataset:
+We first visualize this dataset:
 
-For that we first turn on class of curve present in the `beta` matrix into `beta_df` to ease the visualization:
-```{r 2d_curve_plot}
+For that we first turn on class of functions present in the `f` for visualization:
+```{r 1d_curve_plot}
 library(fdasrvf)
-library(ggplot2)
 
-class = 1
-beta_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(beta[,,class,.x] |> t()), curve = as.character(.x)) ) 
-ggplot(beta_df, aes(x = X1, y = X2, color = curve)) +
-  geom_point(alpha = 0.5) +
-  scale_color_viridis_d() + theme_void()
+matplot(simu_data$time, simu_data$f, type="l")
 ```
 We can see that each `curve` is a functionally closed 2D curve. And we distinguish different patterns
 of miss-alignment, like X values shrinking, small displacement, and many others.
 
 We will now proceed with curve alignment for the curves of this class 1: 
 ```{r}
-aligned_lst = curve_srvf_align(beta[,,class,],maxit=5)
+obj <- time_warping(simu_data$f, simu_data$time)
 ```
+
 Let's plot the result 
 ```{r 2d_aligned_plot}
-aligned_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(aligned_lst$betan[,,.x] |> t()), curve = as.character(.x)) ) 
-ggplot(aligned_df, aes(x = X1, y = X2, color = curve)) +
-  geom_point(alpha = 0.5) +
-  scale_color_viridis_d() + theme_void()
+plot(obj)
 ```
-The result contains also the mean curve (scaled here) : 
-```{r 2d-meean-and-srvf}
-mean_curve <- data.frame(aligned_lst$betamean |> t()) 
-ggplot(mean_curve, aes(x = X1, y = X2)) + 
-  geom_point(size = 1, color = "darkred") +
-  scale_color_viridis_d() + theme_void()
-```
-
-
 
 ## References
 Tucker, J. D. 2014, Functional Component Analysis and Regression using Elastic
