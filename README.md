@@ -27,37 +27,33 @@ install.packages("fdasrvf")`
 ```
 
 For a more up to date, but may not be stable version from git
-repository. This version has RBFGS while CRAN does not.
+repository.
 
 1.  Download zip or tar.gz of package or clone repository
 2.  Install into R (\> 4.3.0)
 
 ``` r
-install.packages("fdasrvf.tar.gz", repos = NULL)
+library(devtools)
+install_github("jdtuck/fdasrvf_R")
 ```
 
 ## Example
 
-The package contains `beta` dataset that is handy to experiment with the
-available functions.
+The package contains `simu` dataset that is handy to experiment with the
+available functions for functions in $\mathbb{R}^1$.
 
-We first visualize this curve dataset:
+We first visualize this dataset:
 
-For that we first turn on class of curve present in the `beta` matrix
-into `beta_df` to ease the visualization:
+For that we first turn on class of functions present in the `f` for
+visualization:
 
 ``` r
 library(fdasrvf)
-library(ggplot2)
 
-class = 1
-beta_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(beta[,,class,.x] |> t()), curve = as.character(.x)) ) 
-ggplot(beta_df, aes(x = X1, y = X2, color = curve)) +
-  geom_point(alpha = 0.5) +
-  scale_color_viridis_d() + theme_void()
+matplot(simu_data$time, simu_data$f, type="l")
 ```
 
-<img src="man/figures/README-2d_curve_plot-1.png" width="100%" /> We can
+<img src="man/figures/README-1d_curve_plot-1.png" width="100%" /> We can
 see that each `curve` is a functionally closed 2D curve. And we
 distinguish different patterns of miss-alignment, like X values
 shrinking, small displacement, and many others.
@@ -65,33 +61,20 @@ shrinking, small displacement, and many others.
 We will now proceed with curve alignment for the curves of this class 1:
 
 ``` r
-aligned_lst = curve_srvf_align(beta[,,class,],maxit=5)
-#> 
-#> Initializing...
-#> Iteration: 1
-#> Iteration: 2
+obj <- time_warping(simu_data$f, simu_data$time)
+#> ℹ Using lambda = 0
+#> ℹ Initializing...
+#> ℹ Computing Karcher mean of 21 functions in SRSF space...
+#> ℹ Entering iteration 1...
 ```
 
 Let’s plot the result
 
 ``` r
-aligned_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(aligned_lst$betan[,,.x] |> t()), curve = as.character(.x)) ) 
-ggplot(aligned_df, aes(x = X1, y = X2, color = curve)) +
-  geom_point(alpha = 0.5) +
-  scale_color_viridis_d() + theme_void()
+plot(obj)
 ```
 
-<img src="man/figures/README-2d_aligned_plot-1.png" width="100%" /> The
-result contains also the mean curve (scaled here) :
-
-``` r
-mean_curve <- data.frame(aligned_lst$betamean |> t()) 
-ggplot(mean_curve, aes(x = X1, y = X2)) + 
-  geom_point(size = 1, color = "darkred") +
-  scale_color_viridis_d() + theme_void()
-```
-
-<img src="man/figures/README-2d-meean-and-srvf-1.png" width="100%" />
+<img src="man/figures/README-2d_aligned_plot-1.png" width="100%" /><img src="man/figures/README-2d_aligned_plot-2.png" width="100%" /><img src="man/figures/README-2d_aligned_plot-3.png" width="100%" /><img src="man/figures/README-2d_aligned_plot-4.png" width="100%" /><img src="man/figures/README-2d_aligned_plot-5.png" width="100%" />
 
 ## References
 
