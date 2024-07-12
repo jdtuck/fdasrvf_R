@@ -16,3 +16,4 @@ fdasrvf_R.code-workspace
 ^CRAN-SUBMISSION$
 ^\.github$
 ^codecov\.yml$
+^README\.Rmd$
