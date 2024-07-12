@@ -38,12 +38,23 @@ install.packages("fdasrvf.tar.gz", repos = NULL)
 
 ## Example
 
-The package contains a dataset that is handy to experiment with the
-available functions :
+The package contains `beta` dataset that is handy to experiment with the
+available functions.
+
+We first visualize this curve dataset:
+
+For that we first turn `beta` into `beta_df` to ease the visualization:
 
 ``` r
 library(fdasrvf)
+library(ggplot2)
+beta_df <- purrr::map_dfr(1:20, ~dplyr::bind_cols(data.frame(beta[,,1,.x] |> t()), fig = .x) ) 
+ggplot(beta_df, aes(x = X1, y = X2, color = factor(fig))) + geom_point() + scale_color_viridis_d()
 ```
+
+<img src="man/figures/README-2d_curve_plot-1.png" width="100%" /> We can
+see that each entry is a functionally a close 2D curve and we will
+proceed with
 
 ## References
 
