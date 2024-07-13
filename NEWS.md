@@ -9,6 +9,7 @@
 * refactor karcher mean (#40 and #47)
 * updated README (#50)
 * updated plotting routines
+* add  elastic changepoint functions`elastic_amp_change_ff`, `elastic_ph_change_ff`, and `elastic_change_fpca` 
 
 # fdasrvf 2.2.0
 * bugfixes
