@@ -34,7 +34,7 @@ elastic.logistic(
 
 \item{sparam}{number of times to apply box filter (default = 25)}
 
-\item{parallel}{enable parallel mode using \code{\link[=foreach]{foreach()}} and
+\item{parallel}{enable parallel mode using \code{foreach} and
 \code{doParallel} package}
 
 \item{cores}{set number of cores to use with \code{doParallel} (default = 2)}

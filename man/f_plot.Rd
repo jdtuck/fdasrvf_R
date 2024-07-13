@@ -4,7 +4,7 @@
 \alias{f_plot}
 \title{Plot functional data}
 \usage{
-f_plot(t, f, ...)
+f_plot(t, f)
 }
 \arguments{
 \item{t}{A numeric vector of length \eqn{M} specifying the common grid on

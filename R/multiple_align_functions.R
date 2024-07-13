@@ -13,7 +13,7 @@
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
-#' @param parallel enable parallel mode using [foreach()] and
+#' @param parallel enable parallel mode using `foreach` and
 #'   `doParallel` package (default=F)
 #' @param omethod optimization method (DP,DP2,RBFGS,dBayes,expBayes)
 #' @param MaxItr maximum number of iterations

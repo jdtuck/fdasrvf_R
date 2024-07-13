@@ -38,7 +38,7 @@ norm from id ("norm")}
 
 \item{sparam}{number of times to apply box filter (default = 25)}
 
-\item{parallel}{enable parallel mode using \code{\link[=foreach]{foreach()}} and
+\item{parallel}{enable parallel mode using \code{foreach} and
 \code{doParallel} package (default=F)}
 
 \item{omethod}{optimization method (DP,DP2,RBFGS,dBayes,expBayes)}

@@ -9,7 +9,7 @@
 #'
 #' @importFrom graphics plot
 #' @export
-f_plot <- function(t, f, ...){
+f_plot <- function(t, f){
 
   colors = c(
     "#66C2A5",
