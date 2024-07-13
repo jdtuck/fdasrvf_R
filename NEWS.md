@@ -102,7 +102,7 @@
 # fdasrvf 1.8.3
 * added bayesian alignment method by Y. Lu et. al
 * added multiple functional alignment function
-* bugfixes to curve alginment
+* bugfixes to curve alignment
 
 # fdasrvf 1.8.2
 * added objects for outputs of time_warping, boxplot, and pca functions
