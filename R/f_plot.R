@@ -1,3 +1,12 @@
+#' Plot functional data
+#'
+#' This function plots functional data on a time grid
+#'
+#' @param t A numeric vector of length \eqn{M} specifying the common grid on
+#'   which all curves `f` have been observed.
+#' @param f A numeric matrix of shape \eqn{M \times N} specifying a sample of
+#'   \eqn{N} curves observed on a grid of size \eqn{M}.
+#'
 #' @importFrom graphics plot
 #' @export
 f_plot <- function(t, f, ...){
