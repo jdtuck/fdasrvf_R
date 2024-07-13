@@ -147,6 +147,7 @@ jointFPCA <- function(warp_data, no=3, var_exp=NULL,
     jfpca$mu_g <- out.pca$mu_g
     jfpca$id <- id
     jfpca$C <- C
+    jfpca$stds <- ci
     jfpca$time <- time
     jfpca$g <- out.pca$g
     jfpca$cov <- out.pca$cov
