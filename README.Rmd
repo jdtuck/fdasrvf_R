@@ -56,7 +56,7 @@ For that we first turn on class of functions present in the `f` for visualizatio
 ```{r 1d_curve_plot}
 library(fdasrvf)
 
-matplot(simu_data$time, simu_data$f, type="l")
+f_plot(simu_data$time, simu_data$f)
 ```
 We can see that each `curve` is a functionally closed 2D curve. And we distinguish different patterns
 of miss-alignment, like X values shrinking, small displacement, and many others.
@@ -67,7 +67,7 @@ obj <- time_warping(simu_data$f, simu_data$time)
 ```
 
 Let's plot the result 
-```{r 2d_aligned_plot}
+```{r 1d_aligned_plot}
 plot(obj)
 ```
 

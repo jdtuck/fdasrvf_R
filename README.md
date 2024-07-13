@@ -50,7 +50,7 @@ visualization:
 ``` r
 library(fdasrvf)
 
-matplot(simu_data$time, simu_data$f, type="l")
+f_plot(simu_data$time, simu_data$f)
 ```
 
 <img src="man/figures/README-1d_curve_plot-1.png" width="100%" /> We can
@@ -74,7 +74,7 @@ Let’s plot the result
 plot(obj)
 ```
 
-<img src="man/figures/README-2d_aligned_plot-1.png" width="100%" /><img src="man/figures/README-2d_aligned_plot-2.png" width="100%" /><img src="man/figures/README-2d_aligned_plot-3.png" width="100%" /><img src="man/figures/README-2d_aligned_plot-4.png" width="100%" /><img src="man/figures/README-2d_aligned_plot-5.png" width="100%" />
+<img src="man/figures/README-1d_aligned_plot-1.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-2.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-3.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-4.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-5.png" width="100%" />
 
 ## References
 
