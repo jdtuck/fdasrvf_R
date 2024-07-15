@@ -1,4 +1,5 @@
 #include <RcppArmadillo.h>
+#include <Rcpp.h>
 // Correctly setup the build environment
 // [[Rcpp::depends(RcppArmadillo)]]
 
