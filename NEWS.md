@@ -1,5 +1,8 @@
 # fdasrvf 2.3.X
 
+# fdasrvf 2.3.1
+* fixes for ATLAS BLAS
+
 # fdasrvf 2.3.0
 * fixed scaling in `curve_karcher_mean`
 * parallelized `curve_karcher_mean` and `curve_srvf_align`
