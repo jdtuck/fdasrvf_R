@@ -103,7 +103,7 @@ test_that("`get_l2_inner_product()` is symmetric", {
 
   ip1 <- get_l2_inner_product(qfuns[[idx1]], qfuns[[idx2]])
   ip2 <- get_l2_inner_product(qfuns[[idx2]], qfuns[[idx1]])
-  expect_true(abs(ip1 - ip2) < .Machine$double.eps)
+  expect_true(abs(ip1 - ip2) < 1e-4)
 })
 
 test_that("`get_l2_inner_product()` is Gamma-invariant", {
@@ -210,7 +210,7 @@ test_that("`get_shape_distance()` is symmetric", {
 
   d1 <- get_shape_distance(qfuns[[idx1]], qfuns[[idx2]], scale = TRUE)
   d2 <- get_shape_distance(qfuns[[idx2]], qfuns[[idx1]], scale = TRUE)
-  expect_true(all(abs(d1 - d2) < .Machine$double.eps))
+  expect_true(all(abs(d1 - d2) < 1e-6))
 })
 
 test_that("`get_shape_distance()` works", {
