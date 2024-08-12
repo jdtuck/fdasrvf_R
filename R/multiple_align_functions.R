@@ -85,7 +85,7 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
     } else if (omethod=="dBayes") {
       gam <- pair_align_functions_bayes(mu, f[,k], time)$gam_a
     } else {
-      gam <- optimum.reparam(mq,time,q[,k],time,lambda,pen,omethod,w,mf[1],f[1,k])
+      gam <- optimum.reparam(mq,time,q[,k],time,lambda,pen,omethod,mf[1],f[1,k])
     }
 
     gam_dev = gradient(gam,1/(M-1))
