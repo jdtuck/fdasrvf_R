@@ -1,4 +1,6 @@
 # fdasrvf 2.3.X
+* bugfixes
+* add h representation of warping functions
 
 # fdasrvf 2.3.1
 * fixes for ATLAS BLAS
