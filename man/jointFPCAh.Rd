@@ -10,7 +10,8 @@ jointFPCAh(
   id = round(length(warp_data$time)/2),
   C = NULL,
   ci = c(-1, 0, 1),
-  showplot = T
+  srvf = TRUE,
+  showplot = TRUE
 )
 }
 \arguments{
@@ -24,6 +25,8 @@ will override \code{no}}
 \item{C}{balance value (default = NULL)}
 
 \item{ci}{geodesic standard deviations (default = c(-1,0,1))}
+
+\item{srvf}{use srvf (default = TRUE)}
 
 \item{showplot}{show plots of principal directions (default = T)}
 }

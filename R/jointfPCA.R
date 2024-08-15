@@ -201,6 +201,7 @@ jointFPCA <- function(warp_data,
 #' @param id integration point for f0 (default = midpoint)
 #' @param C balance value (default = NULL)
 #' @param ci geodesic standard deviations (default = c(-1,0,1))
+#' @param srvf use srvf (default = TRUE)
 #' @param showplot show plots of principal directions (default = T)
 #' @return Returns a list containing \item{q_pca}{srvf principal directions}
 #' \item{f_pca}{f principal directions}
@@ -228,7 +229,8 @@ jointFPCAh <- function(warp_data,
                        id = round(length(warp_data$time) / 2),
                        C = NULL,
                        ci = c(-1, 0, 1),
-                       showplot = T) {
+                       srvf = TRUE,
+                       showplot = TRUE) {
   fn <- warp_data$fn
   time <- warp_data$time
   qn <- warp_data$qn
@@ -236,21 +238,25 @@ jointFPCAh <- function(warp_data,
   N <- ncol(qn)
   q0 <- warp_data$q0
   gam <- warp_data$warping_functions
+
   # Set up for fPCA in q-space
-  mq_new <- rowMeans(qn)
-  m_new <- sign(fn[id, ]) * sqrt(abs(fn[id, ]))  # scaled version
-  mqn <- c(mq_new, mean(m_new))
-  qn1 <- rbind(qn, m_new)
+  if (srvf) {
+    mq_new <- rowMeans(qn)
+    m_new <- sign(fn[id, ]) * sqrt(abs(fn[id, ]))  # scaled version
+    mqn <- c(mq_new, mean(m_new))
+    qn1 <- rbind(qn, m_new)
+  } else {
+    mqn <- rowMeans(fn)
+    q0 <- warp_data$f
+    qn2 = fn
+  }
+
 
   # Calculate Vector Space of warping
   h <- gam_to_h(gam)
 
   # Joint fPCA --------------------------------------------------------------
-  jointfPCAhd <- function(qn,
-                          h,
-                          C = 1,
-                          var_exp = NULL,
-                          m = 3) {
+  jointfPCAhd <- function(qn, h, C = 1, var_exp = NULL) {
     M <- nrow(qn)
     N <- ncol(qn)
 
@@ -322,7 +328,7 @@ jointFPCAh <- function(warp_data,
 
 
   # Find C ------------------------------------------------------------------
-  findCh <- function(C, qn, h, q0, var_exp) {
+  findCh <- function(C, qn, h, q0, var_exp, srvf) {
     out.pca <- jointfPCAhd(qn, h, C, var_exp)
     M <- nrow(qn)
     N <- ncol(qn)
@@ -330,14 +336,18 @@ jointFPCAh <- function(warp_data,
 
     d <- rep(0, N)
     for (i in 1:N) {
-      tmp <- warp_q_gamma(out.pca$qhat[1:(M - 1), i], time, invertGamma(out.pca$gamhat[, i]))
+      if (srvf) {
+        tmp <- warp_q_gamma(out.pca$qhat[1:(M - 1), i], time, invertGamma(out.pca$gamhat[, i]))
+      } else {
+        tmp <- warp_f_gamma(out.pca$qhat[1, i], time, invertGamma(out.pca$gamhat[, i]))
+      }
+
       d[i] <- sum(trapz(time, (tmp - q0[, i]) ^ 2))
     }
 
     return(mean(d))
   }
 
-  m <- M
   if (is.null(C))
     C <- stats::optimize(
       findCh,
@@ -345,11 +355,12 @@ jointFPCAh <- function(warp_data,
       qn = qn1,
       h = h,
       q0 = q0,
-      var_exp = 0.99
+      var_exp = 0.99,
+      srvf = srvf
     )$minimum
 
   # Final PCA ---------------------------------------------------------------
-  out.pca <- jointfPCAhd(qn1, h, C, var_exp=var_exp)
+  out.pca <- jointfPCAhd(qn1, h, C, var_exp = var_exp)
 
   hc <- C * h
   mh = rowMeans(hc)
@@ -361,20 +372,26 @@ jointFPCAh <- function(warp_data,
   N1 <- nrow(out.pca$U)
   for (j in 1:no) {
     for (i in 1:length(ci)) {
-      qhat <- mqn + out.pca$Psi_q[, j] * (ci[i]*sqrt(out.pca$sz[j]))
-      hhat = out.pca$Psi_h[, j] * (ci[i] * sqrt(out.pca$sz[j]))/C
+      qhat <- mqn + out.pca$Psi_q[, j] * (ci[i] * sqrt(out.pca$sz[j]))
+      hhat = out.pca$Psi_h[, j] * (ci[i] * sqrt(out.pca$sz[j])) / C
       gamhat = h_to_gam(hhat)
       gamhat = (gamhat - min(gamhat)) / (max(gamhat) - min(gamhat))
 
-      if (id == 1)
-        fhat <- cumtrapz(time, qhat[1:M] * abs(qhat[1:M])) + sign(qhat[M +
-                                                                         1]) * (qhat[M + 1] ^ 2)
-      else
-        fhat <- cumtrapzmid(time, qhat[1:M] * abs(qhat[1:M]), sign(qhat[M +
-                                                                          1]) * (qhat[M + 1] ^ 2), id)
-      f_pca[, i, j] <- warp_f_gamma(fhat, seq(0, 1, length.out = M), gamhat)
-      q_pca[, i, j] <- warp_q_gamma(qhat[1:M], seq(0, 1, length.out =
-                                                     M), gamhat)
+      if (srvf) {
+        if (id == 1)
+          fhat <- cumtrapz(time, qhat[1:M] * abs(qhat[1:M])) + sign(qhat[M +
+                                                                           1]) * (qhat[M + 1] ^ 2)
+        else
+          fhat <- cumtrapzmid(time, qhat[1:M] * abs(qhat[1:M]), sign(qhat[M +
+                                                                            1]) * (qhat[M + 1] ^ 2), id)
+        f_pca[, i, j] <- warp_f_gamma(fhat, seq(0, 1, length.out = M), gamhat)
+        q_pca[, i, j] <- warp_q_gamma(qhat[1:M], seq(0, 1, length.out =
+                                                       M), gamhat)
+      } else {
+        f_pca[, i, j] <- warp_f_gamma(qhat, seq(0, 1, length.out = M), gamhat)
+        q_pca[, i, j] <- f_to_srvf(f_pca[, i, j], seq(0, 1, length.out = M))
+      }
+
     }
   }
 
