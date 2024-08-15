@@ -43,7 +43,7 @@ This function calculates amplitude and phase joint functional principal componen
 analysis on aligned data using the SRVF framework using MFPCA and h representation
 }
 \examples{
-jfpca <- jointFPCA(simu_warp, no = 3)
+jfpcah <- jointFPCAh(simu_warp, no = 3)
 }
 \references{
 Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,

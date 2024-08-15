@@ -222,7 +222,7 @@ jointFPCA <- function(warp_data,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' jfpca <- jointFPCA(simu_warp, no = 3)
+#' jfpcah <- jointFPCAh(simu_warp, no = 3)
 jointFPCAh <- function(warp_data,
                        var_exp = 0.99,
                        id = round(length(warp_data$time) / 2),
