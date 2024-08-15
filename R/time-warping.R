@@ -72,7 +72,8 @@
 #' \dontrun{
 #'   out <- time_warping(simu_data$f, simu_data$time)
 #' }
-time_warping <- function(f, time,
+time_warping <- function(f,
+                         time,
                          lambda = 0.0,
                          penalty_method = c("roughness", "geodesic", "norm"),
                          centroid_type = c("mean", "median"),
@@ -101,7 +102,8 @@ time_warping <- function(f, time,
   N <- ncol(f)
   f0 <- f
 
-  if (smooth_data) f <- smooth.data(f, sparam)
+  if (smooth_data)
+    f <- smooth.data(f, sparam)
 
   # Compute q-function of the functional data
   tmp <- gradient.spline(f, binsize, smooth_data)
@@ -111,18 +113,28 @@ time_warping <- function(f, time,
   cli::cli_alert_info("Initializing...")
 
   mnq <- rowMeans(q)
-  dqq <- sqrt(colSums((q - matrix(mnq, ncol = N, nrow = M))^2))
+  dqq <- sqrt(colSums((q - matrix(
+    mnq, ncol = N, nrow = M
+  )) ^ 2))
   min_ind <- which.min(dqq)
   mq <- q[, min_ind]
   mf <- f[, min_ind]
 
-  gam <- foreach::foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
-    gam_tmp <- optimum.reparam(
-      Q1 = mq, T1 = time, Q2 = q[, n], T2 = time,
-      lambda = lambda, pen = penalty_method, method = optim_method,
-      f1o = mf[1], f2o = f[1, n]
-    )
-  }
+  gam <- foreach::foreach(n = 1:N,
+                          .combine = cbind,
+                          .packages = "fdasrvf") %dopar% {
+                            gam_tmp <- optimum.reparam(
+                              Q1 = mq,
+                              T1 = time,
+                              Q2 = q[, n],
+                              T2 = time,
+                              lambda = lambda,
+                              pen = penalty_method,
+                              method = optim_method,
+                              f1o = mf[1],
+                              f2o = f[1, n]
+                            )
+                          }
 
   gamI <- SqrtMeanInverse(gam)
   gamI_dev <- gradient(gamI, 1 / (M - 1))
@@ -164,25 +176,30 @@ time_warping <- function(f, time,
       cli::cli_alert_warning("The maximal number of iterations has been reached.")
 
     # Matching Step
-    outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages='fdasrvf') %dopar% {
-      gam <- optimum.reparam(
-        Q1 = mq[, r], T1 = time, Q2 = q[, n, 1], T2 = time,
-        lambda = lambda, pen = penalty_method, method = optim_method,
-        f1o = mf[1, r], f2o = f[1, n, 1]
-      )
-      gam_dev <- gradient(gam, 1 / (M - 1))
-      f_temp <- stats::approx(
-        time, f[, n, 1],
-        xout = (time[M] - time[1]) * gam + time[1]
-      )$y
-      q_temp <- f_to_srvf(f_temp, time)
-      v <- q_temp - mq[, r]
-      d <- sqrt(trapz(time, v * v))
-      vtil <- v / d
-      dtil <- 1 / d
+    outfor <- foreach::foreach(n = 1:N,
+                               .combine = cbind,
+                               .packages = 'fdasrvf') %dopar% {
+                                 gam <- optimum.reparam(
+                                   Q1 = mq[, r],
+                                   T1 = time,
+                                   Q2 = q[, n, 1],
+                                   T2 = time,
+                                   lambda = lambda,
+                                   pen = penalty_method,
+                                   method = optim_method,
+                                   f1o = mf[1, r],
+                                   f2o = f[1, n, 1]
+                                 )
+                                 gam_dev <- gradient(gam, 1 / (M - 1))
+                                 f_temp <- stats::approx(time, f[, n, 1], xout = (time[M] - time[1]) * gam + time[1])$y
+                                 q_temp <- f_to_srvf(f_temp, time)
+                                 v <- q_temp - mq[, r]
+                                 d <- sqrt(trapz(time, v * v))
+                                 vtil <- v / d
+                                 dtil <- 1 / d
 
-      list(gam, gam_dev, q_temp, f_temp, vtil, dtil)
-    }
+                                 list(gam, gam_dev, q_temp, f_temp, vtil, dtil)
+                               }
 
     gam <- unlist(outfor[1, ])
     dim(gam) <- c(M, N)
@@ -218,7 +235,9 @@ time_warping <- function(f, time,
     }
 
     if (centroid_type == "median") {
-      ds_tmp <- sqrt(sum(trapz(time, (q[, , r + 1] - matrix(mq[, r], M, N))^2))) +
+      ds_tmp <- sqrt(sum(trapz(time, (
+        q[, , r + 1] - matrix(mq[, r], M, N)
+      ) ^ 2))) +
         lambda * sum(trapz(time, t(tmp)))
 
       if (is.complex(ds_tmp))
@@ -235,7 +254,8 @@ time_warping <- function(f, time,
     }
 
     qun[r + 1] <- pvecnorm(mq[, r + 1] - mq[, r], 2) / pvecnorm(mq[, r], 2)
-    if (qun[r + 1] < .Machine$double.eps) qun[r + 1] <- 0
+    if (qun[r + 1] < .Machine$double.eps)
+      qun[r + 1] <- 0
 
     if (qun[r + 1] - qun[r] <= 1.0e-4 * qun[r])
       break
@@ -247,15 +267,23 @@ time_warping <- function(f, time,
 
   if (center_warpings) {
     r <- r + 1
-    outfor <- foreach::foreach(n = 1:N, .combine = cbind, .packages = "fdasrvf") %dopar% {
-      gam <- optimum.reparam(
-        Q1 = mq[, r], T1 = time, Q2 = q[, n, 1], T2 = time,
-        lambda = lambda, pen = penalty_method, method = optim_method,
-        f1o = mf[1, r], f2o = f[1, n, 1]
-      )
-      gam_dev <- gradient(gam, 1 / (M - 1))
-      list(gam, gam_dev)
-    }
+    outfor <- foreach::foreach(n = 1:N,
+                               .combine = cbind,
+                               .packages = "fdasrvf") %dopar% {
+                                 gam <- optimum.reparam(
+                                   Q1 = mq[, r],
+                                   T1 = time,
+                                   Q2 = q[, n, 1],
+                                   T2 = time,
+                                   lambda = lambda,
+                                   pen = penalty_method,
+                                   method = optim_method,
+                                   f1o = mf[1, r],
+                                   f2o = f[1, n, 1]
+                                 )
+                                 gam_dev <- gradient(gam, 1 / (M - 1))
+                                 list(gam, gam_dev)
+                               }
 
     gam <- unlist(outfor[1, ])
     dim(gam) <- c(M, N)
@@ -266,24 +294,12 @@ time_warping <- function(f, time,
     gamI <- SqrtMeanInverse(t(gam))
     gamI_dev <- gradient(gamI, 1 / (M - 1))
 
-    mq[, r + 1] <- stats::approx(
-      time, mq[, r],
-      xout = (time[M] - time[1]) * gamI + time[1]
-    )$y * sqrt(gamI_dev)
+    mq[, r + 1] <- stats::approx(time, mq[, r], xout = (time[M] - time[1]) * gamI + time[1])$y * sqrt(gamI_dev)
 
     for (n in 1:N) {
-      q[, n, r + 1] <- stats::approx(
-        time, q[, n, r],
-        xout = (time[M] - time[1]) * gamI + time[1]
-      )$y * sqrt(gamI_dev)
-      f[, n, r + 1] <- stats::approx(
-        time, f[, n, r],
-        xout = (time[M] - time[1]) * gamI + time[1]
-      )$y
-      gam[n, ] <- stats::approx(
-        time, gam[n, ],
-        xout = (time[M] - time[1]) * gamI + time[1]
-      )$y
+      q[, n, r + 1] <- stats::approx(time, q[, n, r], xout = (time[M] - time[1]) * gamI + time[1])$y * sqrt(gamI_dev)
+      f[, n, r + 1] <- stats::approx(time, f[, n, r], xout = (time[M] - time[1]) * gamI + time[1])$y
+      gam[n, ] <- stats::approx(time, gam[n, ], xout = (time[M] - time[1]) * gamI + time[1])$y
     }
 
     qun[r + 1] <- pvecnorm(mq[, r + 1] - mq[, r], 2) / pvecnorm(mq[, r], 2)
@@ -308,10 +324,7 @@ time_warping <- function(f, time,
   fgam <- matrix(0, M, N)
 
   for (n in 1:N)
-    fgam[, n] <- stats::approx(
-      time, fmean,
-      xout = (time[M] - time[1]) * gam[, n] + time[1]
-    )$y
+    fgam[, n] <- stats::approx(time, fmean, xout = (time[M] - time[1]) * gam[, n] + time[1])$y
 
   var_fgam <- apply(fgam, 1, stats::var)
   orig_var <- trapz(time, std_f0 ^ 2)
@@ -348,7 +361,8 @@ time_warping <- function(f, time,
 
   class(out) <- "fdawarp"
 
-  if (parallel) parallel::stopCluster(cl)
+  if (parallel)
+    parallel::stopCluster(cl)
 
   out
 }
