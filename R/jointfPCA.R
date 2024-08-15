@@ -222,7 +222,7 @@ jointFPCA <- function(warp_data,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
 #' @examples
-#' jfpcah <- jointFPCAh(simu_warp, no = 3)
+#' jfpcah <- jointFPCAh(simu_warp)
 jointFPCAh <- function(warp_data,
                        var_exp = 0.99,
                        id = round(length(warp_data$time) / 2),
@@ -361,8 +361,8 @@ jointFPCAh <- function(warp_data,
   N1 <- nrow(out.pca$U)
   for (j in 1:no) {
     for (i in 1:length(ci)) {
-      qhat <- mqn + Psi_q[, j] * (ci[i]*sqrt(out.pca$sz[j]))
-      hhat = Psi_h[, j] * (ci[i] * sqrt(out.pca$sz[j]))/C
+      qhat <- mqn + out.pca$Psi_q[, j] * (ci[i]*sqrt(out.pca$sz[j]))
+      hhat = out.pca$Psi_h[, j] * (ci[i] * sqrt(out.pca$sz[j]))/C
       gamhat = h_to_gam(hhat)
       gamhat = (gamhat - min(gamhat)) / (max(gamhat) - min(gamhat))
 
@@ -383,8 +383,8 @@ jointFPCAh <- function(warp_data,
   jfpcah$f_pca <- f_pca
   jfpcah$latent <- out.pca$sz[1:no]
   jfpcah$coef <- out.pca$cz[, 1:no]
-  jfpcah$U_q <- Psi_q
-  jfpcah$U_h <- Psi_h
+  jfpcah$U_q <- out.pca$Psi_q
+  jfpcah$U_h <- out.pca$Psi_h
   jfpcah$id <- id
   jfpcah$C <- C
   jfpcah$stds <- ci
@@ -392,9 +392,9 @@ jointFPCAh <- function(warp_data,
   jfpcah$h <- out.pca$h
   jfpcah$qn1 <- qn1
   jfpcah$mqn <- mqn
-  jfpcah$U <- U
-  jfpcah$U1 <- Uh
-  jfpcah$Uz <- Uz
+  jfpcah$U <- out.pca$U
+  jfpcah$U1 <- out.pca$Uh
+  jfpcah$Uz <- out.pca$Uz
   jfpcah$mh <- mh
   jfpcah$warp_data <- warp_data
 
