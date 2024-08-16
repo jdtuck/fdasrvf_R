@@ -248,7 +248,7 @@ jointFPCAh <- function(warp_data,
   } else {
     mqn <- rowMeans(fn)
     q0 <- warp_data$f0
-    qn2 = fn
+    qn1 <- fn
   }
 
 
