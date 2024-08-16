@@ -277,6 +277,11 @@ jointFPCAh <- function(warp_data,
     c = c[, 1:no_q]
     U = U[, 1:no_q]
 
+    if (no_q == 1){
+      U = matrix(U)
+      c = matrix(c)
+    }
+
     # h space
     hc = C * h
     mh = rowMeans(hc)
@@ -304,7 +309,12 @@ jointFPCAh <- function(warp_data,
 
     cz = Xi %*% Uz
 
-    Psi_q = U %*% Uz[1:no_q, ]
+    if (no_q == 1){
+      Psi_q = U %*% t(matrix(Uz[1:no_q, ]))
+    } else {
+      Psi_q = U %*% Uz[1:no_q, ]
+    }
+
     Psi_h = Uh %*% Uz[(no_q + 1):nrow(Uz), ]
 
     hhat = Psi_h %*% t(cz)
@@ -332,14 +342,15 @@ jointFPCAh <- function(warp_data,
     out.pca <- jointfPCAhd(qn, h, C, var_exp)
     M <- nrow(qn)
     N <- ncol(qn)
-    time <- seq(0, 1, length.out = M - 1)
 
     d <- rep(0, N)
     for (i in 1:N) {
       if (srvf) {
+        time <- seq(0, 1, length.out = M - 1)
         tmp <- warp_q_gamma(out.pca$qhat[1:(M - 1), i], time, invertGamma(out.pca$gamhat[, i]))
       } else {
-        tmp <- warp_f_gamma(out.pca$qhat[1, i], time, invertGamma(out.pca$gamhat[, i]))
+        time <- seq(0, 1, length.out = M)
+        tmp <- warp_f_gamma(out.pca$qhat[, i], time, invertGamma(out.pca$gamhat[, i]))
       }
 
       d[i] <- sum(trapz(time, (tmp - q0[, i]) ^ 2))
@@ -348,6 +359,7 @@ jointFPCAh <- function(warp_data,
     return(mean(d))
   }
 
+  findCh(.1,qn1, h, q0, 0.99, FALSE)
   if (is.null(C))
     C <- stats::optimize(
       findCh,
