@@ -20,6 +20,16 @@ plot.fdawarp <- function(x, ...){
   std_fn <- apply(x$fn, 1, stats::sd)
 
   graphics::matplot(
+    x = x$time,
+    y = x$f0,
+    type = "l",
+    col = colors,
+    main = "Original Data",
+    xlab ="Time",
+    ylab = "Amplitude"
+  )
+
+  graphics::matplot(
     x = (0:(M - 1)) / (M - 1),
     y = x$warping_functions,
     type = "l",

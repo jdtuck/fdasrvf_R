@@ -398,6 +398,7 @@ jointFPCAh <- function(warp_data,
   jfpcah <- list()
   jfpcah$q_pca <- q_pca
   jfpcah$f_pca <- f_pca
+  jfpcah$eigs <- out.pca$sz
   jfpcah$latent <- out.pca$sz[1:no]
   jfpcah$coef <- out.pca$cz[, 1:no]
   jfpcah$U_q <- out.pca$Psi_q
