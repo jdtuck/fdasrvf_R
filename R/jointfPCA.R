@@ -419,7 +419,7 @@ jointFPCAh <- function(warp_data,
   jfpcah$C <- C
   jfpcah$stds <- ci
   jfpcah$time <- time
-  jfpcah$h <- out.pca$h
+  jfpcah$h <- h
   jfpcah$qn1 <- qn1
   jfpcah$mqn <- mqn
   jfpcah$U <- out.pca$U
