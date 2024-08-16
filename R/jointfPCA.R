@@ -247,7 +247,7 @@ jointFPCAh <- function(warp_data,
     qn1 <- rbind(qn, m_new)
   } else {
     mqn <- rowMeans(fn)
-    q0 <- warp_data$f
+    q0 <- warp_data$f0
     qn2 = fn
   }
 
