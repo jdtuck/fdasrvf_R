@@ -285,7 +285,7 @@ jointFPCAh <- function(warp_data,
     # h space
     hc = C * h
     mh = rowMeans(hc)
-    Kh = cov(t(hc))
+    Kh = stats::cov(t(hc))
 
     out.Kh <- svd(Kh)
     sh <- out.Kh$d

@@ -40,7 +40,7 @@ predict.jfpca <- function(object, newdata = NULL, ...) {
   no = ncol(object$U)
   psi = matrix(0, M, N)
   vec = matrix(0, M, N)
-  time = np.linspace(0, 1, M)
+  time = seq(0, 1, length.out=M)
   binsize <- mean(diff(time))
   for (i in 1:N) {
     psi[, i] = sqrt(gradient(gam[, i], binsize))
