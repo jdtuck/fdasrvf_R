@@ -19,7 +19,7 @@ modeling using functional component analysis
 
 ## Installation
 
-v2.3.1 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
+v2.3.2 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
 be installed as
 
 ``` r
@@ -74,7 +74,7 @@ Let’s plot the result
 plot(obj)
 ```
 
-<img src="man/figures/README-1d_aligned_plot-1.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-2.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-3.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-4.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-5.png" width="100%" />
+<img src="man/figures/README-1d_aligned_plot-1.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-2.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-3.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-4.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-5.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-6.png" width="100%" />
 
 ## References
 
