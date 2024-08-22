@@ -168,6 +168,7 @@ jointFPCA <- function(warp_data,
   jfpca$q_pca <- q_pca
   jfpca$f_pca <- f_pca
   jfpca$latent <- out.pca$s[1:no]
+  jfpca$eigs <-  out.pca$s
   jfpca$coef <- out.pca$a[, 1:no]
   jfpca$U <- out.pca$U[, 1:no]
   jfpca$mu_psi <- mu_psi
