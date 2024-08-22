@@ -16,7 +16,8 @@ multiple_align_functions(
   parallel = FALSE,
   omethod = "DP",
   MaxItr = 20,
-  iter = 2000
+  iter = 2000,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ norm from id ("norm")}
 \item{MaxItr}{maximum number of iterations}
 
 \item{iter}{bayesian number of mcmc samples (default 2000)}
+
+\item{verbose}{verbose printing (default TRUE)}
 }
 \value{
 Returns a fdawarp object containing \item{f0}{original functions}

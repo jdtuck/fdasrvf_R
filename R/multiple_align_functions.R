@@ -18,6 +18,7 @@
 #' @param omethod optimization method (DP,DP2,RBFGS,dBayes,expBayes)
 #' @param MaxItr maximum number of iterations
 #' @param iter bayesian number of mcmc samples (default 2000)
+#' @param verbose verbose printing (default TRUE)
 #' @return Returns a fdawarp object containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 #' \item{qn}{aligned SRSFs - similar structure to fn}
@@ -48,7 +49,8 @@ multiple_align_functions <- function(f,
                                      parallel = FALSE,
                                      omethod = "DP",
                                      MaxItr = 20,
-                                     iter = 2000) {
+                                     iter = 2000,
+                                     verbose = TRUE) {
   if (parallel) {
     cores = max(parallel::detectCores() - 1, 1)
     cl = parallel::makeCluster(cores)
@@ -58,7 +60,9 @@ multiple_align_functions <- function(f,
     foreach::registerDoSEQ()
   }
 
-  cat(sprintf("lambda = %5.1f \n", lambda))
+  if (verbose){
+    cat(sprintf("lambda = %5.1f \n", lambda))
+  }
 
   binsize = mean(diff(time))
   eps = .Machine$double.eps
@@ -86,7 +90,9 @@ multiple_align_functions <- function(f,
   mq = tmp$g / sqrt(abs(tmp$g) + eps)
   k <- 1
 
-  cat(sprintf("Aligning %d functions in SRSF space...\n", N))
+  if (verbose){
+    cat(sprintf("Aligning %d functions in SRSF space...\n", N))
+  }
   outfor <- foreach::foreach(k = 1:N,
                              .combine = cbind,
                              .packages = 'fdasrvf') %dopar% {
