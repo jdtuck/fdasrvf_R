@@ -95,6 +95,7 @@ jointFPCA <- function(warp_data,
       a = a,
       U = U[, 1:m],
       s = s[1:m],
+      eigs = s,
       mu_g = mu_g,
       cov = K,
       g = g
@@ -168,7 +169,7 @@ jointFPCA <- function(warp_data,
   jfpca$q_pca <- q_pca
   jfpca$f_pca <- f_pca
   jfpca$latent <- out.pca$s[1:no]
-  jfpca$eigs <-  out.pca$s
+  jfpca$eigs <-  out.pca$eigs
   jfpca$coef <- out.pca$a[, 1:no]
   jfpca$U <- out.pca$U[, 1:no]
   jfpca$mu_psi <- mu_psi
@@ -274,8 +275,8 @@ jointFPCAh <- function(warp_data,
     tmp = which(cumm_coef <= var_exp)
     no_q = tmp[length(tmp)]
 
-    c = t(qn - mqn) %*% U
-    c = c[, 1:no_q]
+    c.o = t(qn - mqn) %*% U
+    c = c.o[, 1:no_q]
     U = U[, 1:no_q]
 
     if (no_q == 1){
@@ -296,17 +297,21 @@ jointFPCAh <- function(warp_data,
     tmp = which(cumm_coef <= var_exp)
     no_h = tmp[length(tmp)]
 
-    ch = t(hc - mh) %*% Uh
-    ch = ch[, 1:no_h]
+    ch.o = t(hc - mh) %*% Uh
+    ch = ch.o[, 1:no_h]
     Uh = Uh[, 1:no_h]
 
     # Run Multivariate fPCA
     Xi = cbind(c, ch)
+    Xi.o = cbind(c.o, ch.o)
     Z = 1 / (nrow(Xi) - 1) * t(Xi) %*% Xi
 
     out.Z <- svd(Z)
     sz <- out.Z$d
     Uz <- out.Z$u
+
+    Z.o = 1 / (nrow(Xi.o) - 1) * t(Xi.o) %*% Xi.o
+    out.Zo <- svd(Z.o)
 
     cz = Xi %*% Uz
 
@@ -330,6 +335,7 @@ jointFPCAh <- function(warp_data,
         Psi_q = Psi_q,
         Psi_h = Psi_h,
         sz = sz,
+        eigs = out.Zo$d,
         U = U,
         Uh = Uh,
         Uz = Uz
