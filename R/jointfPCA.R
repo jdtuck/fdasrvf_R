@@ -255,7 +255,7 @@ jointFPCAh <- function(warp_data,
 
 
   # Calculate Vector Space of warping
-  h <- gam_to_h(gam)
+  h <- gam_to_h(gam, smooth=FALSE)
 
   # Joint fPCA --------------------------------------------------------------
   jointfPCAhd <- function(qn, h, C = 1, var_exp = NULL) {
