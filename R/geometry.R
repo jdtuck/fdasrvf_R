@@ -188,7 +188,7 @@ findkarcherinv <- function(warps, times, round = F){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_v<-function(gam, smooth=TRUE){
+gam_to_v<-function(gam, smooth=FALSE){
   if (ndims(gam) == 0){
     TT = length(gam)
     eps = .Machine$double.eps
@@ -288,7 +288,7 @@ v_to_gam<-function(v){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_h<-function(gam, smooth=TRUE){
+gam_to_h<-function(gam, smooth=FALSE){
   if (ndims(gam) == 0){
     TT = length(gam)
     time <- seq(0,1,length.out=TT)
