@@ -1,6 +1,11 @@
 exp_map <- function(psi, v, wnorm = l2_norm){
   v_norm <- wnorm(v)
-  expgam <- cos(v_norm) * psi + sin(v_norm) * v / v_norm
+  if (sum(v_norm) == 0){
+    expgam <- cos(v_norm) * psi
+  } else {
+    expgam <- cos(v_norm) * psi + sin(v_norm) * v / v_norm
+  }
+  
   return(expgam)
 }
 
