@@ -1,4 +1,8 @@
-# fdasrvf 2.3.X
+# fdasrvf 2.3.x
+
+# fdasrvf 2.3.3
+* bugfixes
+* added vervose options throughout
 
 # fdasrvf 2.3.2
 * bugfixes

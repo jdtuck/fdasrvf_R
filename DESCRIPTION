@@ -1,8 +1,8 @@
 Package: fdasrvf
 Type: Package
 Title: Elastic Functional Data Analysis
-Version: 2.3.2
-Date: 2024-8-19
+Version: 2.3.3
+Date: 2024-10-04
 Authors@R: c(
     person(given = "J. Derek", 
            family = "Tucker", 
