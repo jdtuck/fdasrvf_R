@@ -15,6 +15,7 @@
 #' @param sparam number of times to apply box filter (default = 25)
 #' @param parallel enable parallel mode using `foreach` and
 #'   `doParallel` package (default=F)
+#' @param cores number of cores in parallel (default=-1, means all cores)
 #' @param omethod optimization method (DP,DP2,RBFGS,dBayes,expBayes)
 #' @param MaxItr maximum number of iterations
 #' @param iter bayesian number of mcmc samples (default 2000)
@@ -47,12 +48,16 @@ multiple_align_functions <- function(f,
                                      smooth_data = FALSE,
                                      sparam = 25,
                                      parallel = FALSE,
+                                     cores = -1,
                                      omethod = "DP",
                                      MaxItr = 20,
                                      iter = 2000,
                                      verbose = TRUE) {
   if (parallel) {
-    cores = max(parallel::detectCores() - 1, 1)
+    if (cores==-1){
+      cores = max(parallel::detectCores() - 1, 1)
+    }
+    
     cl = parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
   } else

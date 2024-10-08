@@ -14,6 +14,7 @@ multiple_align_functions(
   smooth_data = FALSE,
   sparam = 25,
   parallel = FALSE,
+  cores = -1,
   omethod = "DP",
   MaxItr = 20,
   iter = 2000,
@@ -41,6 +42,8 @@ norm from id ("norm")}
 
 \item{parallel}{enable parallel mode using \code{foreach} and
 \code{doParallel} package (default=F)}
+
+\item{cores}{number of cores in parallel (default=-1, means all cores)}
 
 \item{omethod}{optimization method (DP,DP2,RBFGS,dBayes,expBayes)}
 
