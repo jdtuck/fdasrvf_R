@@ -23,6 +23,7 @@
 #'   box filter. Defaults to `25L`. This is used only when `smooth_data = TRUE`.
 #' @param parallel A boolean specifying whether to run calculations in parallel.
 #'   Defaults to `FALSE`.
+#' @param cores number of cores in parallel (default=-1, means all cores)
 #' @param optim_method A string specifying the algorithm used for optimization.
 #'   Choices are `"DP"`, `"DPo"`, and `"RBFGS"`. Defaults to `"DP"`.
 #' @param max_iter An integer value specifying the maximum number of iterations.
@@ -81,6 +82,7 @@ time_warping <- function(f,
                          smooth_data = FALSE,
                          sparam = 25L,
                          parallel = FALSE,
+                         cores = -1,
                          optim_method = c("DP", "DPo", "DP2", "RBFGS"),
                          max_iter = 20L) {
   penalty_method <- rlang::arg_match(penalty_method)
@@ -88,7 +90,10 @@ time_warping <- function(f,
   optim_method <- rlang::arg_match(optim_method)
 
   if (parallel) {
-    cores <- max(parallel::detectCores() - 1, 1)
+    if (cores == -1){
+      cores <- max(parallel::detectCores() - 1, 1)
+    }
+
     cl <- parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
   } else

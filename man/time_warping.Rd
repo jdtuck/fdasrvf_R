@@ -14,6 +14,7 @@ time_warping(
   smooth_data = FALSE,
   sparam = 25L,
   parallel = FALSE,
+  cores = -1,
   optim_method = c("DP", "DPo", "DP2", "RBFGS"),
   max_iter = 20L
 )
@@ -47,6 +48,8 @@ box filter. Defaults to \code{25L}. This is used only when \code{smooth_data = T
 
 \item{parallel}{A boolean specifying whether to run calculations in parallel.
 Defaults to \code{FALSE}.}
+
+\item{cores}{number of cores in parallel (default=-1, means all cores)}
 
 \item{optim_method}{A string specifying the algorithm used for optimization.
 Choices are \code{"DP"}, \code{"DPo"}, and \code{"RBFGS"}. Defaults to \code{"DP"}.}
