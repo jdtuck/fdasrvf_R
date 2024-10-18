@@ -1,7 +1,7 @@
 #' Calculates two elastic distance
 #'
 #' This functions calculates the distances between functions in \eqn{R^1}
-#' \eqn{D_y} and \eqn{D_x}, where function 1 is aligned to function 2
+#' \eqn{D_y} and \eqn{D_x}, where function 2 is aligned to function 1
 #'
 #' @param f1 sample function 1, provided as a vector of length \eqn{M}
 #' @param f2 sample function 2, provided as a vector of length \eqn{M}
