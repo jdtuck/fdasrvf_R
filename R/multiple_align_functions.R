@@ -57,7 +57,7 @@ multiple_align_functions <- function(f,
     if (cores==-1){
       cores = max(parallel::detectCores() - 1, 1)
     }
-    
+
     cl = parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
   } else
@@ -66,7 +66,7 @@ multiple_align_functions <- function(f,
   }
 
   if (verbose){
-    cat(sprintf("lambda = %5.1f \n", lambda))
+    cli::cli_alert_info("Using lambda = {lambda}")
   }
 
   binsize = mean(diff(time))
