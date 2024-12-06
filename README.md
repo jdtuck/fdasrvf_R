@@ -19,7 +19,7 @@ modeling using functional component analysis
 
 ## Installation
 
-v2.3.3 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
+v2.3.4 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
 be installed as
 
 ``` r
@@ -40,7 +40,7 @@ install_github("jdtuck/fdasrvf_R")
 ## Example
 
 The package contains `simu` dataset that is handy to experiment with the
-available functions for functions in $`\mathbb{R}^1`$.
+available functions for functions in $\mathbb{R}^1$.
 
 We first visualize this dataset:
 
