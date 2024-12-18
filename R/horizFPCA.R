@@ -81,6 +81,7 @@ horizFPCA <- function(warp_data, no=3, var_exp=NULL, ci=c(-1,0,1),
     hfpca$U = U[,no_pca]
     hfpca$coef = c[,no_pca]
     hfpca$vec = vec
+    hfpca$stds = ci
     hfpca$mu = mu
     hfpca$vm = vm
     hfpca$warp_data = warp_data

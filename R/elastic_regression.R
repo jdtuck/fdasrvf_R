@@ -12,7 +12,7 @@
 #' @param max_itr scalar number of iterations (default=20)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
-#' @param parallel enable parallel mode using [foreach()] and
+#' @param parallel enable parallel mode using `foreach` and
 #'   `doParallel` package
 #' @param cores set number of cores to use with `doParallel` (default = 2)
 #' @return Returns a list containing

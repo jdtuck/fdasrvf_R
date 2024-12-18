@@ -14,9 +14,11 @@ multiple_align_functions(
   smooth_data = FALSE,
   sparam = 25,
   parallel = FALSE,
+  cores = -1,
   omethod = "DP",
   MaxItr = 20,
-  iter = 2000
+  iter = 2000,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -38,14 +40,18 @@ norm from id ("norm")}
 
 \item{sparam}{number of times to apply box filter (default = 25)}
 
-\item{parallel}{enable parallel mode using \code{\link[=foreach]{foreach()}} and
+\item{parallel}{enable parallel mode using \code{foreach} and
 \code{doParallel} package (default=F)}
+
+\item{cores}{number of cores in parallel (default=-1, means all cores)}
 
 \item{omethod}{optimization method (DP,DP2,RBFGS,dBayes,expBayes)}
 
 \item{MaxItr}{maximum number of iterations}
 
 \item{iter}{bayesian number of mcmc samples (default 2000)}
+
+\item{verbose}{verbose printing (default TRUE)}
 }
 \value{
 Returns a fdawarp object containing \item{f0}{original functions}

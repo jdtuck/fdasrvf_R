@@ -11,15 +11,9 @@ OBJS2 = $(SOURCES2:.cpp=.o)
 
 PKG_CPPFLAGS= -I. -Ifdaqmap/incl/
 PKG_CXXFLAGS = $(SHLIB_OPENMP_CXXFLAGS)
-PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) libfdasrvf1.a libfdasrvf2.a
+PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 
-all: libfdasrvf1.a libfdasrvf2.a $(SHLIB)
-
-$(SHLIB): libfdasrvf1.a libfdasrvf2.a $(OBJECTS)
-libfdasrvf1.a: $(OBJS1)
-libfdasrvf2.a: $(OBJS2)
+all: $(SHLIB)
 
 clean:
 	@rm -f $(SHLIB) $(OBJECTS)
-	@rm -f $(OBJS1)
-	@rm -f $(OBJS2)

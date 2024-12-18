@@ -26,7 +26,7 @@ Returns a list containing \item{Dy}{amplitude distance}
 }
 \description{
 This functions calculates the distances between functions in \eqn{R^1}
-\eqn{D_y} and \eqn{D_x}, where function 1 is aligned to function 2
+\eqn{D_y} and \eqn{D_x}, where function 2 is aligned to function 1
 }
 \examples{
 distances <- elastic.distance(

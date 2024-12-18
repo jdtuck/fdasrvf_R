@@ -7,8 +7,8 @@
 #' @param f2 function 2
 #' @param time sample points of functions
 #' @param lambda controls amount of warping (default = 0)
-#' @param pen alignment penalty (default="roughness") options are 
-#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and 
+#' @param pen alignment penalty (default="roughness") options are
+#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and
 #' norm from id ("norm")
 #' @param method controls which optimization method (default="DP") options are
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
@@ -47,7 +47,7 @@ pair_align_functions <- function(f1, f2, time, lambda=0, pen="roughness",
   } else if (method=="expBayes") {
     gam <- pair_align_functions_expomap(f1, f2, time, iter=iter)$gamma
   } else {
-    gam <- optimum.reparam(q1, time, q2, time, lambda, pen, method, w, f1o=f1[1], f2o=f2[1])
+    gam <- optimum.reparam(q1, time, q2, time, lambda, pen, method, f1o=f1[1], f2o=f2[1])
   }
 
   f2_aligned <- warp_f_gamma(f2, time, gam)

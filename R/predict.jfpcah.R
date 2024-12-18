@@ -2,7 +2,7 @@
 #'
 #' This function performs projection of new functions on fPCA basis
 #'
-#' @param object Object of class inheriting from "vertFPCA"
+#' @param object Object of class inheriting from "jointFPCA"
 #' @param newdata An optional matrix in which to look for functions with which to predict. If omitted, the original functions are used.
 #' @param ... additional arguments affecting the predictions produced
 #' @return Returns a matrix
@@ -12,7 +12,7 @@
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
-predict.vfpca <- function(object, newdata = NULL, ...) {
+predict.jfpcah <- function(object, newdata = NULL, ...) {
   if (is.null(newdata)) {
     newdata = object$warp_data$f0
   }
@@ -37,14 +37,16 @@ predict.vfpca <- function(object, newdata = NULL, ...) {
   m_new <- sign(fn[object$id, ]) * sqrt(abs(fn[object$id, ]))  # scaled version
   qn1 <- rbind(qn, m_new)
 
-  no = ncol(object$U)
+  C <- object$C
 
-  a <- matrix(0, N, no)
-  for (i in 1:N) {
-    for (j in 1:no) {
-      a[i, j] <- (qn1[, i] - object$mqn) %*% object$U[, j]
-    }
-  }
+  h = gam_to_h(gam)
+
+  c = t(qn1 - object$mqn) %*% object$U
+  ch = t(C*h - object$mh) %*% object$Uh
+
+  Xi = cbind(c, ch)
+
+  a = Xi %*% object$Uz
 
   return(a)
 }

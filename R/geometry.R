@@ -1,6 +1,11 @@
 exp_map <- function(psi, v, wnorm = l2_norm){
   v_norm <- wnorm(v)
-  expgam <- cos(v_norm) * psi + sin(v_norm) * v / v_norm
+  if (sum(v_norm) == 0){
+    expgam <- cos(v_norm) * psi
+  } else {
+    expgam <- cos(v_norm) * psi + sin(v_norm) * v / v_norm
+  }
+  
   return(expgam)
 }
 
@@ -188,7 +193,7 @@ findkarcherinv <- function(warps, times, round = F){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_v<-function(gam, smooth=TRUE){
+gam_to_v<-function(gam, smooth=FALSE){
   if (ndims(gam) == 0){
     TT = length(gam)
     eps = .Machine$double.eps
@@ -248,7 +253,7 @@ gam_to_v<-function(gam, smooth=TRUE){
 #'   specifying the shooting vectors
 #'
 #' @return A numeric array of the same shape as the input array `v` storing the
-#'   shooting vectors of `v` obtained via finite differences.
+#'   warping functions `v`.
 #'
 #' @keywords srvf alignment
 #' @export
@@ -276,3 +281,93 @@ v_to_gam<-function(v){
   return(gam)
 }
 
+#' map warping function to tangent space at identity
+#'
+#'
+#' @param gam Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the warping functions
+#' @param smooth Apply smoothing before gradient
+#'
+#' @return A numeric array of the same shape as the input array `gamma` storing the
+#'   shooting vectors of `gamma` obtained via finite differences.
+#'
+#' @keywords srvf alignment
+#' @export
+gam_to_h<-function(gam, smooth=FALSE){
+  if (ndims(gam) == 0){
+    TT = length(gam)
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
+
+    psi = rep(0,TT)
+    if (smooth) {
+      tmp.spline <- stats::smooth.spline(gam)
+      g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      g[g<0] = 0
+      psi = log(g)
+      h = psi - trapz(time, psi)
+    } else {
+        psi = log(gradient(gam,binsize))
+        h = psi - trapz(time, psi)
+    }
+
+  } else {
+    TT = nrow(gam)
+    n = ncol(gam)
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
+
+    h = matrix(0,TT,n)
+    if (smooth) {
+      g <- matrix(0, TT, n)
+      for (i in 1:n) {
+        tmp.spline <- stats::smooth.spline(gam[,i])
+        g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+        g[g[,i]<0, i] = 0
+        psi = log(g[, i])
+        h[, i] = psi - trapz(time, psi)
+      }
+    } else {
+      for (i in 1:n){
+        psi = log(gradient(gam[,i],binsize))
+        h[, i] = psi - trapz(time, psi)
+      }
+    }
+
+  }
+
+  return(h)
+}
+
+#' map shooting vector to warping function at identity
+#'
+#'
+#' @param h Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the shooting vectors
+#'
+#' @return A numeric array of the same shape as the input array `h` storing the
+#'   warping functions of `h`.
+#'
+#' @keywords srvf alignment
+#' @export
+h_to_gam<-function(h){
+  if (ndims(h) == 0){
+    TT = length(h)
+    time <- seq(0,1,length.out=TT)
+    gam0 <- cumtrapz(time,exp(h))
+    gam0 <- gam0 / trapz(time, exp(h))
+    gam <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+  } else {
+    TT = nrow(h)
+    n = ncol(h)
+    time <- seq(0,1,length.out=TT)
+
+    gam = matrix(0,TT,n)
+    for (i in 1:n){
+      gam0 <- cumtrapz(time,exp(h[,i]))
+      gam0 <- gam0 / trapz(time, exp(h[,i]))
+      gam[,i] <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+    }
+  }
+  return(gam)
+}

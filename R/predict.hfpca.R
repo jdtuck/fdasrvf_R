@@ -12,35 +12,40 @@
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
-predict.hfpca <- function(object, newdata=NULL, ...){
-  if (is.null(newdata)){
+predict.hfpca <- function(object, newdata = NULL, ...) {
+  if (is.null(newdata)) {
     newdata = object$warp_data$f0
   }
   q1 = f_to_srvf(newdata, object$warp_data$time)
   M = length(object$warp_data$time)
   N = ncol(newdata)
-  gam = matrix(0,M,N)
-  fn = matrix(0,M,N)
-  qn = matrix(0,M,N)
-  for (ii in 1:N){
-    gam[,ii] = optimum.reparam(object$warp_data$mqn, object$warp_data$time, q1[,ii],
-                               object$warp_data$time, method=object$warp_data$call$optim_method)
+  gam = matrix(0, M, N)
+  fn = matrix(0, M, N)
+  qn = matrix(0, M, N)
+  for (ii in 1:N) {
+    gam[, ii] = optimum.reparam(
+      object$warp_data$mqn,
+      object$warp_data$time,
+      q1[, ii],
+      object$warp_data$time,
+      method = object$warp_data$call$optim_method
+    )
   }
 
 
   no = ncol(object$U)
-  psi = matrix(0,M,N)
-  vec = matrix(0,M,N)
+  psi = matrix(0, M, N)
+  vec = matrix(0, M, N)
   binsize <- mean(diff(object$warp_data$time))
-  for (i in 1:N){
-    psi[,i] = sqrt(gradient(gam[,i],binsize))
-    vec[,i] <- inv_exp_map(object$mu, psi[,i])
+  for (i in 1:N) {
+    psi[, i] = sqrt(gradient(gam[, i], binsize))
+    vec[, i] <- inv_exp_map(object$mu, psi[, i])
   }
 
-  a <- matrix(0,N,no)
-  for (i in 1:N){
-    for (j in 1:no){
-      a[i,j] <- (vec[,i]-object$vm)%*%object$U[,j]
+  a <- matrix(0, N, no)
+  for (i in 1:N) {
+    for (j in 1:no) {
+      a[i, j] <- (vec[, i] - object$vm) %*% object$U[, j]
     }
   }
 

@@ -13,11 +13,13 @@
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
-#' @param parallel enable parallel mode using [foreach()] and
+#' @param parallel enable parallel mode using `foreach` and
 #'   `doParallel` package (default=F)
+#' @param cores number of cores in parallel (default=-1, means all cores)
 #' @param omethod optimization method (DP,DP2,RBFGS,dBayes,expBayes)
 #' @param MaxItr maximum number of iterations
 #' @param iter bayesian number of mcmc samples (default 2000)
+#' @param verbose verbose printing (default TRUE)
 #' @return Returns a fdawarp object containing \item{f0}{original functions}
 #' \item{fn}{aligned functions - matrix (\eqn{N} x \eqn{M}) of \eqn{M} functions with \eqn{N} samples}
 #' \item{qn}{aligned SRSFs - similar structure to fn}
@@ -37,11 +39,25 @@
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
 #' @export
-multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
-                                     showplot = TRUE, smooth_data = FALSE, sparam = 25,
-                                     parallel = FALSE, omethod = "DP", MaxItr = 20, iter=2000){
-  if (parallel){
-    cores = max(parallel::detectCores() - 1, 1)
+multiple_align_functions <- function(f,
+                                     time,
+                                     mu,
+                                     lambda = 0,
+                                     pen = "roughness",
+                                     showplot = TRUE,
+                                     smooth_data = FALSE,
+                                     sparam = 25,
+                                     parallel = FALSE,
+                                     cores = -1,
+                                     omethod = "DP",
+                                     MaxItr = 20,
+                                     iter = 2000,
+                                     verbose = TRUE) {
+  if (parallel) {
+    if (cores==-1){
+      cores = max(parallel::detectCores() - 1, 1)
+    }
+
     cl = parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
   } else
@@ -49,7 +65,9 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
     foreach::registerDoSEQ()
   }
 
-  cat(sprintf("lambda = %5.1f \n",lambda))
+  if (verbose){
+    cli::cli_alert_info("Using lambda = {lambda}")
+  }
 
   binsize = mean(diff(time))
   eps = .Machine$double.eps
@@ -58,65 +76,72 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
   f0 = f
   w = 0.0
 
-  if (smooth_data){
-    f = smooth.data(f,sparam)
+  if (smooth_data) {
+    f = smooth.data(f, sparam)
   }
 
-  if (showplot){
-    graphics::matplot(time,f,type="l")
-    graphics::title(main="Original data")
+  if (showplot) {
+    graphics::matplot(time, f, type = "l")
+    graphics::title(main = "Original data")
   }
 
   # Compute q-function of the functional data
-  tmp = gradient.spline(f,binsize,smooth_data)
+  tmp = gradient.spline(f, binsize, smooth_data)
   f = tmp$f
-  q = tmp$g/sqrt(abs(tmp$g)+eps)
+  q = tmp$g / sqrt(abs(tmp$g) + eps)
 
-  tmp = gradient.spline(mu,binsize,smooth_data)
+  tmp = gradient.spline(mu, binsize, smooth_data)
   mf = tmp$f
-  mq = tmp$g/sqrt(abs(tmp$g)+eps)
+  mq = tmp$g / sqrt(abs(tmp$g) + eps)
   k <- 1
 
-  cat(sprintf("Aligning %d functions in SRSF space...\n",N))
-  outfor<-foreach::foreach(k = 1:N, .combine=cbind,.packages='fdasrvf') %dopar% {
-    if (omethod=="expBayes"){
-      gam <- pair_align_functions_expomap(mu, c(f[,k]), time, iter=iter)$gamma
-      gam <- gam$y
-    } else if (omethod=="dBayes") {
-      gam <- pair_align_functions_bayes(mu, f[,k], time)$gam_a
-    } else {
-      gam <- optimum.reparam(mq,time,q[,k],time,lambda,pen,omethod,w,mf[1],f[1,k])
-    }
-
-    gam_dev = gradient(gam,1/(M-1))
-    f_temp = stats::approx(time,f[,k],xout=(time[length(time)]-time[1])*gam +
-                      time[1])$y
-    q_temp = f_to_srvf(f_temp,time)
-    v <- q_temp - mq
-    d <- sqrt(trapz(time,v*v))
-    vtil <- v/d
-    dtil <- 1/d
-
-    list(gam,gam_dev,q_temp,f_temp,vtil,dtil)
+  if (verbose){
+    cat(sprintf("Aligning %d functions in SRSF space...\n", N))
   }
+  outfor <- foreach::foreach(k = 1:N,
+                             .combine = cbind,
+                             .packages = 'fdasrvf') %dopar% {
+                               if (omethod == "expBayes") {
+                                 gam <- pair_align_functions_expomap(mu, c(f[, k]), time, iter = iter)$gamma
+                                 gam <- gam$y
+                               } else if (omethod == "dBayes") {
+                                 gam <- pair_align_functions_bayes(mu, f[, k], time)$gam_a
+                               } else {
+                                 gam <- optimum.reparam(mq, time, q[, k], time, lambda, pen, omethod, mf[1], f[1, k])
+                               }
 
-  gam = unlist(outfor[1,])
-  dim(gam)=c(M,N)
+                               gam_dev = gradient(gam, 1 / (M - 1))
+                               f_temp = stats::approx(time, f[, k], xout = (time[length(time)] - time[1]) *
+                                                        gam +
+                                                        time[1])$y
+                               q_temp = f_to_srvf(f_temp, time)
+                               v <- q_temp - mq
+                               d <- sqrt(trapz(time, v * v))
+                               vtil <- v / d
+                               dtil <- 1 / d
+
+                               list(gam, gam_dev, q_temp, f_temp, vtil, dtil)
+                             }
+
+  gam = unlist(outfor[1, ])
+  dim(gam) = c(M, N)
   gam = t(gam)
-  gam_dev = unlist(outfor[2,])
-  dim(gam_dev)=c(M,N)
+  gam_dev = unlist(outfor[2, ])
+  dim(gam_dev) = c(M, N)
   gam_dev = t(gam_dev)
-  q_temp = unlist(outfor[3,])
-  dim(q_temp)=c(M,N)
-  f_temp = unlist(outfor[4,])
-  dim(f_temp)=c(M,N)
+  q_temp = unlist(outfor[3, ])
+  dim(q_temp) = c(M, N)
+  f_temp = unlist(outfor[4, ])
+  dim(f_temp) = c(M, N)
   qn = q_temp
   fn = f_temp
-  tmp = (1-sqrt(gam_dev))^2
-  vtil = unlist(outfor[5,]);
-  dim(vtil)=c(M,N)
-  dtil = unlist(outfor[6,]);
-  dim(dtil)=c(1,N)
+  tmp = (1 - sqrt(gam_dev)) ^ 2
+  vtil = unlist(outfor[5, ])
+
+  dim(vtil) = c(M, N)
+  dtil = unlist(outfor[6, ])
+
+  dim(dtil) = c(1, N)
 
 
 
@@ -127,46 +152,59 @@ multiple_align_functions <- function(f, time, mu, lambda = 0, pen="roughness",
   mean_fn = rowMeans(fn)
   std_fn = apply(fn, 1, stats::sd)
   mqn = mq
-  fmean = mean(f0[1,])+cumtrapz(time,mqn*abs(mqn))
+  fmean = mean(f0[1, ]) + cumtrapz(time, mqn * abs(mqn))
   gam = t(gam)
   gamI = SqrtMeanInverse(gam)
 
 
-  fgam = matrix(0,M,N)
-  for (ii in 1:N){
-    fgam[,ii] = stats::approx(time,fmean,xout=(time[length(time)]-time[1])*gam[,ii] +
-                         time[1])$y
+  fgam = matrix(0, M, N)
+  for (ii in 1:N) {
+    fgam[, ii] = stats::approx(time, fmean, xout = (time[length(time)] - time[1]) *
+                                 gam[, ii] +
+                                 time[1])$y
   }
-  var_fgam = apply(fgam,1,stats::var)
+  var_fgam = apply(fgam, 1, stats::var)
 
-  orig.var = trapz(time,std_f0^2)
-  amp.var = trapz(time,std_fn^2)
-  phase.var = trapz(time,var_fgam)
+  orig.var = trapz(time, std_f0 ^ 2)
+  amp.var = trapz(time, std_fn ^ 2)
+  phase.var = trapz(time, var_fgam)
 
-  out <- list(f0=f,time=time,fn=fn,qn=qn,q0=q0,fmean=fmean,mqn=mqn,warping_functions=gam,
-              original_variance=orig.var,amplitude_variance=amp.var,phase_variance=phase.var,
-              qun=0,
-              inverse_average_warping_function = gamI,
-              rsamps = FALSE,
-              call = list(
-                lambda = lambda,
-                penalty_method = pen,
-                centroid_type = "mean",
-                center_warpings = FALSE,
-                smooth_data = smooth_data,
-                sparam = sparam,
-                parallel = parallel,
-                optim_method = omethod,
-                max_iter = MaxItr
-              ))
+  out <- list(
+    f0 = f,
+    time = time,
+    fn = fn,
+    qn = qn,
+    q0 = q0,
+    fmean = fmean,
+    mqn = mqn,
+    warping_functions = gam,
+    original_variance = orig.var,
+    amplitude_variance = amp.var,
+    phase_variance = phase.var,
+    qun = 0,
+    inverse_average_warping_function = gamI,
+    rsamps = FALSE,
+    call = list(
+      lambda = lambda,
+      penalty_method = pen,
+      centroid_type = "mean",
+      center_warpings = FALSE,
+      smooth_data = smooth_data,
+      sparam = sparam,
+      parallel = parallel,
+      optim_method = omethod,
+      max_iter = MaxItr
+    )
+  )
 
   class(out) <- 'fdawarp'
 
-  if (showplot){
+  if (showplot) {
     plot(out)
   }
 
-  if (parallel) parallel::stopCluster(cl)
+  if (parallel)
+    parallel::stopCluster(cl)
 
   return(out)
 }

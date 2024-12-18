@@ -94,6 +94,7 @@ vertFPCA <- function(warp_data, no=3, var_exp=NULL,
     vfpca$coef <- c[,NP]
     vfpca$U <- U[,NP]
     vfpca$id <- id
+    vfpca$stds <- ci
     vfpca$mqn <- mqn
     vfpca$time <- time
     vfpca$warp_data <- warp_data
