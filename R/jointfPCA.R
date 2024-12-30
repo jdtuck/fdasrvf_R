@@ -123,7 +123,7 @@ jointFPCA <- function(warp_data,
   if (is.null(C))
     C <- stats::optimize(
       findC,
-      c(0, 1e4),
+      c(0, round(max(qn1))+1),
       qn = qn1,
       vec = vec,
       q0 = q0,
@@ -371,7 +371,7 @@ jointFPCAh <- function(warp_data,
   if (is.null(C))
     C <- stats::optimize(
       findCh,
-      c(0, 1e4),
+      c(0, round(max(qn1))+1),
       qn = qn1,
       h = h,
       q0 = q0,
