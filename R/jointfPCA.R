@@ -336,6 +336,7 @@ jointFPCAh <- function(warp_data,
         Psi_h = Psi_h,
         sz = sz,
         eigs = out.Zo$d,
+        srvf = srvf,
         U = U,
         Uh = Uh,
         Uz = Uz
