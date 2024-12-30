@@ -276,8 +276,8 @@ jointFPCAh <- function(warp_data,
     no_q = tmp[length(tmp)]
 
     c.o = t(qn - mqn) %*% U
-    c = c.o[, 1:no_q]
-    U = U[, 1:no_q]
+    c = c.o[, 1:no_q, drop = F]
+    U = U[, 1:no_q, drop = F]
 
     if (no_q == 1){
       U = matrix(U)
@@ -298,8 +298,8 @@ jointFPCAh <- function(warp_data,
     no_h = tmp[length(tmp)]
 
     ch.o = t(hc - mh) %*% Uh
-    ch = ch.o[, 1:no_h]
-    Uh = Uh[, 1:no_h]
+    ch = ch.o[, 1:no_h, drop = F]
+    Uh = Uh[, 1:no_h, drop = F]
 
     # Run Multivariate fPCA
     Xi = cbind(c, ch)
