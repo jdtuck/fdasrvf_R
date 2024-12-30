@@ -366,7 +366,7 @@ jointFPCAh <- function(warp_data,
     return(mean(d))
   }
 
-  findCh(.1,qn1, h, q0, 0.99, FALSE)
+  findCh(.1,qn1, h, q0, 0.99, srvf)
   if (is.null(C))
     C <- stats::optimize(
       findCh,
