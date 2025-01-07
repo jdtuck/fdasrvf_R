@@ -508,6 +508,7 @@ get_shape_distance <- function(q1fun, q2fun,
     R <- find_best_rotation(q1fun_scaled(grd), q2fun_scaled(grd))$R
     q2fun_scaled_rotated <- \(s) {R %*% q2fun_scaled(s)}
   } else {
+    R <- diag(L)
     q2fun_scaled_rotated <- q2fun_scaled
   }
 
@@ -527,12 +528,8 @@ get_shape_distance <- function(q1fun, q2fun,
 
     # Variables for DPQ2 algorithm
     nbhd_dim <- 7L
-    Gvec <- rep(0, M)
-    Tvec <- rep(0, M)
-    size <- 0
 
-    ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, Gvec, Tvec, size,
-                lambda, nbhd_dim)
+    ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, lambda, nbhd_dim)
 
     Gvec <- ret$G[1:ret$size]
     Tvec <- ret$T[1:ret$size]
@@ -582,8 +579,9 @@ get_shape_distance <- function(q1fun, q2fun,
   dist_phase <- get_warping_distance(gamfun, get_identity_warping())
 
   list(
-    ampitude_distance = dist_amplitude,
+    amplitude_distance = dist_amplitude,
     phase_distance = dist_phase,
+    optimal_rotation = R,
     optimal_warping = gamfun,
     q1fun_modified = q1fun_scaled,
     q2fun_modified = q2fun_scaled_rotated_aligned
@@ -692,12 +690,8 @@ get_distance_matrix <- function(qfuns,
 
       # Variables for DPQ2 algorithm
       nbhd_dim <- 7L
-      Gvec <- rep(0, M)
-      Tvec <- rep(0, M)
-      size <- 0
 
-      ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, Gvec, Tvec, size,
-                  lambda, nbhd_dim)
+      ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, lambda, nbhd_dim)
 
       Gvec <- ret$G[1:ret$size]
       Tvec <- ret$T[1:ret$size]

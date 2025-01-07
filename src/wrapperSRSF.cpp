@@ -33,12 +33,12 @@ Rcpp::List DPQ2(Rcpp::NumericVector Q1,
                 Rcpp::NumericVector tv2,
                 int n1v,
                 int n2v,
-                Rcpp::NumericVector G,
-                Rcpp::NumericVector T,
-                int size,
                 double lam1,
                 int nbhd_dim)
 {
+  Rcpp::NumericVector G(n1);
+  Rcpp::NumericVector T(n2);
+  int size = 0;
   DynamicProgrammingQ2(Q1.begin(), T1.begin(), Q2.begin(), T2.begin(), &m1, &n1,
                        &n2, tv1.begin(), tv2.begin(), &n1v, &n2v, G.begin(),
                        T.begin(), &size, &lam1, &nbhd_dim);

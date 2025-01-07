@@ -79,10 +79,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
   switch(
     method,
     DP = {
-      G <- rep(0, M)
-      T <- rep(0, M)
-      size <- 0
-      ret <- DPQ2(Q1, T1, Q2, T2, L, M, M, T1, T2, M, M, G, T, size, lambda,
+      ret <- DPQ2(Q1, T1, Q2, T2, L, M, M, T1, T2, M, M, lambda,
                   nbhd_dim)
       G <- ret$G[1:ret$size]
       Tf <- ret$T[1:ret$size]

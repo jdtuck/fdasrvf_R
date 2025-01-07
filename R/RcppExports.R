@@ -45,8 +45,8 @@ mlogit_warp_grad_wrap <- function(m1, m2, alpha, beta, ti, gami, q, y, max_itri,
     .Call(`_fdasrvf_mlogit_warp_grad_wrap`, m1, m2, alpha, beta, ti, gami, q, y, max_itri, toli, deltai, displayi)
 }
 
-DPQ2 <- function(Q1, T1, Q2, T2, m1, n1, n2, tv1, tv2, n1v, n2v, G, T, size, lam1, nbhd_dim) {
-    .Call(`_fdasrvf_DPQ2`, Q1, T1, Q2, T2, m1, n1, n2, tv1, tv2, n1v, n2v, G, T, size, lam1, nbhd_dim)
+DPQ2 <- function(Q1, T1, Q2, T2, m1, n1, n2, tv1, tv2, n1v, n2v, lam1, nbhd_dim) {
+    .Call(`_fdasrvf_DPQ2`, Q1, T1, Q2, T2, m1, n1, n2, tv1, tv2, n1v, n2v, lam1, nbhd_dim)
 }
 
 DPQ <- function(Q1, Q2, n1, N1, lam1, pen1, Disp) {

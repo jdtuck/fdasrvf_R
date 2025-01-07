@@ -253,9 +253,6 @@ find_rotation_seed_unique <- function(q1, q2,
   # Variables for DPQ2 algorithm
   grd <- seq(0, 1, length.out = M)
   nbhd_dim <- 7L
-  Gvec <- rep(0, M)
-  Tvec <- rep(0, M)
-  size <- 0
 
   scl <- 4
   minE <- Inf
@@ -289,8 +286,7 @@ find_rotation_seed_unique <- function(q1, q2,
       dim(q1i) <- M * L
       dim(q2ni) <- M * L
 
-      ret <- DPQ2(q1i, grd, q2ni, grd, L, M, M, grd, grd, M, M, Gvec, Tvec,
-                  size, lambda, nbhd_dim)
+      ret <- DPQ2(q1i, grd, q2ni, grd, L, M, M, grd, grd, M, M, lambda, nbhd_dim)
       Gvec <- ret$G[1:ret$size]
       Tvec <- ret$T[1:ret$size]
       gamI <- stats::approx(Tvec, Gvec, xout = grd)$y
