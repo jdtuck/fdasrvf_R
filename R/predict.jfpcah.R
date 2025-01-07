@@ -16,6 +16,7 @@ predict.jfpcah <- function(object, newdata = NULL, ...) {
   if (is.null(newdata)) {
     newdata = object$warp_data$f0
   }
+
   q1 = f_to_srvf(newdata, object$warp_data$time)
   M = length(object$warp_data$time)
   N = ncol(newdata)
@@ -34,8 +35,16 @@ predict.jfpcah <- function(object, newdata = NULL, ...) {
     qn[, ii] = f_to_srvf(fn[, ii], object$warp_data$time)
   }
 
-  m_new <- sign(fn[object$id, ]) * sqrt(abs(fn[object$id, ]))  # scaled version
-  qn1 <- rbind(qn, m_new)
+  if (object$srvf){
+
+    m_new <- sign(fn[object$id, ]) * sqrt(abs(fn[object$id, ]))  # scaled version
+    qn1 <- rbind(qn, m_new)
+
+  } else {
+
+    qn1 <- fn
+
+  }
 
   C <- object$C
 
@@ -47,6 +56,7 @@ predict.jfpcah <- function(object, newdata = NULL, ...) {
   Xi = cbind(c, ch)
 
   a = Xi %*% object$Uz
+
 
   return(a)
 }

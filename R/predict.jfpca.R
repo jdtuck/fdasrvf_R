@@ -34,8 +34,13 @@ predict.jfpca <- function(object, newdata = NULL, ...) {
     qn[, ii] = f_to_srvf(fn[, ii], object$warp_data$time)
   }
 
-  m_new <- sign(fn[object$id, ]) * sqrt(abs(fn[object$id, ]))  # scaled version
-  qn1 <- rbind(qn, m_new)
+  if (object$srvf){
+    m_new <- sign(fn[object$id, ]) * sqrt(abs(fn[object$id, ]))  # scaled version
+    qn1 <- rbind(qn, m_new)
+  } else {
+    qn1 <- fn
+  }
+  
 
   no = ncol(object$U)
   psi = matrix(0, M, N)
