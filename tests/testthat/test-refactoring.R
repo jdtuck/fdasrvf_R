@@ -31,11 +31,11 @@ test_that("`curve2srvf()` and `srvf2curve()` are inverses", {
 
   q <- curve2srvf(fdasrvf::beta[, , 1, 1])
   beta_recon <- srvf2curve(q, beta0 = fdasrvf::beta[, 1, 1, 1])
-  expect_true(get_l2_distance(betafuns[[1]], beta_recon) < 3e-5)
+  expect_true(get_l2_distance(betafuns[[1]], beta_recon) < 6e-6)
 
   q <- curve2srvf(betafuns[[1]])
   beta_recon <- srvf2curve(q, beta0 = fdasrvf::beta[, 1, 1, 1])
-  expect_true(get_l2_distance(betafuns[[1]], beta_recon) < 3e-5)
+  expect_true(get_l2_distance(betafuns[[1]], beta_recon) < 6e-6)
 })
 
 test_that("`get_l2_distance()` is symmetric", {
@@ -197,23 +197,31 @@ test_that("`get_shape_distance()` is symmetric", {
   idx2 <- 6
 
   d1 <- get_shape_distance(qfuns[[idx1]], qfuns[[idx2]])
+  d1 <- c(d1$amplitude_distance, d1$phase_distance)
   d2 <- get_shape_distance(qfuns[[idx2]], qfuns[[idx1]])
+  d2 <- c(d2$amplitude_distance, d2$phase_distance)
   expect_true(all(abs(d1 - d2) < .Machine$double.eps))
 
   d1 <- get_shape_distance(qfuns[[idx1]], qfuns[[idx2]], alignment = TRUE)
+  d1 <- c(d1$amplitude_distance, d1$phase_distance)
   d2 <- get_shape_distance(qfuns[[idx2]], qfuns[[idx1]], alignment = TRUE)
+  d2 <- c(d2$amplitude_distance, d2$phase_distance)
   expect_true(all(abs(d1 - d2) < 3e-6))
 
   d1 <- get_shape_distance(qfuns[[idx1]], qfuns[[idx2]], rotation = TRUE)
+  d1 <- c(d1$amplitude_distance, d1$phase_distance)
   d2 <- get_shape_distance(qfuns[[idx2]], qfuns[[idx1]], rotation = TRUE)
+  d2 <- c(d2$amplitude_distance, d2$phase_distance)
   expect_true(all(abs(d1 - d2) < 6e-14))
 
   d1 <- get_shape_distance(qfuns[[idx1]], qfuns[[idx2]], scale = TRUE)
+  d1 <- c(d1$amplitude_distance, d1$phase_distance)
   d2 <- get_shape_distance(qfuns[[idx2]], qfuns[[idx1]], scale = TRUE)
+  d2 <- c(d2$amplitude_distance, d2$phase_distance)
   expect_true(all(abs(d1 - d2) < 1e-6))
 })
 
-test_that("`get_shape_distance()` works", {
+test_that("`get_distance_matrix()` works", {
   N <- 4L
   srvfs <- lapply(1:N, \(n) curve2srvf(fdasrvf::beta[, , 1, n]))
   out <- get_distance_matrix(srvfs)

@@ -4,12 +4,23 @@ colSums_ext <- function(x, na.rm = FALSE, dims = 1) {
 }
 
 find_zero <- function(f, lower = 0, upper = 1, tol = 1e-8, maxiter = 1000L, ...) {
-  C_zeroin2 <- utils::getFromNamespace("C_zeroin2", "stats")
-  f.lower <- f(lower, ...)
-  f.upper <- f(upper, ...)
-  val <- .External2(C_zeroin2, \(arg) f(arg, ...),
-                    lower, upper, f.lower, f.upper, tol, as.integer(maxiter))
+  # C_zeroin2 <- utils::getFromNamespace("C_zeroin2", "stats")
+  # f.lower <- f(lower, ...)
+  # f.upper <- f(upper, ...)
+  # ff <- function(x) f(x, ...)
+  # val <- .External2(C_zeroin2, ff, as.double(lower), as.double(upper), as.double(f.lower), as.double(f.upper), as.double(tol), as.integer(maxiter))
+  val <- stats::uniroot(f, lower = lower, upper = upper, tol = tol, maxiter = maxiter, ...)$root
   return(val[1])
+}
+
+integrate <- function(f, upper = 1) {
+  stats::integrate(
+    f = f,
+    lower = 0,
+    upper = upper,
+    subdivisions = 10000L,
+    stop.on.error = FALSE
+  )$value
 }
 
 #' Converts a curve from matrix to functional data object
@@ -55,22 +66,60 @@ discrete2curve <- function(beta) {
 #' discrete2warping(toy_warp$gam[, 1])
 discrete2warping <- function(gam) {
   M <- length(gam)
+  # step <- 1 / (M - 1)
+  # left_slope <- (gam[2] - gam[1]) * step
+  # right_slope <- (gam[M] - gam[M - 1]) * step
+  # # y(x) = a (x - x0) + y0
+  # gam <- c(gam[1] - step * left_slope , gam, gam[M] + step * right_slope)
+  # grd <- seq(-step, 1 + step, length = M + 2)
   grd <- seq(0, 1, length = M)
   stats::splinefun(grd, gam, method = "hyman")
 }
 
 inverse_warping <- function(gamfun) {
-  \(s, deriv = 0) {
-    if (deriv > 1)
-      cli::cli_abort("The argument {.arg deriv} must be 0 or 1.")
-    # Get gamma inverse
-    gaminverse <- sapply(s, \(.s) {
-      find_zero(\(t) gamfun(t) - .s, lower = 0, upper = 1, tol = 1e-8)
-    })
-    if (deriv == 0)
-      return(gaminverse)
-    1 / gamfun(gaminverse, deriv = 1)
+  s <- seq(0, 1, length = 10000L)
+  stats::splinefun(gamfun(s), s, method = "hyman")
+  # \(s, deriv = 0) {
+  #   if (deriv > 1)
+  #     cli::cli_abort("The argument {.arg deriv} must be 0 or 1.")
+  #   # Get gamma inverse
+  #   gaminverse <- sapply(s, \(.s) {
+  #     find_zero(\(t) gamfun(t) - .s, lower = 0, upper = 1, tol = 1e-8)
+  #   })
+  #   if (deriv == 0)
+  #     return(gaminverse)
+  #   1 / gamfun(gaminverse, deriv = 1)
+  # }
+}
+
+#' Computes the centroid of a curve
+#'
+#' @param betafun A function that takes a numeric vector \eqn{s} of values in
+#'   \eqn{[0, 1]} as input and returns its values at \eqn{s}.
+#'
+#' @return A numeric vector of length \eqn{L} storing the centroid of the curve.
+#' @export
+#'
+#' @examples
+#' betafun <- discrete2curve(beta[, , 1, 1])
+#' get_curve_centroid(betafun)
+get_curve_centroid <- function(betafun) {
+  denom_integrand <- \(s) {
+    betaprimevals <- betafun(s, deriv = 1)
+    sqrt(apply(betaprimevals, 2, \(.x) sum(.x^2)))
   }
+  denom_value <- integrate(denom_integrand)
+  L <- dim(betafun(0))[1]
+  num_values <- sapply(1:L, \(l) {
+    num_integrand <- \(s) {
+      betavals <- betafun(s)
+      betaprimevals <- betafun(s, deriv = 1)
+      normbetaprimevals <- sqrt(apply(betaprimevals, 2, \(.x) sum(.x^2)))
+      betavals[l, ] * normbetaprimevals
+    }
+    integrate(num_integrand)
+  })
+  num_values / denom_value
 }
 
 #' Converts a curve to its SRVF representation
@@ -108,6 +157,9 @@ curve2srvf <- function(beta, is_derivative = FALSE) {
     else
       fprime <- betaprime(s)
     sqrt_fprime_norm <- sqrt(apply(fprime, 2, \(.x) sqrt(sum(.x^2))))
+    is_zero <- sqrt_fprime_norm < sqrt(.Machine$double.eps)
+    fprime[, is_zero] <- 0
+    sqrt_fprime_norm[is_zero] <- 1
     fprime / matrix(
       data = sqrt_fprime_norm,
       nrow = nrow(fprime),
@@ -139,9 +191,18 @@ srvf2curve <- function(qfun, beta0 = NULL) {
     v * matrix(v_norm, nrow = L, ncol = length(s), byrow = TRUE)
   }
   Vectorize(\(t) {
-    s <- seq(0, t, length = 10000L)
-    integrand_matrix <- integrand(s)
-    out <- trapz(s, integrand_matrix, dims = 2)
+    out <- numeric(L)
+    for (l in 1:L) {
+      integrand1 <- \(s) integrand(s)[l, ]
+      out[l] <- stats::integrate(
+        f = integrand1,
+        lower = 0,
+        upper = t,
+        rel.tol = 1e-8,
+        subdivisions = 10000L,
+        stop.on.error = FALSE
+      )$value
+    }
     if (!is.null(beta0))
       out <- out + beta0
     out
@@ -234,15 +295,16 @@ warp_srvf <- function(qfun, gamfun, betafun = NULL) {
 #' get_l2_distance(q1, q2)
 get_l2_distance <- function(q1fun, q2fun, method = "quadrature") {
   if (method == "quadrature") {
-    sqrt(stats::integrate(
-      f = \(s) colSums_ext((q1fun(s) - q2fun(s))^2),
-      lower = 0, upper = 1,
-      subdivisions = 10000L,
-      stop.on.error = FALSE
-    )$value)
+    sqrt(integrate(\(s) colSums_ext((q1fun(s) - q2fun(s))^2)))
   } else if (method == "trapz") {
-    grd <- seq(0, 1, length = 10000)
+    grd <- seq(0, 1, length = 100000L)
     sqrt(trapz(grd, colSums_ext((q1fun(grd) - q2fun(grd))^2)))
+  } else if (method == "simpson") {
+    grd <- seq(0, 1, length = 100000L)
+    sqrt(simpson(grd, colSums_ext((q1fun(grd) - q2fun(grd))^2)))
+  } else if (method == "trapzCpp") {
+    grd <- seq(0, 1, length = 100000L)
+    sqrt(trapzCpp(grd, colSums_ext((q1fun(grd) - q2fun(grd))^2)))
   } else {
     cli::cli_abort("Invalid method")
   }
@@ -264,13 +326,22 @@ get_l2_distance <- function(q1fun, q2fun, method = "quadrature") {
 #' q2 <- curve2srvf(beta[, , 1, 2])
 #' get_l2_inner_product(q1, q2)
 get_l2_inner_product <- function(q1fun, q2fun) {
-  integrand <- \(s) colSums_ext(q1fun(s) * q2fun(s))
-  stats::integrate(
-    f = integrand,
-    lower = 0, upper = 1,
-    subdivisions = 10000L,
-    stop.on.error = FALSE
-  )$value
+  integrate(\(s) colSums_ext(q1fun(s) * q2fun(s)))
+}
+
+#' Computes the \eqn{L^2} norm of an SRVF
+#'
+#' @param qfun A function that takes a numeric vector \eqn{s} of values in
+#'   \eqn{[0, 1]} as input and returns the values of the SRVF at \eqn{s}.
+#'
+#' @return A numeric value storing the \eqn{L^2} norm of the SRVF.
+#' @export
+#'
+#' @examples
+#' q <- curve2srvf(beta[, , 1, 1])
+#' get_l2_norm(q)
+get_l2_norm <- function(qfun) {
+  sqrt(get_l2_inner_product(qfun, qfun))
 }
 
 #' Projects an SRVF onto the Hilbert sphere
@@ -288,8 +359,7 @@ get_l2_inner_product <- function(q1fun, q2fun) {
 #' @examples
 #' q <- curve2srvf(beta[, , 1, 1])
 #' to_hilbert_sphere(q)
-to_hilbert_sphere <- function(qfun,
-                              qnorm = sqrt(get_l2_inner_product(qfun, qfun))) {
+to_hilbert_sphere <- function(qfun, qnorm = get_l2_norm(qfun)) {
   \(s) {
     q <- qfun(s)
     q / qnorm
@@ -389,7 +459,20 @@ get_warping_distance <- function(gam1fun, gam2fun) {
 #' @param M An integer value specifying the number of points to use when
 #'   searching for the optimal rotation and alignment. Defaults to `200L`.
 #'
-#' @return A numeric value storing the distance between the two shapes.
+#' @return A list with the following components:
+#' - `amplitude_distance`: A numeric value storing the amplitude distance
+#' between the two SRVFs.
+#' - `phase_distance`: A numeric value storing the phase distance between the
+#' two SRVFs.
+#' - `optimal_warping`: A function that takes a numeric vector \eqn{s} of values
+#' in \eqn{[0, 1]} as input and returns the optimal warping function evaluated
+#' at \eqn{s}.
+#' - `q1fun_modified`: A function that takes a numeric vector \eqn{s} of values
+#' in \eqn{[0, 1]} as input and returns the first SRVF modified according to the
+#' optimal alignment, rotation, and scaling.
+#' - `q2fun_modified`: A function that takes a numeric vector \eqn{s} of values
+#' in \eqn{[0, 1]} as input and returns the second SRVF modified according to
+#' the optimal alignment, rotation, and scaling.
 #' @export
 #'
 #' @examples
@@ -407,8 +490,8 @@ get_shape_distance <- function(q1fun, q2fun,
     cli::cli_abort("The two input SRVFs should have the same dimension.")
 
   if (alignment || scale) {
-    q1norm <- sqrt(get_l2_inner_product(q1fun, q1fun))
-    q2norm <- sqrt(get_l2_inner_product(q2fun, q2fun))
+    q1norm <- get_l2_norm(q1fun)
+    q2norm <- get_l2_norm(q2fun)
   }
 
   if (scale) {
@@ -425,6 +508,7 @@ get_shape_distance <- function(q1fun, q2fun,
     R <- find_best_rotation(q1fun_scaled(grd), q2fun_scaled(grd))$R
     q2fun_scaled_rotated <- \(s) {R %*% q2fun_scaled(s)}
   } else {
+    R <- diag(L)
     q2fun_scaled_rotated <- q2fun_scaled
   }
 
@@ -444,15 +528,8 @@ get_shape_distance <- function(q1fun, q2fun,
 
     # Variables for DPQ2 algorithm
     nbhd_dim <- 7L
-    Gvec <- rep(0, M)
-    Tvec <- rep(0, M)
-    size <- 0
 
-    ret <- .Call(
-      "DPQ2", PACKAGE = "fdasrvf",
-      Q1, grd, Q2, grd, L, M, M, grd, grd, M,
-      M, Gvec, Tvec, size, lambda, nbhd_dim
-    )
+    ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, lambda, nbhd_dim)
 
     Gvec <- ret$G[1:ret$size]
     Tvec <- ret$T[1:ret$size]
@@ -501,7 +578,14 @@ get_shape_distance <- function(q1fun, q2fun,
 
   dist_phase <- get_warping_distance(gamfun, get_identity_warping())
 
-  c(ampitude = dist_amplitude, phase = dist_phase)
+  list(
+    amplitude_distance = dist_amplitude,
+    phase_distance = dist_phase,
+    optimal_rotation = R,
+    optimal_warping = gamfun,
+    q1fun_modified = q1fun_scaled,
+    q2fun_modified = q2fun_scaled_rotated_aligned
+  )
 }
 
 #' Computes the distance matrix between a set of shapes.
@@ -532,7 +616,6 @@ get_distance_matrix <- function(qfuns,
                                 M = 200L,
                                 parallel_setup = 1L) {
   # Handles parallel computing strategy
-  cli::cli_alert_info("Setting up parallel computing...")
   if (inherits(parallel_setup, "cluster")) {
     doParallel::registerDoParallel(parallel_setup)
     on.exit(parallel::stopCluster(parallel_setup))
@@ -561,7 +644,7 @@ get_distance_matrix <- function(qfuns,
 
   # Handles projection to Hilbert sphere if requested
   if (alignment || scale)
-    qnorms <- sapply(qfuns, \(qfun) sqrt(get_l2_distance(qfun)))
+    qnorms <- sapply(qfuns, get_l2_norm)
 
   if (scale)
     qfuns_scaled <- mapply(to_hilbert_sphere, qfuns, qnorms, SIMPLIFY = FALSE)
@@ -607,15 +690,8 @@ get_distance_matrix <- function(qfuns,
 
       # Variables for DPQ2 algorithm
       nbhd_dim <- 7L
-      Gvec <- rep(0, M)
-      Tvec <- rep(0, M)
-      size <- 0
 
-      ret <- .Call(
-        "DPQ2", PACKAGE = "fdasrvf",
-        Q1, grd, Q2, grd, L, M, M, grd, grd, M,
-        M, Gvec, Tvec, size, lambda, nbhd_dim
-      )
+      ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, lambda, nbhd_dim)
 
       Gvec <- ret$G[1:ret$size]
       Tvec <- ret$T[1:ret$size]

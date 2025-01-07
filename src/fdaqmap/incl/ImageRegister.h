@@ -1,5 +1,5 @@
-#ifndef SURFACECHRISTOFFEL_H
-#define SURFACECHRISTOFFEL_H
+#ifndef IMAGEREGISTER_H
+#define IMAGEREGISTER_H
 
 #include <cstring>
 #include <cmath>
@@ -620,4 +620,4 @@ void evalinterp2(T u, T *Dx, T *zx, const T *Dy, const T *Z, int nx, int ny) {
 	spline(Dx, zx, ny);
 }
 
-#endif // !SURFACE_H
+#endif /* IMAGEREGISTER_H */

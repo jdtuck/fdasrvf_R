@@ -1,5 +1,5 @@
 #ifndef DP_GRID_H
-#define DP_GRID_H 1
+#define DP_GRID_H
 
 #include "dp_nbhd.h"
 

@@ -72,7 +72,6 @@ mlogit_warp <- function(alpha, beta, time, q, y, max_itr=8000, tol=1e-10,
   m1 = length(time)
   m2 = ncol(beta)
   gam1 = seq(0,1,length.out=m1)
-  gamout = rep(0,m1)
   alpha = alpha/pvecnorm(alpha,2)
   q = q/pvecnorm(q,2)
   for (ii in 1:m2){
@@ -82,11 +81,11 @@ mlogit_warp <- function(alpha, beta, time, q, y, max_itr=8000, tol=1e-10,
   for (ii in 1:m2){
     beta1[((ii-1)*m1+1):(ii*m1)] = beta[,ii]
   }
-  output = .Call('mlogit_warp_grad_wrap', PACKAGE = 'fdasrvf', m1, m2, alpha,
-                 beta1, time, gam1, q, y, max_itr, tol, delta, display, gamout);
 
-  out = output$gamout
-  return(out)
+  gamout <- mlogit_warp_grad_wrap(m1, m2, alpha, beta1, time, gam1, q, y,
+                                  max_itr, tol, delta, display)
+
+  return(gamout)
 }
 
 mlogit_loss <- function(b, X, Y){

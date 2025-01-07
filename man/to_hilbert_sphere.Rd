@@ -4,7 +4,7 @@
 \alias{to_hilbert_sphere}
 \title{Projects an SRVF onto the Hilbert sphere}
 \usage{
-to_hilbert_sphere(qfun, qnorm = sqrt(get_l2_inner_product(qfun, qfun)))
+to_hilbert_sphere(qfun, qnorm = get_l2_norm(qfun))
 }
 \arguments{
 \item{qfun}{A function that takes a numeric vector \eqn{s} of values in

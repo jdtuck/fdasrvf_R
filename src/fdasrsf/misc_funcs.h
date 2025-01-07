@@ -1,4 +1,7 @@
-/* Trapzodial Numerical Integration */
+#ifndef MISC_FUNCS_H
+#define MISC_FUNCS_H
+
+/* Trapezoidal Numerical Integration */
 void trapz(int *m, int *n, double *x, double *y, double *out);
 
 /* Trapezoidal numerical integration in third dimension. */
@@ -17,7 +20,7 @@ void col_gradient(int nrows, int ncols, double *f, double step, double *df);
 /* Matrix product operation (c = a*b) */
 void product(int m, int n, int nn, double *a, double *b, double *c);
 
-/* Cummulative Trapzodial Numerical Integration */
+/* Cumulative Trapezoidal Numerical Integration */
 void cumtrapz(int *n, double *x, double *y, double *z);
 
 /* Simpson Numerical Integration */
@@ -35,10 +38,12 @@ void cov(int n, double *x, double *y, double *out);
 /* Spline Interpolation */
 void spline(int n, double *x, double *y, int nu, double *xi, double *yi);
 void spline_coef(int n, double *x, double *y, double *b, double *c, double *d);
-void spline_eval(int nu, double *u, double *v, int n, double *x, double *y, double *b, double *c, double *d);
+void spline_eval(int nu, double *u, double *v, int n, double *x, double *y,
+                 double *b, double *c, double *d);
 
-/* Linear Interpoloation */
-void approx(double *x, double *y, int nxy, double *xout, double *yout, int nout, int method, double yleft, double yright, double f);
+/* Linear Interpolation */
+void approx(double *x, double *y, int nxy, double *xout, double *yout, int nout,
+            int method, double yleft, double yright, double f);
 
 /* Invert Gamma */
 void invertGamma(int n, double *gam, double *out);
@@ -50,4 +55,7 @@ void SqrtMeanInverse(int *T1, int *n1, double *ti, double *gami, double *out);
 void linspace(double min, double max, int n, double *result);
 
 /* reparameterize srvf q by gamma */
-void group_action_by_gamma(int *n1, int *T1, double *q, double *gam, double *qn);
+void group_action_by_gamma(int *n1, int *T1, double *q, double *gam,
+                           double *qn);
+
+#endif /* MISC_FUNCS_H */
