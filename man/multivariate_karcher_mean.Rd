@@ -71,6 +71,8 @@ of the input data.
 aligned, possibly optimally rotated and optimally scaled, input data.
 \item \code{qn}: A numeric array of shape \eqn{L \times M \times N} storing the SRVFs
 of the aligned, possibly optimally rotated and optimally scaled, input data.
+\item \code{gamma}: A numeric array of shape \eqn{L \times M \times N} storing the warping
+functions of the aligned, possibly optimally rotated and optimally scaled, input data.
 \item \code{betamean}: A numeric array of shape \eqn{L \times M} storing the Karcher
 mean or median of the input data.
 \item \code{qmean}: A numeric array of shape \eqn{L \times M} storing the Karcher mean

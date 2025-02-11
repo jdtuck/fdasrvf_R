@@ -33,6 +33,8 @@
 #' aligned, possibly optimally rotated and optimally scaled, input data.
 #' - `qn`: A numeric array of shape \eqn{L \times M \times N} storing the SRVFs
 #' of the aligned, possibly optimally rotated and optimally scaled, input data.
+#' - `gamma`: A numeric array of shape \eqn{L \times M \times N} storing the warping
+#' functions of the aligned, possibly optimally rotated and optimally scaled, input data.
 #' - `betamean`: A numeric array of shape \eqn{L \times M} storing the Karcher
 #' mean or median of the input data.
 #' - `qmean`: A numeric array of shape \eqn{L \times M} storing the Karcher mean
@@ -136,7 +138,7 @@ multivariate_karcher_mean <- function(beta,
   tolv <- 1e-04
   told <- 5 * 0.001
   itr <- 1
-  qn <- qt <- array(0, c(L, M, N))
+  qn <- qt <- gam <- array(0, c(L, M, N))
   normbar <- rep(0, maxit)
   sumd <- rep(0, maxit + 1)
   sumd[1] <- Inf
@@ -163,7 +165,7 @@ multivariate_karcher_mean <- function(beta,
           scale = scale,
           lambda = lambda
         )
-        list(d = out$d, q2n = out$q2best)
+        list(d = out$d, q2n = out$q2best, gam = out$gambest)
       }
 
     d <- unlist(alignment_step[1, ])
@@ -172,6 +174,9 @@ multivariate_karcher_mean <- function(beta,
 
     qt <- unlist(alignment_step[2, ])
     dim(qt) <- c(L, M, N)
+
+    gam <- unlist(alignment_step[3, ])
+    dim(gam) <- c(M, N)
 
     out <- pointwise_karcher_mean(qt, qmean,
                                   basis = basis,
@@ -215,6 +220,7 @@ multivariate_karcher_mean <- function(beta,
     q = q,
     betan = betan,
     qn = qn,
+    gamma = gam,
     betamean = betamean,
     qmean = qmean,
     type = type,
