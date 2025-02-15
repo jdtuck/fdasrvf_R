@@ -311,6 +311,9 @@ jointFPCAh <- function(warp_data,
     cumm_coef <- cumsum(s) / sum(s)
     tmp = which(cumm_coef <= var_exp)
     no_q = tmp[length(tmp)]
+    if (cumm_coef [1] >  var_exp){
+      no_q = 1
+    }
 
     c.o = t(qn - mqn) %*% U
     c = c.o[, 1:no_q, drop = F]
@@ -333,6 +336,9 @@ jointFPCAh <- function(warp_data,
     cumm_coef <- cumsum(sh) / sum(sh)
     tmp = which(cumm_coef <= var_exp)
     no_h = tmp[length(tmp)]
+    if (cumm_coef [1] >  var_exp){
+      no_h = 1
+    }
 
     ch.o = t(hc - mh) %*% Uh
     ch = ch.o[, 1:no_h, drop = F]
