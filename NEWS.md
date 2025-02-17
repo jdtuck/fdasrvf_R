@@ -1,3 +1,6 @@
+# fdasrvf 2.3.6
+* bugfixes
+
 # fdasrvf 2.3.5
 * bugfixes
 
@@ -6,7 +9,7 @@
 
 # fdasrvf 2.3.3
 * bugfixes
-* added vervose options throughout
+* added verbose options throughout
 
 # fdasrvf 2.3.2
 * bugfixes
