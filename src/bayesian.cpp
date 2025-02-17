@@ -474,7 +474,7 @@ arma::vec findinv(arma::mat warps, int times)
   }
 
   arma::vec w = mean(psi_m,1);
-  arma::vec mupsi = w/as_scalar(sqrt(sum(pow(w,2)/(m-1))));
+  arma::vec mupsi = w/arma::as_scalar(sqrt(sum(pow(w,2)/(m-1))));
   arma::mat v_m(m-1,n);
   v_m.zeros();
   arma::vec mupsi_update(m-1);
