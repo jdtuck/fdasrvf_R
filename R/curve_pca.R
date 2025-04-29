@@ -35,6 +35,13 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mode = "O"
     U = out$u[,1:no]
     s = out$d[1:no]
 
+    # Parameters
+    if (!is.null(var_exp)){
+      cumm_coef <- cumsum(s)/sum(s)
+      tmp = which(cumm_coef <= var_exp)
+      no = tmp[length(tmp)]
+    }
+
     tmp = dim(v)
     N1 = tmp[3]
     VM = apply(v, c(1,2), mean)
