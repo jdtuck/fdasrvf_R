@@ -2,12 +2,10 @@
 #'
 #' Calculate principal directions of a set of curves
 #'
-#' @param v array of sizes \eqn{n \times T \times N1} for \eqn{N1} shooting
-#' vectors of dimension \eqn{n} evaluated on a grid of \eqn{T} points
-#' @param K matrix of sizes \eqn{nT \times nT} of covariance matrix
-#' @param mu matrix of sizes \eqn{n \times T} of mean srvf
-#' @param len length of original curves (default = `NA`)
+#' @param align_data fdacurve object from [curve_karcher_mean] of aligned data
 #' @param no number of components
+#' @param var_exp compute no based on value percent variance explained (example: 0.95)
+#'                will override `no`
 #' @param N number of samples on each side of mean
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
 #' @return Returns a list containing \item{s}{singular values}
@@ -18,12 +16,15 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
-#' # note: use more shapes, small for speed
-#' K <- curve_karcher_cov(out$v)
-#' out <- curve_pca(out$v, K, out$mu)
-curve_pca <- function(v, K, mu, len = NA, no = 3, N = 5,
-                                       mode = "O"){
+#' align_data <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+#' out <- curve_pca(align_data)
+curve_pca <- function(align_data, no = 3, var_exp=NULL, N = 5, mode = "O"){
+
+    v = align_data$v
+    mu = align_data$mu
+    len = align_data$len
+    K = curve_karcher_cov(v)
+
     n = nrow(mu)
     T1 = ncol(mu)
 
