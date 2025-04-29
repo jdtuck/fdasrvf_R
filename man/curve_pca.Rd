@@ -4,7 +4,14 @@
 \alias{curve_pca}
 \title{Curve PCA}
 \usage{
-curve_pca(align_data, no = 3, var_exp = NULL, N = 5, mode = "O")
+curve_pca(
+  align_data,
+  no = 3,
+  var_exp = NULL,
+  ci = c(-1, 0, 1),
+  mode = "O",
+  showplot = TRUE
+)
 }
 \arguments{
 \item{align_data}{fdacurve object from \link{curve_karcher_mean} of aligned data}
@@ -14,12 +21,14 @@ curve_pca(align_data, no = 3, var_exp = NULL, N = 5, mode = "O")
 \item{var_exp}{compute no based on value percent variance explained (example: 0.95)
 will override \code{no}}
 
-\item{N}{number of samples on each side of mean}
+\item{ci}{geodesic standard deviations (default = c(-1,0,1))}
 
 \item{mode}{Open (\code{"O"}) or Closed (\code{"C"}) curves}
+
+\item{showplot}{show plots of principal directions (default = TRUE)}
 }
 \value{
-Returns a list containing \item{s}{singular values}
+Returns a curve_pca object containing \item{latent}{singular values}
 \item{U}{singular vectors}
 \item{coef}{principal coefficients}
 \item{pd}{principal directions}

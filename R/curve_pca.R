@@ -6,9 +6,10 @@
 #' @param no number of components
 #' @param var_exp compute no based on value percent variance explained (example: 0.95)
 #'                will override `no`
-#' @param N number of samples on each side of mean
+#' @param ci geodesic standard deviations (default = c(-1,0,1))
 #' @param mode Open (`"O"`) or Closed (`"C"`) curves
-#' @return Returns a list containing \item{s}{singular values}
+#' @param showplot show plots of principal directions (default = TRUE)
+#' @return Returns a curve_pca object containing \item{latent}{singular values}
 #' \item{U}{singular vectors}
 #' \item{coef}{principal coefficients}
 #' \item{pd}{principal directions}
@@ -18,7 +19,8 @@
 #' @examples
 #' align_data <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' out <- curve_pca(align_data)
-curve_pca <- function(align_data, no = 3, var_exp=NULL, N = 5, mode = "O"){
+curve_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mode = "O",
+                      showplot = TRUE){
 
     v = align_data$v
     mu = align_data$mu
@@ -52,10 +54,11 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, N = 5, mode = "O"){
         x[, ii] = t(U)%*%(tmpv-VM)
     }
 
+    N = length(ci)
     pd = array(list(), c(no, N))
     for (m in 1:no){
         for (i in 1:N){
-            tmp = VM + 0.5*(i-5)*sqrt(s[m])*U[,m]
+            tmp = VM + ci[i]*sqrt(s[m])*U[,m]
             if (!align_data$scale){
                 a = length(tmp)
                 v1 = tmp[1:(a-1)]
@@ -74,5 +77,13 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, N = 5, mode = "O"){
         }
     }
 
-    return(list(s = s, U = U, coef = x, pd = pd, VM=VM))
+    curve_pca = list(latent = s, U = U, coef = x, pd = pd, VM=VM, stds=ci)
+
+    class(curve_pca) <- "curve_pca"
+
+    if (showplot){
+      plot(curve_pca)
+    }
+
+    return(curve_pca)
 }
