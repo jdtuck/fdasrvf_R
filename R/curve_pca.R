@@ -21,8 +21,8 @@
 #' out <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' # note: use more shapes, small for speed
 #' K <- curve_karcher_cov(out$v)
-#' out <- curve_principal_directions(out$v, K, out$mu)
-curve_principal_directions <- function(v, K, mu, len = NA, no = 3, N = 5,
+#' out <- curve_pca(out$v, K, out$mu)
+curve_pca <- function(v, K, mu, len = NA, no = 3, N = 5,
                                        mode = "O"){
     n = nrow(mu)
     T1 = ncol(mu)
