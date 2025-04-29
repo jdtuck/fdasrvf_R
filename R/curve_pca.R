@@ -37,7 +37,7 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, N = 5, mode = "O"){
     N1 = tmp[3]
     VM = apply(v, c(1,2), mean)
     VM = c(VM)
-    if (!all(is.na(len))){
+    if (!align_data$scale){
         mean_scale = prod(len)^(1/length(len))
         VM = c(VM, mean_scale)
     }
@@ -46,7 +46,7 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, N = 5, mode = "O"){
     x = matrix(0, no, N1)
     for (ii in 1:N1){
         tmpv = c(v[, , ii])
-        if (!all(is.na(len))){
+        if (!align_data$scale){
             tmpv = c(tmpv, len[ii])
         }
         x[, ii] = t(U)%*%(tmpv-VM)
@@ -56,7 +56,7 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, N = 5, mode = "O"){
     for (m in 1:no){
         for (i in 1:N){
             tmp = VM + 0.5*(i-5)*sqrt(s[m])*U[,m]
-            if (!all(is.na(len))){
+            if (!align_data$scale){
                 a = length(tmp)
                 v1 = tmp[1:(a-1)]
                 tmp_scale = tmp[a]
