@@ -76,7 +76,7 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mode = "O"
             }
 
             dim(v1) = c(n,T1)
-            q2n = elastic_shooting(mu, v1,mode)
+            q2n = elastic_shooting(mu, v1, mode)
             p = q_to_curve(q2n, tmp_scale)
 
             pd[m, i][[1]] = p

@@ -778,3 +778,38 @@ match_f2_to_f1 <- function(srvf1, srvf2, beta2,
     gambest = gam
   )
 }
+
+#' map shooting vector to curve at mean
+#'
+#'
+#' @param v Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the shooting vectors
+#' @param mu vector describing the mean
+#' @param mode A character string specifying whether the input curves should be
+#'   considered open (`mode == "O"`) or closed (`mode == "C"`). Defaults to
+#'   `"O"`.
+#' @param scale original scale of curve
+#' @return A numeric array of the same shape as the input array `v` storing the
+#'   curves of `v`.
+#'
+#' @keywords srvf alignment
+#' @export
+v_to_curve<-function(v, mu, mode="O", scale=1){
+  n = nrow(mu)
+  T1 = ncol(mu)
+  if (ndims(v) == 0){
+    dim(v) = c(n,T1)
+    q2n = elastic_shooting(mu, v, mode)
+    p = q_to_curve(q2n, scale)
+  } else {
+
+    p = matrix(0,TT,n)
+    for (i in 1:n){
+      v1 = v[,i]
+      dim(v1) = c(n,T1)
+      q2n = elastic_shooting(mu, v1, mode)
+      p[,i] = q_to_curve(q2n, scale)
+    }
+  }
+  return(p)
+}
