@@ -84,7 +84,8 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mode = "O"
         }
     }
 
-    curve_pca = list(latent = s, U = U, coef = x, pd = pd, VM=VM, stds=ci)
+    curve_pca = list(latent = s, U = U, coef = x, pd = pd, VM=VM, stds=ci,
+                     karcher_mean = align_data)
 
     class(curve_pca) <- "curve_pca"
 

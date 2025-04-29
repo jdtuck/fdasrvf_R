@@ -15,7 +15,7 @@
 }
 \value{
 Returns a matrix
-\item{a}{principle coefficients}
+\item{a}{principal coefficients}
 }
 \description{
 This function performs projection of new functions on fPCA basis
