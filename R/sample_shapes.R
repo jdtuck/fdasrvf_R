@@ -7,7 +7,7 @@
 #' \item{qns}{random aligned srvfs}
 #' \item{betans}{random curves}
 #' \item{qs}{random srvfs}
-#' \item{gams}{random reparametrization functions}
+#' \item{gams}{random reparameterization functions}
 #' \item{R}{random rotation matrices}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape

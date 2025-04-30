@@ -18,7 +18,7 @@ Returns a \code{fdacurve} object containing \item{betans}{random aligned curves}
 \item{qns}{random aligned srvfs}
 \item{betans}{random curves}
 \item{qs}{random srvfs}
-\item{gams}{random reparametrization functions}
+\item{gams}{random reparameterization functions}
 \item{R}{random rotation matrices}
 }
 \description{

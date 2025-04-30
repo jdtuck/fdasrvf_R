@@ -5,7 +5,7 @@
 #' Distances are computed between the SRVFs of the original curves. Hence, they
 #' are intrinsically invariant to position. The user can then choose to make
 #' distances invariant to rotation and scaling by setting `rotation` and `scale`
-#' accordingly. Distances can also be made invariant to reparametrization by
+#' accordingly. Distances can also be made invariant to reparameterization by
 #' setting `alignment = TRUE`, in which case curves are aligned using an
 #' appropriate action of the diffeomorphism group on the space of SRVFs.
 #'
