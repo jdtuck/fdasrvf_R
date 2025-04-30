@@ -13,7 +13,7 @@ curve_boxplot(
 )
 }
 \arguments{
-\item{x}{An object of class \code{fdacurve} typically produced by \code{\link[=curve_srvf_align]{curve_srvf_align()}}}
+\item{x}{An object of class \code{fdacurve} typically produced by \code{\link[=multivariate_karcher_mean]{multivariate_karcher_mean()}}}
 
 \item{alpha}{A numeric value specifying the quantile value. Defaults to
 \eqn{0.05} which uses the \eqn{95\%} quantile.}
@@ -43,7 +43,7 @@ The function returns optionally an object of class either
 }
 \examples{
 \dontrun{
-out <- curve_srvf_align(beta[, , 1, ], ms="median")
+out <- multivariate_karcher_mean(beta[, , 1, ], ms="median")
 curve_boxplot(out, what = "stats")
 }
 }

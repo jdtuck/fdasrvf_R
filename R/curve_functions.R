@@ -804,7 +804,7 @@ v_to_curve<-function(v, mu, mode="O", scale=1){
     p = q_to_curve(q2n, scale)
   } else {
 
-    p = matrix(0,TT,n)
+    p = matrix(0,T1,n)
     for (i in 1:n){
       v1 = v[,i]
       dim(v1) = c(n,T1)

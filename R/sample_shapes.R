@@ -15,14 +15,14 @@
 #'    Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' out <- curve_srvf_align(beta[, , 1, 1:5], maxit = 2, parallel=FALSE)
+#' out <- multivariate_karcher_cov(beta[, , 1, 1:5], maxit = 2, parallel=FALSE)
 #' # note: use more shapes, small for speed
 #' out.samples <- sample_shapes(out)
 sample_shapes <- function(x, no=3, numSamp=10){
 
     mode = x$mode
 
-    K <- curve_karcher_cov(x$v)
+    K <- multivariate_karcher_cov(x)
     mu <- x$mu
     mu <- mu/sqrt(innerprod_q2(mu, mu))
 

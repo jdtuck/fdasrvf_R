@@ -6,7 +6,7 @@
 #' The function returns optionally an object of class either
 #' `curvebox`
 #'
-#' @param x An object of class `fdacurve` typically produced by [curve_srvf_align()]
+#' @param x An object of class `fdacurve` typically produced by [multivariate_karcher_mean()]
 #' @param alpha A numeric value specifying the quantile value. Defaults to
 #'   \eqn{0.05} which uses the \eqn{95\%} quantile.
 #' @param range A positive numeric value specifying how far the plot whiskers
@@ -26,7 +26,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' out <- curve_srvf_align(beta[, , 1, ], ms="median")
+#' out <- multivariate_karcher_mean(beta[, , 1, ], ms="median")
 #' curve_boxplot(out, what = "stats")
 #' }
 curve_boxplot <- function(x,
@@ -90,7 +90,7 @@ boxplot.curvebox <- function(x, ...) {
 #'
 #' This function constructs the amplitude boxplot.
 #'
-#' @param align_median object from [curve_karcher_mean()] of aligned curves using
+#' @param align_median object from [multivariate_karcher_mean()] of aligned curves using
 #'   the median
 #' @param alpha quantile value (default=.05, i.e., 95%)
 #' @param ka scalar for outlier cutoff (default=1)
