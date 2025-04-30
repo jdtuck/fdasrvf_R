@@ -630,6 +630,7 @@ rot_mat <- function(theta){
 
 karcher_calc <- function(q1, mu, basis,
                          rotated = TRUE,
+                         scale = TRUE,
                          mode = "O",
                          lambda = 0.0,
                          ms = "mean") {
@@ -704,7 +705,7 @@ curve_align_sub <- function(beta1, q1, mu, mode, rotated, scale, lambda){
 }
 
 
-elastic_shooting <- function(q1, v,mode="O"){
+elastic_shooting <- function(q1, v, mode="O"){
     d = sqrt(innerprod_q2(v,v))
     if (d < 0.00001){
         q2n = q1

@@ -2,7 +2,7 @@
 #'
 #' Calculate principal directions of a set of curves
 #'
-#' @param align_data fdacurve object from [curve_karcher_mean] of aligned data
+#' @param align_data fdacurve object from [multivariate_karcher_mean] of aligned data
 #' @param no number of components
 #' @param var_exp compute no based on value percent variance explained (example: 0.95)
 #'                will override `no`
@@ -17,15 +17,15 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' align_data <- curve_karcher_mean(beta[, , 1, 1:2], maxit = 2)
-#' out <- curve_pca(align_data)
-curve_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mode = "O",
-                      showplot = TRUE){
+#' align_data <- multivariate_karcher_mean(beta[, , 1, 1:2], maxit = 2)
+#' out <- multivariate_pca(align_data)
+multivariate_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mode = "O",
+                             showplot = TRUE){
 
     v = align_data$v
     mu = align_data$mu
-    len = align_data$len
-    K = curve_karcher_cov(v)
+    scale = align_data$scale
+    K = multivariate_karcher_cov(align_data)
 
     n = nrow(mu)
     T1 = ncol(mu)
@@ -46,18 +46,11 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mode = "O"
     N1 = tmp[3]
     VM = apply(v, c(1,2), mean)
     VM = c(VM)
-    if (!align_data$scale){
-        mean_scale = prod(len)^(1/length(len))
-        VM = c(VM, mean_scale)
-    }
 
     # express shapes as coefficients
     x = matrix(0, no, N1)
     for (ii in 1:N1){
         tmpv = c(v[, , ii])
-        if (!align_data$scale){
-            tmpv = c(tmpv, len[ii])
-        }
         x[, ii] = t(U)%*%(tmpv-VM)
     }
 
@@ -65,18 +58,14 @@ curve_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mode = "O"
     pd = array(list(), c(no, N))
     for (m in 1:no){
         for (i in 1:N){
-            tmp = VM + ci[i]*sqrt(s[m])*U[,m]
-            if (!align_data$scale){
-                a = length(tmp)
-                v1 = tmp[1:(a-1)]
-                tmp_scale = tmp[a]
-            } else {
-                v1 = tmp
-                tmp_scale = 1
-            }
+            v1 = VM + ci[i]*sqrt(s[m])*U[,m]
+            tmp_scale = 1
 
             dim(v1) = c(n,T1)
-            q2n = elastic_shooting(mu, v1, mode)
+            q2n = exponential_map(v1, mu, scale)
+            if (mode == "C"){
+              q2n = project_curve(q2n)
+            }
             p = q_to_curve(q2n, tmp_scale)
 
             pd[m, i][[1]] = p

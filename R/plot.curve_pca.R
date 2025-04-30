@@ -24,22 +24,22 @@ plot.curve_pca <- function(x, ...) {
       if (jj == idx){
         next
       }
-      plot_curve(x$pd[1, jj][[1]], add=TRUE, col=colors[jj])
+      plot_curve(x$pd[cnt, jj][[1]], add=TRUE, col=colors[jj])
     }
     graphics::title(main = sprintf("PD %d", cnt))
-    if (dims[2] >= cnt + 1) {
+    if (dims[1] >= cnt + 1) {
       plot_curve(x$pd[cnt + 1, idx][[1]], col="black")
       for (jj in 1:dims[2]){
         if (jj == idx){
           next
         }
-        plot_curve(x$pd[1, jj][[1]], add=TRUE, col=colors[jj])
+        plot_curve(x$pd[cnt+1, jj][[1]], add=TRUE, col=colors[jj])
       }
       graphics::title(main = sprintf("PD %d", cnt + 1))
     } else {
       graphics::plot.new()
     }
-    if (dims[2] >= cnt + 2) {
+    if (dims[1] >= cnt + 2) {
       plot_curve(x$pd[cnt + 1, idx][[1]], col="black")
       for (jj in 1:dims[2]){
         if (jj == idx){

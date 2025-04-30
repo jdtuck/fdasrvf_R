@@ -35,6 +35,8 @@
 #' of the aligned, possibly optimally rotated and optimally scaled, input data.
 #' - `gamma`: A numeric array of shape \eqn{L \times M \times N} storing the warping
 #' functions of the aligned, possibly optimally rotated and optimally scaled, input data.
+#' - `R`: A numeric array of shape \eqn{L \times L \times N} storing the rotation
+#' matrices of the aligned, possibly optimally rotated and optimally scaled, input data.
 #' - `betamean`: A numeric array of shape \eqn{L \times M} storing the Karcher
 #' mean or median of the input data.
 #' - `qmean`: A numeric array of shape \eqn{L \times M} storing the Karcher mean
@@ -165,7 +167,7 @@ multivariate_karcher_mean <- function(beta,
           scale = scale,
           lambda = lambda
         )
-        list(d = out$d, q2n = out$q2best, gam = out$gambest)
+        list(d = out$d, q2n = out$q2best, gam = out$gambest, R = out$Rbest)
       }
 
     d <- unlist(alignment_step[1, ])
@@ -177,6 +179,9 @@ multivariate_karcher_mean <- function(beta,
 
     gam <- unlist(alignment_step[3, ])
     dim(gam) <- c(M, N)
+
+    R <- unlist(alignment_step[4, ])
+    dim(R) <- c(L, L, N)
 
     out <- pointwise_karcher_mean(qt, qmean,
                                   basis = basis,
@@ -194,6 +199,7 @@ multivariate_karcher_mean <- function(beta,
 
     qn <- qt
     qmean <- out$qmean
+    v <- out$v
 
     itr <- itr + 1
   }
@@ -215,16 +221,28 @@ multivariate_karcher_mean <- function(beta,
 
   type <- ifelse(ms == "median", "Karcher Median", "Karcher Mean")
 
-  list(
-    beta = beta,
-    q = q,
-    betan = betan,
-    qn = qn,
-    gamma = gam,
-    betamean = betamean,
-    qmean = qmean,
-    type = type,
-    E = normbar[1:itr],
-    qun = sumd[1:(itr + 1)]
-  )
+  out <- list(
+            beta = beta,
+            q = q,
+            betan = betan,
+            mu = qmean,
+            qn = qn,
+            gamma = gam,
+            R = R,
+            betamean = betamean,
+            qmean = qmean,
+            type = type,
+            lambda = lambda,
+            len_q = len_q,
+            qmean_norm = qmean_norm,
+            v = v,
+            scale = scale,
+            alignment = alignment,
+            rotation = rotation,
+            E = normbar[1:itr],
+            qun = sumd[1:(itr + 1)]
+          )
+
+    class(out) <- "fdacurve"
+    return(out)
 }
