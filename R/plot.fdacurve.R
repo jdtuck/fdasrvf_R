@@ -35,6 +35,8 @@ plot.fdacurve <- function(x, ...){
     plot_curve(x$betan[,,i], add=TRUE, col=colors[k])
   }
 
+  plot_curve(x$betamean, col=colors[1], main="Karcher Mean")
+
   M = dim(x$beta)[2]
   graphics::matplot(
     x = (0:(M - 1)) / (M - 1),
