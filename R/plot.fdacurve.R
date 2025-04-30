@@ -15,14 +15,21 @@ plot.fdacurve <- function(x, ...){
 
   N <- dim(x$beta)[3]
 
-  plot_curve(x$beta[,,1], col=colors[1], main="Original Curves")
+  mx = max(x$beta[1,,])
+  mnx = min(x$beta[1,,])
+  my = max(x$beta[2,,])
+  mny = min(x$beta[2,,])
+  plot_curve(x$beta[,,1], col=colors[1], main="Original Curves", xlim = c(.90*mnx, 1.02*mx), ylim= c(.90*mny, 1.02*my))
   for (i in 2:N){
     k = i %% length(colors)
     plot_curve(x$beta[,,i], add=TRUE, col=colors[k])
   }
 
-  idx = which.max(x$betan[1,1,])
-  plot_curve(x$betan[,,idx], col=colors[1], main="Aligned Curves")
+  mx = max(x$betan[1,,])
+  mnx = min(x$betan[1,,])
+  my = max(x$betan[2,,])
+  mny = min(x$betan[2,,])
+  plot_curve(x$betan[,,1], col=colors[1], main="Aligned Curves", xlim = c(.90*mnx, 1.02*mx), ylim= c(.90*mny, 1.02*my))
   for (i in 1:N){
     k = i %% length(colors)
     plot_curve(x$betan[,,i], add=TRUE, col=colors[k])

@@ -32,8 +32,8 @@ multivariate_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mod
 
     # SVD
     out = svd(K)
-    U = out$u[,1:no]
-    s = out$d[1:no]
+    U = out$u
+    s = out$d
 
     # Parameters
     if (!is.null(var_exp)){
@@ -41,6 +41,9 @@ multivariate_pca <- function(align_data, no = 3, var_exp=NULL, ci=c(-1,0,1), mod
       tmp = which(cumm_coef <= var_exp)
       no = tmp[length(tmp)]
     }
+
+    U = out$u[,1:no]
+    s = out$d[1:no]
 
     tmp = dim(v)
     N1 = tmp[3]
