@@ -22,6 +22,9 @@ sample_shapes <- function(x, no=3, numSamp=10){
 
     mode = x$mode
 
+    if (!x$scale)
+      cli::cli_abort("Not implemented for `scale = FALSE`. Please set `scale = TRUE` in multivariate_karcher_mean.")
+
     K <- multivariate_karcher_cov(x)
     mu <- x$mu
     mu <- mu/sqrt(innerprod_q2(mu, mu))
@@ -98,12 +101,12 @@ sample_shapes <- function(x, no=3, numSamp=10){
     gams = t(gams)
 
     # random rotation angles
-    if (x$rotated){
+    if (x$rotation){
       # currently for R^2
-      N = dim(x$rotmat)[3]
+      N = dim(x$R)[3]
       theta = rep(0, N)
       for (i in 1:N){
-        theta[i] = acos(x$rotmat[1,1,i])
+        theta[i] = acos(x$R[1,1,i])
       }
       mu_theta = mean(theta)
       sd_theta = stats::sd(theta)
