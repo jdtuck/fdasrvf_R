@@ -46,7 +46,7 @@ curve_boxplot <- function(x,
     cli::cli_alert_info(
       'Rerunning {.fn multivariate_srvf_align} with {.code ms = "median"}...'
     )
-    x <- multivariate_srvf_align(x$beta, mode=x$mode, rotation=x$rotation, scale=x$scale, lambda=x$lambda, ms="median")
+    x <- multivariate_karcher_mean(x$beta, mode=x$mode, rotation=x$rotation, scale=x$scale, lambda=x$lambda, ms="median")
   }
 
   plot_data <- curvebox_data(x, alpha = alpha, ka = range)
