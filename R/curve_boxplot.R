@@ -38,15 +38,15 @@ curve_boxplot <- function(x,
 
   # Compute Karcher Median
 
-  if (x$ms != "median") {
+  if (x$type != "Karcher Median") {
     cli::cli_alert_warning(
       "The argument {.arg x} is of class {.cls fdacurve} but has not been
       computed using the median as centroid type."
     )
     cli::cli_alert_info(
-      'Rerunning {.fn curve_srvf_align} with {.code ms = "median"}...'
+      'Rerunning {.fn multivariate_srvf_align} with {.code ms = "median"}...'
     )
-    x <- curve_srvf_align(x$beta, x$mode, x$rotated, x$scale, x$lambda, ms="median")
+    x <- multivariate_srvf_align(x$beta, mode=x$mode, rotation=x$rotation, scale=x$scale, lambda=x$lambda, ms="median")
   }
 
   plot_data <- curvebox_data(x, alpha = alpha, ka = range)

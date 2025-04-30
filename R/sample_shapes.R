@@ -1,6 +1,6 @@
 #' Sample shapes from model
 #'
-#' @param x An object of class `fdacurve` typically produced by [curve_srvf_align()]
+#' @param x An object of class `fdacurve` typically produced by [multivariate_karcher_mean()]
 #' @param no number of principal components
 #' @param numSamp number of samples
 #' @return Returns a `fdacurve` object containing \item{betans}{random aligned curves}
@@ -15,7 +15,7 @@
 #'    Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' out <- multivariate_karcher_cov(beta[, , 1, 1:5], maxit = 2, parallel=FALSE)
+#' out <- multivariate_karcher_mean(beta[, , 1, 1:5], scale=TRUE, maxit = 2)
 #' # note: use more shapes, small for speed
 #' out.samples <- sample_shapes(out)
 sample_shapes <- function(x, no=3, numSamp=10){

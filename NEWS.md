@@ -1,3 +1,12 @@
+# fdasrvf 2.4.xxx
+* bugfixes
+* removed `curve_karcher_mean` and `curve_srvf_align`
+* renamed `curve_karcher_cov` to `multivariate_karcher_cov`
+* renamed `curve_principal_direcions` to `multivariate_pca`
+* added plotting method for `multivariate_karcher_mean`
+* added project and plotting methods for `multivariate_pca`
+* all curve functions are under `multivariate_karcher_mean`
+
 # fdasrvf 2.3.6
 * bugfixes
 
