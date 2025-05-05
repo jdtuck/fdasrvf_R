@@ -169,8 +169,10 @@ find_rotation_seed_coord <- function(beta1, beta2,
 
   for (ctr in 0:end_idx) {
     if (mode == "C") {
-      if (scl * ctr <= end_idx)
+      if (scl * ctr <= end_idx){
         beta2n <- shift_f(beta2, scl * ctr)
+        beta2n[, M] = beta2n[, 1]
+      }
       else
         break
     } else
@@ -381,7 +383,7 @@ project_curve <- function(q){
       dt = 0.2
     }
 
-    epsilon =- 1e-6
+    epsilon = 1e-6
 
     e = diag(1,n)
     iter = 1
