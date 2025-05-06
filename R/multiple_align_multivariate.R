@@ -7,9 +7,7 @@
 #'   \eqn{N}-sample of \eqn{L}-dimensional functional data evaluated on a same
 #'   grid of size \eqn{M}.
 #' @param mu array of size \eqn{L \times M} that f is aligned to
-#' @inheritParams calc_shape_dist=
-#' @param parallel enable parallel mode using `foreach` and
-#'   `doParallel` package (default=F)
+#' @inheritParams calc_shape_dist
 #' @param ncores An integer value specifying the number of cores to use for
 #'   parallel computation. Defaults to `1L`. The maximum number of available
 #'   cores is determined by the **parallel** package. One core is always left

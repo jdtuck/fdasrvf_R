@@ -23,15 +23,31 @@ grid of size \eqn{M}.}
 
 \item{mu}{array of size \eqn{L \times M} that f is aligned to}
 
+\item{mode}{A character string specifying whether the input curves should be
+considered open (\code{mode == "O"}) or closed (\code{mode == "C"}). Defaults to
+\code{"O"}.}
+
+\item{alignment}{A boolean value specifying whether the curves should be
+aligned before computing the distance matrix. Defaults to \code{TRUE}.}
+
+\item{rotation}{A boolean specifying whether the distance should be made
+invariant by rotation. Defaults to \code{TRUE}.}
+
+\item{scale}{A boolean specifying whether the distance should be made
+invariant by scaling. This is effectively achieved by making SRVFs having
+unit length and switching to an appropriate metric on the sphere between
+normalized SRVFs. Defaults to \code{TRUE}.}
+
+\item{lambda}{A numeric value specifying the weight of a penalty term that
+constraints the warping function to be not too far from the identity.
+Defaults to \code{0.0}.}
+
 \item{ncores}{An integer value specifying the number of cores to use for
 parallel computation. Defaults to \code{1L}. The maximum number of available
 cores is determined by the \strong{parallel} package. One core is always left
 out to avoid overloading the system.}
 
 \item{verbose}{verbose printing (default TRUE)}
-
-\item{parallel}{enable parallel mode using \code{foreach} and
-\code{doParallel} package (default=F)}
 }
 \value{
 Returns a fdacurve object containing:
