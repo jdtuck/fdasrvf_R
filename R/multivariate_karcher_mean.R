@@ -24,7 +24,7 @@
 #' @param verbose A boolean specifying whether to print the progress of the
 #'  algorithm. Defaults to `FALSE`.
 #'
-#' @return A list with the following components:
+#' @return A fdacurve object with the following components:
 #' - `beta`: A numeric array of shape \eqn{L \times M \times N} storing the
 #' original input data.
 #' - `q`: A numeric array of shape \eqn{L \times M \times N} storing the SRVFs
