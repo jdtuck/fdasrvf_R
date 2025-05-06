@@ -11,22 +11,22 @@
 #' out <- multivariate_karcher_mean(beta[, , 1, 1:2], maxit = 2)
 #' # note: use more shapes, small for speed
 #' K <- multivariate_karcher_cov(out)
-multivariate_karcher_cov <- function(align_data){
-    v = align_data$v
-    tmp = dim(v)
-    n = tmp[1]
-    T = tmp[2]
-    N = tmp[3]
+multivariate_karcher_cov <- function(align_data) {
+  v = align_data$v
+  tmp = dim(v)
+  n = tmp[1]
+  T = tmp[2]
+  N = tmp[3]
 
-    # Compute Karcher covariance of uniformly sampled mean
-    N1 = n*T
+  # Compute Karcher covariance of uniformly sampled mean
+  N1 = n * T
 
-    tmpv = matrix(0, N1, N)
-    for (i in 1:N){
-        tmpv[, i] = c(v[, , i])
-    }
+  tmpv = matrix(0, N1, N)
+  for (i in 1:N) {
+    tmpv[, i] = c(v[, , i])
+  }
 
-    K = stats::cov(t(tmpv))
+  K = stats::cov(t(tmpv))
 
-    return(K)
+  return(K)
 }
