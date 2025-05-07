@@ -5,7 +5,7 @@ exp_map <- function(psi, v, wnorm = l2_norm){
   } else {
     expgam <- cos(v_norm) * psi + sin(v_norm) * v / v_norm
   }
-  
+
   return(expgam)
 }
 
@@ -244,6 +244,62 @@ gam_to_v<-function(gam, smooth=FALSE){
   }
 
   return(vec)
+}
+
+#' map warping function to Hilbert Sphere
+#'
+#'
+#' @param gam Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the warping functions
+#' @param smooth Apply smoothing before gradient
+#'
+#' @return A numeric array of the same shape as the input array `gamma` storing the
+#'   shooting vectors of `gamma` obtained via finite differences.
+#'
+#' @keywords srvf alignment
+#' @export
+gam_to_psi<-function(gam, smooth=FALSE){
+  if (ndims(gam) == 0){
+    TT = length(gam)
+    eps = .Machine$double.eps
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
+
+    psi = rep(0,TT)
+    if (smooth) {
+      tmp.spline <- stats::smooth.spline(gam)
+      g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      g[g<0] = 0
+      psi = sqrt(g)
+    } else {
+      psi = sqrt(gradient(gam,binsize))
+    }
+
+  } else {
+    TT = nrow(gam)
+    n = ncol(gam)
+    eps = .Machine$double.eps
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
+
+    psi = matrix(0,TT,n)
+    if (smooth) {
+      g <- matrix(0, TT, n)
+      for (i in 1:n) {
+        tmp.spline <- stats::smooth.spline(gam[,i])
+        g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+        g[g[,i]<0, i] = 0
+        psi[,i] = sqrt(g[, i])
+      }
+    } else {
+      for (i in 1:n){
+        psi[,i] = sqrt(gradient(gam[,i],binsize))
+      }
+    }
+
+  }
+
+  return(psi)
 }
 
 #' map shooting vector to warping function at identity
