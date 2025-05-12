@@ -7,7 +7,7 @@
 curvebox_data(align_median, alpha = 0.05, ka = 1)
 }
 \arguments{
-\item{align_median}{object from \code{\link[=curve_karcher_mean]{curve_karcher_mean()}} of aligned curves using
+\item{align_median}{object from \code{\link[=multivariate_karcher_mean]{multivariate_karcher_mean()}} of aligned curves using
 the median}
 
 \item{alpha}{quantile value (default=.05, i.e., 95\%)}
