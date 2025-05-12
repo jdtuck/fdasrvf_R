@@ -68,7 +68,7 @@ multiple_align_multivariate <- function(beta,
   for (n in 1:N)
     q[, , n] <- srvfs[[n]]$q
 
-  mq = curve_to_srvf(beta[, , n], scale = scale)$q
+  mq = curve_to_srvf(mu, scale = scale)$q
   k <- 1
 
   if (verbose) {
@@ -134,7 +134,7 @@ multiple_align_multivariate <- function(beta,
   # compute shooting vectors
   v <- array(dim = c(L, M, N))
   for (n in 1:N) {
-    w <- inverse_exponential_map(q[, , n], mq, scale = scale)
+    w <- inverse_exponential_map(qn[, , n], mq, scale = scale)
 
     if (is.null(basis))
       v[, , n] <- w
