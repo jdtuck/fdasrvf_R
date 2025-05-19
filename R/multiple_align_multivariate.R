@@ -65,8 +65,11 @@ multiple_align_multivariate <- function(beta,
   # Computes SRVFs
   srvfs <- lapply(1:N, \(n) curve_to_srvf(beta[, , n], scale = scale))
   q <- array(dim = c(L, M, N))
-  for (n in 1:N)
+  scales <- rep(NA, N)
+  for (n in 1:N){
+    scales[n] <- srvfs[[n]]$qnorm
     q[, , n] <- srvfs[[n]]$q
+  }
 
   mq = curve_to_srvf(mu, scale = scale)$q
   k <- 1
@@ -161,6 +164,7 @@ multiple_align_multivariate <- function(beta,
     qmean_norm = qmean_norm,
     v = v,
     scale = scale,
+    scales = scales,
     mode = mode,
     alignment = alignment,
     rotation = rotation,
