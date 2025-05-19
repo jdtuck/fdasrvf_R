@@ -124,12 +124,15 @@ multiple_align_multivariate <- function(beta,
 
   len_q <- sapply(srvfs, \(x) x$qnorm)
   qmean_norm <- prod(len_q)^(1 / length(len_q))
-  betamean <- mu - calculatecentroid(mu)
+  betamean <- q_to_curve(mq, scale=1)
+  betamean <- betamean - calculatecentroid(betamean)
 
   # Compute beta2n
   betan <- array(dim = c(L, M, N))
   for (n in 1:N) {
     scl <- 1
+    if (scale)
+      scl <- qmean_norm / len_q[n]
     betan[, , n] <- q_to_curve(qn[, , n], scale = scl)
     betan[, , n] <- betan[, , n] - calculatecentroid(betan[, , n])
   }

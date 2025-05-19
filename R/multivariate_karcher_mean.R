@@ -225,8 +225,8 @@ multivariate_karcher_mean <- function(beta,
   betan <- array(dim = c(L, M, N))
   for (n in 1:N) {
     scl <- 1
-    # if (scale)
-    #   scl <- qmean_norm / len_q[n]
+    if (scale)
+      scl <- qmean_norm / len_q[n]
     betan[, , n] <- q_to_curve(qn[, , n], scale = scl)
     betan[, , n] <- betan[, , n] - calculatecentroid(betan[, , n])
   }
