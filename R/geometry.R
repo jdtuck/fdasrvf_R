@@ -302,6 +302,37 @@ gam_to_psi<-function(gam, smooth=FALSE){
   return(psi)
 }
 
+#' map Hilbert sphere to warping function
+#'
+#'
+#' @param psi Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the points on the Hilbert Sphere
+#'
+#' @return A numeric array of the same shape as the input array `psi` storing the
+#'   warping function obtained via finite integration
+#'
+#' @keywords srvf alignment
+#' @export
+psi_to_gam<-function(psi){
+  if (ndims(psi) == 0){
+    TT = length(psi)
+    time <- seq(0,1,length.out=TT)
+    gam0 <- cumtrapz(time,psi*psi)
+    gam <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+  } else {
+    TT = nrow(psi)
+    n = ncol(psi)
+    time <- seq(0,1,length.out=TT)
+
+    gam = matrix(0,TT,n)
+    for (i in 1:n){
+      gam0 <- cumtrapz(time,psi[,i]*psi[,i])
+      gam[,i] <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+    }
+  }
+  return(gam)
+}
+
 #' map shooting vector to warping function at identity
 #'
 #'
