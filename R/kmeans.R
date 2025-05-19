@@ -343,11 +343,11 @@ kmeans_align <- function(f, time,
           }
         } else {
           if (centroid_type == "mean") {
-            out = curve_karcher_mean(fn[[k]][, , id], mode = "O", rotated = rotation)
+            out = multivariate_karcher_mean(fn[[k]][, , id], mode = "O", scale=TRUE, rotation = rotation)
             templates[, , k] <- out$betamean
             templates.q[, , k] <- curve_to_q(out$betamean, scale)$q
           } else if (centroid_type == "medoid") {
-            out = curve_karcher_mean(fn[[k]][, , id], mode = "O", rotated = rotation,
+            out = multivariate_karcher_mean(fn[[k]][, , id], mode = "O", scale=TRUE, rotation = rotation,
                                      ms='median')
             templates[, , k] <- out$betamean
             templates.q[, , k] <- curve_to_q(out$betamean, scale)$q

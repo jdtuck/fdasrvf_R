@@ -69,7 +69,7 @@ pointwise_karcher_mean <- function(q, qmean,
   if (!is.null(basis))
     qmean <- project_curve(qmean)
 
-  list(qmean = qmean, vbar = vbar)
+  list(qmean = qmean, vbar = vbar, v = v)
 }
 
 exponential_map <- function(v, f0, scale = FALSE) {
