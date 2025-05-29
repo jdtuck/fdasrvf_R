@@ -11,6 +11,7 @@ calc_shape_dist(
   alignment = TRUE,
   rotation = TRUE,
   scale = TRUE,
+  optim_method = "DP",
   include.length = FALSE,
   lambda = 0
 )
@@ -37,6 +38,9 @@ invariant by rotation. Defaults to \code{TRUE}.}
 invariant by scaling. This is effectively achieved by making SRVFs having
 unit length and switching to an appropriate metric on the sphere between
 normalized SRVFs. Defaults to \code{TRUE}.}
+
+\item{optim_method}{A string specifying the algorithm used for optimization.
+Choices are \code{"DP"} and \code{"DPo"} Defaults to \code{"DP"}.}
 
 \item{include.length}{A boolean specifying whether to include information
 about the actual length of the SRVFs in the metric when using normalized

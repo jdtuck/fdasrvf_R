@@ -25,6 +25,8 @@
 #'   invariant by scaling. This is effectively achieved by making SRVFs having
 #'   unit length and switching to an appropriate metric on the sphere between
 #'   normalized SRVFs. Defaults to `TRUE`.
+#' @param optim_method A string specifying the algorithm used for optimization.
+#'   Choices are `"DP"` and `"DPo"` Defaults to `"DP"`.
 #' @param include.length A boolean specifying whether to include information
 #'   about the actual length of the SRVFs in the metric when using normalized
 #'   SRVFs to achieve scale invariance. This only applies if `scale == TRUE`.
@@ -67,6 +69,7 @@ calc_shape_dist <- function(beta1, beta2,
                             alignment = TRUE,
                             rotation = TRUE,
                             scale = TRUE,
+                            optim_method = "DP",
                             include.length = FALSE,
                             lambda = 0.0) {
   if (mode == "C" && !scale)
@@ -83,6 +86,7 @@ calc_shape_dist <- function(beta1, beta2,
     rotation = rotation,
     scale = scale,
     lambda = lambda,
+    omethod = optim_method,
     include_length = include.length
   )
 

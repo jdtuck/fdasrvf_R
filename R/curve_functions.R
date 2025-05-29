@@ -247,10 +247,13 @@ find_rotation_seed_unique <- function(q1, q2,
                                       alignment = TRUE,
                                       rotation = TRUE,
                                       scale = TRUE,
+                                      omethod = "DP",
                                       norm_ratio = 1.0,
                                       lambda = 0.0) {
   L <- nrow(q1)
   M <- ncol(q1)
+
+  method <- match.arg(omethod, choices = c("DP", "DPo"))
 
   # Variables for DPQ2 algorithm
   grd <- seq(0, 1, length.out = M)
@@ -288,10 +291,18 @@ find_rotation_seed_unique <- function(q1, q2,
       dim(q1i) <- M * L
       dim(q2ni) <- M * L
 
-      ret <- DPQ2(q1i, grd, q2ni, grd, L, M, M, grd, grd, M, M, lambda, nbhd_dim)
-      Gvec <- ret$G[1:ret$size]
-      Tvec <- ret$T[1:ret$size]
-      gamI <- stats::approx(Tvec, Gvec, xout = grd)$y
+      switch(
+        method,
+        DP = {
+          ret <- DPQ2(q1i, grd, q2ni, grd, L, M, M, grd, grd, M, M, lambda, nbhd_dim)
+          Gvec <- ret$G[1:ret$size]
+          Tvec <- ret$T[1:ret$size]
+          gamI <- stats::approx(Tvec, Gvec, xout = grd)$y
+        },
+        DPo = {
+          gamI <- DPQ(q2ni, q1i, L, M, lambda, 1, 0)
+        }
+      )
 
       gam <- (gamI - gamI[1]) / (gamI[length(gamI)] - gamI[1])
       q2new <- group_action_by_gamma(q2n, gam, scale = scale)
@@ -732,6 +743,7 @@ match_f2_to_f1 <- function(srvf1, srvf2, beta2,
                            alignment = TRUE,
                            rotation = FALSE,
                            scale = FALSE,
+                           omethod = "DP",
                            include_length = FALSE,
                            lambda = 0.0) {
   norm_ratio <- 1
@@ -744,6 +756,7 @@ match_f2_to_f1 <- function(srvf1, srvf2, beta2,
     rotation = rotation,
     scale = scale,
     lambda = lambda,
+    omethod = omethod,
     norm_ratio = norm_ratio
   )
 
