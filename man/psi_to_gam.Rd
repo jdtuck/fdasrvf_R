@@ -4,7 +4,7 @@
 \alias{psi_to_gam}
 \title{map hilbert sphere to warping function}
 \usage{
-psi_to_gam(v)
+psi_to_gam(psi)
 }
 \arguments{
 \item{psi}{Either a numeric vector of a numeric matrix or a numeric array

@@ -348,7 +348,7 @@ gam_to_psi<-function(gam, smooth=FALSE){
 #'
 #' @keywords srvf alignment
 #' @export
-psi_to_gam<-function(v){
+psi_to_gam<-function(psi){
   if (ndims(psi) == 0){
     TT = length(psi)
     time <- seq(0,1,length.out=TT)
