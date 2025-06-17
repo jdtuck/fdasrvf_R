@@ -1,3 +1,7 @@
+# PNS  The Principal Nested Spheres code (PNS) for spheres and shapes has
+# been written by Kwang-Rae Kim, and builds closely on the original matlab
+# code for PNS by Sungkyu Jung, code from I. Dryden (shapes) with numerical changes
+# for warping functions
 pcscore2sphere3 <- function (n.pc, X.hat, Xs, Tan, V) {
   d = nrow(Tan)
   n = ncol(Tan)
@@ -148,10 +152,6 @@ fastpns_biplot <- function(pns, varnames) {
   grDevices::palette("default")
 }
 
-
-# PNS  The Principal Nested Spheres code (PNS) for spheres and shapes has
-# been written by Kwang-Rae Kim, and builds closely on the original matlab
-# code for PNS by Sungkyu Jung
 pns = function(x,
                sphere.type = "seq.test",
                mean.type = "Frechet",
