@@ -103,10 +103,10 @@ fastPNSe2s <- function(res , pns) {
   muhat <- pns$muhat
   n.pc <- pns$n.pc### now work out the PC scores for the original high-dimensional coordinates
   s <- acos(GG[1, ])
-  HH <- diag(s / sin(s)) %*% t(GG[2:(n.pc + 1), ])
+  HH <- Matrix::Diagonal(x=(s / sin(s))) %*% t(GG[2:(n.pc + 1), ])
   ones <- rep(1, times = n)#Preferred approx back on sphere (it is unit size) #This is exact if n.pc = "Full"
   approx1 <- t(GG[2:(n.pc + 1), ]) %*% t(out$pca$rotation[, 1:(n.pc)]) +
-    diag(cos(s)) %*% ones %*% t(muhat) / Enorm(muhat)
+    Matrix::Diagonal(x=cos(s)) %*% ones %*% t(muhat) / Enorm(muhat)
   approx1
 }
 
