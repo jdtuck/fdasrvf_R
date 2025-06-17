@@ -4,7 +4,7 @@
 \alias{gam_to_psi}
 \title{map warping function to hilbert sphere}
 \usage{
-gam_to_psi(gam, smooth = FALSE)
+gam_to_psi(gam, smooth = TRUE)
 }
 \arguments{
 \item{gam}{Either a numeric vector of a numeric matrix or a numeric array
