@@ -203,7 +203,7 @@ gam_to_v<-function(gam, smooth=TRUE){
     psi = rep(0,TT)
     if (smooth) {
       tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
-      g <- stats::predict(tmp.spline, time, deriv = 1)$y 
+      g <- stats::predict(tmp.spline, time, deriv = 1)$y
       g[g<0] = 0
       psi = sqrt(g)
     } else {
@@ -225,7 +225,7 @@ gam_to_v<-function(gam, smooth=TRUE){
       g <- matrix(0, TT, n)
       for (i in 1:n) {
         tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
-        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y 
+        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y
         g[g[,i]<0, i] = 0
         psi[,i] = sqrt(g[, i])
       }
@@ -303,7 +303,7 @@ gam_to_psi<-function(gam, smooth=TRUE){
     psi = rep(0,TT)
     if (smooth) {
       tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
-      g <- stats::predict(tmp.spline, time, deriv = 1)$y 
+      g <- stats::predict(tmp.spline, time, deriv = 1)$y
       g[g<0] = 0
       psi = sqrt(g)
     } else {
@@ -322,7 +322,7 @@ gam_to_psi<-function(gam, smooth=TRUE){
       g <- matrix(0, TT, n)
       for (i in 1:n) {
         tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
-        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y 
+        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y
         g[g[,i]<0, i] = 0
         psi[,i] = sqrt(g[, i])
       }
@@ -389,7 +389,7 @@ gam_to_h<-function(gam, smooth=TRUE){
     psi = rep(0,TT)
     if (smooth) {
       tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
-      g <- stats::predict(tmp.spline, time, deriv = 1)$y 
+      g <- stats::predict(tmp.spline, time, deriv = 1)$y
       g[g<0] = 0
       psi = log(g)
       h = psi - trapz(time, psi)
@@ -409,7 +409,7 @@ gam_to_h<-function(gam, smooth=TRUE){
       g <- matrix(0, TT, n)
       for (i in 1:n) {
         tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
-        g[, i] <- sstats::predict(tmp.spline, time, deriv = 1)$y 
+        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y
         g[g[,i]<0, i] = 0
         psi = log(g[, i])
         h[, i] = psi - trapz(time, psi)
