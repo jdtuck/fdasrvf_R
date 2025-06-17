@@ -193,7 +193,7 @@ findkarcherinv <- function(warps, times, round = F){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_v<-function(gam, smooth=FALSE){
+gam_to_v<-function(gam, smooth=TRUE){
   if (ndims(gam) == 0){
     TT = length(gam)
     eps = .Machine$double.eps
@@ -202,8 +202,8 @@ gam_to_v<-function(gam, smooth=FALSE){
 
     psi = rep(0,TT)
     if (smooth) {
-      tmp.spline <- stats::smooth.spline(gam)
-      g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
+      g <- stats::predict(tmp.spline, time, deriv = 1)$y 
       g[g<0] = 0
       psi = sqrt(g)
     } else {
@@ -224,8 +224,8 @@ gam_to_v<-function(gam, smooth=FALSE){
     if (smooth) {
       g <- matrix(0, TT, n)
       for (i in 1:n) {
-        tmp.spline <- stats::smooth.spline(gam[,i])
-        g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+        tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
+        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y 
         g[g[,i]<0, i] = 0
         psi[,i] = sqrt(g[, i])
       }
@@ -293,7 +293,7 @@ v_to_gam<-function(v){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_psi<-function(gam, smooth=FALSE){
+gam_to_psi<-function(gam, smooth=TRUE){
   if (ndims(gam) == 0){
     TT = length(gam)
     eps = .Machine$double.eps
@@ -302,8 +302,8 @@ gam_to_psi<-function(gam, smooth=FALSE){
 
     psi = rep(0,TT)
     if (smooth) {
-      tmp.spline <- stats::smooth.spline(gam)
-      g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
+      g <- stats::predict(tmp.spline, time, deriv = 1)$y 
       g[g<0] = 0
       psi = sqrt(g)
     } else {
@@ -321,8 +321,8 @@ gam_to_psi<-function(gam, smooth=FALSE){
     if (smooth) {
       g <- matrix(0, TT, n)
       for (i in 1:n) {
-        tmp.spline <- stats::smooth.spline(gam[,i])
-        g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+        tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
+        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y 
         g[g[,i]<0, i] = 0
         psi[,i] = sqrt(g[, i])
       }
@@ -380,7 +380,7 @@ psi_to_gam<-function(psi){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_h<-function(gam, smooth=FALSE){
+gam_to_h<-function(gam, smooth=TRUE){
   if (ndims(gam) == 0){
     TT = length(gam)
     time <- seq(0,1,length.out=TT)
@@ -388,8 +388,8 @@ gam_to_h<-function(gam, smooth=FALSE){
 
     psi = rep(0,TT)
     if (smooth) {
-      tmp.spline <- stats::smooth.spline(gam)
-      g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
+      g <- stats::predict(tmp.spline, time, deriv = 1)$y 
       g[g<0] = 0
       psi = log(g)
       h = psi - trapz(time, psi)
@@ -408,8 +408,8 @@ gam_to_h<-function(gam, smooth=FALSE){
     if (smooth) {
       g <- matrix(0, TT, n)
       for (i in 1:n) {
-        tmp.spline <- stats::smooth.spline(gam[,i])
-        g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+        tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
+        g[, i] <- sstats::predict(tmp.spline, time, deriv = 1)$y 
         g[g[,i]<0, i] = 0
         psi = log(g[, i])
         h[, i] = psi - trapz(time, psi)
