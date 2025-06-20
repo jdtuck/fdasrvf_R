@@ -4,7 +4,7 @@
 \alias{gam_to_v}
 \title{map warping function to tangent space at identity}
 \usage{
-gam_to_v(gam, smooth = FALSE)
+gam_to_v(gam, smooth = TRUE)
 }
 \arguments{
 \item{gam}{Either a numeric vector of a numeric matrix or a numeric array

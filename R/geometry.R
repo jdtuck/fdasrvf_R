@@ -193,7 +193,7 @@ findkarcherinv <- function(warps, times, round = F){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_v<-function(gam, smooth=FALSE){
+gam_to_v<-function(gam, smooth=TRUE){
   if (ndims(gam) == 0){
     TT = length(gam)
     eps = .Machine$double.eps
@@ -202,8 +202,8 @@ gam_to_v<-function(gam, smooth=FALSE){
 
     psi = rep(0,TT)
     if (smooth) {
-      tmp.spline <- stats::smooth.spline(gam)
-      g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
+      g <- stats::predict(tmp.spline, time, deriv = 1)$y
       g[g<0] = 0
       psi = sqrt(g)
     } else {
@@ -224,8 +224,8 @@ gam_to_v<-function(gam, smooth=FALSE){
     if (smooth) {
       g <- matrix(0, TT, n)
       for (i in 1:n) {
-        tmp.spline <- stats::smooth.spline(gam[,i])
-        g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+        tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
+        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y
         g[g[,i]<0, i] = 0
         psi[,i] = sqrt(g[, i])
       }
@@ -368,6 +368,93 @@ v_to_gam<-function(v){
   return(gam)
 }
 
+#' map warping function to hilbert sphere
+#'
+#'
+#' @param gam Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the warping functions
+#' @param smooth Apply smoothing before gradient
+#'
+#' @return A numeric array of the same shape as the input array `gamma` storing the
+#'   shooting vectors of `gamma` obtained via finite differences.
+#'
+#' @keywords srvf alignment
+#' @export
+gam_to_psi<-function(gam, smooth=TRUE){
+  if (ndims(gam) == 0){
+    TT = length(gam)
+    eps = .Machine$double.eps
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
+
+    psi = rep(0,TT)
+    if (smooth) {
+      tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
+      g <- stats::predict(tmp.spline, time, deriv = 1)$y
+      g[g<0] = 0
+      psi = sqrt(g)
+    } else {
+      psi = sqrt(gradient(gam,binsize))
+    }
+
+  } else {
+    TT = nrow(gam)
+    n = ncol(gam)
+    eps = .Machine$double.eps
+    time <- seq(0,1,length.out=TT)
+    binsize <- mean(diff(time))
+
+    psi = matrix(0,TT,n)
+    if (smooth) {
+      g <- matrix(0, TT, n)
+      for (i in 1:n) {
+        tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
+        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y
+        g[g[,i]<0, i] = 0
+        psi[,i] = sqrt(g[, i])
+      }
+    } else {
+      for (i in 1:n){
+        psi[,i] = sqrt(gradient(gam[,i],binsize))
+      }
+    }
+
+  }
+
+  return(psi)
+}
+
+#' map hilbert sphere to warping function
+#'
+#'
+#' @param psi Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the shooting vectors
+#'
+#' @return A numeric array of the same shape as the input array `psi` storing the
+#'   warping functions `psi`.
+#'
+#' @keywords srvf alignment
+#' @export
+psi_to_gam<-function(psi){
+  if (ndims(psi) == 0){
+    TT = length(psi)
+    time <- seq(0,1,length.out=TT)
+    gam0 <- cumtrapz(time,psi*psi)
+    gam <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+  } else {
+    TT = nrow(psi)
+    n = ncol(psi)
+    time <- seq(0,1,length.out=TT)
+
+    gam = matrix(0,TT,n)
+    for (i in 1:n){
+      gam0 <- cumtrapz(time,psi[,i]*psi[,i])
+      gam[,i] <- (gam0 - min(gam0))/(max(gam0)-min(gam0))
+    }
+  }
+  return(gam)
+}
+
 #' map warping function to tangent space at identity
 #'
 #'
@@ -380,7 +467,7 @@ v_to_gam<-function(v){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_h<-function(gam, smooth=FALSE){
+gam_to_h<-function(gam, smooth=TRUE){
   if (ndims(gam) == 0){
     TT = length(gam)
     time <- seq(0,1,length.out=TT)
@@ -388,8 +475,8 @@ gam_to_h<-function(gam, smooth=FALSE){
 
     psi = rep(0,TT)
     if (smooth) {
-      tmp.spline <- stats::smooth.spline(gam)
-      g <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+      tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
+      g <- stats::predict(tmp.spline, time, deriv = 1)$y
       g[g<0] = 0
       psi = log(g)
       h = psi - trapz(time, psi)
@@ -408,8 +495,8 @@ gam_to_h<-function(gam, smooth=FALSE){
     if (smooth) {
       g <- matrix(0, TT, n)
       for (i in 1:n) {
-        tmp.spline <- stats::smooth.spline(gam[,i])
-        g[, i] <- stats::predict(tmp.spline, deriv = 1)$y / binsize
+        tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
+        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y
         g[g[,i]<0, i] = 0
         psi = log(g[, i])
         h[, i] = psi - trapz(time, psi)

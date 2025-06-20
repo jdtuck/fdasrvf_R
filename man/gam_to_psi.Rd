@@ -2,9 +2,9 @@
 % Please edit documentation in R/geometry.R
 \name{gam_to_psi}
 \alias{gam_to_psi}
-\title{map warping function to Hilbert Sphere}
+\title{map warping function to hilbert sphere}
 \usage{
-gam_to_psi(gam, smooth = FALSE)
+gam_to_psi(gam, smooth = TRUE)
 }
 \arguments{
 \item{gam}{Either a numeric vector of a numeric matrix or a numeric array
@@ -17,7 +17,7 @@ A numeric array of the same shape as the input array \code{gamma} storing the
 shooting vectors of \code{gamma} obtained via finite differences.
 }
 \description{
-map warping function to Hilbert Sphere
+map warping function to hilbert sphere
 }
 \keyword{alignment}
 \keyword{srvf}
