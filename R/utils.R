@@ -238,6 +238,14 @@ cumtraps <- function(x, y) {
   return(z)
 }
 
+normalize_column <- function(x) {
+  magnitude <- sqrt(sum(x^2))
+  if (magnitude == 0) {
+    return(x)  # Handle zero-magnitude columns
+  }
+  x / magnitude
+}
+
 pvecnorm <- function(v, p = 2) {
   sum(abs(v)^p)^(1 / p)
 }
