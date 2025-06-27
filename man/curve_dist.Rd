@@ -60,7 +60,7 @@ elastic shape distance as computed by \code{\link[=calc_shape_dist]{calc_shape_d
 Distances are computed between the SRVFs of the original curves. Hence, they
 are intrinsically invariant to position. The user can then choose to make
 distances invariant to rotation and scaling by setting \code{rotation} and \code{scale}
-accordingly. Distances can also be made invariant to reparametrization by
+accordingly. Distances can also be made invariant to reparameterization by
 setting \code{alignment = TRUE}, in which case curves are aligned using an
 appropriate action of the diffeomorphism group on the space of SRVFs.
 }

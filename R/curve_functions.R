@@ -643,6 +643,7 @@ rot_mat <- function(theta){
 
 karcher_calc <- function(q1, mu, basis,
                          rotated = TRUE,
+                         scale = TRUE,
                          mode = "O",
                          lambda = 0.0,
                          ms = "mean") {
@@ -717,7 +718,7 @@ curve_align_sub <- function(beta1, q1, mu, mode, rotated, scale, lambda){
 }
 
 
-elastic_shooting <- function(q1, v,mode="O"){
+elastic_shooting <- function(q1, v, mode="O"){
     d = sqrt(innerprod_q2(v,v))
     if (d < 0.00001){
         q2n = q1
@@ -792,4 +793,39 @@ match_f2_to_f1 <- function(srvf1, srvf2, beta2,
     Rbest = out$Rbest,
     gambest = gam
   )
+}
+
+#' map shooting vector to curve at mean
+#'
+#'
+#' @param v Either a numeric vector of a numeric matrix or a numeric array
+#'   specifying the shooting vectors
+#' @param mu vector describing the mean
+#' @param mode A character string specifying whether the input curves should be
+#'   considered open (`mode == "O"`) or closed (`mode == "C"`). Defaults to
+#'   `"O"`.
+#' @param scale original scale of curve
+#' @return A numeric array of the same shape as the input array `v` storing the
+#'   curves of `v`.
+#'
+#' @keywords srvf alignment
+#' @export
+v_to_curve<-function(v, mu, mode="O", scale=1){
+  n = nrow(mu)
+  T1 = ncol(mu)
+  if (ndims(v) == 0){
+    dim(v) = c(n,T1)
+    q2n = elastic_shooting(mu, v, mode)
+    p = q_to_curve(q2n, scale)
+  } else {
+
+    p = matrix(0,T1,n)
+    for (i in 1:n){
+      v1 = v[,i]
+      dim(v1) = c(n,T1)
+      q2n = elastic_shooting(mu, v1, mode)
+      p[,i] = q_to_curve(q2n, scale)
+    }
+  }
+  return(p)
 }

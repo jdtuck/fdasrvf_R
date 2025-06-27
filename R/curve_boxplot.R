@@ -6,7 +6,7 @@
 #' The function returns optionally an object of class either
 #' `curvebox`
 #'
-#' @param x An object of class `fdacurve` typically produced by [curve_srvf_align()]
+#' @param x An object of class `fdacurve` typically produced by [multivariate_karcher_mean()]
 #' @param alpha A numeric value specifying the quantile value. Defaults to
 #'   \eqn{0.05} which uses the \eqn{95\%} quantile.
 #' @param range A positive numeric value specifying how far the plot whiskers
@@ -26,7 +26,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' out <- curve_srvf_align(beta[, , 1, ], ms="median")
+#' out <- multivariate_karcher_mean(beta[, , 1, ], ms="median")
 #' curve_boxplot(out, what = "stats")
 #' }
 curve_boxplot <- function(x,
@@ -38,15 +38,15 @@ curve_boxplot <- function(x,
 
   # Compute Karcher Median
 
-  if (x$ms != "median") {
+  if (x$type != "Karcher Median") {
     cli::cli_alert_warning(
       "The argument {.arg x} is of class {.cls fdacurve} but has not been
       computed using the median as centroid type."
     )
     cli::cli_alert_info(
-      'Rerunning {.fn curve_srvf_align} with {.code ms = "median"}...'
+      'Rerunning {.fn multivariate_srvf_align} with {.code ms = "median"}...'
     )
-    x <- curve_srvf_align(x$beta, x$mode, x$rotated, x$scale, x$lambda, ms="median")
+    x <- multivariate_karcher_mean(x$beta, mode=x$mode, rotation=x$rotation, scale=x$scale, lambda=x$lambda, ms="median")
   }
 
   plot_data <- curvebox_data(x, alpha = alpha, ka = range)
@@ -90,7 +90,7 @@ boxplot.curvebox <- function(x, ...) {
 #'
 #' This function constructs the amplitude boxplot.
 #'
-#' @param align_median object from [curve_karcher_mean()] of aligned curves using
+#' @param align_median object from [multivariate_karcher_mean()] of aligned curves using
 #'   the median
 #' @param alpha quantile value (default=.05, i.e., 95%)
 #' @param ka scalar for outlier cutoff (default=1)

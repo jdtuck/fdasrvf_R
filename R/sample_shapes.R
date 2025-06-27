@@ -1,13 +1,13 @@
 #' Sample shapes from model
 #'
-#' @param x An object of class `fdacurve` typically produced by [curve_srvf_align()]
+#' @param x An object of class `fdacurve` typically produced by [multivariate_karcher_mean()]
 #' @param no number of principal components
 #' @param numSamp number of samples
 #' @return Returns a `fdacurve` object containing \item{betans}{random aligned curves}
 #' \item{qns}{random aligned srvfs}
 #' \item{betans}{random curves}
 #' \item{qs}{random srvfs}
-#' \item{gams}{random reparametrization functions}
+#' \item{gams}{random reparameterization functions}
 #' \item{R}{random rotation matrices}
 #' @keywords srvf alignment
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape
@@ -15,14 +15,17 @@
 #'    Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 #' @examples
-#' out <- curve_srvf_align(beta[, , 1, 1:5], maxit = 2, parallel=FALSE)
+#' out <- multivariate_karcher_mean(beta[, , 1, 1:5], scale=TRUE, maxit = 2)
 #' # note: use more shapes, small for speed
 #' out.samples <- sample_shapes(out)
 sample_shapes <- function(x, no=3, numSamp=10){
 
     mode = x$mode
 
-    K <- curve_karcher_cov(x$v)
+    if (!x$scale)
+      cli::cli_abort("Not implemented for `scale = FALSE`. Please set `scale = TRUE` in multivariate_karcher_mean.")
+
+    K <- multivariate_karcher_cov(x)
     mu <- x$mu
     mu <- mu/sqrt(innerprod_q2(mu, mu))
 
@@ -98,12 +101,12 @@ sample_shapes <- function(x, no=3, numSamp=10){
     gams = t(gams)
 
     # random rotation angles
-    if (x$rotated){
+    if (x$rotation){
       # currently for R^2
-      N = dim(x$rotmat)[3]
+      N = dim(x$R)[3]
       theta = rep(0, N)
       for (i in 1:N){
-        theta[i] = acos(x$rotmat[1,1,i])
+        theta[i] = acos(x$R[1,1,i])
       }
       mu_theta = mean(theta)
       sd_theta = stats::sd(theta)

@@ -105,7 +105,7 @@ double dp_edge_weight(
 
 
 /**
- * Given predecessor table P, builds the piecewise-linear reparametrization
+ * Given predecessor table P, builds the piecewise-linear reparameterization
  * function gamma.
  *
  * G and T must already be allocated with size max(ntv1,ntv2).  The actual

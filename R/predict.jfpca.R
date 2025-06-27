@@ -6,7 +6,7 @@
 #' @param newdata An optional matrix in which to look for functions with which to predict. If omitted, the original functions are used.
 #' @param ... additional arguments affecting the predictions produced
 #' @return Returns a matrix
-#' \item{a}{principle coefficients}
+#' \item{a}{principal coefficients}
 #' @keywords srvf alignment regression
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
@@ -40,7 +40,7 @@ predict.jfpca <- function(object, newdata = NULL, ...) {
   } else {
     qn1 <- fn
   }
-  
+
 
   no = ncol(object$U)
   psi = matrix(0, M, N)

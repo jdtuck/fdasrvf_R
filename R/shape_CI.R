@@ -27,8 +27,8 @@ shape_CI <- function(beta, a=.95, no = 5, Nsamp=100,
                      lambda = 0.0, parallel=TRUE){
 
   # Align Data --------------------------------------------------------------
-  out.med <- curve_srvf_align(beta, mode, rotated, scale, lambda,
-                              parallel=parallel, ms="median")
+  out.med <- multivariate_karcher_mean(beta, mode=mode, rotation=rotated, scale=scale,
+                                       lambda=lambda, ms="median")
 
   samples <- sample_shapes(out.med, no, Nsamp)
   box <- curve_boxplot(samples, alpha = 1 - a)

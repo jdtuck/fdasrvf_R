@@ -7,7 +7,7 @@
 sample_shapes(x, no = 3, numSamp = 10)
 }
 \arguments{
-\item{x}{An object of class \code{fdacurve} typically produced by \code{\link[=curve_srvf_align]{curve_srvf_align()}}}
+\item{x}{An object of class \code{fdacurve} typically produced by \code{\link[=multivariate_karcher_mean]{multivariate_karcher_mean()}}}
 
 \item{no}{number of principal components}
 
@@ -18,14 +18,14 @@ Returns a \code{fdacurve} object containing \item{betans}{random aligned curves}
 \item{qns}{random aligned srvfs}
 \item{betans}{random curves}
 \item{qs}{random srvfs}
-\item{gams}{random reparametrization functions}
+\item{gams}{random reparameterization functions}
 \item{R}{random rotation matrices}
 }
 \description{
 Sample shapes from model
 }
 \examples{
-out <- curve_srvf_align(beta[, , 1, 1:5], maxit = 2, parallel=FALSE)
+out <- multivariate_karcher_mean(beta[, , 1, 1:5], scale=TRUE, maxit = 2)
 # note: use more shapes, small for speed
 out.samples <- sample_shapes(out)
 }
