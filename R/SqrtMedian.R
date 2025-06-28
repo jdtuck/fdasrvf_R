@@ -43,7 +43,13 @@ SqrtMedian <- function(gam){
 
     for (i in 1:n){
       vec[,i] <- inv_exp_map(mu, psi[,i])
-      d[i] <- acos(inner_product(mu,psi[,i]))
+      tmp <- inner_product(mu,psi[,i])
+      if (tmp < -1){
+        tmp = -1
+      } else if (tmp > 1){
+        tmp = 1
+      }
+      d[i] <- acos(tmp)
       vtil[,i] <- vec[,i] / d[i]
       dtil[i] <- 1/d[i]
     }
@@ -58,7 +64,13 @@ SqrtMedian <- function(gam){
       iter <- iter + 1
       for (i in 1:n){
         vec[,i] <- inv_exp_map(mu, psi[,i])
-        d[i] <- acos(inner_product(mu,psi[,i]))
+        tmp <- inner_product(mu,psi[,i])
+        if (tmp < -1){
+          tmp = -1
+        } else if (tmp > 1){
+          tmp = 1
+        }
+        d[i] <- acos(tmp)
         vtil[,i] <- vec[,i] / d[i]
         dtil[i] <- 1/d[i]
       }
