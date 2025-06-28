@@ -35,8 +35,13 @@ horizFPNS <- function(warp_data,
   pca = eigen(cov(t(pnsdat)))
   varExplained.psi = pca$values
 
-  cs.psi = cumsum(varExplained.psi) / sum(varExplained.psi)
-  n.pc = which(cs.psi >= 0.99)[1]
+  if (ncol(psi) < TT){
+    n.pc = ncol(psi)
+  } else {
+    cs.psi = cumsum(varExplained.psi) / sum(varExplained.psi)
+    n.pc = which(cs.psi >= 0.99)[1]
+  }
+
   cli::cli_alert_info("Setting n.pc to {n.pc}...")
 
   obj = fdasrvf:::fastpns(pnsdat,
