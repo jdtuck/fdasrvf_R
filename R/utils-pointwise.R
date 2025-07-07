@@ -56,7 +56,7 @@ pointwise_karcher_mean <- function(q, qmean,
   if (ms == "median") {
     # run for median only
     sumv <- rowSums(v_d, dims = 2)
-    sum_dinv <- sum(1 / d_i)
+    sum_dinv <- sum(1 / d_i[d_i > 0])
     vbar <- sumv / sum_dinv
   } else {
     # run for mean only
