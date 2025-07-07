@@ -2,8 +2,10 @@
 % Please edit documentation in R/geometry.R
 \name{psi_to_gam}
 \alias{psi_to_gam}
-\title{map hilbert sphere to warping function}
+\title{map Hilbert sphere to warping function}
 \usage{
+psi_to_gam(psi)
+
 psi_to_gam(psi)
 }
 \arguments{
@@ -12,9 +14,14 @@ specifying the shooting vectors}
 }
 \value{
 A numeric array of the same shape as the input array \code{psi} storing the
+warping function obtained via finite integration
+
+A numeric array of the same shape as the input array \code{psi} storing the
 warping functions \code{psi}.
 }
 \description{
+map Hilbert sphere to warping function
+
 map hilbert sphere to warping function
 }
 \keyword{alignment}
