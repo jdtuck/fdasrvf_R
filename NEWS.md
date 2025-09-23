@@ -1,3 +1,9 @@
+# fdasrvf 2.4.1
+* added principal nested spheres code
+* added `horizFPNS` function
+* fixed armadillo deprecated functions
+* small bugfixes
+
 # fdasrvf 2.4.0
 * bugfixes
 * removed `curve_karcher_mean` and `curve_srvf_align`
