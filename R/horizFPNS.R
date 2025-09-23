@@ -7,19 +7,16 @@
 #' @param var_exp compute no based on value percent variance explained (example: 0.95)
 #' @param ci geodesic standard deviations (default = c(-1,0,1))
 #' @param showplot show plots of principal directions (default = T)
-#' @return Returns a hfpca object containing \item{gam_pca}{warping functions principal directions}
-#' \item{psi_pca}{srvf principal directions}
-#' \item{latent}{latent values}
-#' \item{U}{eigenvectors}
-#' \item{vec}{shooting vectors}
-#' \item{mu}{Karcher Mean}
+#' @return Returns a hfpns object containing \item{gam_pns}{warping functions principal directions}
+#' \item{psi_pns}{srvf principal directions}
+#' \item{PNS}{PNS object}
 #' @keywords srvf alignment
 #' @references Yu, Q., Lu, X., and Marron, J. S. (2017), “Principal
 #' Nested Spheres for Time-Warped Functional Data Analysis,” Journal
 #' of Computational and Graphical Statistics, 26, 144–151.
 #' @export
 #' @examples
-#' hfpca <- horizFPNS(simu_warp)
+#' hfpns <- horizFPNS(simu_warp)
 horizFPNS <- function(warp_data,
                       var_exp = 0.99,
                       ci = c(-1, 0, 1),

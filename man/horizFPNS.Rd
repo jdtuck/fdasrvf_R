@@ -16,19 +16,16 @@ horizFPNS(warp_data, var_exp = 0.99, ci = c(-1, 0, 1), showplot = TRUE)
 \item{showplot}{show plots of principal directions (default = T)}
 }
 \value{
-Returns a hfpca object containing \item{gam_pca}{warping functions principal directions}
-\item{psi_pca}{srvf principal directions}
-\item{latent}{latent values}
-\item{U}{eigenvectors}
-\item{vec}{shooting vectors}
-\item{mu}{Karcher Mean}
+Returns a hfpns object containing \item{gam_pns}{warping functions principal directions}
+\item{psi_pns}{srvf principal directions}
+\item{PNS}{PNS object}
 }
 \description{
 This function calculates vertical functional principal nested sphere analysis
 on aligned data
 }
 \examples{
-hfpca <- horizFPNS(simu_warp)
+hfpns <- horizFPNS(simu_warp)
 }
 \references{
 Yu, Q., Lu, X., and Marron, J. S. (2017), “Principal
