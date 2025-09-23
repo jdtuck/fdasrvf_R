@@ -32,7 +32,7 @@ horizFPNS <- function(warp_data,
   pnsdat <- apply(psi, 2, normalize_column)
   radius = mean(sqrt(apply(psi^2, 2, sum)))
   # get rough estimate of n.pc
-  pca = eigen(cov(t(pnsdat)))
+  pca = eigen(stats::cov(t(pnsdat)))
   varExplained.psi = pca$values
 
   if (ncol(psi) < TT){
@@ -44,10 +44,10 @@ horizFPNS <- function(warp_data,
 
   cli::cli_alert_info("Setting n.pc to {n.pc}...")
 
-  obj = fdasrvf:::fastpns(pnsdat,
-                          n.pc = n.pc,
-                          sphere.type = "small",
-                          output = FALSE)
+  obj = fastpns(pnsdat,
+                n.pc = n.pc,
+                sphere.type = "small",
+                output = FALSE)
 
   varExplained = obj$percent
   cs = cumsum(obj$percent) / sum(obj$percent)
@@ -57,7 +57,7 @@ horizFPNS <- function(warp_data,
   proj_gam = array(0, dim = c(length(ci), nrow(psi), no))
   proj_psi = array(0, dim = c(length(ci), nrow(psi), no))
   for (j in 1:no) {
-      std = sd(obj$resmat[j, ])
+      std = stats::sd(obj$resmat[j, ])
       mean = mean(obj$resmat[j, ])
       dirtmp = ci * std + mean
       inmat = matrix(0, length(obj$PNS$radii), length(ci))

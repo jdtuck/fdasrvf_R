@@ -58,7 +58,8 @@ Rcpp::List dpcode(arma::vec q1, arma::vec q1L, arma::vec q2L, int times, int cut
           pow(norm(q1x-sqrt((jf-n[m])/times)*q2y,2),2);
       }
 
-      double min_val = Energy.min(index);
+      double min_val = Energy.min();
+      index = Energy.index_min();
       int loc = n[index];
       S(i,j) = min_val;
       ID(i,j) = loc;
@@ -95,7 +96,8 @@ Rcpp::List dpcode(arma::vec q1, arma::vec q1L, arma::vec q2L, int times, int cut
       pow(norm(q1x-sqrt((jf-n[m])/times)*q2y,2),2);
   }
 
-  double min_val = Energy.min(index);
+  double min_val = Energy.min();
+  index = Energy.index_min();
   int loc = n[index];
   S(i,j) = min_val;
   ID(i,j) = loc;
