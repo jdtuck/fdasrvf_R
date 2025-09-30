@@ -129,102 +129,156 @@ ppd <- function(f,
 
 getPPDinfo <- function(t, Fa, lam, th){
 
-    n_lams = length(lam)
+  n_lams = length(lam)
 
-    # compute the mean of each function in FN over its rows
-    FNm = matrix(0, nrow=length(t), ncol=n_lams)
-    for (i in 1:n_lams){
-        FNm[,i] = rowMeans(Fa[[i]])
-    }
+  # compute the mean of each function in FN over its rows
+  FNm = matrix(0, nrow=length(t), ncol=n_lams)
+  for (i in 1:n_lams){
+    FNm[,i] = rowMeans(Fa[[i]])
+  }
 
-    # find indices of lal maxima in the first function's mean
-    idxMaxFirst = findpeaks(FNm[,1])
+  # find indices of lal maxima in the first function's mean
+  idxMaxFirst = findpeaks(FNm[,1])
 
-    # Initialize Labels and Locations for the first function
-    Labels = list()
-    Locs = list()
-    Labels[[1]] = seq(1, length(idxMaxFirst))
-    Locs[[1]] = idxMaxFirst
+  # Initialize Labels and Locations for the first function
+  Labels = list()
+  Locs = list()
+  Labels[[1]] = seq(1, length(idxMaxFirst))
+  Locs[[1]] = idxMaxFirst
 
-    # Initialize the maximum label number
-    labelMax = max(Labels[[1]])
+  # Initialize the maximum label number
+  labelMax = max(Labels[[1]])
 
-    # process each function to assign labels and locate peaks
-    for (i in 1:(n_lams-1)){
-        currentLabel = Labels[[i]]
-        obj1 = peak_successor(Fa[[i]], Fa[[i+1]], currentLabel, labelMax)
-        Labels[[i+1]] = obj1$Labels
-        labelMax = obj1$labelMax
+  # process each function to assign labels and locate peaks
+  for (i in 1:(n_lams-1)){
+    currentLabel = Labels[[i]]
+    obj1 = peak_successor(Fa[[i]], Fa[[i+1]], currentLabel, labelMax)
+    Labels[[i+1]] = obj1$Labels
+    labelMax = obj1$labelMax
 
-        # find peak location is the next function's mean
-        idxMaxNext = findpeaks(FNm[, i+1])
-        Locs[[i+1]] = idxMaxNext
-    }
+    # find peak location is the next function's mean
+    idxMaxNext = findpeaks(FNm[, i+1])
+    Locs[[i+1]] = idxMaxNext
+  }
 
-    # preprocess data to compute indicatorMatrix
-    obj2 = PreprocessingForPPD(t, lam , Labels, Locs, labelMax, FNm, th)
+  # preprocess data to compute indicatorMatrix
+  obj2 = PreprocessingForPPD(t, lam , Labels, Locs, labelMax, FNm, th)
 
-    if (all(is.nan(obj2$Heights2))){
-        warning('All peaks are ignored. A smaller threshold is required.')
-    }
+  if (all(is.nan(obj2$Heights2))){
+    warning('All peaks are ignored. A smaller threshold is required.')
+  }
 
-    obj$IndicatorMatrix = obj2$IndicatorMatrix
-    obj$Curvatures = obj2$Curvatures
-    obj$Heights = obj2$Heights
-    obj$Locs = Locs
-    obj$Labels = Labels
-    obj$FNm = FNm
-    return(obj)
+  obj$IndicatorMatrix = obj2$IndicatorMatrix
+  obj$Curvatures = obj2$Curvatures
+  obj$Heights = obj2$Heights
+  obj$Locs = Locs
+  obj$Labels = Labels
+  obj$FNm = FNm
+  return(obj)
 
 }
 
 peak_successor <- function(f1, f2, labels1, labelMax){
 
-    # combine f1 and f2 into a 3D array and compute the mean across the second dimension
-    F <- array(c(f1, f2), dim = c(nrow(f1), ncol(f1), 2))
-    fm <- apply(F, c(1, 3), mean)
+  # combine f1 and f2 into a 3D array and compute the mean across the second dimension
+  F <- array(c(f1, f2), dim = c(nrow(f1), ncol(f1), 2))
+  fm <- apply(F, c(1, 3), mean)
 
-    # compute peak ranges and labels for fm[,1]
-    obj1 = computePeakRanges(fm[,1])
-    ranges = obj1$ranges
-    idx_max1 = obj1$idx_max
+  # compute peak ranges and labels for fm[,1]
+  obj1 = computePeakRanges(fm[,1])
+  ranges = obj1$ranges
+  idx_max1 = obj1$idx_max
 
-    # compute indices of local maxima in fm[,2]
-    idx_max2 = findpeaks(fm[,2])
+  # compute indices of local maxima in fm[,2]
+  idx_max2 = findpeaks(fm[,2])
 
-    if (length(idx_max1) == 0){ 
-        labels2 = labelMax + seq(1,length(idx_max2))
-    } else {
-        # assign labels to peaks in fm[,2] based on matching ranges in fm[,1]
-        labels2 = assignLabelsToPeaks(idx_max2, ranges, idx_max1, labels1)
+  if (length(idx_max1) == 0){
+    labels2 = labelMax + seq(1,length(idx_max2))
+  } else {
+    # assign labels to peaks in fm[,2] based on matching ranges in fm[,1]
+    labels2 = assignLabelsToPeaks(idx_max2, ranges, idx_max1, labels1)
 
-        # ensure no overlapping labels in labels2
-        labels2 = resolveOverlappingLabels(labels2, idx_max1, idx_max2, labels1)
+    # ensure no overlapping labels in labels2
+    labels2 = resolveOverlappingLabels(labels2, idx_max1, idx_max2, labels1)
 
-        # assign new labels to unmatched peaks in fm[, 2]
-        unmatched = labels2 == 0
-        labels2[unmatched] = labelMax + seq(1,sum(unmatched))
-        labelMax = labelMax + sum(unmatched)
-    }
+    # assign new labels to unmatched peaks in fm[, 2]
+    unmatched = labels2 == 0
+    labels2[unmatched] = labelMax + seq(1,sum(unmatched))
+    labelMax = labelMax + sum(unmatched)
+  }
 
-    obj$labels2 = labels2
-    obj$labelMax = labelMax
-    return(obj)
+  obj$labels2 = labels2
+  obj$labelMax = labelMax
+  return(obj)
 }
 
 computePeakRanges <- function(data){
+  # computes peak ranges defined by adjacent minima in the data
+  idx_max = findpeaks(data)
 
-    obj$ranges = ranges
-    obj$idx_max = idx_max
+  if (length(idx_max) == 0){
+    warning("No peaks found in f1")
+    obj$ranges = c()
+    obj$idx_max = c()
     return(obj)
+  }
+
+  idx_min = findpeaks(-1*data)
+  idx_min = c(0, length(data), idx_min)
+  idx_min = unique(idx_min)
+
+  ranges = matrix(0, nrow=length(idx_max), ncol=2)
+  for (i in 1:length(idx_max)){
+    ranges[i,1] = max(idx_min[idx_min<idx_max[i]])
+    ranges[i,2] = min(idx_min[idx_min>idx_max[i]])
+  }
+  # remove degenerate ranges
+  idx = ranges[,1] == range[,2]
+  ranges = ranges[-idx,]
+
+  obj$ranges = ranges
+  obj$idx_max = idx_max
+  return(obj)
 }
 
-assignLabelsToPeaks <- function(){
+assignLabelsToPeaks <- function(idx_max2, ranges, idx_max1, labels1){
+  # assigns labels to peaks in idx_max2 based on matching ranges in idx_max1
+  labels = rep(0, length(idx_max2))
+  for (i in 1:length(idx_max2)){
+    # find the range in fm[,1] that contains the current peak in fm[,2]
+    in_range = idx_max2[i] >= ranges[,1] & idx_max2[i] <= ranges[,2]
+    matching_ranges = where(in_range)
+
+    if (length(matching_ranges) > 0){
+      # choose the cloest peak if multiple ranges match
+      if (length(matching_ranges) > 1){
+        closest_idx = which.min(abs(idx_max1[matching_ranges] - idx_max2[i]))
+        matching_range = matching_ranges[closest_idx]
+      } else {
+        matching_range = matching_ranges
+      }
+      labels[i] = labels1[matching_range]
+    }
+  }
+
+  return(labels)
 
 }
 
-resolveOverlappingLabels <- function(){
-
+resolveOverlappingLabels <- function(labels, idx_max1, idx_max2, labels1){
+  # ensures no overlapping labels in the assigned labels
+  unique_labels = unique(labels[labels > 0])
+  for (label in unique_labels){
+    duplicates = where(labels==label)
+    if (length(duplicates) > 1){
+      # keep the cloest peak and reset others
+      distances = abs(idx_max1[labels==label] - idx_max2[duplicates])
+      min_idx = which.min(distances)
+      duplicates = duplicates[-min_idx]
+      labels[duplicates] = 0
+    }
+  }
+  return(labels)
 }
 
 PreprocessingForPPD <- function(){
