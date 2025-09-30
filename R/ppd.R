@@ -365,7 +365,47 @@ getPersistentPeaks <- function(IndicatorMatrix){
 
 }
 
-drawPPDBarChart <- function(){
+drawPPDBarChart <- function(IndicatorMatrix, Heights, lam, idx_opt){
+  lam_diff = lam[2] - lam[1]
+  len_lam = nrow(IndicatorMatrix)
+  labelMax = ncol(IndicatorMatrix)
+
+  plot(c(lam[1], lam[length[lam]]), c(0.5, labelMax+0.5), type = "n", xlab = "lambda", ylab = "Peak Index",
+       main = "")
+
+  for (i in 1:len_lam){
+    label_all_peaks = which(!is.nan(Heights[i,]))
+    label_persistent_peaks = which(!is.nan(IndicatorMatrix[i,]))
+
+    if (sum(label_all_peaks) == 0){
+      next
+    }
+
+    for (j in 1:length(label_all_peaks)){
+      x = lam[i]
+      y = label_all_peaks[j]
+
+      x1 = x - lam_diff/2
+      x2 = x + lam_diff/2
+      y1 = y - 0.5
+      y2 = y + 0.5
+
+      if (y %in% label_persistent_peaks){
+        rect(x1, y1, x2, y2, col="black")
+      } else {
+        rect(x1, y1, x2, y2, col="#717171")
+      }
+    }
+  }
+
+  for (j in 1:labelMax){
+    abline(h = j+0.5, col = "blue", lwd = .5)
+  }
+
+  abline(v = lam(idx_opt), col = "magenta", lty=2, lwd = 2)
+
+  ticks = seq(1,labelMax)
+  axis(side = 2, at = ticks)
 
 }
 
