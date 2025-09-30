@@ -99,7 +99,7 @@ ppd <- function(f,
   exact_match_indices = c()
 
   for (i in 1:n_lams){
-    comp = !is.nan(IndicatorMatrix[i,])
+    comp = !is.nan(obj$IndicatorMatrix[i,])
 
     # check for exact match
     if (identical(comp, ref_row)){
@@ -247,7 +247,7 @@ assignLabelsToPeaks <- function(idx_max2, ranges, idx_max1, labels1){
   for (i in 1:length(idx_max2)){
     # find the range in fm[,1] that contains the current peak in fm[,2]
     in_range = idx_max2[i] >= ranges[,1] & idx_max2[i] <= ranges[,2]
-    matching_ranges = where(in_range)
+    matching_ranges = which(in_range)
 
     if (length(matching_ranges) > 0){
       # choose the cloest peak if multiple ranges match
@@ -269,7 +269,7 @@ resolveOverlappingLabels <- function(labels, idx_max1, idx_max2, labels1){
   # ensures no overlapping labels in the assigned labels
   unique_labels = unique(labels[labels > 0])
   for (label in unique_labels){
-    duplicates = where(labels==label)
+    duplicates = which(labels==label)
     if (length(duplicates) > 1){
       # keep the cloest peak and reset others
       distances = abs(idx_max1[labels==label] - idx_max2[duplicates])
@@ -281,11 +281,87 @@ resolveOverlappingLabels <- function(labels, idx_max1, idx_max2, labels1){
   return(labels)
 }
 
-PreprocessingForPPD <- function(){
+PreprocessingForPPD <- function(t, lam, Labels, Locs, labelMax, FNm, th){
+  K = length(lam)
 
+  # Initialize output matrices
+  IndicatorMatrix = matrix(NaN, nrow=K, ncol=labelMax)
+  curvatures = matrix(0, nrow=K, ncol=labelMax)
+  heights = matrix(NaN, nrow=K, ncol=labelMax)
+
+  # assume t is uniformly spaced; compute time step
+  dx = t[2] - t[1]
+
+  # process each function
+  for (i in 1:K){
+    # extract the function values for the current parameter lambda
+    fnm = FNm[, i]
+
+    # compute negative curvature (second derivative)
+    negCurvature = -gradient(gradient(fnm, dx), dx)
+
+    # ensure non-negative curvature values
+    negCurvature[negCurvature < 0] <- 0
+
+    # normalize non-negative curvature to [0,1] if possible
+    maxNegCurvature = max(negCurvature)
+    if (maxNegCurvature > 0){
+      negCurvature = negCurvature / maxNegCurvature
+    }
+
+    # retrieve peak locations and labels for the current function
+    locsCurrent = Locs[[i]]
+    labelsCurrent = Labels[[i]]
+
+    # select negative curvature values at specified peak locations
+    negCurvSelected = negCurvature[locsCurrent]
+
+    # update curvatures and heights matrices at the appropriate labels
+    curvatures[i, labelsCurrent] = negCurvSelected
+    heighs[i, labelsCurrent] = fnm[locsCurrent]
+
+    # apply threshold to select significant peaks based on curvature
+    significantLabels = labelsCurrent[negCurvSelected >= th]
+
+    # update the indicator matrix for significant peaks
+    IndicatorMatrix[i, significantLabels] =1
+  }
+
+  # compute heights 2 by multiplying heights wiht the indicator matrix
+  heights2 = IndicatorMatrix * heights
+
+  obj$IndicatorMatrix = IndicatorMatrix
+  obj$curvatures = curvatures
+  obj$heights = heights
+  obj$heights2 = heights2
+  return(obj)
 }
 
-getPersistentPeaks <- function(){
+getPersistentPeaks <- function(IndicatorMatrix){
+  if (length(IndicatorMatrix) == 0){
+    Clt2 = c()
+    return(Clt2)
+  }
+
+  # count the number of ones (occurences) for each peak (ignore NaNs)
+  occurrenceCounts = rowSums(IndicatorMatrix, na.rm = TRUE)
+
+  data = c(occurrenceCounts, 0)
+  if (all(data==0) | length(unique(occurrenceCounts)) == 1){
+    Clt2 = c()
+    return(Clt2)
+  }
+
+  # compute pairwise distances between observations
+  pairwiseDistances <- dist(data)
+  hc <- hclust(d, method = "ward.D2")
+  clusterAssignments = hc$labels2
+  referenceCluster = clusterAssignments[length(clusterAssignments)]
+  clusterAssignments = clusterAssignments[-length(clusterAssignments)]
+
+  # identify indices wehre cluster assignments differ from the reference
+  Clt2 = which(clusterAssignments != referenceCluster)
+  return(Clt2)
 
 }
 
