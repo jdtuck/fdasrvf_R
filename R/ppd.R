@@ -1,6 +1,6 @@
-#' Compute Peak Persistance Diagram
+#' Compute Peak Persistence Diagram
 #'
-#' This computes the peak persistance diagram over a range of
+#' This computes the peak persistence diagram over a range of
 #' lambda. This can help determine the proper elasticity (penalty).
 #' This can be slow and recommended to run in parallel
 #'
@@ -85,7 +85,7 @@ ppd <- function(f,
     tau[tau < 0] = 0
     taus[[i]] = tau[idx]
   }
-  th = quantile(taus, pt)
+  th = stats::quantile(taus, pt)
 
   obj <- getPPDinfo(time, fns, lam_vec, th)
   persistent_peak_labels <- getPersistentPeaks(t(obj$IndicatorMatrix))
@@ -119,7 +119,7 @@ ppd <- function(f,
   # draw PPD barchart
   drawPPDBarChart(obj$IndicatorMatrix, obj$Heights, lam_vec, idx_opt)
   # draw PPD surface
-  drawPPDsurface(time, lam_vec, obj$FNm, obj$Heights, obj$Locs, obj$IndicatorMatrix, obj$Labels, idx_opt)
+  drawPPDSurface(time, lam_vec, obj$FNm, obj$Heights, obj$Locs, obj$IndicatorMatrix, obj$Labels, idx_opt)
 
   return(lam_vec(idx_opt))
 
@@ -351,8 +351,8 @@ getPersistentPeaks <- function(IndicatorMatrix){
   }
 
   # compute pairwise distances between observations
-  pairwiseDistances <- dist(data)
-  hc <- hclust(d, method = "ward.D2")
+  pairwiseDistances <- stats::dist(data)
+  hc <- stats::hclust(pairwiseDistances, method = "ward.D2")
   clusterAssignments = hc$labels2
   referenceCluster = clusterAssignments[length(clusterAssignments)]
   clusterAssignments = clusterAssignments[-length(clusterAssignments)]
@@ -389,21 +389,21 @@ drawPPDBarChart <- function(IndicatorMatrix, Heights, lam, idx_opt){
       y2 = y + 0.5
 
       if (y %in% label_persistent_peaks){
-        rect(x1, y1, x2, y2, col="black")
+        graphics::rect(x1, y1, x2, y2, col="black")
       } else {
-        rect(x1, y1, x2, y2, col="#717171")
+        graphics::rect(x1, y1, x2, y2, col="#717171")
       }
     }
   }
 
   for (j in 1:labelMax){
-    abline(h = j+0.5, col = "blue", lwd = .5)
+    graphics::abline(h = j+0.5, col = "blue", lwd = .5)
   }
 
-  abline(v = lam(idx_opt), col = "magenta", lty=2, lwd = 2)
+  graphics::abline(v = lam(idx_opt), col = "magenta", lty=2, lwd = 2)
 
   ticks = seq(1,labelMax)
-  axis(side = 2, at = ticks)
+  graphics::axis(side = 2, at = ticks)
 
 }
 
@@ -447,9 +447,9 @@ drawPPDSurface <- function(t,lam,FNm,Heights,Locs,IndicatorMatrix,Labels,idx_opt
       # find non-NaN indices for full location matrix and plot
       idx_full = which(!is.nan(LocationMatrix_full[,j]))
       plot3D::points3D(
-        x = t[LocationMatrix_full[idx,full, j]],
+        x = t[LocationMatrix_full[idx_full, j]],
         y = lam[idx_full],
-        z = HeighMatrix_full[idx_full, j],
+        z = HeightMatrix_full[idx_full, j],
         col = "black",
         lty = 1,
         lwd = 1.5,
@@ -485,7 +485,7 @@ drawPPDSurface <- function(t,lam,FNm,Heights,Locs,IndicatorMatrix,Labels,idx_opt
     for (j in 1:labelMax){
       # find non-NaN indices for full location matrix and plot
       idx_full = which(!is.nan(LocationMatrix_full[,j]))
-      graphics::points(t[LocationMatrix_full[idx,full, j]], lam[idx_full],
+      graphics::points(t[LocationMatrix_full[idx_full, j]], lam[idx_full],
                        col="black", lwd=1.5)
 
       # find non-naN indices for significant location matrix and plot

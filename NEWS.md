@@ -1,3 +1,6 @@
+# fdasrvf 2.4.XXX
+* added peak persistent diagram function `ppd`
+
 # fdasrvf 2.4.1
 * added principal nested spheres code
 * added `horizFPNS` function
