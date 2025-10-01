@@ -119,9 +119,7 @@ ppd <- function(f,
   # draw PPD barchart
   drawPPDBarChart(obj$IndicatorMatrix, obj$Heights, lam_vec, idx_opt)
   # draw PPD surface
-  if (requireNamespace("plot3Drgl", quietly = TRUE)){
-    drawPPDsurface(time, lam_vec, obj$FNm, obj$Heights, obj$Locs, obj$IndicatorMatrix, obj$Labels, idx_opt)
-  }
+  drawPPDsurface(time, lam_vec, obj$FNm, obj$Heights, obj$Locs, obj$IndicatorMatrix, obj$Labels, idx_opt)
 
   return(lam_vec(idx_opt))
 
@@ -409,6 +407,93 @@ drawPPDBarChart <- function(IndicatorMatrix, Heights, lam, idx_opt){
 
 }
 
-drawPPDSurface <- function(){
+drawPPDSurface <- function(t,lam,FNm,Heights,Locs,IndicatorMatrix,Labels,idx_opt){
+  n_lams = length(lam)
+  labelMax = ncol(IndicatorMatrix)
+
+  LocationMatrix_full = matrix(NaN, nrow=n_lams, ncol=labelMax)
+  for (i in 1:n_lams){
+    LocationMatrix_full[i, Labels[[i]]] = Locs[[i]]
+  }
+  LocationMatrix_sig = LocationMatrix_full * IndicatorMatrix
+  HeightMatrix_full = Heights
+  HeightMatrix_sig = HeightMatrix_full * IndicatorMatrix
+
+  if (requireNamespace("plot3Drgl", quietly = TRUE)){
+    plot3D::persp3D(
+      x = t,
+      y = lam,
+      z = t(FNm),
+      col = viridisLite::viridis(128),
+      plot = FALSE,
+      main = "",
+      xlab="t",
+      ylab="g_lambda",
+      zlab="lambda",
+      ticktype = "detailed",
+      box = FALSE
+    ) +
+      plot3D::lines3D(
+        x = t,
+        y = lam[idx_opt]*rep(1,length(t)),
+        z = FNm[, idx_opt],
+        col = "magenta",
+        lty=2,
+        lwd = 3,
+        add = TRUE,
+        plot = FALSE
+      )
+    for (j in 1:labelMax){
+      # find non-NaN indices for full location matrix and plot
+      idx_full = which(!is.nan(LocationMatrix_full[,j]))
+      plot3D::points3D(
+        x = t[LocationMatrix_full[idx,full, j]],
+        y = lam[idx_full],
+        z = HeighMatrix_full[idx_full, j],
+        col = "black",
+        lty = 1,
+        lwd = 1.5,
+        add = TRUE,
+        plot = FALSE
+      )
+
+      # find non-naN indices for significant location matrix and plot
+      idx_sig = which(!is.nan(LocationMatrix_sig[, j]))
+      plot3D::points3D(
+        x = t[LocationMatrix_sig[,j]],
+        y = lam[idx_sig],
+        z = HeightMatrix_sig[idx_sig, j],
+        col = "black",
+        lty = 2,
+        lwd = 2,
+        add = TRUE,
+        plot = FALSE
+      )
+
+    }
+
+    plot3Drgl::plotrgl()
+    rgl::par3d("windowRect" = c(0, 0, 640, 640))
+    rgl::grid3d(c("x", "y+", "z"))
+    rgl::axes3d(c('x--', "y--", 'z'))
+    rgl::title3d(xlab = "t", ylab = "g_lambda", zlab="lamda")
+  } else {
+    graphics::image(t, lam, t(FNm), main = "", xlab="t", zlab="g_lambda",
+                    ylab = "lambda", col = viridisLite::viridis(128))
+    graphics::lines(t, lam(idx_opt)*rep(1, length(t)), col="magenta", lwd=2)
+
+    for (j in 1:labelMax){
+      # find non-NaN indices for full location matrix and plot
+      idx_full = which(!is.nan(LocationMatrix_full[,j]))
+      graphics::points(t[LocationMatrix_full[idx,full, j]], lam[idx_full],
+                       col="black", lwd=1.5)
+
+      # find non-naN indices for significant location matrix and plot
+      idx_sig = which(!is.nan(LocationMatrix_sig[, j]))
+      graphics::points(t[LocationMatrix_sig[,j]], lam[idx_sig], col="black",
+                       lwd = 2)
+
+    }
+  }
 
 }
