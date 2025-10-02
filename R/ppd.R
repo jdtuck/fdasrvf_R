@@ -331,14 +331,14 @@ PreprocessingForPPD <- function(t, lam, Labels, Locs, labelMax, FNm, th){
     IndicatorMatrix[i, significantLabels] =1
   }
 
-  # compute heights 2 by multiplying heights wiht the indicator matrix
+  # compute heights 2 by multiplying heights with the indicator matrix
   heights2 = IndicatorMatrix * heights
 
   obj = list()
   obj$IndicatorMatrix = IndicatorMatrix
   obj$curvatures = curvatures
-  obj$heights = heights
-  obj$heights2 = heights2
+  obj$Heights = heights
+  obj$Heights2 = heights2
   return(obj)
 }
 
@@ -348,7 +348,7 @@ getPersistentPeaks <- function(IndicatorMatrix){
     return(Clt2)
   }
 
-  # count the number of ones (occurences) for each peak (ignore NaNs)
+  # count the number of ones (occurrences) for each peak (ignore NaNs)
   occurrenceCounts = rowSums(IndicatorMatrix, na.rm = TRUE)
 
   data = c(occurrenceCounts, 0)
@@ -364,7 +364,7 @@ getPersistentPeaks <- function(IndicatorMatrix){
   referenceCluster = clusterAssignments[length(clusterAssignments)]
   clusterAssignments = clusterAssignments[-length(clusterAssignments)]
 
-  # identify indices wehre cluster assignments differ from the reference
+  # identify indices where cluster assignments differ from the reference
   Clt2 = which(clusterAssignments != referenceCluster)
   return(Clt2)
 
@@ -375,8 +375,8 @@ drawPPDBarChart <- function(IndicatorMatrix, Heights, lam, idx_opt){
   len_lam = nrow(IndicatorMatrix)
   labelMax = ncol(IndicatorMatrix)
 
-  plot(c(lam[1], lam[length[lam]]), c(0.5, labelMax+0.5), type = "n", xlab = "lambda", ylab = "Peak Index",
-       main = "")
+  plot(c(lam[1], lam[length(lam)]), c(0.5, labelMax+0.5), type = "n", xlab = "lambda", ylab = "Peak Index",
+       main = "", yaxt='n')
 
   for (i in 1:len_lam){
     label_all_peaks = which(!is.nan(Heights[i,]))
@@ -407,7 +407,7 @@ drawPPDBarChart <- function(IndicatorMatrix, Heights, lam, idx_opt){
     graphics::abline(h = j+0.5, col = "blue", lwd = .5)
   }
 
-  graphics::abline(v = lam(idx_opt), col = "magenta", lty=2, lwd = 2)
+  graphics::abline(v = lam[idx_opt], col = "magenta", lty=2, lwd = 2)
 
   ticks = seq(1,labelMax)
   graphics::axis(side = 2, at = ticks)
