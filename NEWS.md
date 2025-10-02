@@ -1,4 +1,4 @@
-# fdasrvf 2.4.XXX
+# fdasrvf 2.4.2
 * added peak persistent diagram function `ppd`
 
 # fdasrvf 2.4.1

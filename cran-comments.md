@@ -7,5 +7,3 @@ There were no ERRORs and no WARNINGs:
 
 ## Downstream dependencies
 There are no downstream dependencies issues
-
-Fixed WARN on CRAN package check for deprecated functions

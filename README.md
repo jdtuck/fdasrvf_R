@@ -19,7 +19,7 @@ modeling using functional component analysis
 
 ## Installation
 
-v2.4.1 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
+v2.4.2 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
 be installed as
 
 ``` r
