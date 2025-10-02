@@ -121,7 +121,7 @@ ppd <- function(f,
   # draw PPD surface
   drawPPDSurface(time, lam_vec, obj$FNm, obj$Heights, obj$Locs, obj$IndicatorMatrix, obj$Labels, idx_opt)
 
-  return(lam_vec(idx_opt))
+  return(lam_vec[idx_opt])
 
 }
 
@@ -485,9 +485,9 @@ drawPPDSurface <- function(t,lam,FNm,Heights,Locs,IndicatorMatrix,Labels,idx_opt
     rgl::axes3d(c('x--', "y--", 'z'))
     rgl::title3d(xlab = "t", ylab = "g_lambda", zlab="lamda")
   } else {
-    graphics::image(t, lam, t(FNm), main = "", xlab="t", zlab="g_lambda",
+    graphics::image(t, lam, FNm, xlab="t", main="g_lambda",
                     ylab = "lambda", col = viridisLite::viridis(128))
-    graphics::lines(t, lam(idx_opt)*rep(1, length(t)), col="magenta", lwd=2)
+    graphics::lines(t, lam[idx_opt]*rep(1, length(t)), col="magenta", lwd=2)
 
     for (j in 1:labelMax){
       # find non-NaN indices for full location matrix and plot
