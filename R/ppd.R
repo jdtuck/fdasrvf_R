@@ -75,15 +75,15 @@ ppd <- function(f,
   # peak persistent diagram
   # get the trehsold for significant peak
   diff_t = mean(diff(time))
-  taus = list()
+  taus = c()
 
   # compute tau values
   for (i in 1:ncol(f)){
-    idx = findpeaks(f[, i])
+    idx = findpeaks(f[, i])[,2]
     df2 = gradient(gradient(f[,i], diff_t), diff_t)
     tau = -df2 / max(-df2)
     tau[tau < 0] = 0
-    taus[[i]] = tau[idx]
+    taus = c(taus, c(tau[idx]))
   }
   th = stats::quantile(taus, pt)
 
@@ -136,7 +136,7 @@ getPPDinfo <- function(t, Fa, lam, th){
   }
 
   # find indices of lal maxima in the first function's mean
-  idxMaxFirst = findpeaks(FNm[,1])
+  idxMaxFirst = findpeaks(FNm[,1])[,2]
 
   # Initialize Labels and Locations for the first function
   Labels = list()
@@ -151,12 +151,12 @@ getPPDinfo <- function(t, Fa, lam, th){
   for (i in 1:(n_lams-1)){
     currentLabel = Labels[[i]]
     obj1 = peak_successor(Fa[[i]], Fa[[i+1]], currentLabel, labelMax)
-    Labels[[i+1]] = obj1$Labels
+    Labels[[i+1]] <- obj1$Labels
     labelMax = obj1$labelMax
 
     # find peak location is the next function's mean
-    idxMaxNext = findpeaks(FNm[, i+1])
-    Locs[[i+1]] = idxMaxNext
+    idxMaxNext = findpeaks(FNm[, i+1])[,2]
+    Locs[[i+1]] <- idxMaxNext
   }
 
   # preprocess data to compute indicatorMatrix
@@ -166,6 +166,7 @@ getPPDinfo <- function(t, Fa, lam, th){
     warning('All peaks are ignored. A smaller threshold is required.')
   }
 
+  obj = list()
   obj$IndicatorMatrix = obj2$IndicatorMatrix
   obj$Curvatures = obj2$Curvatures
   obj$Heights = obj2$Heights
@@ -188,7 +189,7 @@ peak_successor <- function(f1, f2, labels1, labelMax){
   idx_max1 = obj1$idx_max
 
   # compute indices of local maxima in fm[,2]
-  idx_max2 = findpeaks(fm[,2])
+  idx_max2 = findpeaks(fm[,2])[,2]
 
   if (length(idx_max1) == 0){
     labels2 = labelMax + seq(1,length(idx_max2))
@@ -205,25 +206,27 @@ peak_successor <- function(f1, f2, labels1, labelMax){
     labelMax = labelMax + sum(unmatched)
   }
 
-  obj$labels2 = labels2
+  obj = list()
+  obj$Labels = labels2
   obj$labelMax = labelMax
   return(obj)
 }
 
 computePeakRanges <- function(data){
   # computes peak ranges defined by adjacent minima in the data
-  idx_max = findpeaks(data)
+  idx_max = findpeaks(data)[,2]
 
   if (length(idx_max) == 0){
     warning("No peaks found in f1")
+    obj = list()
     obj$ranges = c()
     obj$idx_max = c()
     return(obj)
   }
 
-  idx_min = findpeaks(-1*data)
-  idx_min = c(0, length(data), idx_min)
-  idx_min = unique(idx_min)
+  idx_min = findpeaks(-1*data)[,2]
+  idx_min = c(1, length(data), idx_min)
+  idx_min = sort(unique(idx_min))
 
   ranges = matrix(0, nrow=length(idx_max), ncol=2)
   for (i in 1:length(idx_max)){
@@ -231,9 +234,12 @@ computePeakRanges <- function(data){
     ranges[i,2] = min(idx_min[idx_min>idx_max[i]])
   }
   # remove degenerate ranges
-  idx = ranges[,1] == range[,2]
-  ranges = ranges[-idx,]
+  idx = which(ranges[,1] == ranges[,2])
+  if (length(idx) > 0){
+    ranges = ranges[-idx,]
+  }
 
+  obj = list()
   obj$ranges = ranges
   obj$idx_max = idx_max
   return(obj)
@@ -316,7 +322,7 @@ PreprocessingForPPD <- function(t, lam, Labels, Locs, labelMax, FNm, th){
 
     # update curvatures and heights matrices at the appropriate labels
     curvatures[i, labelsCurrent] = negCurvSelected
-    heighs[i, labelsCurrent] = fnm[locsCurrent]
+    heights[i, labelsCurrent] = fnm[locsCurrent]
 
     # apply threshold to select significant peaks based on curvature
     significantLabels = labelsCurrent[negCurvSelected >= th]
@@ -328,6 +334,7 @@ PreprocessingForPPD <- function(t, lam, Labels, Locs, labelMax, FNm, th){
   # compute heights 2 by multiplying heights wiht the indicator matrix
   heights2 = IndicatorMatrix * heights
 
+  obj = list()
   obj$IndicatorMatrix = IndicatorMatrix
   obj$curvatures = curvatures
   obj$heights = heights
