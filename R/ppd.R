@@ -430,7 +430,7 @@ drawPPDSurface <- function(t,lam,FNm,Heights,Locs,IndicatorMatrix,Labels,idx_opt
     plot3D::persp3D(
       x = t,
       y = lam,
-      z = t(FNm),
+      z = FNm,
       col = viridisLite::viridis(128),
       plot = FALSE,
       main = "",
