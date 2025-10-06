@@ -10,6 +10,8 @@ ppd(
   max_lam = 2,
   num_lam = 10,
   pt = 0.15,
+  srvf = FALSE,
+  mu = NaN,
   penalty_method = c("roughness", "geodesic", "norm"),
   centroid_type = c("mean", "median"),
   center_warpings = TRUE,
@@ -33,6 +35,10 @@ which all curves \code{f} have been observed.}
 \item{num_lam}{number of steps. Defaults to \code{10}}
 
 \item{pt}{the percentile of negative curvature of raw data Defaults to \code{.15}}
+
+\item{srvf}{perform in srvf space Defaults to \code{FALSE}}
+
+\item{mu}{vector of size \eqn{N} that f is aligned to, Defaults to \code{NaN}}
 
 \item{penalty_method}{A string specifying the penalty term used in the
 formulation of the cost function to minimize for alignment. Choices are
