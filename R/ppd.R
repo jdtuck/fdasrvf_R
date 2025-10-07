@@ -88,6 +88,12 @@ ppd <- function(f,
 
   }
 
+  if (srvf){
+    f0 = obj$q0
+  } else {
+    f0 = f
+  }
+
   # peak persistent diagram
   # get the threshold for significant peak
   diff_t = mean(diff(time))
@@ -95,8 +101,8 @@ ppd <- function(f,
 
   # compute tau values
   for (i in 1:ncol(f)){
-    idx = findpeaks(f[, i])[,2]
-    df2 = gradient(gradient(f[,i], diff_t), diff_t)
+    idx = findpeaks(f0[, i])[,2]
+    df2 = gradient(gradient(f0[,i], diff_t), diff_t)
     tau = -df2 / max(-df2)
     tau[tau < 0] = 0
     taus = c(taus, c(tau[idx]))
