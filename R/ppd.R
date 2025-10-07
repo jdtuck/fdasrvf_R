@@ -69,7 +69,7 @@ ppd <- function(f,
   lam_vec <- seq(0, max_lam, length.out = num_lam)
   fns <- list()
   for (i in 1:num_lam){
-    if (is.nan(mu)) {
+    if (any(is.nan(mu))) {
       obj <- time_warping(f, time, lam_vec[i],
                           penalty_method, centroid_type, center_warpings,
                           smooth_data, sparam, parallel, cores,
@@ -486,10 +486,10 @@ drawPPDSurface <- function(t,lam,FNm,Heights,Locs,IndicatorMatrix,Labels,idx_opt
         plot = FALSE
       )
 
-      # find non-naN indices for significant location matrix and plot
+      # find non-NaN indices for significant location matrix and plot
       idx_sig = which(!is.nan(LocationMatrix_sig[, j]))
       plot3D::points3D(
-        x = t[LocationMatrix_sig[,j]],
+        x = t[LocationMatrix_sig[idx_sig,j]],
         y = lam[idx_sig],
         z = HeightMatrix_sig[idx_sig, j],
         col = "black",
