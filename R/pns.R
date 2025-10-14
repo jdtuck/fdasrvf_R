@@ -90,7 +90,7 @@ fastpns <- function (x,
     )
   )
   
-  out$varPNS = percent * out$total / 100
+  out$varPNS = out$percent * out$total / 100
   out$spheredata <- (Xssubsphere)
   out$pca <- pca
   out$muhat <- muhat
