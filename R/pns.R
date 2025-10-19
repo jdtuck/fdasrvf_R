@@ -89,6 +89,8 @@ fastpns <- function (x,
       "\n"
     )
   )
+  
+  out$varPNS = out$percent * out$total / 100
   out$spheredata <- (Xssubsphere)
   out$pca <- pca
   out$muhat <- muhat
@@ -590,6 +592,8 @@ pns = function(x,
   propPNS = varPNS / total * 100
   return(list(
     resmat = resmat,
+    varPNS = varPNS,
+    total = total,
     PNS = PNS,
     percent = propPNS
   ))

@@ -519,7 +519,7 @@ drawPPDSurface <- function(t,lam,FNm,Heights,Locs,IndicatorMatrix,Labels,idx_opt
 
       # find non-naN indices for significant location matrix and plot
       idx_sig = which(!is.nan(LocationMatrix_sig[, j]))
-      graphics::points(t[LocationMatrix_sig[,j]], lam[idx_sig], col="black",
+      graphics::points(t[LocationMatrix_sig[idx_sig,j]], lam[idx_sig], col="black",
                        lwd = 2)
 
     }
