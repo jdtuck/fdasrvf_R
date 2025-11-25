@@ -325,7 +325,26 @@ time_warping <- function(f,
   else
     fmean = stats::median(f0[1, ]) + as.numeric(cumtrapz(time, mqn * abs(mqn)))
 
-  gam <- t(gam)
+  outfor <- foreach::foreach(n = 1:N,
+                             .combine = cbind,
+                             .packages = "fdasrvf") %dopar% {
+                               gam <- optimum.reparam(
+                                 Q1 = mqn,
+                                 T1 = time,
+                                 Q2 = q[, n, 1],
+                                 T2 = time,
+                                 lambda = lambda,
+                                 pen = penalty_method,
+                                 method = optim_method,
+                                 f1o = mf[1, r+1],
+                                 f2o = f[1, n, 1]
+                               )
+                               gam_dev <- gradient(gam, 1 / (M - 1))
+                               list(gam, gam_dev)
+                             }
+
+  gam <- unlist(outfor[1, ])
+  dim(gam) <- c(M, N)
   fgam <- matrix(0, M, N)
 
   for (n in 1:N)

@@ -16,7 +16,11 @@ predict.jfpca <- function(object, newdata = NULL, ...) {
   if (is.null(newdata)) {
     newdata = object$warp_data$f0
   }
-  q1 = f_to_srvf(newdata, object$warp_data$time)
+  binsize <- mean(diff(object$warp_data$time))
+  eps <- .Machine$double.eps
+  tmp <- gradient.spline(newdata, binsize, object$warp_data$call$smooth_data)
+  f <- tmp$f
+  q1 <- tmp$g / sqrt(abs(tmp$g) + eps)
   M = length(object$warp_data$time)
   N = ncol(newdata)
   gam = matrix(0, M, N)
@@ -30,7 +34,7 @@ predict.jfpca <- function(object, newdata = NULL, ...) {
       object$warp_data$time,
       method = object$warp_data$call$optim_method
     )
-    fn[, ii] = warp_f_gamma(newdata[, ii], object$warp_data$time, gam[, ii])
+    fn[, ii] = warp_f_gamma(f[, ii], object$warp_data$time, gam[, ii])
     qn[, ii] = f_to_srvf(fn[, ii], object$warp_data$time)
   }
 
@@ -40,7 +44,6 @@ predict.jfpca <- function(object, newdata = NULL, ...) {
   } else {
     qn1 <- fn
   }
-
 
   no = ncol(object$U)
   psi = matrix(0, M, N)
