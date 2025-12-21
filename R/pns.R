@@ -104,12 +104,12 @@ fastPNSs2e <- function(spheredata, PNS){
   n.pc <- PNS$n.pc
 
   Xs <- t(spheredata)
+  n <- nrow(Xs)
   for (i in 1:n) {
     Xs[i, ] <- Xs[i, ] / Enorm(Xs[i, ])
   }
 
   TT <- Xs
-  n <- nrow(TT)
   for (i in 1:n) {
     TT[i, ] <- Xs[i, ] - sum(Xs[i, ] * muhat) * muhat
   }
