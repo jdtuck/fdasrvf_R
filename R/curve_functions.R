@@ -495,7 +495,7 @@ inverse_exp_coord <- function(beta1, beta2, mode="O", rotated=T){
     beta2 = group_action_by_gamma_coord(beta2, gamI)
     if (rotated){
       out = find_rotation_seed_coord(beta1, beta2, mode)
-      q2n = curve_to_q(out$beta2new)$q
+      q2n = curve_to_q(out$beta2best)$q
     } else {
       q2n = curve_to_q(beta2)$q
     }
