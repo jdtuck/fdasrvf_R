@@ -1,5 +1,5 @@
 ## Test environments
-* windows, os x, ubuntu 22 (on githubactions), R 4.5.1
+* windows, os x, ubuntu 22 (on githubactions), R 4.5.2
 * win-builder (devel and release)
 
 ## R CMD check results
