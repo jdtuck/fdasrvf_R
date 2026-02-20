@@ -19,7 +19,7 @@ modeling using functional component analysis
 
 ## Installation
 
-v2.4.2 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
+v2.4.3 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
 be installed as
 
 ``` r
@@ -53,8 +53,8 @@ library(fdasrvf)
 f_plot(simu_data$time, simu_data$f)
 ```
 
-<img src="man/figures/README-1d_curve_plot-1.png" width="100%" /> We can
-see that each `curve` is a functionally closed 2D curve. And we
+<img src="man/figures/README-1d_curve_plot-1.png" alt="" width="100%" />
+We can see that each `curve` is a functionally closed 2D curve. And we
 distinguish different patterns of miss-alignment, like X values
 shrinking, small displacement, and many others.
 
@@ -74,7 +74,7 @@ Let’s plot the result
 plot(obj)
 ```
 
-<img src="man/figures/README-1d_aligned_plot-1.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-2.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-3.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-4.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-5.png" width="100%" /><img src="man/figures/README-1d_aligned_plot-6.png" width="100%" />
+<img src="man/figures/README-1d_aligned_plot-1.png" alt="" width="100%" /><img src="man/figures/README-1d_aligned_plot-2.png" alt="" width="100%" /><img src="man/figures/README-1d_aligned_plot-3.png" alt="" width="100%" /><img src="man/figures/README-1d_aligned_plot-4.png" alt="" width="100%" /><img src="man/figures/README-1d_aligned_plot-5.png" alt="" width="100%" /><img src="man/figures/README-1d_aligned_plot-6.png" alt="" width="100%" />
 
 ## References
 

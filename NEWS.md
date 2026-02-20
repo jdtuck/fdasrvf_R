@@ -1,3 +1,8 @@
+# fdasrvf 2.4.3
+* bugfixes to ppd
+* add `fasatPNSs2e`
+* bugfixes to curve_functions.R (#63)
+
 # fdasrvf 2.4.2
 * added peak persistent diagram function `ppd`
 
