@@ -17,7 +17,7 @@ the curves \code{f} have been evaluated.
 }
 }
 \usage{
-toy_data
+data(toy_data)
 }
 \description{
 A functional dataset where the individual functions are given by a Gaussian

@@ -17,7 +17,7 @@ the curves \code{f} have been evaluated.
 }
 }
 \usage{
-growth_vel
+data(growth_vel)
 }
 \description{
 Combination of both boys and girls growth velocity from the Berkley dataset.

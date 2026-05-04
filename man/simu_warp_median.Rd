@@ -12,7 +12,7 @@ median applied on the data set \code{simu_data}.
 }
 }
 \usage{
-simu_warp_median
+data(simu_warp_median)
 }
 \description{
 A functional dataset where the individual functions are given by: \eqn{y_i(t)

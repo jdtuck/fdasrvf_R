@@ -9,7 +9,7 @@ discrete2curve(beta)
 \arguments{
 \item{beta}{A numeric matrix of size \eqn{L \times M} specifying a curve on
 an \eqn{L}-dimensional space observed on an evenly spaced grid of \eqn{[0,
- 1]} of length \eqn{M}.}
+1]} of length \eqn{M}.}
 }
 \value{
 A function that takes a numeric vector \eqn{s} of values in \eqn{[0,

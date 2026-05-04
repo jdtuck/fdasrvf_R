@@ -12,7 +12,7 @@ the data set \code{toy_data}.
 }
 }
 \usage{
-toy_warp
+data(toy_warp)
 }
 \description{
 A functional dataset where the individual functions are given by a Gaussian

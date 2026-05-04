@@ -89,6 +89,11 @@ Useful links:
 \author{
 \strong{Maintainer}: J. Derek Tucker \email{jdtuck@sandia.gov} (\href{https://orcid.org/0000-0001-8844-2169}{ORCID})
 
+Authors:
+\itemize{
+  \item J. Derek Tucker \email{jdtuck@sandia.gov} (\href{https://orcid.org/0000-0001-8844-2169}{ORCID})
+}
+
 Other contributors:
 \itemize{
   \item Aymeric Stamm \email{aymeric.stamm@math.cnrs.fr} (\href{https://orcid.org/0000-0002-8725-3654}{ORCID}) [contributor]

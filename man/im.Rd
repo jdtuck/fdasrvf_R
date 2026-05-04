@@ -15,7 +15,7 @@ A list with two components:
 }
 }
 \usage{
-im
+data(im)
 }
 \description{
 Contains two simulated images for registration.

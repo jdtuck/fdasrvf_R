@@ -17,7 +17,7 @@ the curves \code{f} have been evaluated.
 }
 }
 \usage{
-simu_data
+data(simu_data)
 }
 \description{
 A functional dataset where the individual functions are given by: \eqn{y_i(t)

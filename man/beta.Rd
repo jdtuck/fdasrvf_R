@@ -13,7 +13,7 @@ An array of shape \eqn{2 \times 100 \times 65 \times 20} storing a sample of
 }
 }
 \usage{
-beta
+data(beta)
 }
 \description{
 Contains the MPEG7 curve data set.

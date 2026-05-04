@@ -53,8 +53,9 @@ Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 May 2011. Registration of functional data using fisher-rao metric,
 arXiv:1103.3817v2.
 
-Jung, S. L. a. S. (2016). "Combined Analysis of Amplitude and Phase Variations in Functional Data."
-arXiv:1603.01775.
+Happ, C., Scheipl, F., Gabriel, A. & Greven, S. A general framework for multivariate functional principal component analysis of amplitude and phase variation. Stat 8, (2019).
+
+Ma, Y., Zhou, X. & Wu, W. A stochastic process representation for time warping functions. Comput. Stat. Data Anal. 194, 107941 (2024).
 
 Tucker, J. D., Wu, W., Srivastava, A.,
 Generative Models for Function Data using Phase and Amplitude Separation,
