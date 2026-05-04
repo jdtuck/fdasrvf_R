@@ -255,8 +255,8 @@ jointFPCA <- function(warp_data,
 #' @references Srivastava, A., Wu, W., Kurtek, S., Klassen, E., Marron, J. S.,
 #'  May 2011. Registration of functional data using fisher-rao metric,
 #'  arXiv:1103.3817v2.
-#' @references Jung, S. L. a. S. (2016). "Combined Analysis of Amplitude and Phase Variations in Functional Data."
-#'        	arXiv:1603.01775.
+#' @references Happ, C., Scheipl, F., Gabriel, A. & Greven, S. A general framework for multivariate functional principal component analysis of amplitude and phase variation. Stat 8, (2019).
+#' @references Ma, Y., Zhou, X. & Wu, W. A stochastic process representation for time warping functions. Comput. Stat. Data Anal. 194, 107941 (2024).
 #' @references Tucker, J. D., Wu, W., Srivastava, A.,
 #'  Generative Models for Function Data using Phase and Amplitude Separation,
 #'  Computational Statistics and Data Analysis (2012), 10.1016/j.csda.2012.12.001.
