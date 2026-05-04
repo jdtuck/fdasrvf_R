@@ -45,7 +45,6 @@ Suggests:
     withr
 Depends:
     R (>= 4.3.0),
-RoxygenNote: 7.3.3
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
@@ -54,3 +53,4 @@ LinkingTo:
     RcppArmadillo
 URL: https://github.com/jdtuck/fdasrvf_R
 BugReports: https://github.com/jdtuck/fdasrvf_R/issues
+Config/roxygen2/version: 8.0.0

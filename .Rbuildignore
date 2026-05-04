@@ -17,3 +17,5 @@ fdasrvf_R.code-workspace
 ^\.github$
 ^codecov\.yml$
 ^README\.Rmd$
+^\.positai$
+^\.claude$
