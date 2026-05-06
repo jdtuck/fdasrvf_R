@@ -1,3 +1,6 @@
+# fdasrvf 2.4.4
+* expose PNS functions 
+
 # fdasrvf 2.4.3
 * bugfixes to ppd
 * add `fasatPNSs2e`
