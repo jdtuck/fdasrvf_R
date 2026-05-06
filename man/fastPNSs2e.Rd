@@ -9,7 +9,7 @@ fastPNSs2e(spheredata, PNS)
 \arguments{
 \item{spheredata}{data on sphere}
 
-\item{pns}{list of PNS structure}
+\item{PNS}{list of PNS structure}
 }
 \value{
 EuclidData euclidean representation

@@ -112,7 +112,7 @@ fastpns <- function (x,
 #' Computes fast PNS sphere to euclidean
 #'
 #' @param spheredata data on sphere
-#' @param pns list of PNS structure
+#' @param PNS list of PNS structure
 #' @return EuclidData euclidean representation
 #' @export
 fastPNSs2e <- function(spheredata, PNS){
