@@ -36,6 +36,17 @@ Enorm <- function(a)
   ) %*% a))))
 }
 
+#' Computes fast PNS decomposition
+#'
+#' @param x data on sphere
+#' @param n.pc number of pc's (default 'Full')
+#' @param sphere.type type of sphere decompistion (default 'seq.test')
+#' @param mean.type type of mean (default 'Frechet')
+#' @param alpha significant level for test (default .1)
+#' @param R the number of bootstrap samples to be evaluated for the sequential test. The default is 100.
+#' @param nlast.small.sphere (default 1)
+#' @param output show output (default `TRUE`)
+#' @return EuclidData euclidean representation
 #' @export
 fastpns <- function (x,
                      n.pc = "Full",
@@ -98,6 +109,11 @@ fastpns <- function (x,
   out
 }
 
+#' Computes fast PNS sphere to euclidean
+#'
+#' @param spheredata data on sphere
+#' @param pns list of PNS structure
+#' @return EuclidData euclidean representation
 #' @export
 fastPNSs2e <- function(spheredata, PNS){
   muhat <- PNS$muhat
@@ -121,6 +137,11 @@ fastPNSs2e <- function(spheredata, PNS){
   return(EuclidData)
 }
 
+#' Computes fast PNS euclidean to sphere
+#'
+#' @param res PNS embedding
+#' @param pns list of PNS structure
+#' @return approx sphere representation
 #' @export
 fastPNSe2s <- function(res , pns) {
   out <- pns
