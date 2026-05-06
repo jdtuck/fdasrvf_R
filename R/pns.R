@@ -36,7 +36,7 @@ Enorm <- function(a)
   ) %*% a))))
 }
 
-
+#' @export
 fastpns <- function (x,
                      n.pc = "Full",
                      sphere.type = "seq.test",
@@ -98,6 +98,7 @@ fastpns <- function (x,
   out
 }
 
+#' @export
 fastPNSs2e <- function(spheredata, PNS){
   muhat <- PNS$muhat
   pca <- PNS$pca
@@ -120,6 +121,7 @@ fastPNSs2e <- function(spheredata, PNS){
   return(EuclidData)
 }
 
+#' @export
 fastPNSe2s <- function(res , pns) {
   out <- pns
   GG <- PNSe2s(res , out$PNS)
