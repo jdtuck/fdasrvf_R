@@ -48,16 +48,6 @@ interparc <- function(t,
                       k = 20,
                       gamma = 1) {
 
-  if (!requireNamespace("mgcv", quietly = TRUE)) {
-    stop(
-      "Package 'mgcv' is required. Install it with:\n",
-      "install.packages('mgcv')",
-      call. = FALSE
-    )
-  }
-
-  library(mgcv)
-
   coords <- list(...)
   n_dim <- length(coords)
 
@@ -101,7 +91,7 @@ interparc <- function(t,
 
   for (j in seq_len(n_dim)) {
 
-    smooth_fits[[j]] <- gam(
+    smooth_fits[[j]] <- mgcv::gam(
       points[, j] ~ s(path_param, bs = "cc", k = k),
       method = "REML",
       gamma = gamma
@@ -117,7 +107,7 @@ interparc <- function(t,
   fitted_path <- sapply(
     smooth_fits,
     function(fit)
-      predict(fit, newdata = data.frame(path_param = fit_param))
+      stats::predict(fit, newdata = data.frame(path_param = fit_param))
   )
 
   segment_lengths <- sqrt(rowSums(diff(fitted_path)^2))
@@ -129,7 +119,7 @@ interparc <- function(t,
   ## Convert desired arc-length positions into spline parameter values
   ## ----------------------------------------------------
 
-  sample_param <- approx(
+  sample_param <- stats::approx(
     x = arc_length,
     y = fit_param,
     xout = t,
@@ -143,7 +133,7 @@ interparc <- function(t,
   result <- sapply(
     smooth_fits,
     function(fit)
-      predict(fit, newdata = data.frame(path_param = sample_param))
+      stats::predict(fit, newdata = data.frame(path_param = sample_param))
   )
 
   colnames(result) <- paste0("V", seq_len(n_dim))

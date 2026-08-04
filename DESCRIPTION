@@ -28,6 +28,7 @@ Imports:
     fields,
     foreach,
     lpSolve,
+    mgcv,
     Matrix,
     mvtnorm,
     Rcpp,
@@ -37,7 +38,6 @@ Imports:
     viridisLite
 Suggests: 
     covr,
-    mgcv,
     interp,
     plot3D,
     plot3Drgl,
