@@ -37,6 +37,7 @@ Imports:
     viridisLite
 Suggests: 
     covr,
+    mgcv,
     interp,
     plot3D,
     plot3Drgl,
