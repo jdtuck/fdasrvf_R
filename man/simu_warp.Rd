@@ -12,7 +12,7 @@ the data set \code{simu_data}.
 }
 }
 \usage{
-data(simu_warp)
+simu_warp
 }
 \description{
 A functional dataset where the individual functions are given by: \eqn{y_i(t)
