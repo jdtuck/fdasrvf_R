@@ -1,5 +1,6 @@
 # fdasrvf (development version)
 * add `interparc` function for downsampling closed curves
+* fix penalties in rbfgs
 
 # fdasrvf 2.4.4
 * expose PNS functions 
