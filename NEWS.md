@@ -1,6 +1,10 @@
 # fdasrvf (development version)
 * add `interparc` function for downsampling closed curves
 * fix penalties in rbfgs
+* `optimum.reparam` now applies the selected penalty (`"none"`, `"roughness"`,
+  `"l2gam"`, `"l2psi"`, `"geodesic"`) for the `"DP"` method as well
+* harden the dynamic programming C code against bad inputs and failed
+  allocations
 
 # fdasrvf 2.4.4
 * expose PNS functions 

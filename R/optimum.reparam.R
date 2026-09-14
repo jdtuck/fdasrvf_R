@@ -16,8 +16,11 @@
 #' @param lambda A numeric value specifying the amount of warping. Defaults to
 #'   `0.0`.
 #' @param pen alignment penalty (default="roughness") options are
-#'   second derivative ("roughness"), geodesic distance from id ("geodesic"), and
-#'   norm from id ("l2gam"), srvf norm from id ("l2psi")
+#'   no penalty ("none"), second derivative ("roughness"), geodesic distance
+#'   from id ("geodesic"), norm from id ("l2gam"), and srvf norm from id
+#'   ("l2psi"). The penalty is weighted by `lambda`, so it has no effect when
+#'   `lambda = 0`. It is used by the `"DP"`, `"DPo"`, and `"RBFGS"` methods;
+#'   `"SIMUL"` ignores it.
 #' @param method A string specifying the optimization method. Choices are
 #'   `"DP"`, `"DPo"`, `"SIMUL"`, or `"RBFGS"`. Defaults to `"DP"`.
 #' @param f1o A numeric vector of size `n_dimensions` specifying the value of
@@ -49,10 +52,17 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
                             f1o = 0.0,
                             f2o = 0.0,
 														nbhd_dim=7) {
-	pen1 = pen
-  pen <- pmatch(pen, c("roughness", "l2gam", "l2psi", "geodesic")) # 1 - roughness, 2 - l2gam, 3 - l2psi, 4 - geodesic
+  # The two solver families number the penalties differently: the DP code
+  # (DPQ2, DPQ) takes 0 = none, 1 = roughness, 2 = l2gam, 3 = l2psi,
+  # 4 = geodesic, while rlbfgs has no "none" and takes 0 = roughness,
+  # 1 = l2gam, 2 = l2psi, 3 = geodesic
+  pen <- pmatch(pen, c("none", "roughness", "l2gam", "l2psi", "geodesic"))
 	if (is.na(pen))
     stop("invalid penalty selection")
+  pen_dp <- pen - 1
+  pen_rbfgs <- max(pen_dp - 1, 0)
+  # rlbfgs has no "none" code, but a zero weight is the same thing
+  lambda_rbfgs <- if (pen_dp == 0) 0 else lambda
 
   M <- length(T1)
   stopifnot(length(T2) == M)
@@ -80,13 +90,13 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
     method,
     DP = {
       ret <- DPQ2(Q1, T1, Q2, T2, L, M, M, T1, T2, M, M, lambda,
-                  nbhd_dim)
+                  nbhd_dim, pen_dp)
       G <- ret$G[1:ret$size]
       Tf <- ret$T[1:ret$size]
       gam0 <- stats::approx(Tf, G, xout = T2)$y
     },
     DPo = {
-      gam0 <- DPQ(Q2, Q1, L, M, lambda, pen, 0)
+      gam0 <- DPQ(Q2, Q1, L, M, lambda, pen_dp, 0)
     },
     SIMUL = {
       if (lambda > 0)
@@ -101,7 +111,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
     },
     RBFGS = {
       time1 <- seq(0, 1, length.out=length(Q1))
-      gam0 <- rlbfgs(Q1, Q2, time1, 30, lambda, pen - 1)
+      gam0 <- rlbfgs(Q1, Q2, time1, 30, lambda_rbfgs, pen_rbfgs)
       gam0 <- c(gam0)
     }
   )
