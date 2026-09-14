@@ -8,8 +8,12 @@
 #' @param time sample points of functions
 #' @param lambda controls amount of warping (default = 0)
 #' @param pen alignment penalty (default="roughness") options are
-#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and
-#' norm from id ("norm")
+#' second derivative ("roughness"), \eqn{L^2} distance of the warping function
+#' from id ("l2gam"), \eqn{L^2} distance of the SRVF of the warping function
+#' from that of id ("l2psi"), geodesic distance from id ("geodesic"), and no
+#' penalty ("none"). "norm" is kept for backward compatibility as an alias for
+#' "l2gam". The penalty is weighted by `lambda`, so it has no effect when
+#' `lambda = 0`.
 #' @param method controls which optimization method (default="DP") options are
 #' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
 #' ("RBFGS"), Simultaneous Alignment ("SIMUL"), Dirichlet Bayesian ("dBayes"),
@@ -40,6 +44,7 @@
 pair_align_functions <- function(f1, f2, time, lambda=0, pen="roughness",
 																 method="DP", w=0.01, iter=2000){
 
+  pen <- penalty_alias(pen)
   q1 = f_to_srvf(f1, time)
   q2 = f_to_srvf(f2, time)
   if (method=="dBayes"){

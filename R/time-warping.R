@@ -91,10 +91,7 @@ time_warping <- function(f,
                          cores = -1,
                          optim_method = c("DP", "DPo", "DP2", "RBFGS"),
                          max_iter = 20L) {
-  penalty_method <- rlang::arg_match(penalty_method)
-  # "norm" is the older name for "l2gam", which optimum.reparam() expects
-  if (penalty_method == "norm")
-    penalty_method <- "l2gam"
+  penalty_method <- penalty_alias(rlang::arg_match(penalty_method))
   centroid_type <- rlang::arg_match(centroid_type)
   optim_method <- rlang::arg_match(optim_method)
 
