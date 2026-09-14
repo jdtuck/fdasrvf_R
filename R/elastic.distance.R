@@ -9,8 +9,12 @@
 #'    \eqn{M}
 #' @param lambda controls amount of warping (default = `0`)
 #' @param pen alignment penalty (default = `"roughness"`) options are
-#' second derivative (`"roughness"`), geodesic distance from id (`"geodesic"`),
-#' and norm from id (`"norm"`)
+#' second derivative (`"roughness"`), \eqn{L^2} distance of the warping
+#' function from id (`"l2gam"`), \eqn{L^2} distance of the SRVF of the warping
+#' function from that of id (`"l2psi"`), geodesic distance from id
+#' (`"geodesic"`), and no penalty (`"none"`). `"norm"` is kept for backward
+#' compatibility as an alias for `"l2gam"`. The penalty is weighted by
+#' `lambda`, so it has no effect when `lambda = 0`.
 #' @return Returns a list containing \item{Dy}{amplitude distance}
 #' \item{Dx}{phase distance}
 #' @keywords distances
@@ -31,7 +35,7 @@
 elastic.distance <- function(f1, f2, time, lambda = 0, pen="roughness"){
     q1 <- f_to_srvf(f1,time)
     q2 <- f_to_srvf(f2,time)
-    gam <- optimum.reparam(q1,time,q2,time,lambda,pen)
+    gam <- optimum.reparam(q1,time,q2,time,lambda,penalty_alias(pen))
     fw <- warp_f_gamma(f2,time,gam)
     qw <- warp_q_gamma(q2,time,gam)
     Dy <- sqrt(trapz(time, (q1-qw)^2))

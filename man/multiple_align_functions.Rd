@@ -31,8 +31,12 @@ multiple_align_functions(
 \item{lambda}{controls the elasticity (default = 0)}
 
 \item{pen}{alignment penalty (default="roughness") options are
-second derivative ("roughness"), geodesic distance from id ("geodesic"), and
-norm from id ("norm")}
+second derivative ("roughness"), \eqn{L^2} distance of the warping function
+from id ("l2gam"), \eqn{L^2} distance of the SRVF of the warping function
+from that of id ("l2psi"), geodesic distance from id ("geodesic"), and no
+penalty ("none"). "norm" is kept for backward compatibility as an alias for
+"l2gam". The penalty is weighted by \code{lambda}, so it has no effect when
+\code{lambda = 0}.}
 
 \item{showplot}{shows plots of functions (default = T)}
 

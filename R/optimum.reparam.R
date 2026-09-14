@@ -118,3 +118,9 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
 
   (gam0 - gam0[1]) / (gam0[length(gam0)] - gam0[1])  # slight change on scale
 }
+
+# "norm" is the older name for the "l2gam" penalty, which is the name
+# optimum.reparam() expects; any other value is returned unchanged
+penalty_alias <- function(pen) {
+  if (identical(pen, "norm")) "l2gam" else pen
+}

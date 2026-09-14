@@ -9,6 +9,10 @@
   (`"roughness"`, `"l2gam"`, `"l2psi"`, `"geodesic"`, `"none"`);
   `penalty_method = "norm"`, which always failed with "invalid penalty
   selection", is now an alias for `"l2gam"`
+* `pair_align_functions`, `multiple_align_functions`, `elastic.distance` and
+  `elastic.depth` now also accept `pen = "norm"` as an alias for `"l2gam"`
+  instead of failing with "invalid penalty selection", and document every
+  `optimum.reparam` penalty
 * `predict` for `elastic.pcr.regression`, `elastic.lpcr.regression` and
   `elastic.mlpcr.regression` fits no longer fails when `newdata` is supplied;
   new functions are now aligned with the `lambda`, penalty and optimization

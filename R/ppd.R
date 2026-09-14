@@ -66,11 +66,7 @@ ppd <- function(f,
                 optim_method = c("DP", "DPo", "DP2", "RBFGS"),
                 max_iter = 20L){
 
-  penalty_method <- rlang::arg_match(penalty_method)
-  # "norm" is the older name for "l2gam"; multiple_align_functions() passes
-  # the penalty straight to optimum.reparam(), which only knows "l2gam"
-  if (penalty_method == "norm")
-    penalty_method <- "l2gam"
+  penalty_method <- penalty_alias(rlang::arg_match(penalty_method))
   centroid_type <- rlang::arg_match(centroid_type)
   optim_method <- rlang::arg_match(optim_method)
 
