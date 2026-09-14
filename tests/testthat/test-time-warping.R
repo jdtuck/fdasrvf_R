@@ -29,3 +29,26 @@ test_that("The function `time_warping()` works", {
                                   "parallel", "optim_method", "max_iter"))
   expect_snapshot(out)
 })
+
+pens <- c("roughness", "l2gam", "l2psi", "geodesic", "none", "norm")
+
+test_that("`time_warping()` runs with every penalty method", {
+  for (pen in pens) {
+    out <- time_warping(f = simu_data$f, time = simu_data$time, lambda = 0.01,
+                        penalty_method = pen, max_iter = 1)
+    expect_s3_class(out, "fdawarp")
+    expect_equal(dim(out$warping_functions), c(101, 21))
+    expect_true(all(is.finite(out$warping_functions)))
+  }
+})
+
+test_that("`time_warping()` treats penalty 'norm' as 'l2gam'", {
+  out_norm <- time_warping(f = simu_data$f, time = simu_data$time,
+                           lambda = 0.01, penalty_method = "norm",
+                           max_iter = 1)
+  out_l2gam <- time_warping(f = simu_data$f, time = simu_data$time,
+                            lambda = 0.01, penalty_method = "l2gam",
+                            max_iter = 1)
+  expect_equal(out_norm$call$penalty_method, "l2gam")
+  expect_equal(out_norm$warping_functions, out_l2gam$warping_functions)
+})

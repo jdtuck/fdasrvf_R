@@ -15,9 +15,13 @@
 #' @param mu vector of size \eqn{N} that f is aligned to, Defaults to `NaN`
 #' @param penalty_method A string specifying the penalty term used in the
 #'   formulation of the cost function to minimize for alignment. Choices are
-#'   `"roughness"` which uses the norm of the second derivative, `"geodesic"`
-#'   which uses the geodesic distance to the identity and `"norm"` which uses
-#'   the Euclidean distance to the identity. Defaults to `"roughness"`.
+#'   `"roughness"` which uses the norm of the second derivative, `"l2gam"`
+#'   which uses the \eqn{L^2} distance of the warping function to the identity,
+#'   `"l2psi"` which uses the \eqn{L^2} distance of the SRVF of the warping
+#'   function to that of the identity, `"geodesic"` which uses the geodesic
+#'   distance to the identity, and `"none"` which applies no penalty. `"norm"`
+#'   is kept for backward compatibility as an alias for `"l2gam"`. Defaults to
+#'   `"roughness"`.
 #' @param centroid_type A string specifying the type of centroid to align to.
 #'   Choices are `"mean"` or `"median"`. Defaults to `"mean"`.
 #' @param center_warpings A boolean specifying whether to center the estimated
@@ -51,7 +55,8 @@ ppd <- function(f,
                 pt = 0.15,
                 srvf = FALSE,
                 mu = NaN,
-                penalty_method = c("roughness", "geodesic", "norm"),
+                penalty_method = c("roughness", "l2gam", "l2psi",
+                                   "geodesic", "none", "norm"),
                 centroid_type = c("mean", "median"),
                 center_warpings = TRUE,
                 smooth_data = FALSE,
@@ -62,6 +67,10 @@ ppd <- function(f,
                 max_iter = 20L){
 
   penalty_method <- rlang::arg_match(penalty_method)
+  # "norm" is the older name for "l2gam"; multiple_align_functions() passes
+  # the penalty straight to optimum.reparam(), which only knows "l2gam"
+  if (penalty_method == "norm")
+    penalty_method <- "l2gam"
   centroid_type <- rlang::arg_match(centroid_type)
   optim_method <- rlang::arg_match(optim_method)
 

@@ -8,7 +8,7 @@ time_warping(
   f,
   time,
   lambda = 0,
-  penalty_method = c("roughness", "geodesic", "norm"),
+  penalty_method = c("roughness", "l2gam", "l2psi", "geodesic", "none", "norm"),
   centroid_type = c("mean", "median"),
   center_warpings = TRUE,
   smooth_data = FALSE,
@@ -30,9 +30,14 @@ which all curves \code{f} have been observed.}
 
 \item{penalty_method}{A string specifying the penalty term used in the
 formulation of the cost function to minimize for alignment. Choices are
-\code{"roughness"} which uses the norm of the second derivative, \code{"geodesic"}
-which uses the geodesic distance to the identity and \code{"norm"} which uses
-the Euclidean distance to the identity. Defaults to \code{"roughness"}.}
+\code{"roughness"} which uses the norm of the second derivative, \code{"l2gam"}
+which uses the \eqn{L^2} distance of the warping function to the identity,
+\code{"l2psi"} which uses the \eqn{L^2} distance of the SRVF of the warping
+function to that of the identity, \code{"geodesic"} which uses the geodesic
+distance to the identity, and \code{"none"} which applies no penalty. \code{"norm"}
+is kept for backward compatibility as an alias for \code{"l2gam"}. The penalty
+is weighted by \code{lambda}, so it has no effect when \code{lambda = 0}. Defaults
+to \code{"roughness"}.}
 
 \item{centroid_type}{A string specifying the type of centroid to align to.
 Choices are \code{"mean"} or \code{"median"}. Defaults to \code{"mean"}.}
