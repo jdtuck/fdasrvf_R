@@ -45,11 +45,11 @@ const int Nbrs[NNBRS][2] = {
 int xycompare(const void *x1, const void *x2);
 double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j, int n, int scl, double lam, int pen);
 void thomas(double *x, const double *a, const double *b, double *c, int n);
-void spline(double *D, const double *y, int n);
+int spline(double *D, const double *y, int n);
 void lookupspline(double *t, int *k, double dist, double len, int n);
 double evalspline(double t, const double D[2], const double y[2]);
 
-void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *Disp, double *yy) {
+int DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *Disp, double *yy) {
 	int i, j, k, l, n, M, N, Eidx, Fidx, Ftmp, Fmin, Num, *Path, *xy, x, y, cnt, pen=1;
 	const int scl = 5;
 	double *q1L, *q2L, *D1, *D2, *tmp1, *tmp2, *E, Etmp, Emin, t, a, b, lam=0;
@@ -61,10 +61,16 @@ void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *
 
 	M = scl*(N-1)+1;
 
-	q1L = (double*)malloc(n*M*sizeof(double));
-	q2L = (double*)malloc(n*M*sizeof(double));
+	q1L = (double*)malloc((size_t)n*M*sizeof(double));
+	q2L = (double*)malloc((size_t)n*M*sizeof(double));
 
-	D1 = (double*)malloc(4*N*sizeof(double));
+	D1 = (double*)malloc(4*(size_t)N*sizeof(double));
+
+	if (!q1L || !q2L || !D1) {
+		free(q1L); free(q2L); free(D1);
+		return -1;
+	}
+
 	tmp1 = D1 + N;
 	D2 = D1 + 2*N;
 	tmp2 = D2 + N;
@@ -76,8 +82,10 @@ void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *
 			tmp2[j] = q2[n*j + i];
 		}
 
-		spline(D1, tmp1, N);
-		spline(D2, tmp2, N);
+		if (spline(D1, tmp1, N) || spline(D2, tmp2, N)) {
+			free(q1L); free(q2L); free(D1);
+			return -1;
+		}
 
 		// for each point in fine discretization
 		for (j = 0; j < M; ++j) {
@@ -89,8 +97,13 @@ void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *
 
 	free(D1);
 
-	E = (double*)calloc(N*N, sizeof(double));
-	Path = (int*)malloc(2*N*N*sizeof(int));
+	E = (double*)calloc((size_t)N*N, sizeof(double));
+	Path = (int*)malloc(2*(size_t)N*N*sizeof(int));
+
+	if (!E || !Path) {
+		free(E); free(Path); free(q1L); free(q2L);
+		return -1;
+	}
 
 	for (i = 0; i < N; ++i) {
 		E[N*i + 0] = 50000000000;
@@ -128,9 +141,16 @@ void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *
 	}
 
 	free(E);
+	free(q1L);
 	free(q2L);
 
-	xy = (int*)malloc(2*N*sizeof(int));
+	xy = (int*)malloc(2*(size_t)N*sizeof(int));
+
+	if (!xy) {
+		free(Path);
+		return -1;
+	}
+
 	xy[2*0 + 0] = N-1;
 	xy[2*0 + 1] = N-1;
 
@@ -184,6 +204,8 @@ void DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *
 	}
 
 	free(xy);
+
+	return 0;
 }
 
 int xycompare(const void *x1, const void *x2) {
@@ -191,8 +213,36 @@ int xycompare(const void *x1, const void *x2) {
 }
 
 double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j, int n, int scl, double lam, int pen) {
-	double m = (j-l)/(double)(i-k), sqrtm = sqrt(m), E = 0, y, tmp, tmp_pen, ip, fp, q1dotq2;
+	double m = (j-l)/(double)(i-k), sqrtm = sqrt(m), E = 0, y, tmp, tmp_pen = 0, ip, fp, q1dotq2;
 	int x, idx, d, iL=i*scl, kL=k*scl, lL=l*scl;
+
+	// the penalty only depends on the slope m, so evaluate it once per call.
+	// pen == 0 leaves tmp_pen at 0, i.e. no penalty.
+	switch (pen) {
+		// roughness
+		case 1:
+			tmp_pen = (1-sqrtm)*(1-sqrtm);
+			break;
+		// l2gam
+		case 2:
+			tmp_pen = (m - 1)*(m - 1);
+			break;
+		// l2psi
+		case 3:
+			tmp_pen = (sqrtm - 1)*(sqrtm - 1);
+			break;
+		// geodesic
+		case 4:
+			q1dotq2 = sqrtm;
+			if (q1dotq2 > 1){
+				q1dotq2 = 1;
+			}
+			else if (q1dotq2 < -1){
+				q1dotq2 = -1;
+			}
+			tmp_pen = acos(q1dotq2)*acos(q1dotq2);
+			break;
+	}
 
 	for (x = kL; x <= iL; ++x) {
 		y = (x-kL)*m + lL;
@@ -200,30 +250,6 @@ double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j,
 		idx = (int)(ip + (fp >= 0.5));
 
 		for (d = 0; d < n; ++d) {
-			// roughness
-			if (pen == 1){
-				tmp_pen = (1-sqrtm)*(1-sqrtm);
-			}
-			// l2gam
-			if (pen == 2){
-				tmp_pen = (m - 1)*(m - 1);
-			}
-			// l2psi
-			if (pen == 3){
-				tmp_pen = (sqrtm - 1)*(sqrtm - 1);
-			}
-			// geodesic
-			if (pen == 4){
-				q1dotq2 = sqrtm;
-				if (q1dotq2 > 1){
-					q1dotq2 = 1;
-				}
-				else if (q1dotq2 < -1){
-					q1dotq2 = -1;
-				}
-				tmp_pen = acos(q1dotq2)*acos(q1dotq2);
-			}
-			
 			tmp = q1L[n*x + d] - sqrtm*q2L[n*idx + d];
 			E += (tmp*tmp + lam*tmp_pen);
 		}
@@ -252,11 +278,16 @@ void thomas(double *x, const double *a, const double *b, double *c, int n) {
 
 // input:  y is array to interpolate, n is array length
 // output: D will be array of spline data
-void spline(double *D, const double *y, int n) {
+// returns 0 on success, -1 if the scratch buffer could not be allocated
+int spline(double *D, const double *y, int n) {
 	int i;
 	double *a, *b, *c;
 
-	a = (double*)malloc(3*n*sizeof(double));
+	a = (double*)malloc(3*(size_t)n*sizeof(double));
+
+	if (!a)
+		return -1;
+
 	b = a + n;
 	c = b + n;
 
@@ -293,6 +324,8 @@ void spline(double *D, const double *y, int n) {
 	thomas(D, a, b, c, n);
 
 	free(a);
+
+	return 0;
 }
 
 void lookupspline(double *t, int *k, double dist, double len, int n) {

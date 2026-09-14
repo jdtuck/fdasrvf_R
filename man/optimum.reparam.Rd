@@ -36,8 +36,11 @@ the 1st SRSF is evaluated.}
 \code{0.0}.}
 
 \item{pen}{alignment penalty (default="roughness") options are
-second derivative ("roughness"), geodesic distance from id ("geodesic"), and
-norm from id ("l2gam"), srvf norm from id ("l2psi")}
+no penalty ("none"), second derivative ("roughness"), geodesic distance
+from id ("geodesic"), norm from id ("l2gam"), and srvf norm from id
+("l2psi"). The penalty is weighted by \code{lambda}, so it has no effect when
+\code{lambda = 0}. It is used by the \code{"DP"}, \code{"DPo"}, and \code{"RBFGS"} methods;
+\code{"SIMUL"} ignores it.}
 
 \item{method}{A string specifying the optimization method. Choices are
 \code{"DP"}, \code{"DPo"}, \code{"SIMUL"}, or \code{"RBFGS"}. Defaults to \code{"DP"}.}

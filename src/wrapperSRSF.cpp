@@ -34,14 +34,32 @@ Rcpp::List DPQ2(Rcpp::NumericVector Q1,
                 int n1v,
                 int n2v,
                 double lam1,
-                int nbhd_dim)
+                int nbhd_dim,
+                int pen = 1)
 {
-  Rcpp::NumericVector G(n1);
-  Rcpp::NumericVector T(n2);
+  // 0 = no penalty, 1 = roughness, 2 = l2gam, 3 = l2psi, 4 = geodesic
+  if (pen < 0 || pen > 4)
+    Rcpp::stop("pen must be one of 0, 1, 2, 3 or 4.");
+  if (nbhd_dim < 1 || nbhd_dim > 65535)
+    Rcpp::stop("nbhd_dim must be between 1 and 65535.");
+  if (m1 < 1 || n1 < 2 || n2 < 2 || n1v < 2 || n2v < 2)
+    Rcpp::stop("m1 must be positive and n1, n2, n1v and n2v at least two.");
+  if (T1.size() < n1 || T2.size() < n2 || tv1.size() < n1v || tv2.size() < n2v)
+    Rcpp::stop("T1, T2, tv1 and tv2 are shorter than n1, n2, n1v and n2v.");
+  // dp_edge_weight() reads Q columns 0 .. n-2
+  if (Q1.size() < (R_xlen_t)m1 * (n1 - 1) || Q2.size() < (R_xlen_t)m1 * (n2 - 1))
+    Rcpp::stop("Q1 and Q2 must have at least m1*(n1-1) and m1*(n2-1) elements.");
+
+  // dp_build_gamma() needs room for max(n1v, n2v) points
+  int Gsize = n1v > n2v ? n1v : n2v;
+  Rcpp::NumericVector G(Gsize);
+  Rcpp::NumericVector T(Gsize);
   int size = 0;
-  DynamicProgrammingQ2(Q1.begin(), T1.begin(), Q2.begin(), T2.begin(), &m1, &n1,
-                       &n2, tv1.begin(), tv2.begin(), &n1v, &n2v, G.begin(),
-                       T.begin(), &size, &lam1, &nbhd_dim);
+  if (DynamicProgrammingQ2(Q1.begin(), T1.begin(), Q2.begin(), T2.begin(), &m1,
+                           &n1, &n2, tv1.begin(), tv2.begin(), &n1v, &n2v,
+                           G.begin(), T.begin(), &size, &lam1, &nbhd_dim,
+                           &pen) != 0)
+    Rcpp::stop("DynamicProgrammingQ2: out of memory.");
 
   Rcpp::List ret;
   ret["G"] = G;
@@ -58,8 +76,17 @@ Rcpp::NumericVector DPQ(Rcpp::NumericVector Q1,
                         double lam1,
                         int pen1,
                         int Disp) {
+  // 0 = no penalty, 1 = roughness, 2 = l2gam, 3 = l2psi, 4 = geodesic
+  if (pen1 < 0 || pen1 > 4)
+    Rcpp::stop("pen1 must be one of 0, 1, 2, 3 or 4.");
+  if (n1 < 1 || N1 < 2)
+    Rcpp::stop("n1 must be positive and N1 at least two.");
+  if (Q1.size() < (R_xlen_t)n1 * N1 || Q2.size() < (R_xlen_t)n1 * N1)
+    Rcpp::stop("Q1 and Q2 must each have at least n1*N1 elements.");
+
   Rcpp::NumericVector out(N1);
-  DP(Q1.begin(), Q2.begin(), &n1, &N1, &lam1, &pen1, &Disp, out.begin());
+  if (DP(Q1.begin(), Q2.begin(), &n1, &N1, &lam1, &pen1, &Disp, out.begin()) != 0)
+    Rcpp::stop("DP: out of memory.");
   return(out);
 }
 
