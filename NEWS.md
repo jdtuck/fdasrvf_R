@@ -5,6 +5,10 @@
   `"l2gam"`, `"l2psi"`, `"geodesic"`) for the `"DP"` method as well
 * harden the dynamic programming C code against bad inputs and failed
   allocations
+* `time_warping` and `ppd` now accept every `optimum.reparam` penalty
+  (`"roughness"`, `"l2gam"`, `"l2psi"`, `"geodesic"`, `"none"`);
+  `penalty_method = "norm"`, which always failed with "invalid penalty
+  selection", is now an alias for `"l2gam"`
 
 # fdasrvf 2.4.4
 * expose PNS functions 
