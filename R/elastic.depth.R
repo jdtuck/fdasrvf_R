@@ -8,8 +8,12 @@
 #' @param time vector of length \eqn{M}, specifying the sample points of functions
 #' @param lambda controls amount of warping (default = `0`)
 #' @param pen alignment penalty (default = `"roughness"`) options are
-#' second derivative (`"roughness"`), geodesic distance from id (`"geodesic"`),
-#' and norm from id (`"norm"`)
+#' second derivative (`"roughness"`), \eqn{L^2} distance of the warping
+#' function from id (`"l2gam"`), \eqn{L^2} distance of the SRVF of the warping
+#' function from that of id (`"l2psi"`), geodesic distance from id
+#' (`"geodesic"`), and no penalty (`"none"`). `"norm"` is kept for backward
+#' compatibility as an alias for `"l2gam"`. The penalty is weighted by
+#' `lambda`, so it has no effect when `lambda = 0`.
 #' @param parallel run computation in parallel (default = `TRUE`)
 #' @return Returns a list containing \item{amp}{amplitude depth}
 #' \item{phase}{phase depth}

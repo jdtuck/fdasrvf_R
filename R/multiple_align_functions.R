@@ -8,8 +8,12 @@
 #' @param mu vector of size \eqn{N} that f is aligned to
 #' @param lambda controls the elasticity (default = 0)
 #' @param pen alignment penalty (default="roughness") options are
-#' second derivative ("roughness"), geodesic distance from id ("geodesic"), and
-#' norm from id ("norm")
+#' second derivative ("roughness"), \eqn{L^2} distance of the warping function
+#' from id ("l2gam"), \eqn{L^2} distance of the SRVF of the warping function
+#' from that of id ("l2psi"), geodesic distance from id ("geodesic"), and no
+#' penalty ("none"). "norm" is kept for backward compatibility as an alias for
+#' "l2gam". The penalty is weighted by `lambda`, so it has no effect when
+#' `lambda = 0`.
 #' @param showplot shows plots of functions (default = T)
 #' @param smooth_data smooth data using box filter (default = F)
 #' @param sparam number of times to apply box filter (default = 25)
@@ -53,6 +57,7 @@ multiple_align_functions <- function(f,
                                      MaxItr = 20,
                                      iter = 2000,
                                      verbose = TRUE) {
+  pen <- penalty_alias(pen)
   if (parallel) {
     if (cores==-1){
       cores = max(parallel::detectCores() - 1, 1)

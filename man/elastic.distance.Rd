@@ -17,8 +17,12 @@ elastic.distance(f1, f2, time, lambda = 0, pen = "roughness")
 \item{lambda}{controls amount of warping (default = \code{0})}
 
 \item{pen}{alignment penalty (default = \code{"roughness"}) options are
-second derivative (\code{"roughness"}), geodesic distance from id (\code{"geodesic"}),
-and norm from id (\code{"norm"})}
+second derivative (\code{"roughness"}), \eqn{L^2} distance of the warping
+function from id (\code{"l2gam"}), \eqn{L^2} distance of the SRVF of the warping
+function from that of id (\code{"l2psi"}), geodesic distance from id
+(\code{"geodesic"}), and no penalty (\code{"none"}). \code{"norm"} is kept for backward
+compatibility as an alias for \code{"l2gam"}. The penalty is weighted by
+\code{lambda}, so it has no effect when \code{lambda = 0}.}
 }
 \value{
 Returns a list containing \item{Dy}{amplitude distance}
