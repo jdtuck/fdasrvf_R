@@ -113,6 +113,8 @@ export(warp_srvf)
 importFrom(Rcpp,sourceCpp)
 importFrom(coda,effectiveSize)
 importFrom(foreach,"%dopar%")
-importFrom(graphics,boxplot)
-importFrom(graphics,plot)
+importFrom(graphics,
+  boxplot,
+  plot
+)
 useDynLib(fdasrvf, .registration = TRUE)

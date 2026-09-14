@@ -54,4 +54,4 @@ LinkingTo:
     RcppArmadillo
 URL: https://github.com/jdtuck/fdasrvf_R
 BugReports: https://github.com/jdtuck/fdasrvf_R/issues
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
