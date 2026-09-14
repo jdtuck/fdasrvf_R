@@ -89,7 +89,7 @@ time_warping <- function(f,
                          sparam = 25L,
                          parallel = FALSE,
                          cores = -1,
-                         optim_method = c("DP", "DPo", "DP2", "RBFGS"),
+                         optim_method = c("DP", "DPo", "RBFGS"),
                          max_iter = 20L) {
   penalty_method <- penalty_alias(rlang::arg_match(penalty_method))
   centroid_type <- rlang::arg_match(centroid_type)

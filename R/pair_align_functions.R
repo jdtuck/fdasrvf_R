@@ -15,9 +15,9 @@
 #' "l2gam". The penalty is weighted by `lambda`, so it has no effect when
 #' `lambda = 0`.
 #' @param method controls which optimization method (default="DP") options are
-#' Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-#' ("RBFGS"), Simultaneous Alignment ("SIMUL"), Dirichlet Bayesian ("dBayes"),
-#' and Expo-Map Bayesian ("expBayes")
+#' Dynamic Programming ("DP"), the original Dynamic Programming implementation
+#' ("DPo"), Riemannian BFGS ("RBFGS"), Simultaneous Alignment ("SIMUL"),
+#' Dirichlet Bayesian ("dBayes"), and Expo-Map Bayesian ("expBayes")
 #' @param w controls LRBFGS (default = 0.01)
 #' @param iter number of mcmc iterations for mcmc method (default 2000)
 #' @return Returns a list containing \item{f2tilde}{aligned f2}

@@ -13,6 +13,12 @@
   `elastic.depth` now also accept `pen = "norm"` as an alias for `"l2gam"`
   instead of failing with "invalid penalty selection", and document every
   `optimum.reparam` penalty
+* `time_warping` and `ppd` no longer list `optim_method = "DP2"`: its
+  coordinate-descent solver was removed from `optimum.reparam` in 2.1.2, so
+  the option always failed partway through with "'arg' should be one of ...".
+  It is now rejected up front; use `"DP"`, `"DPo"` or `"RBFGS"`. The
+  `pair_align_functions` and `multiple_align_functions` docs no longer
+  mention `"DP2"` either
 * `predict` for `elastic.pcr.regression`, `elastic.lpcr.regression` and
   `elastic.mlpcr.regression` fits no longer fails when `newdata` is supplied;
   new functions are now aligned with the `lambda`, penalty and optimization

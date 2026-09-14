@@ -52,3 +52,34 @@ test_that("`time_warping()` treats penalty 'norm' as 'l2gam'", {
   expect_equal(out_norm$call$penalty_method, "l2gam")
   expect_equal(out_norm$warping_functions, out_l2gam$warping_functions)
 })
+
+test_that("`time_warping()` and `ppd()` only offer methods `optimum.reparam()` accepts", {
+  reparam_methods <- eval(formals(optimum.reparam)$method)
+  expect_true(all(eval(formals(time_warping)$optim_method) %in% reparam_methods))
+  expect_true(all(eval(formals(ppd)$optim_method) %in% reparam_methods))
+})
+
+test_that("every `time_warping()` optim_method runs and is stored for reuse", {
+  for (m in eval(formals(time_warping)$optim_method)) {
+    out <- time_warping(f = simu_data$f, time = simu_data$time,
+                        optim_method = m, max_iter = 1)
+    expect_equal(out$call$optim_method, m)
+    expect_true(all(is.finite(out$warping_functions)))
+    # predict methods pass the stored method straight to optimum.reparam()
+    gam <- optimum.reparam(out$mqn, out$time, out$qn[, 1], out$time,
+                           method = out$call$optim_method)
+    expect_true(all(is.finite(gam)))
+  }
+})
+
+test_that("`time_warping()` and `ppd()` reject the removed 'DP2' method up front", {
+  expect_error(
+    time_warping(f = simu_data$f, time = simu_data$time,
+                 optim_method = "DP2", max_iter = 1),
+    class = "rlang_error"
+  )
+  expect_error(
+    ppd(simu_data$f, simu_data$time, parallel = FALSE, optim_method = "DP2"),
+    class = "rlang_error"
+  )
+})

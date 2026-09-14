@@ -49,7 +49,7 @@ penalty ("none"). "norm" is kept for backward compatibility as an alias for
 
 \item{cores}{number of cores in parallel (default=-1, means all cores)}
 
-\item{omethod}{optimization method (DP,DP2,RBFGS,dBayes,expBayes)}
+\item{omethod}{optimization method (DP,DPo,SIMUL,RBFGS,dBayes,expBayes)}
 
 \item{MaxItr}{maximum number of iterations}
 
