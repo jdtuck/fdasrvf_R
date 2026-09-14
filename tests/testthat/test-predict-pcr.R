@@ -15,6 +15,17 @@ capture_reparam_args <- function(code) {
   calls
 }
 
+# elastic.lpcr.regression() and elastic.mlpcr.regression() always align with
+# `parallel = TRUE`, which spawns more processes than R CMD check allows, so
+# align serially instead
+local_serial_time_warping <- function(env = parent.frame()) {
+  orig <- time_warping
+  local_mocked_bindings(
+    time_warping = function(f, time, ..., parallel) orig(f, time, ...),
+    .env = env
+  )
+}
+
 set.seed(1)
 y_pcr <- colMeans(f) + stats::rnorm(ncol(f), sd = 0.1)
 fit_pcr <- suppressMessages(
@@ -51,7 +62,7 @@ test_that("`predict.pcr()` aligns newdata with the settings used to fit", {
 })
 
 test_that("`predict.lpcr()` predicts newdata", {
-  skip_on_cran() # the fit spins up a parallel cluster
+  local_serial_time_warping()
   y <- rep(c(-1, 1), length.out = ncol(f))
   fit <- suppressMessages(
     elastic.lpcr.regression(f, y, time, pca.method = "vert", no = 3)
@@ -67,7 +78,7 @@ test_that("`predict.lpcr()` predicts newdata", {
 })
 
 test_that("`predict.mlpcr()` predicts newdata", {
-  skip_on_cran() # the fit spins up a parallel cluster
+  local_serial_time_warping()
   y <- rep(1:3, length.out = ncol(f))
   fit <- suppressMessages(
     elastic.mlpcr.regression(f, y, time, pca.method = "vert", no = 3)
