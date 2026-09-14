@@ -29,6 +29,8 @@ predict.jfpcah <- function(object, newdata = NULL, ...) {
       object$warp_data$time,
       q1[, ii],
       object$warp_data$time,
+      lambda = object$warp_data$call$lambda,
+      pen = object$warp_data$call$penalty_method,
       method = object$warp_data$call$optim_method
     )
     fn[, ii] = warp_f_gamma(newdata[, ii], object$warp_data$time, gam[, ii])
