@@ -20,7 +20,7 @@
 #' @param parallel enable parallel mode using `foreach` and
 #'   `doParallel` package (default=F)
 #' @param cores number of cores in parallel (default=-1, means all cores)
-#' @param omethod optimization method (DP,DP2,RBFGS,dBayes,expBayes)
+#' @param omethod optimization method (DP,DPo,SIMUL,RBFGS,dBayes,expBayes)
 #' @param MaxItr maximum number of iterations
 #' @param iter bayesian number of mcmc samples (default 2000)
 #' @param verbose verbose printing (default TRUE)

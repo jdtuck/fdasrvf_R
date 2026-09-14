@@ -33,9 +33,9 @@ penalty ("none"). "norm" is kept for backward compatibility as an alias for
 \code{lambda = 0}.}
 
 \item{method}{controls which optimization method (default="DP") options are
-Dynamic Programming ("DP"), Coordinate Descent ("DP2"), Riemannian BFGS
-("RBFGS"), Simultaneous Alignment ("SIMUL"), Dirichlet Bayesian ("dBayes"),
-and Expo-Map Bayesian ("expBayes")}
+Dynamic Programming ("DP"), the original Dynamic Programming implementation
+("DPo"), Riemannian BFGS ("RBFGS"), Simultaneous Alignment ("SIMUL"),
+Dirichlet Bayesian ("dBayes"), and Expo-Map Bayesian ("expBayes")}
 
 \item{w}{controls LRBFGS (default = 0.01)}
 
