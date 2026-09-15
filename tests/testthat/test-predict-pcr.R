@@ -102,7 +102,8 @@ test_that("fpca predict methods align newdata with the settings used to fit", {
   fits <- list(
     vfpca = vertFPCA(warp, no = 3, showplot = FALSE),
     hfpca = horizFPCA(warp, no = 3, showplot = FALSE),
-    jfpca = jointFPCA(warp, no = 3, showplot = FALSE)
+    jfpca = jointFPCA(warp, no = 3, showplot = FALSE),
+    jfpcah = jointFPCAh(warp, showplot = FALSE)
   )
   for (nm in names(fits)) {
     calls <- capture_reparam_args(out <- predict(fits[[nm]], newdata))
@@ -110,4 +111,24 @@ test_that("fpca predict methods align newdata with the settings used to fit", {
     expect_equal(calls[[1]], expected, label = nm)
     expect_equal(nrow(out), ncol(newdata), label = nm)
   }
+})
+
+test_that("`predict.jfpcah()` reproduces the fitted coefficients on training data", {
+  warp <- suppressMessages(time_warping(f, time, max_iter = 1))
+  # the optimized C varies across platforms and rescales the coefficients
+  fit <- jointFPCAh(warp, C = 1, showplot = FALSE)
+  # align to the fitted warping functions so only the projection is tested
+  i <- 0
+  local_mocked_bindings(optimum.reparam = function(...) {
+    i <<- i + 1
+    warp$warping_functions[, i]
+  })
+  pred <- predict(fit)
+  expect_equal(dim(pred), dim(fit$coef))
+  # undoing the joint rotation, the horizontal scores match exactly
+  h_cols <- -seq_len(ncol(fit$U))
+  expect_equal((pred %*% t(fit$Uz))[, h_cols], (fit$coef %*% t(fit$Uz))[, h_cols])
+  # time_warping() and predict() discretize the aligned SRSFs differently, so
+  # the amplitude scores are only close
+  expect_lt(norm(pred - fit$coef, "F") / norm(fit$coef, "F"), 0.15)
 })
