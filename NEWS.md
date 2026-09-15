@@ -19,6 +19,11 @@
   It is now rejected up front; use `"DP"`, `"DPo"` or `"RBFGS"`. The
   `pair_align_functions` and `multiple_align_functions` docs no longer
   mention `"DP2"` either
+* `predict` for `elastic.pcr.regression`, `elastic.lpcr.regression` and
+  `elastic.mlpcr.regression` fits no longer fails when `newdata` is supplied;
+  new functions are now aligned with the `lambda`, penalty and optimization
+  method used by `time_warping`, which the `vertFPCA`, `horizFPCA` and
+  `jointFPCA` predict methods now also honor
 
 # fdasrvf 2.4.4
 * expose PNS functions 

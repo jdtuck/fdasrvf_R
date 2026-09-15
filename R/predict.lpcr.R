@@ -33,15 +33,17 @@ predict.lpcr <- function(object, newdata=NULL, y=NULL, ...){
 
         # Project newdata onto basis
         time <- object$warp_data$time
-        lambda <- object$warp_data$lambda
-        omethod <- object$warp_data$omethod
+        lambda <- object$warp_data$call$lambda
+        pen <- object$warp_data$call$penalty_method
+        omethod <- object$warp_data$call$optim_method
         q <- f_to_srvf(newdata, time)
         mq <- object$warp_data$mqn
         fn <- matrix(0,M,n)
         qn <- matrix(0,M,n)
         gam <- matrix(0,M,n)
         for (ii in 1:n){
-            gam[, ii] <- optimum.reparam(mq,time,q[,ii],time,lambda,omethod)
+            gam[, ii] <- optimum.reparam(mq,time,q[,ii],time,lambda=lambda,pen=pen,
+                                         method=omethod)
             fn[, ii] <- stats::approx(time,newdata[,ii],xout=(time[length(time)]-time[1])*gam[, ii] +
                                time[1])$y
             qn[, ii] <- f_to_srvf(fn[, ii], time)
