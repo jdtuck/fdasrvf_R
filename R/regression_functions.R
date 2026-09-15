@@ -1,10 +1,10 @@
 regression_warp <- function(beta, time, q, y, alpha){
   gam_M = optimum.reparam(beta,time,q,time)
-  qM = warp_q_gamma(time, q, gam_M)
+  qM = warp_q_gamma(q, time, gam_M)
   y_M = trapz(time, qM * beta)
 
   gam_m = optimum.reparam(-1 * beta,time,q,time)
-  qm = warp_q_gamma(time, q, gam_m)
+  qm = warp_q_gamma(q, time, gam_m)
   y_m = trapz(time, qm * beta)
 
 

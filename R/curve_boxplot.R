@@ -121,7 +121,8 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
   qmedian <- align_median$mu
   scale <- align_median$scale
 
-  if (align_median$rsamps) {
+  # only sample_shapes() sets rsamps; multivariate_karcher_mean() does not
+  if (isTRUE(align_median$rsamps)) {
     fn <- align_median$betas
     qn <- align_median$qs
   }
@@ -287,7 +288,7 @@ curvebox_data <- function(align_median, alpha = 0.05, ka = 1) {
       }
       distance_to_lower[j] = acos(q1dotq2)
     } else {
-      v = upper_q-qn[, ,j]
+      v = lower_q-qn[, ,j]
       distance_to_lower[j] = sqrt(innerprod_q2(v, v))
     }
   }

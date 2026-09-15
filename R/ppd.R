@@ -129,7 +129,7 @@ ppd <- function(f,
     comp = !is.nan(obj$IndicatorMatrix[i,])
 
     # check for exact match
-    if (identical(comp, ref_row)){
+    if (all(comp == ref_row)){
       exact_match_indices = c(exact_match_indices, i)
     }
     # calculate Hamming distance
@@ -387,7 +387,7 @@ getPersistentPeaks <- function(IndicatorMatrix){
   # compute pairwise distances between observations
   pairwiseDistances <- stats::dist(data)
   hc <- stats::hclust(pairwiseDistances, method = "ward.D2")
-  clusterAssignments = hc$labels2
+  clusterAssignments = stats::cutree(hc, k = 2)
   referenceCluster = clusterAssignments[length(clusterAssignments)]
   clusterAssignments = clusterAssignments[-length(clusterAssignments)]
 

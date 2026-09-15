@@ -92,7 +92,7 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
     }
 
     R = matrix(0, Nb+1, Nb+1)
-    for (ii in 2:Nb+1){
+    for (ii in 2:(Nb+1)){
       for (jj in 2:(Nb+1)){
         R[ii,jj] = trapz(time,Bdiff[,ii-1] * Bdiff[,jj-1])
       }
@@ -104,7 +104,7 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
     b = inv_xx %*% xy
 
     alpha = b[1]
-    beta = B %*% b[2:(Nb+1)]
+    beta = as.vector(B %*% b[2:(Nb+1)])
 
     # compute the SSE
     int_X = rep(0, N)
@@ -129,7 +129,8 @@ elastic.regression <- function(f, y, time, B=NULL, lam=0, df=20, max_itr=20,
   }
 
   # last step with centering of gam
-  gamI = SqrtMeanInverse(t(gam))
+  # gam holds one warping function per column already
+  gamI = SqrtMeanInverse(gam)
   gamI_dev = gradient(gamI, 1/(M-1))
   beta = stats::approx(time,beta,xout=(time[length(time)]-time[1])*gamI +
                       time[1])$y*sqrt(gamI_dev)

@@ -632,10 +632,12 @@ phbox_data <- function(warp_median, alpha = .05, kp = 1) {
     for (j in (i + 1):length(CR_50)) {
       q1 <- v[, CR_50[i]]
       q3 <- v[, CR_50[j]]
-      if (sum(q1) > 0)
-        q1 <- q1 / sqrt(trapz(time, q1 * q1))
-      if (sum(q3) > 0)
-        q3 <- q3 / sqrt(trapz(time, q3 * q3))
+      nq1 <- sqrt(trapz(time, q1 * q1))
+      nq3 <- sqrt(trapz(time, q3 * q3))
+      if (nq1 > 0)
+        q1 <- q1 / nq1
+      if (nq3 > 0)
+        q3 <- q3 / nq3
       angle[i, j] <- trapz(time, q1 * q3)
       energy[i, j] <- (1 - lambda) * (dx[CR_50[i]] / m + dx[CR_50[j]] / m) -
         lambda * (angle[i, j] + 1)
@@ -660,30 +662,34 @@ phbox_data <- function(warp_median, alpha = .05, kp = 1) {
     for (j in (i + 1):length(CR_alpha)) {
       q1 <- v[, CR_alpha[i]]
       q3 <- v[, CR_alpha[j]]
-      if (sum(q1) > 0)
-        q1 <- q1 / sqrt(trapz(time, q1 * q1))
-      if (sum(q3) > 0)
-        q3 <- q3 / sqrt(trapz(time, q3 * q3))
+      nq1 <- sqrt(trapz(time, q1 * q1))
+      nq3 <- sqrt(trapz(time, q3 * q3))
+      if (nq1 > 0)
+        q1 <- q1 / nq1
+      if (nq3 > 0)
+        q3 <- q3 / nq3
       angle[i, j] <- trapz(time, q1 * q3)
-      energy[i, j] <- (1 - lambda) * (dx[CR_alpha[i]] / m + dx[CR_alpha[j]] / m)
-      - lambda * (angle[i, j] + 1)
+      energy[i, j] <- (1 - lambda) * (dx[CR_alpha[i]] / m + dx[CR_alpha[j]] / m) -
+        lambda * (angle[i, j] + 1)
     }
   }
   maxloc <- which(energy == max(energy), arr.ind = TRUE)
 
   Q1a_index <- CR_alpha[maxloc[1, 1]]
   Q3a_index <- CR_alpha[maxloc[1, 2]]
+
+  # check quartile and quantile going same direction; swap the indices so the
+  # quantile curves, their psi and the returned indices stay consistent
+  tst <- trapz(time, v[, Q1a_index] * v[, Q1_index])
+  if (tst < 0) {
+    tmp_index <- Q1a_index
+    Q1a_index <- Q3a_index
+    Q3a_index <- tmp_index
+  }
   Q1a <- gam[, Q1a_index]
   Q3a <- gam[, Q3a_index]
   Q1a_psi <- sqrt(gradient(Q1a, 1 / (M - 1)))
   Q3a_psi <- sqrt(gradient(Q3a, 1 / (M - 1)))
-
-  # check quartile and quantile going same direction
-  tst <- trapz(time, v[, Q1a_index] * v[, Q1_index])
-  if (tst < 0) {
-    Q1a <- gam[, Q3a_index]
-    Q3a <- gam[, Q1a_index]
-  }
 
   # compute phase whiskers
   IQR <- dx[Q1_index] + dx[Q3_index]

@@ -26,14 +26,15 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FA
     n = dim(I1)[2]
     F1 = array(0,dim=c(m,n,2))
     m1 = dim(I2)[1]
-    n1 = dim(I2)[1]
+    n1 = dim(I2)[2]
     F2 = array(0,dim=c(m1,n1,2))
 
     # Take Gradient-------------------------------------------------------------
-    out = gradient2(I1,1./(m-1), 1./(n-1))
+    # dxdu differentiates along the n columns, dydv along the m rows
+    out = gradient2(I1,1./(n-1), 1./(m-1))
     F1[,,1] = out$dxdu
     F1[,,2] = out$dydv
-    out = gradient2(I2,1./(m1-1), 1./(n1-1))
+    out = gradient2(I2,1./(n1-1), 1./(m1-1))
     F2[,,1] = out$dxdu
     F2[,,2] = out$dydv
 

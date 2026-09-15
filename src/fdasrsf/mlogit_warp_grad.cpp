@@ -197,7 +197,7 @@ void mlogit_warp_grad(int *m1, int *m2, double *alpha, double *beta, double *ti,
 
 	delete [] tmp3; delete [] h; delete [] vec; delete [] psi2; delete [] gam2;
 	delete [] gam1; delete [] psi1; delete [] q_tmp; delete [] q_tmp_diff;
-	delete [] A; delete [] xout; delete [] tmp; delete [] max_val;
+	delete [] A; delete [] xout; delete [] tmp; delete [] max_val; delete [] Adiff;
 
 	free(tmp2);
 }

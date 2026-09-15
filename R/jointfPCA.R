@@ -56,6 +56,8 @@ jointFPCA <- function(warp_data,
     qn1 <- rbind(qn, m_new)
   } else {
     mqn <- rowMeans(fn)
+    # reconstructions are in function space, so compare them with f0
+    q0 <- warp_data$f0
     qn1 <- fn
   }
 
@@ -410,7 +412,6 @@ jointFPCAh <- function(warp_data,
     return(mean(d))
   }
 
-  findCh(.1,qn1, h, q0, 0.99, srvf)
   if (is.null(C))
     C <- stats::optimize(
       findCh,

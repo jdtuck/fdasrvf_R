@@ -80,7 +80,7 @@ gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
         for (k in 1:n){
             tmp = stats::approx((0:(M-1))/(M-1),fs[,seq1[k]],xout = gams[,seq2[k]])
             ft[,k] = tmp$y
-            while (is.na(ft[,k])){
+            while (anyNA(ft[,k])){
                 rgam2 = randomGamma(gam,1)
                 tmp = stats::approx((0:(M-1))/(M-1),fs[,seq1[k]],xout = invertGamma(rgam2))
                 ft[,k] = tmp$y
@@ -93,7 +93,7 @@ gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
         for (k in 1:n){
             tmp = stats::approx((0:(M-1))/(M-1),fs[,k],xout = gams[,k])
             ft[,k] = tmp$y
-            while (is.na(ft[,k])[1]){
+            while (anyNA(ft[,k])){
                 rgam2 = randomGamma(gam,1)
                 tmp = stats::approx((0:(M-1))/(M-1),fs[,k],xout = invertGamma(rgam2))
                 ft[,k] = tmp$y
@@ -102,7 +102,9 @@ gauss_model <- function(warp_data,n = 1,sort_samples = FALSE){
     }
 
     warp_data$fs = fs
-    warp_data$gams = rgam
+    # randomGamma() returns one warping function per row; store them as
+    # columns like warping_functions
+    warp_data$gams = t(rgam)
     warp_data$ft = ft
     warp_data$qs = q_s[1:(end-1),]
     warp_data$rsamps=TRUE
