@@ -282,10 +282,11 @@ simpson <- function(x, y) {
         out[i] = sum(a0[seq(1, length(a0), 2)] * y[seq(1, M - 2, 2), i] + a1[seq(1, length(a1), 2)] *
                        y[seq(2, M - 1, 2), i] + a2[seq(1, length(a2), 2)] * y[seq(3, M, 2), i])
         if (M %% 2 == 0) {
-          A = vandermonde_matrix(x[(length(x) - 2):length(x)], 3)
-          C = solve(A[, 3:1], y[(length(y) - 2):length(y)])
-          out[i] = out[i] + C[1] * (x[length(x)]^3 - x[(length(x) - 1)]^3) /
-            3 + C[2] * (x[length(x)]^3 - x[(length(x) - 1)]^2) / 2 + C[3] * dx[length(dx)]
+          # fit the last interval of column i with a quadratic
+          A = vandermonde_matrix(x[(M - 2):M], 3)
+          C = solve(A[, 3:1], y[(M - 2):M, i])
+          out[i] = out[i] + C[1] * (x[M]^3 - x[M - 1]^3) / 3 +
+            C[2] * (x[M]^2 - x[M - 1]^2) / 2 + C[3] * dx[length(dx)]
         }
       }
     }
@@ -531,7 +532,7 @@ zero_crossing <- function(Y, q, bt, time, y_max, y_min, gmax, gmin) {
     y2 = mrn
     a[ii] = (x1 * y2 - x2 * y1) / (y2 - y1)
     gam_m = a[ii] * gmax + (1 - a[ii]) * gmin
-    qtmp = warp_q_gamma(time, q, gam_m)
+    qtmp = warp_q_gamma(q, time, gam_m)
     f[ii] = trapz(time, qtmp * bt) - Y
 
     if (abs(f[ii]) < 1e-5) {
@@ -858,22 +859,23 @@ interp1_flat <- function(x, y, xx) {
     if (flat[1] == 1) {
       i2 = 1
       j = xx == x[i2]
-      yy[j] = min(y[i2:i2 + 1])
+      yy[j] = min(y[i2:(i2 + 1)])
     } else {
       i2 = flat[1]
       j = (xx >= x[i1]) & (xx <= x[i2])
       yy[j] = stats::approx(x[i1:i2], y[i1:i2], xx[j])$y
       i1 = i2
     }
+    # ported from MATLAB, where i1+1:i2 means (i1+1):i2
     if (n > 1) {
       for (k in 2:n) {
         i2 = flat[k]
         if (i2 > (i1 + 1)) {
           j = (xx >= x[i1]) & (xx <= x[i2])
-          yy[j] = stats::approx(x[i1 + 1:i2], y[i1 + 1:i2], xx[j])$y
+          yy[j] = stats::approx(x[(i1 + 1):i2], y[(i1 + 1):i2], xx[j])$y
         }
         j = xx == x[i2]
-        yy[j] = min(y[i2:i2 + 1])
+        yy[j] = min(y[i2:(i2 + 1)])
         i1 = i2
       }
     }
@@ -883,7 +885,7 @@ interp1_flat <- function(x, y, xx) {
     if ((i1 + 1) == i2) {
       yy[j] = y[i2]
     } else {
-      yy[j] = stats::approx(x[i1 + 1:i2], y[i1 + 1:i2], xx[j])$y
+      yy[j] = stats::approx(x[(i1 + 1):i2], y[(i1 + 1):i2], xx[j])$y
     }
   }
 

@@ -106,9 +106,9 @@ jacob_imag <- function(F1){
         mult_factor = out$dfdu[,,1]*out$dfdv[,,2] - out$dfdu[,,2]*out$dfdv[,,1]
         mult_factor = abs(mult_factor)
     } else if (d==3){
-        mult_factor = (out$dfdu[,,2]*out$dfdv[,,3] - out$dfdu[,,3]*out$dfdv[,,2])^2
-            + (out$dfdu[,,1]*out$dfdv[,,3] - out$dfdu[,,3]*out$dfdv[,,1])^2
-            + (out$dfdu[,,1]*out$dfdv[,,2] - out$dfdu[,,2]*out$dfdv[,,1])^2
+        mult_factor = (out$dfdu[,,2]*out$dfdv[,,3] - out$dfdu[,,3]*out$dfdv[,,2])^2 +
+            (out$dfdu[,,1]*out$dfdv[,,3] - out$dfdu[,,3]*out$dfdv[,,1])^2 +
+            (out$dfdu[,,1]*out$dfdv[,,2] - out$dfdu[,,2]*out$dfdv[,,1])^2
         mult_factor = sqrt(mult_factor)
     }
 
@@ -259,10 +259,10 @@ formbasisTid <- function(M,m,n,basis_type="t"){
         b = array(0,dim=c(m,n,2,2*M))
         for (s in 1:M) {
             c1 = sqrt(2)*pi*s
-            sPI2 = 2*pi*2
+            sPI2 = 2*pi*s
 
             b[,,1,idx] = matrix(0,m,n)
-            b[,,2,idx] = sin(sPI2*out$X)/c1
+            b[,,2,idx] = sin(sPI2*out$Y)/c1
 
             b[,,1,idx+1] = sin(sPI2*out$X)/c1
             b[,,2,idx+1] = matrix(0,m,n)

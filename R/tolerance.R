@@ -74,7 +74,7 @@ bootTB <- function(f, time, a=.05, p=.99, B=500, no = 5, Nsamp=100,
   boot.out <- out.med
   boot.out$fn <- boot.amp
   boot.out$qn <- boot.amp.q
-  boot.out$gam <- boot.ph
+  boot.out$warping_functions <- boot.ph
 
   if (parallel) parallel::stopCluster(cl)
 

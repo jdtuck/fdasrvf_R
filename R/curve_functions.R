@@ -48,7 +48,7 @@ calculate_variance <- function(beta){
     betadot = apply(beta,1,gradient,1.0/(T1-1))
     betadot = t(betadot)
 
-    normbetadot = rep(0,T)
+    normbetadot = rep(0,T1)
     centroid = calculatecentroid(beta)
     integrand = array(0, c(n,n,T1))
     time = seq(0,1,length.out=T1)
@@ -59,7 +59,7 @@ calculate_variance <- function(beta){
     }
     l = trapz(time, normbetadot)
     variance = trapz(time, integrand, 3)
-    varaince = variance / l
+    variance = variance / l
 
     return(variance)
 }
@@ -117,7 +117,7 @@ calc_j <- function(basis){
     for (i in 1:T1){
         integrand11[i] = t(b1[,i])%*%b1[,i]
         integrand12[i] = t(b1[,i])%*%b2[,i]
-        integrand12[i] = t(b2[,i])%*%b2[,i]
+        integrand22[i] = t(b2[,i])%*%b2[,i]
     }
 
     j = matrix(0,2,2)
@@ -527,7 +527,7 @@ inverse_exp_coord <- function(beta1, beta2, mode="O", rotated=T){
 
 
 
-inverse_exp <- function(q1, q2, beta2){
+inverse_exp <- function(q1, q2, beta2, mode = "O"){
     T1 = ncol(q1)
     centroid1 = calculatecentroid(beta2)
     dim(centroid1) = c(length(centroid1),1)
@@ -535,7 +535,7 @@ inverse_exp <- function(q1, q2, beta2){
 
     # Optimize over SO(n) x Gamma
     beta1 = q_to_curve(q1)
-    out = reparam_curve(beta1, beta2)
+    out = reparam_curve(beta1, beta2, mode = mode)
     gamI = invertGamma(out$gam)
     if (mode=="C")
       beta2 = shift_f(beta2, out$tau)
@@ -564,7 +564,7 @@ inverse_exp <- function(q1, q2, beta2){
     if (normu > 1e-4){
         v = u*acos(q1dotq2)/normu
     } else {
-        v = matrix(0, 2, T1)
+        v = matrix(0, nrow(q1), T1)
     }
 
     return(v)
@@ -669,7 +669,8 @@ karcher_calc <- function(q1, mu, basis,
 
     dist <- acos(q1dotq2)
 
-    u <- qn_t - q1dotq2 * q1
+    # shooting vector from mu to the aligned curve, in the tangent space at mu
+    u <- qn_t - q1dotq2 * mu
     normu <- sqrt(innerprod_q2(u, u))
     if (normu > 1e-4)
       w <- u * acos(q1dotq2) / normu
@@ -679,7 +680,7 @@ karcher_calc <- function(q1, mu, basis,
     if (mode == "O")
       v <- w
     else
-      v <- project_tangent(w, q1, basis)
+      v <- project_tangent(w, mu, basis)
 
     d_i <- 0
     if (ms == "median") {
@@ -696,7 +697,8 @@ karcher_calc <- function(q1, mu, basis,
 }
 
 curve_align_sub <- function(beta1, q1, mu, mode, rotated, scale, lambda){
-  out = find_rotation_seed_unique(mu, q1, mode, rotated, TRUE, lambda)
+  out = find_rotation_seed_unique(mu, q1, mode = mode, rotation = rotated,
+                                  scale = TRUE, lambda = lambda)
   gam = out$gambest
   rotmat = out$Rbest
 
@@ -818,13 +820,13 @@ v_to_curve<-function(v, mu, mode="O", scale=1){
     q2n = elastic_shooting(mu, v, mode)
     p = q_to_curve(q2n, scale)
   } else {
-
-    p = matrix(0,T1,n)
-    for (i in 1:n){
+    # one vectorized shooting vector per column
+    p = matrix(0, n*T1, ncol(v))
+    for (i in 1:ncol(v)){
       v1 = v[,i]
       dim(v1) = c(n,T1)
       q2n = elastic_shooting(mu, v1, mode)
-      p[,i] = q_to_curve(q2n, scale)
+      p[,i] = c(q_to_curve(q2n, scale))
     }
   }
   return(p)

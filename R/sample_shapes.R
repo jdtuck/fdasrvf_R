@@ -32,6 +32,9 @@ sample_shapes <- function(x, no=3, numSamp=10){
     n = nrow(mu)
     T1 = ncol(mu)
 
+    if (x$rotation && n != 2)
+      cli::cli_abort("Sampling random rotations is only implemented for 2-dimensional curves.")
+
     out = svd(K)
     U = out$u
     s = out$d
@@ -59,9 +62,10 @@ sample_shapes <- function(x, no=3, numSamp=10){
     }
 
     for (i in 1:numSamp){
-        v = matrix(0, 2, T1)
+        # the covariance is of c(v), so each eigenvector reshapes to n x T1
+        v = matrix(0, n, T1)
         for (m in 1:no){
-            v = v + stats::rnorm(1)*sqrt(s[m])*c(U[1:T1,m], U[(T1+1):(2*T1),m])
+            v = v + stats::rnorm(1)*sqrt(s[m])*matrix(U[, m], n, T1)
         }
 
         q1 = mu
@@ -77,11 +81,14 @@ sample_shapes <- function(x, no=3, numSamp=10){
                 }
             }
 
-            # Parallel translate tangent vector
-            # basis2 = find_basis_normal(q2)
-            # v = parallel_translate(v, q1, q2, basis2, mode)
+            # Parallel translate the tangent vector to q2 and continue along
+            # the geodesic from there; open curves take a single step
+            if (mode == "C"){
+                basis2 = find_basis_normal(q2)
+                v = parallel_translate(v, q1, q2, basis2, mode)
+            }
 
-            # q1 = q2
+            q1 = q2
         }
 
         beta = q_to_curve(q2, scale[i])
@@ -106,7 +113,7 @@ sample_shapes <- function(x, no=3, numSamp=10){
       N = dim(x$R)[3]
       theta = rep(0, N)
       for (i in 1:N){
-        theta[i] = acos(x$R[1,1,i])
+        theta[i] = atan2(x$R[2,1,i], x$R[1,1,i])
       }
       mu_theta = mean(theta)
       sd_theta = stats::sd(theta)
@@ -116,11 +123,7 @@ sample_shapes <- function(x, no=3, numSamp=10){
         R[,,k] = matrix(c(cos(theta), sin(theta), -sin(theta), cos(theta)),2,2)
       }
     } else {
-      R = array(0, dim=c(2,2,numSamp))
-      for (k in 1:numSamp){
-        theta = 0
-        R[,,k] = matrix(c(cos(theta), -sin(theta), sin(theta), cos(theta)),2,2)
-      }
+      R = array(diag(n), dim=c(n,n,numSamp))
     }
 
     samples1 = samples

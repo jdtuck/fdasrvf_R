@@ -308,6 +308,9 @@ kmeans_align <- function(f, time,
         )$y
         list(gamt1, fw, qw)
       }
+      # a single iteration comes back as a plain list rather than a matrix
+      if (N1 == 1)
+        outfor <- matrix(outfor, ncol = 1)
       gam[[k]][, id] <- do.call(cbind, outfor[1, ])
       f_temp <- unlist(outfor[2, ])
       dim(f_temp) <- c(L, M, N1)
@@ -331,36 +334,28 @@ kmeans_align <- function(f, time,
       }
 
       if (L > 1) {
+        # keep the third dimension so a single-curve cluster stays an array
+        fn_k <- fn[[k]][, , id, drop = FALSE]
+        ms <- if (centroid_type == "medoid") "median" else "mean"
         if (!scale) {
-          if (centroid_type == "mean") {
-            out <- multivariate_karcher_mean(fn[[k]][, , id])
-            templates[, , k] <- out$betamean
-            templates.q[, , k] <- curve_to_q(out$betamean, scale)$q
-          } else if (centroid_type == "medoid") {
-            out <- multivariate_karcher_mean(fn[[k]][, , id], ms='median')
-            templates.q[, , k] <- out$betamean
-            templates[, , k] <- curve_to_q(out$betamean, scale)$q
-          }
+          out <- multivariate_karcher_mean(fn_k, ms = ms)
         } else {
-          if (centroid_type == "mean") {
-            out = multivariate_karcher_mean(fn[[k]][, , id], mode = "O", scale=TRUE, rotation = rotation)
-            templates[, , k] <- out$betamean
-            templates.q[, , k] <- curve_to_q(out$betamean, scale)$q
-          } else if (centroid_type == "medoid") {
-            out = multivariate_karcher_mean(fn[[k]][, , id], mode = "O", scale=TRUE, rotation = rotation,
-                                     ms='median')
-            templates[, , k] <- out$betamean
-            templates.q[, , k] <- curve_to_q(out$betamean, scale)$q
-          }
+          out <- multivariate_karcher_mean(fn_k, mode = "O", scale = TRUE,
+                                           rotation = rotation, ms = ms)
         }
+        templates[, , k] <- out$betamean
+        templates.q[, , k] <- curve_to_q(out$betamean, scale)$q
       } else {
+        # keep a matrix even when the cluster holds a single curve
+        qn_k <- matrix(qn[[k]][1, , id], nrow = M)
+        fn_k <- matrix(fn[[k]][1, , id], nrow = M)
         if (centroid_type == "mean") {
-          templates.q[1, , k] <- rowMeans(qn[[k]][1, , id])
-          templates[1, , k] <- rowMeans(fn[[k]][1, , id])
+          templates.q[1, , k] <- rowMeans(qn_k)
+          templates[1, , k] <- rowMeans(fn_k)
         } else if (centroid_type == "medoid") {
           idx <- which.min(Dy[k, id])
-          templates.q[1, , k] <- qn[[k]][1, , id][, idx]
-          templates[1, , k] <- fn[[k]][1, , id][, idx]
+          templates.q[1, , k] <- qn_k[, idx]
+          templates[1, , k] <- fn_k[, idx]
         }
       }
 

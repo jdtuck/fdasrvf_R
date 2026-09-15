@@ -21,7 +21,7 @@ test_that("The function `time_warping()` works", {
   expect_equal(length(out$original_variance), 1)
   expect_equal(length(out$amplitude_variance), 1)
   expect_equal(length(out$phase_variance), 1)
-  expect_equal(length(out$qun), 2)
+  expect_equal(length(out$qun), 3)
   expect_equal(length(out$inverse_average_warping_function), 101)
   expect_equal(length(out$call), 9)
   expect_equal(names(out$call), c("lambda", "penalty_method", "centroid_type",

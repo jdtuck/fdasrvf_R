@@ -29,13 +29,6 @@ pcscore2sphere3 <- function (n.pc, X.hat, Xs, Tan, V) {
   return(S.star)
 }
 
-Enorm <- function(a)
-{
-  return(sqrt(sum(diag(t(
-    a
-  ) %*% a))))
-}
-
 #' Computes fast PNS decomposition
 #'
 #' @param x data on sphere

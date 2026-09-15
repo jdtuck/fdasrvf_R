@@ -268,7 +268,9 @@ time_warping <- function(f,
     if (qun[r + 1] < .Machine$double.eps)
       qun[r + 1] <- 0
 
-    if (qun[r + 1] - qun[r] <= 1.0e-4 * qun[r])
+    # stop once the relative change in the template is below 1%, as the
+    # Python and MATLAB implementations do
+    if (qun[r + 1] < 1e-2)
       break
   }
 
@@ -373,7 +375,7 @@ time_warping <- function(f,
     original_variance = orig_var,
     amplitude_variance = amp_var,
     phase_variance = phase_var,
-    qun = qun[1:r],
+    qun = qun[1:(r + 1)],
     inverse_average_warping_function = gamI,
     rsamps = FALSE,
     call = list(

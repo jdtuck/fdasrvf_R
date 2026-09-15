@@ -72,13 +72,10 @@ elastic_amp_change_ff <- function(f, time, d = 1000, h = 0, smooth_data=FALSE, s
   delta <- mean.a - mean.b
 
   # center your data
+  # columns 1:k.star are the "before" sample, the rest the "after" sample
   centered_data = matrix(0, M, N1)
-  for (i in (1:(k.star-1))){
-    centered_data[,i] = out$fn[,i] - mean.a
-  }
-  for (i in (k.star:N1)){
-    centered_data[,i] = out$fn[,i] - mean.b
-  }
+  centered_data[, 1:k.star] = out$fn[, 1:k.star] - mean.a
+  centered_data[, (k.star + 1):N1] = out$fn[, (k.star + 1):N1] - mean.b
 
   D_mat <- LongRunCovMatrix(centered_data, h = h)
   eigen_struct <- eigen(D_mat, symmetric = TRUE)
@@ -211,13 +208,10 @@ elastic_ph_change_ff <- function(f, time, d = 1000, h = 0, smooth_data=FALSE, sp
   delta <- mean.a - mean.b
 
   # center your data
+  # columns 1:k.star are the "before" sample, the rest the "after" sample
   centered_data = matrix(0, M, N1)
-  for (i in (1:(k.star-1))){
-    centered_data[,i] = vec[,i] - mu.a
-  }
-  for (i in (k.star:N1)){
-    centered_data[,i] = vec[,i] - mu.b
-  }
+  centered_data[, 1:k.star] = vec[, 1:k.star] - mu.a
+  centered_data[, (k.star + 1):N1] = vec[, (k.star + 1):N1] - mu.b
 
   # estimate eigenvalues of covariance operator
   D_mat <- LongRunCovMatrix(centered_data, h = h)
@@ -232,7 +226,7 @@ elastic_ph_change_ff <- function(f, time, d = 1000, h = 0, smooth_data=FALSE, sp
     max(colSums(BridgeLam))
   }
 
-  Values <- sapply(1:M, function(k) asymp(N1))
+  Values <- sapply(1:d, function(k) asymp(N1))
   z <- Tn <= Values
   p <- length(z[z == TRUE]) / length(z)
 
@@ -335,15 +329,15 @@ elastic_change_fpca <- function(f, time, pca.method = "combined", pc = 0.95, d =
   no = no[1]
 
   lam = 1/out.pca$latent[1:no]
-  Sigma = diag(lam)
-  eta = out.pca$coef[, 1:no]
-  eta_bar = apply(eta,2,sum)
+  Sigma = diag(lam, nrow = no)
+  # keep a matrix even when a single component is retained
+  eta = as.matrix(out.pca$coef)[, 1:no, drop = FALSE]
+  eta_bar = colMeans(eta)
 
   # compute test statistic
   Sn <- rep(0, N1)
   for (j in (2:N1)) {
-    tmp_eta = eta[1:j,]
-    tmp = apply(tmp_eta,2,sum)-dim(tmp_eta)[1]*eta_bar
+    tmp = colSums(eta[1:j, , drop = FALSE]) - j*eta_bar
 
     Sn[j] = 1/N1 * t(tmp) %*% Sigma %*% tmp
   }

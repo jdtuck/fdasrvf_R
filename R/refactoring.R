@@ -662,8 +662,8 @@ get_distance_matrix <- function(qfuns,
     j <- k + i + 1 - N * (N - 1) / 2 + (N - i) * ((N - i) - 1) / 2
 
     # Increment indices as previous ones are 0-based while R expects 1-based
-    q1fun_scaled <- qfuns[[i + 1]]
-    q2fun_scaled <- qfuns[[j + 1]]
+    q1fun_scaled <- qfuns_scaled[[i + 1]]
+    q2fun_scaled <- qfuns_scaled[[j + 1]]
 
     if (rotation) {
       # Find optimal rotation
