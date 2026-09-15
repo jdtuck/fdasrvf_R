@@ -26,14 +26,14 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FA
     n = dim(I1)[2]
     F1 = array(0,dim=c(m,n,2))
     m1 = dim(I2)[1]
-    n1 = dim(I2)[1]
+    n1 = dim(I2)[2]
     F2 = array(0,dim=c(m1,n1,2))
 
     # Take Gradient-------------------------------------------------------------
-    out = gradient2(I1,1./(m-1), 1./(n-1))
+    out = gradient2(I1,1./(n-1), 1./(m-1))
     F1[,,1] = out$dxdu
     F1[,,2] = out$dydv
-    out = gradient2(I2,1./(m1-1), 1./(n1-1))
+    out = gradient2(I2,1./(n1-1), 1./(m1-1))
     F2[,,1] = out$dxdu
     F2[,,2] = out$dydv
 
@@ -42,39 +42,9 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FA
         if ((N>m) || (N>n)){
             cat("Not resizing, N is larger than image size")
         } else {
-            xlim = c(1,m)
-            ylim = c(1,n)
-            dx = (m-1)/(N-1)
-            dy = (n-1)/(N-1)
-            F1a = array(0,dim=c(N,N,2))
-            if (requireNamespace("interp", quietly = TRUE)) {
-                F1a[,,1] = interp::bicubic.grid(1:m,1:n,F1[,,1],xlim,ylim,dx=dx,dy=dy)$z
-                F1a[,,2] = interp::bicubic.grid(1:m,1:n,F1[,,2],xlim,ylim,dx=dx,dy=dy)$z
-            } else {
-                grid.list<- list(x=seq(1,m,length.out=N), y=seq(1,n,length.out=N))
-                obj<-list(x=1:m, y=1:n, z=F1[,,1])
-                F1a[,,1] = fields::interp.surface.grid(obj, grid.list)$z
-                obj<-list(x=1:m, y=1:n, z=F1[,,2])
-                F1a[,,2] = fields::interp.surface.grid(obj, grid.list)$z
-            }
-            F1 = F1a
-
-            xlim = c(1,m1)
-            ylim = c(1,n1)
-            dx = (m1-1)/(N-1)
-            dy = (n1-1)/(N-1)
-            F2a = array(0,dim=c(N,N,2))
-            if (requireNamespace("interp", quietly = TRUE)) {
-              F2a[,,1] = interp::bicubic.grid(1:m1,1:n1,F2[,,1],xlim,ylim,dx=dx,dy=dy)$z
-              F2a[,,2] = interp::bicubic.grid(1:m1,1:n1,F2[,,2],xlim,ylim,dx=dx,dy=dy)$z
-            } else {
-              grid.list<- list(x=seq(1,m1,length.out=N), y=seq(1,n1,length.out=N))
-              obj<-list(x=1:m1, y=1:n1, z=F2[,,1])
-              F2a[,,1] = fields::interp.surface.grid(obj, grid.list)$z
-              obj<-list(x=1:m1, y=1:n1, z=F2[,,2])
-              F2a[,,2] = fields::interp.surface.grid(obj, grid.list)$z
-            }
-            F2 = F2a
+            gridN = makediffeoid(N,N)
+            F1 = apply_gam_to_imag(F1, gridN)
+            F2 = apply_gam_to_imag(F2, gridN)
         }
     }
 
@@ -91,7 +61,7 @@ pair_align_image <- function(I1, I2, M=5, ortho=TRUE, basis_type="t", resizei=FA
 
     out = reparam_image(F1, F2, gamp, b, stepsize=stepsize, itermax=itermax)
 
-    I2_new = apply_gam_to_imag(I2,out$gam)
+    I2_new = apply_gam_to_imag(I2,out$gamnew)
 
-    return(list(I2_new=I2_new, gam=out$gam))
+    return(list(I2_new=I2_new, gam=out$gamnew))
 }

@@ -18,6 +18,8 @@ void Apply_gam_gamid(double *gamcum, const double *gamid, const double *gaminc,
                      int m, int n);
 void Apply_Gamma_Surf(double *Fnew, const double *F, const double *gam, int n,
                       int d);
+void Interp_Surf(double *Fnew, const double *F, const double *u,
+                 const double *v, int m, int n, int d, int P);
 int check_crossing(double *f, int n, int t, int D);
 int ReparamSurf(double *Fnew, double *gamnew, double *H,
         double *Ft, const double *Fm, const double *gam,

@@ -109,7 +109,7 @@ gradient2 <- function(a, dx = 1, dy = 1) {
     dxdu[i, ] = gradient(as.vector(a[i, ]), dx)
   }
 
-  for (i in 1:m) {
+  for (i in 1:n) {
     dydv[, i] = gradient(as.vector(a[, i]), dy)
   }
 

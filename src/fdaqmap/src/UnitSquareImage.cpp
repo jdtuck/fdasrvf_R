@@ -421,6 +421,46 @@ void Apply_Gamma_Surf(double *Fnew, const double *F, const double *gam, int m, i
     return;
 }
 
+//-------------------------------------------------------------------------
+// Evaluate the tensor-product spline interpolant of F (m x n x d, on a regular
+// grid of the unit square) at the P points (u[i], v[i]), where u runs along
+// the columns and v along the rows. Points are clamped to the unit square.
+// Fnew is P x d.
+void Interp_Surf(double *Fnew, const double *F, const double *u,
+                 const double *v, int m, int n, int d, int P) {
+    int j, N = m*n;
+    double *Du, *Dv, *zu, s, t, ui, vi;
+
+    Dv = new double[N];
+    Du = new double[n];
+    zu = new double[n];
+
+    for (int k = 0; k < d; ++k) {
+        interp2(Dv, F+(N*k+0), m, n); //col
+
+        for (int i = 0; i < P; ++i) {
+            if (u[i] != u[i] || v[i] != v[i]) { // NaN
+                Fnew[P*k + i] = u[i] + v[i];
+                continue;
+            }
+            ui = u[i] < 0 ? 0 : (u[i] > 1 ? 1 : u[i]);
+            vi = v[i] < 0 ? 0 : (v[i] > 1 ? 1 : v[i]);
+
+            lookupspline(t, j, vi, 1.0, m); // col
+            evalinterp2(t, Du, zu, Dv+j, F+(N*k+j), m, n); // row
+
+            lookupspline(s, j, ui, 1.0, n); // row
+            Fnew[P*k + i] = evalspline(s, Du+j, zu+j);
+        }
+    }
+
+    delete [] Dv;
+    delete [] Du;
+    delete [] zu;
+
+    return;
+}
+
 // ------------------------------------------------------------------------
 int check_crossing(double *f, int n, int t, int D) {
     int is_diffeo = 1;

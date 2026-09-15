@@ -28,6 +28,18 @@
   numeric/complex matrix/vector arguments": it now projects onto the
   horizontal basis stored in `U1` and computes `h` without smoothing, as
   `jointFPCAh` does
+* `pair_align_image` and `reparam_image` work again, for square and
+  non-square images. With interp 1.1.6, whose `bicubic()` is an
+  irregular-grid workaround, warping failed with "length of y0 and x0
+  differs!" or returned `NA`s, and every warp other than the identity paired
+  the wrong row and column coordinates. Images and warps are now
+  interpolated with the package's own tensor-product cubic spline (as in the
+  C++ q-map code): the identity warp reproduces the image exactly, and warps
+  are no longer upsampled 8 times, so iterations take a fraction of a second
+  instead of minutes. `interp` and `fields` are no longer used.
+  `pair_align_image` also no longer fails on non-square images (the image
+  gradient used the wrong number of columns), and `reparam_image` now checks
+  the updated warp, rather than the previous one, for folding
 
 # fdasrvf 2.4.4
 * expose PNS functions 
