@@ -19,7 +19,7 @@ modeling using functional component analysis
 
 ## Installation
 
-v2.4.4 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
+v2.5.0 is on [CRAN](https://cran.r-project.org/package=fdasrvf) and can
 be installed as
 
 ``` r
@@ -66,6 +66,7 @@ obj <- time_warping(simu_data$f, simu_data$time)
 #> ℹ Initializing...
 #> ℹ Computing Karcher mean of 21 functions in SRSF space...
 #> ℹ Entering iteration 1...
+#> ℹ Entering iteration 2...
 ```
 
 Let’s plot the result
