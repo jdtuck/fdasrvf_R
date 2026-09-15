@@ -38,8 +38,8 @@ reparam_curve <- function(beta1, beta2, lambda = 0, method = "DP", w = 0.01,
         # Optimize over SO(n)
         if (rotated){
           out = find_rotation_seed_coord(beta1, beta2, mode)
-          beta2 = out$beta2
-          R = out$O_hat
+          beta2 = out$beta2best
+          R = out$Rbest
           tau = out$tau
         } else{
           R = diag(n1)
@@ -65,7 +65,7 @@ reparam_curve <- function(beta1, beta2, lambda = 0, method = "DP", w = 0.01,
 
       # Optimize over SO(n)
       if (rotated){
-        out = find_rotation_seed_coord(beta1, beta2);
+        out = find_rotation_seed_coord(beta1, beta2, mode)
         beta2 = out$beta2best
         R = out$Rbest
         tau = out$tau

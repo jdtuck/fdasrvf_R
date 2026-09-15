@@ -11,34 +11,46 @@
 #' @references Srivastava, A., Klassen, E., Joshi, S., Jermyn, I., (2011). Shape analysis of elastic curves in euclidean spaces. Pattern Analysis and Machine Intelligence, IEEE Transactions on 33 (7), 1415-1428.
 #' @export
 predict.curve_pca <- function(object, newdata = NULL, ...) {
+  km <- object$karcher_mean
   if (is.null(newdata)) {
-    newdata = object$karcher_mean$beta
+    newdata <- km$beta
   }
 
-  N = dim(newdata)[3]
-  M = dim(newdata)[1]*dim(newdata)[2]
-  mu = object$karcher_mean$mu
-  rotated = object$karcher_mean$rotated
-  mode = object$karcher_mean$mode
-  lambda = object$karcher_mean$lambda
-  ms = object$karcher_mean$ms
-  if (mode == "C")
+  dims <- dim(newdata)
+  if (length(dims) == 2) {
+    dims <- c(dims, 1)
+    dim(newdata) <- dims
+  }
+  L <- dims[1]
+  M <- dims[2]
+  N <- dims[3]
+  mu <- km$mu
+  mode <- km$mode
+  scale <- km$scale
+
+  basis <- NULL
+  if (mode == "C" && scale)
     basis <- find_basis_normal(mu)
-  v = matrix(0, M, N)
+
+  # Align each curve to the Karcher mean and compute its shooting vector the
+  # same way multivariate_karcher_mean() does for the curves it was fit on
+  v <- matrix(0, L * M, N)
   for (ii in 1:N) {
-    q1 = curve_to_q(newdata[,,ii], object$karcher_mean$scale)$q
-    out = karcher_calc(q1, mu, basis, rotated, mode, lambda, ms)
-    v[, ii] = c(out$v)
+    q1 <- curve_to_srvf(newdata[, , ii], scale = scale)$q
+    out <- find_rotation_seed_unique(
+      q1 = mu,
+      q2 = q1,
+      mode = mode,
+      alignment = km$alignment,
+      rotation = km$rotation,
+      scale = scale,
+      lambda = km$lambda
+    )
+    w <- inverse_exponential_map(out$q2best, mu, scale = scale)
+    if (!is.null(basis))
+      w <- project_tangent(w, mu, basis)
+    v[, ii] <- c(w)
   }
 
-  no = ncol(object$U)
-
-  a <- matrix(0, no, N)
-  for (i in 1:no) {
-    for (j in 1:N) {
-      a[i, j] <- (v[, j] - object$VM) %*% object$U[, i]
-    }
-  }
-
-  return(a)
+  t(object$U) %*% (v - object$VM)
 }

@@ -89,7 +89,7 @@ elastic.logistic <- function(f, y, time, B=NULL, df=20, max_itr=20,
     b = out$par
 
     alpha = b[1]
-    beta = B %*% b[2:(Nb+1)]
+    beta = as.vector(B %*% b[2:(Nb+1)])
 
     # compute the Loss
     LL[itr] = logit_loss(b,Phi,y)

@@ -78,7 +78,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
   }
 
   method <- match.arg(method, choices = c("DP", "DPo", "SIMUL", "RBFGS"))
-  if (method == "DPo" && all(T1 != T2))
+  if (method == "DPo" && any(T1 != T2))
     method <- "DP"
 
   Q1 <- Q1 / pvecnorm(Q1, 2)

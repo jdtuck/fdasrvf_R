@@ -44,7 +44,7 @@ elastic.prediction <- function(f, time, model, y=NULL, smooth_data = FALSE, spar
     diff1 = model$q - replicate(ncol(model$q), q[,ii])
     dist = apply(abs(diff1)^2,2,sum)^(1/2)
     argmin = which.min(dist)
-    q_tmp = warp_q_gamma(time, q[,ii], model$gamma[, argmin])
+    q_tmp = warp_q_gamma(q[,ii], time, model$gamma[, argmin])
     if (method == 1){
       y_pred[ii] = model$alpha + trapz(time, q_tmp*model$beta)
     } else if (method ==2){

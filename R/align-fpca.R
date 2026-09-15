@@ -251,8 +251,10 @@ align_fPCA <- function(f, time,
   mean_f0 <- rowMeans(f[, , 1])
   std_f0 <- apply(f[, , 1], 1, stats::sd)
   mqn <- mq[, r]
+  # fn = f[, , r] was warped by gam[, , 1], ..., gam[, , r - 1] only, so the
+  # composed warp stops there too
   gamf <- gam[, , 1]
-  for (k in 2:r) {
+  for (k in seq_len(r - 1)[-1]) {
     gam_k <- gam[, , k]
     for (l in 1:N)
       gamf[, l] <- stats::approx(

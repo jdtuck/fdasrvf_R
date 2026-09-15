@@ -204,14 +204,18 @@ multivariate_karcher_mean <- function(beta,
     normv <- sqrt(innerprod_q2(out$vbar, out$vbar))
     normbar[itr] <- normv
 
+    # Keep the aligned SRVFs and shooting vectors of this alignment step
+    # before testing convergence, so that they, `gam` and `R` all refer to the
+    # same `qmean` on exit
+    qn <- qt
+    v <- out$v
+
     if (sumd[itr] - sumd[itr + 1] < 0 ||
         normv < tolv ||
         abs(sumd[itr + 1] - sumd[itr]) < told)
       break
 
-    qn <- qt
     qmean <- out$qmean
-    v <- out$v
 
     itr <- itr + 1
   }
