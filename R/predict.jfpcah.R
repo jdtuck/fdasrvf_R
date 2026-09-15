@@ -50,10 +50,10 @@ predict.jfpcah <- function(object, newdata = NULL, ...) {
 
   C <- object$C
 
-  h = gam_to_h(gam)
+  h = gam_to_h(gam, smooth = FALSE)
 
   c = t(qn1 - object$mqn) %*% object$U
-  ch = t(C*h - object$mh) %*% object$Uh
+  ch = t(C*h - object$mh) %*% object$U1
 
   Xi = cbind(c, ch)
 

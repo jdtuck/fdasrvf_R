@@ -102,7 +102,8 @@ test_that("fpca predict methods align newdata with the settings used to fit", {
   fits <- list(
     vfpca = vertFPCA(warp, no = 3, showplot = FALSE),
     hfpca = horizFPCA(warp, no = 3, showplot = FALSE),
-    jfpca = jointFPCA(warp, no = 3, showplot = FALSE)
+    jfpca = jointFPCA(warp, no = 3, showplot = FALSE),
+    jfpcah = jointFPCAh(warp, showplot = FALSE)
   )
   for (nm in names(fits)) {
     calls <- capture_reparam_args(out <- predict(fits[[nm]], newdata))
@@ -110,4 +111,14 @@ test_that("fpca predict methods align newdata with the settings used to fit", {
     expect_equal(calls[[1]], expected, label = nm)
     expect_equal(nrow(out), ncol(newdata), label = nm)
   }
+})
+
+test_that("`predict.jfpcah()` reproduces the fitted coefficients on training data", {
+  warp <- suppressMessages(time_warping(f, time, max_iter = 1))
+  fit <- jointFPCAh(warp, showplot = FALSE)
+  pred <- predict(fit)
+  expect_equal(dim(pred), dim(fit$coef))
+  # time_warping() and predict() discretize the aligned SRSFs differently, so
+  # the match is close rather than exact
+  expect_lt(norm(pred - fit$coef, "F") / norm(fit$coef, "F"), 0.12)
 })

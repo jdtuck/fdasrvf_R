@@ -24,6 +24,10 @@
   new functions are now aligned with the `lambda`, penalty and optimization
   method used by `time_warping`, which the `vertFPCA`, `horizFPCA` and
   `jointFPCA` predict methods now also honor
+* `predict` for `jointFPCAh` fits no longer fails with "requires
+  numeric/complex matrix/vector arguments": it now projects onto the
+  horizontal basis stored in `U1` and computes `h` without smoothing, as
+  `jointFPCAh` does, so it reproduces the fitted coefficients
 
 # fdasrvf 2.4.4
 * expose PNS functions 
