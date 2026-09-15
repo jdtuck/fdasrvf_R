@@ -37,6 +37,10 @@ check_cross <- function(f, n, t, D) {
     .Call(`_fdasrvf_check_cross`, f, n, t, D)
 }
 
+interp_surf <- function(F, u, v, m, n, d) {
+    .Call(`_fdasrvf_interp_surf`, F, u, v, m, n, d)
+}
+
 find_phistar <- function(w, q, b, n, t, d, K) {
     .Call(`_fdasrvf_find_phistar`, w, q, b, n, t, d, K)
 }

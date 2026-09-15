@@ -41,6 +41,7 @@ reparam_image <- function(It, Im, gam, b, stepsize=1e-5, itermax=1000, lmark=FAL
     cutoff = 1e-3
     for (iter in 2:(itermax+1)) {
         gaminc = gamid + stepsize*gamupdate
+        gamnew = apply_gam_to_gam(gamold, gaminc)
         G = check_crossing(gamnew)
         if (!G){
             cat("Possible Crossing!\n")
@@ -48,8 +49,6 @@ reparam_image <- function(It, Im, gam, b, stepsize=1e-5, itermax=1000, lmark=FAL
             stepsize = 0.67*stepsize
             H[iter] = H[iter-1]
             next
-        } else {
-            gamnew = apply_gam_to_gam(gamnew, gaminc)
         }
 
         Inew = apply_gam_to_imag(Im, gamnew)

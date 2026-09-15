@@ -1,99 +1,35 @@
+interp_image <- function(img, u, v){
+    # Evaluate the tensor-product cubic spline interpolant of img (an m x n
+    # matrix or m x n x d array on a regular grid of the unit square) at the
+    # points (u, v). As in makediffeoid, u runs along the columns and v along
+    # the rows. Points are clamped to the unit square. Returns a
+    # length(u) x d matrix.
+    m = dim(img)[1]; n = dim(img)[2]
+    d = if (ndims(img) == 3) dim(img)[3] else 1
+    if (m < 2 || n < 2)
+        stop("Images must have at least 2 rows and 2 columns")
+
+    tmp = interp_surf(as.double(img), as.double(u), as.double(v), m, n, d)
+
+    return (matrix(tmp, ncol=d))
+}
+
+
 apply_gam_to_gam <- function(gamnew, gam){
-    # gam \circ gam0
-    m = dim(gam)[1]; n = dim(gam)[2]; D = dim(gam)[3]
-    md = 8
-    mt = md*m
-    nt = md*n
-    U = seq(0, 1, length.out=m)
-    V = seq(0, 1, length.out=n)
-    xlim = c(0,1);
-    ylim = c(0,1);
-    dx1 = (1-0)/(m-1)
-    dy1 = (1-0)/(n-1)
-    Ut = seq(0, 1, length.out=mt)
-    Vt = seq(0, 1, length.out=nt)
-    dx = (1-0)/(mt-1)
-    dy = (1-0)/(nt-1)
-    gam_tmp = array(0, dim=c(mt,nt,D))
-    gam_new_tmp = array(0, dim=c(mt,nt,D))
-    for (i in 1:D) {
-          if (requireNamespace("interp", quietly = TRUE)) {
-            gam_tmp[,,i] = interp::bicubic.grid(U,V,gam[,,i],xlim,ylim,dx=dx,dy=dy)$z
-            gam_new_tmp[,,i] = interp::bicubic.grid(U,V,gamnew[,,i],xlim,ylim,dx=dx,dy=dy)$z
-        } else {
-            grid.list<- list(x=Ut, y=Vt)
-            obj<-list(x=U, y=V, z=gam[,,i])
-            gam_tmp[,,i] = fields::interp.surface.grid(obj, grid.list)$z
-            obj<-list(x=U, y=V, z=gamnew[,,i])
-            gam_new_tmp[,,i] = fields::interp.surface.grid(obj, grid.list)$z
-        }
-
-    }
-
-    gam_cum_tmp = array(0,dim=c(mt,nt,D))
-    x2 = c(gam_tmp[,,2])
-    y2 = sort(c(t(gam_tmp[,,1])))
-    for (i in 1:D) {
-        if (requireNamespace("interp", quietly = TRUE)) {
-            tmp = interp::bicubic(Ut,Vt,gam_new_tmp[,,i],x2,y2)$z
-        } else {
-            grid.list<- cbind(x2, y2)
-            obj<-list(x=Ut, y=Vt, z=gam_new_tmp[,,i])
-            tmp = fields::interp.surface(obj, grid.list)
-        }
-        gam_cum_tmp[,,i] = matrix(tmp,nrow=mt,byrow=F)
-    }
-
-    gam_cum = array(0,dim=c(m,n,D))
-    for (i in 1:D) {
-        if (requireNamespace("interp", quietly = TRUE)) {
-            gam_cum[,,i] = interp::bicubic.grid(Ut,Vt,gam_cum_tmp[,,i],xlim,ylim,dx=dx1,dy=dy1)$z
-        } else {
-            grid.list<- list(x=U, y=V)
-            obj<-list(x=Ut, y=Vt, z=gam_cum_tmp[,,i])
-            gam_cum[,,i] = fields::interp.surface.grid(obj, grid.list)$z
-        }
-    }
-
-    return(gam_cum)
-
+    # gamnew \circ gam
+    return (apply_gam_to_imag(gamnew, gam))
 }
 
 
 apply_gam_to_imag <- function(img, gam){
-    if (ndims(img)==3){
-        m = dim(img)[1]; n = dim(img)[2]; d = dim(img)[3]
-        img_new = array(0,dim(img))
-    } else if (ndims(img) == 2){
-        m = dim(img)[1]; n = dim(img)[2]
-        d = 1;
-        img_new = matrix(0,m,n)
-    }
+    # img \circ gam, sampled on the grid of gam
+    m = dim(gam)[1]; n = dim(gam)[2]
 
-    U = seq(0,1,length.out=m)
-    V = seq(0,1,length.out=n)
-    x2 = c(gam[,,2])
-    y2 = sort(c(t(gam[,,1])))
-    if (d==1){
-        if (requireNamespace("interp", quietly = TRUE)) {
-            tmp = interp::bicubic(U,V,img,x2,y2)$z
-        } else {
-            grid.list<- cbind(x2, y2)
-            obj<-list(x=U, y=V, z=img)
-            tmp = fields::interp.surface(obj, grid.list)
-        }
-        img_new = matrix(tmp,nrow=m,byrow=F)
+    tmp = interp_image(img, gam[,,1], gam[,,2])
+    if (ndims(img) == 3){
+        img_new = array(tmp, dim=c(m,n,dim(img)[3]))
     } else {
-        for (i in 1:d) {
-            if (requireNamespace("interp", quietly = TRUE)) {
-                tmp = interp::bicubic(U,V,img[,,i],x2,y2)$z
-            } else {
-                grid.list<- cbind(x2, y2)
-                obj<-list(x=U, y=V, z=img[,,i])
-                tmp = fields::interp.surface(obj, grid.list)
-            }
-            img_new[,,i] = matrix(tmp,nrow=m,byrow=F)
-        }
+        img_new = matrix(tmp, m, n)
     }
 
     return (img_new)
@@ -101,24 +37,8 @@ apply_gam_to_imag <- function(img, gam){
 
 
 apply_gam_gamid <- function(gamid, gaminc){
-    m = dim(gamid)[1]; n = dim(gamid)[2]; d = dim(gamid)[3]
-    U = seq(0,1,length.out=m)
-    V = seq(0,1,length.out=n)
-    x2 = c(gaminc[,,2])
-    y2 = sort(c(t(gaminc[,,1])))
-    gam_cum = array(0,dim=c(m,n,d))
-    for (i in 1:d) {
-        if (requireNamespace("interp", quietly = TRUE)) {
-            tmp = interp::bicubic(U,V,gamid[,,i],x2,y2)$z
-        } else {
-            grid.list<- cbind(x2, y2)
-            obj<-list(x=U, y=V, z=gamid[,,i])
-            tmp = fields::interp.surface(obj, grid.list)
-        }
-        gam_cum[,,i] = matrix(tmp,nrow=m,byrow=F)
-    }
-
-    return (gam_cum)
+    # gamid \circ gaminc
+    return (apply_gam_to_imag(gamid, gaminc))
 }
 
 

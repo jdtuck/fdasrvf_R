@@ -167,6 +167,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// interp_surf
+Rcpp::NumericVector interp_surf(Rcpp::NumericVector F, Rcpp::NumericVector u, Rcpp::NumericVector v, int m, int n, int d);
+RcppExport SEXP _fdasrvf_interp_surf(SEXP FSEXP, SEXP uSEXP, SEXP vSEXP, SEXP mSEXP, SEXP nSEXP, SEXP dSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type F(FSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type u(uSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type v(vSEXP);
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    rcpp_result_gen = Rcpp::wrap(interp_surf(F, u, v, m, n, d));
+    return rcpp_result_gen;
+END_RCPP
+}
 // find_phistar
 Rcpp::NumericVector find_phistar(Rcpp::NumericVector w, Rcpp::NumericVector q, Rcpp::NumericVector b, int n, int t, int d, int K);
 RcppExport SEXP _fdasrvf_find_phistar(SEXP wSEXP, SEXP qSEXP, SEXP bSEXP, SEXP nSEXP, SEXP tSEXP, SEXP dSEXP, SEXP KSEXP) {
@@ -274,6 +290,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_fdasrvf_order_l2norm", (DL_FUNC) &_fdasrvf_order_l2norm, 2},
     {"_fdasrvf_find_grad_2D", (DL_FUNC) &_fdasrvf_find_grad_2D, 6},
     {"_fdasrvf_check_cross", (DL_FUNC) &_fdasrvf_check_cross, 4},
+    {"_fdasrvf_interp_surf", (DL_FUNC) &_fdasrvf_interp_surf, 6},
     {"_fdasrvf_find_phistar", (DL_FUNC) &_fdasrvf_find_phistar, 7},
     {"_fdasrvf_mlogit_warp_grad_wrap", (DL_FUNC) &_fdasrvf_mlogit_warp_grad_wrap, 12},
     {"_fdasrvf_DPQ2", (DL_FUNC) &_fdasrvf_DPQ2, 14},

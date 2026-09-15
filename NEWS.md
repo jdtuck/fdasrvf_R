@@ -87,6 +87,17 @@
   `inverse_exp`, `curve_align_sub`, `karcher_calc`, `elastic.regression`,
   `elastic.logistic`) were corrected; a memory leak in the multinomial
   logistic warping code was fixed
+* `pair_align_image` and `reparam_image` work again, for square and
+  non-square images. With interp 1.1.6, whose `bicubic()` is an
+  irregular-grid workaround, warping failed with "length of y0 and x0
+  differs!" or returned `NA`s, and every warp other than the identity paired
+  the wrong row and column coordinates. Images and warps are now
+  interpolated with the package's own tensor-product cubic spline (as in the
+  C++ q-map code): the identity warp reproduces the image exactly, and warps
+  are no longer upsampled 8 times, so iterations take a fraction of a second
+  instead of minutes. `interp` and `fields` are no longer used.
+  `reparam_image` now also checks the updated warp, rather than the previous
+  one, for folding
 
 # fdasrvf 2.4.4
 * expose PNS functions 
