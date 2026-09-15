@@ -27,7 +27,7 @@
 * `predict` for `jointFPCAh` fits no longer fails with "requires
   numeric/complex matrix/vector arguments": it now projects onto the
   horizontal basis stored in `U1` and computes `h` without smoothing, as
-  `jointFPCAh` does, so it reproduces the fitted coefficients
+  `jointFPCAh` does
 
 # fdasrvf 2.4.4
 * expose PNS functions 
