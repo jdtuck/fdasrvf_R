@@ -100,6 +100,14 @@ time_warping <- function(f,
       cores <- max(parallel::detectCores() - 1, 1)
     }
 
+    # Respect core limits imposed by R CMD check / CRAN (via
+    # _R_CHECK_LIMIT_CORES_), which caps the number of usable cores at 2.
+    # Without this, parallel::.check_ncores() aborts when more than 2
+    # simultaneous processes are requested.
+    chk <- tolower(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))
+    if (nzchar(chk) && !identical(chk, "false"))
+      cores <- min(cores, 2L)
+
     cl <- parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
   } else
