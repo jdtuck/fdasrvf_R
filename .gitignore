@@ -12,3 +12,4 @@ CRAN-RELEASE
 fdasrvf_R.code-workspace
 CRAN-SUBMISSION
 .positai
+src/Makevars
