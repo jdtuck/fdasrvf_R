@@ -1,0 +1,70 @@
+#!/bin/sh
+# Determine the flags needed to compile *and link* the OpenMP runtime.
+#
+# R reports the OpenMP compile flag in SHLIB_OPENMP_CXXFLAGS. On most platforms
+# that same flag also links the runtime: GCC's -fopenmp implies -lgomp. On
+# macOS, CRAN's R sets it to "-Xclang -fopenmp", which turns on OpenMP code
+# generation but is passed straight to the compiler frontend, bypassing the
+# clang driver's link logic -- so libomp is never linked. The resulting DSO
+# links cleanly (macOS allows undefined symbols in a shared object) and then
+# fails at load time with
+#
+#   unable to load shared object '.../fdasrvf.so':
+#   symbol not found in flat namespace '___kmpc_for_static_fini'
+#
+# So probe the toolchain instead of assuming: link a small OpenMP *executable*
+# (which, unlike a shared object, requires every symbol to resolve) and add
+# -lomp only when it is both needed and works.
+
+set -e
+
+: "${R_HOME:?configure must be run by R}"
+RBIN="${R_HOME}/bin/R"
+
+CXX=`"${RBIN}" CMD config CXX`
+CXXFLAGS=`"${RBIN}" CMD config CXXFLAGS`
+CPPFLAGS=`"${RBIN}" CMD config CPPFLAGS`
+LDFLAGS=`"${RBIN}" CMD config LDFLAGS`
+
+# R CMD config does not expose SHLIB_OPENMP_* on every R build, so read Makeconf.
+MAKECONF="${R_HOME}/etc${R_ARCH}/Makeconf"
+OPENMP_CXXFLAGS=`sed -n 's/^SHLIB_OPENMP_CXXFLAGS *= *//p' "${MAKECONF}" | head -n 1`
+
+WORKDIR=`mktemp -d`
+trap 'rm -rf "${WORKDIR}"' EXIT 0
+
+cat > "${WORKDIR}/conftest.cpp" <<'EOF'
+#include <omp.h>
+int main() {
+  int n = 0;
+#pragma omp parallel for reduction(+ : n)
+  for (int i = 0; i < 8; i++) n += i;
+  return n == 28 ? 0 : 1;
+}
+EOF
+
+try_link() {
+  ${CXX} ${CPPFLAGS} ${CXXFLAGS} ${OPENMP_CXXFLAGS} \
+    "${WORKDIR}/conftest.cpp" -o "${WORKDIR}/conftest" \
+    ${LDFLAGS} "$@" >/dev/null 2>&1
+}
+
+OPENMP_LIBS="${OPENMP_CXXFLAGS}"
+if [ -n "${OPENMP_CXXFLAGS}" ]; then
+  if try_link; then
+    echo "checking how to link OpenMP... ${OPENMP_CXXFLAGS}"
+  elif try_link -lomp; then
+    OPENMP_LIBS="${OPENMP_CXXFLAGS} -lomp"
+    echo "checking how to link OpenMP... ${OPENMP_LIBS}"
+  else
+    OPENMP_CXXFLAGS=""
+    OPENMP_LIBS=""
+    echo "checking how to link OpenMP... not available, building without OpenMP"
+  fi
+else
+  echo "checking how to link OpenMP... not supported by this R build"
+fi
+
+sed -e "s|@OPENMP_CXXFLAGS@|${OPENMP_CXXFLAGS}|g" \
+    -e "s|@OPENMP_LIBS@|${OPENMP_LIBS}|g" \
+    src/Makevars.in > src/Makevars
