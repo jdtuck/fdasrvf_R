@@ -31,7 +31,7 @@ predict.mlpcr <- function(object, newdata=NULL, y=NULL, ...){
         y_pred <- y_pred/apply(apply(y_pred,2,abs),1,sum)
         y_pred <- phi(c(y_pred))
         y_pred <- matrix(y_pred,ncol=m)
-        y_labels <- apply(y_pred, 1, which.min)
+        y_labels <- apply(y_pred, 1, which.max)
     } else {
         n <- ncol(newdata)
         M <- nrow(newdata)
@@ -74,7 +74,7 @@ predict.mlpcr <- function(object, newdata=NULL, y=NULL, ...){
             psi <- matrix(0,TT,n)
             binsize <- mean(diff(time))
             for (i in 1:n){
-                psi[,i] <- sqrt(gradient(gam[,i],binsize))
+                psi[,i] <- sqrt(pmax(gradient(gam[,i],binsize), 0))
             }
 
             for (i in 1:n){
@@ -107,7 +107,7 @@ predict.mlpcr <- function(object, newdata=NULL, y=NULL, ...){
             psi <- matrix(0,TT,n)
             binsize <- mean(diff(time))
             for (i in 1:n){
-                psi[,i] <- sqrt(gradient(gam[,i],binsize))
+                psi[,i] <- sqrt(pmax(gradient(gam[,i],binsize), 0))
             }
 
             for (i in 1:n){
@@ -132,7 +132,7 @@ predict.mlpcr <- function(object, newdata=NULL, y=NULL, ...){
         y_pred <- y_pred/apply(apply(y_pred,2,abs),1,sum)
         y_pred <- phi(c(y_pred))
         y_pred <- matrix(y_pred,ncol=m)
-        y_labels <- apply(y_pred, 1, which.min)
+        y_labels <- apply(y_pred, 1, which.max)
     }
 
     if (missing(newdata)){

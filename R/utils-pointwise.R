@@ -15,7 +15,7 @@ phase_distance <- function(gam) {
   M <- length(gam)
   grd <- seq(0, 1, length.out = M)
   binsize <- mean(diff(grd))
-  psi <- sqrt(gradient(gam, binsize))
+  psi <- sqrt(pmax(gradient(gam, binsize), 0))
   v <- inv_exp_map(rep(1, M), psi)
   sqrt(trapz(grd, v ^ 2))
 }

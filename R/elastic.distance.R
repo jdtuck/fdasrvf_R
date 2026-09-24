@@ -42,7 +42,7 @@ elastic.distance <- function(f1, f2, time, lambda = 0, pen="roughness"){
 
     time1 <- seq(0,1,length.out=length(time))
     binsize <- mean(diff(time1))
-    psi <- sqrt(gradient(gam,binsize))
+    psi <- sqrt(pmax(gradient(gam,binsize), 0))
     q1dotq2 = trapz(time1, psi)
     if (q1dotq2 > 1){
       q1dotq2 = 1

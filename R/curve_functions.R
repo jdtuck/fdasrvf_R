@@ -85,8 +85,12 @@ find_basis_normal <- function(q){
     f1 = matrix(0,n,T1)
     f2 = matrix(0,n,T1)
     for (i in 1:T1){
-        f1[,i] = q[1,i]*q[,i]/pvecnorm(q[,i])+c(pvecnorm(q[,i]),0)
-        f2[,i] = q[2,i]*q[,i]/pvecnorm(q[,i])+c(0,pvecnorm(q[,i]))
+        normq = pvecnorm(q[,i])
+        # both terms vanish as q[,i] -> 0, so leave zero columns at zero
+        if (normq > .Machine$double.eps){
+            f1[,i] = q[1,i]*q[,i]/normq+c(normq,0)
+            f2[,i] = q[2,i]*q[,i]/normq+c(0,normq)
+        }
     }
     h3 = f1
     h4 = f2
@@ -358,7 +362,7 @@ group_action_by_gamma <- function(q, gamma, scale = TRUE) {
   L <- nrow(q)
   M <- ncol(q)
   grd <- seq(0, 1, length.out = M)
-  gammadot <- gradient(gamma, 1.0 / M)
+  gammadot <- pmax(gradient(gamma, 1.0 / (M - 1)), 0)
   qn <- matrix(nrow = L, ncol = M)
 
   for (l in 1:L)
@@ -510,6 +514,9 @@ inverse_exp_coord <- function(beta1, beta2, mode="O", rotated=T){
     if (q1dotq2>1){
       q1dotq2 = 1.
     }
+    if (q1dotq2 < -1){
+      q1dotq2 = -1.
+    }
 
     dist = acos(q1dotq2)
 
@@ -554,6 +561,9 @@ inverse_exp <- function(q1, q2, beta2, mode = "O"){
     q1dotq2 = innerprod_q2(q1, q2)
     if (q1dotq2>1){
         q1dotq2 = 1.
+    }
+    if (q1dotq2 < -1){
+        q1dotq2 = -1.
     }
 
     dist = acos(q1dotq2)
@@ -614,7 +624,14 @@ scale_curve <- function(beta){
 
 
 parallel_translate <- function(w, q1, q2, basis, mode='O'){
-    wtilde = w - 2*innerprod_q2(w,q2) / innerprod_q2(q1+q2,q1+q2) * (q1+q2)
+    denom = innerprod_q2(q1+q2,q1+q2)
+    if (denom > 1e-8){
+        wtilde = w - 2*innerprod_q2(w,q2) / denom * (q1+q2)
+    } else {
+        # q2 is (nearly) antipodal to q1, so the transport is not unique;
+        # fall back to projecting w onto the tangent space at q2
+        wtilde = w - innerprod_q2(w,q2) / innerprod_q2(q2,q2) * q2
+    }
     l = sqrt(innerprod_q2(wtilde, wtilde))
 
     if (mode == 'C'){
