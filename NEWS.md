@@ -1,4 +1,23 @@
 # fdasrvf (development version)
+* the macOS build now links the OpenMP runtime explicitly, fixing
+  "symbol not found in flat namespace '___kmpc_for_static_fini'" when loading
+  the package; a new `configure` script probes the toolchain and builds
+  without OpenMP if no usable runtime is found (`src/Makevars` is now
+  generated from `src/Makevars.in`)
+* `kmeans_align(rotation = TRUE)` now applies the estimated rotation to the
+  aligned curves instead of discarding it
+* `elastic.mlpcr.regression` now uses the standard softmax in its
+  multinomial logistic loss and gradient, so fitting, warping and prediction
+  agree, and `predict` for these fits picks the class with the highest
+  probability rather than the lowest
+* curve shape functions no longer divide by zero on zero SRVF columns
+  (`find_basis_normal`), return `NaN` distances when the inner product falls
+  slightly below -1 (`inverse_exp`, `inverse_exp_coord`), or fail on
+  (nearly) antipodal curves when parallel transporting
+* `group_action_by_gamma` uses the correct grid spacing, and square roots of
+  warping-function derivatives (e.g. in `SqrtMean` and the phase boxplot) are
+  clamped at zero so small negative numerical derivatives no longer give
+  `NaN`
 
 # fdasrvf 2.5.0
 * add `interparc` function for downsampling closed curves
