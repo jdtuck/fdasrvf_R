@@ -94,8 +94,10 @@ mlogit_loss <- function(b, X, Y){
   M = ncol(X)
   B = array(b,c(M, m))
   Yhat = X %*% B
-  Yhat = Yhat - apply(Yhat,1,min)
-  Yhat = exp(-1*Yhat)
+  # softmax with probabilities proportional to exp(score), matching
+  # mlogit_warp and prediction; subtract the row max for stability
+  Yhat = Yhat - apply(Yhat,1,max)
+  Yhat = exp(Yhat)
   # l1-normalize
   Yhat = Yhat/apply(Yhat,1,sum)
 
@@ -111,8 +113,10 @@ mlogit_gradient <- function(b, X, Y){
   M = ncol(X)
   B = array(b,c(M, m))
   Yhat = X %*% B
-  Yhat = Yhat - apply(Yhat,1,min)
-  Yhat = exp(-1*Yhat)
+  # softmax with probabilities proportional to exp(score), matching
+  # mlogit_warp and prediction; subtract the row max for stability
+  Yhat = Yhat - apply(Yhat,1,max)
+  Yhat = exp(Yhat)
   # l1-normalize
   Yhat = Yhat/apply(Yhat,1,sum)
 
@@ -120,6 +124,6 @@ mlogit_gradient <- function(b, X, Y){
   Yhat1 = Yhat1 / apply(Yhat1,1,sum)
   Yhat = Yhat - Yhat1
   grad = t(X) %*% Yhat
-  grad = -1*grad/N
+  grad = grad/N
   return(grad)
 }

@@ -98,7 +98,7 @@ SqrtMeanInverse <- function(gam){
   psi = matrix(0,TT,n)
   binsize <- mean(diff(time))
   for (i in 1:n){
-    psi[,i] = sqrt(gradient(gam[,i],binsize))
+    psi[,i] = sqrt(pmax(gradient(gam[,i],binsize), 0))
   }
 
   # Find Direction
@@ -194,7 +194,7 @@ gam_to_v<-function(gam, smooth=TRUE){
       g[g<0] = 0
       psi = sqrt(g)
     } else {
-        psi = sqrt(gradient(gam,binsize))
+        psi = sqrt(pmax(gradient(gam,binsize), 0))
     }
 
     mu = rep(1,TT)
@@ -218,7 +218,7 @@ gam_to_v<-function(gam, smooth=TRUE){
       }
     } else {
       for (i in 1:n){
-        psi[,i] = sqrt(gradient(gam[,i],binsize))
+        psi[,i] = sqrt(pmax(gradient(gam[,i],binsize), 0))
       }
     }
 
@@ -294,7 +294,7 @@ gam_to_psi<-function(gam, smooth=TRUE){
       g[g<0] = 0
       psi = sqrt(g)
     } else {
-      psi = sqrt(gradient(gam,binsize))
+      psi = sqrt(pmax(gradient(gam,binsize), 0))
     }
 
   } else {
@@ -315,7 +315,7 @@ gam_to_psi<-function(gam, smooth=TRUE){
       }
     } else {
       for (i in 1:n){
-        psi[,i] = sqrt(gradient(gam[,i],binsize))
+        psi[,i] = sqrt(pmax(gradient(gam[,i],binsize), 0))
       }
     }
 

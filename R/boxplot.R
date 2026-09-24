@@ -617,7 +617,7 @@ phbox_data <- function(warp_median, alpha = .05, kp = 1) {
   binsize <- mean(diff(time))
   dx <- rep(0, N)
   for (i in 1:N) {
-    psi[, i] <- sqrt(gradient(gam[, i], binsize))
+    psi[, i] <- sqrt(pmax(gradient(gam[, i], binsize), 0))
     v[, i] <- inv_exp_map(psi_median, psi[, i])
     dx[i] <- sqrt(trapz(time, v[, i] ^ 2))
   }
@@ -649,8 +649,8 @@ phbox_data <- function(warp_median, alpha = .05, kp = 1) {
   Q3_index <- CR_50[maxloc[1, 2]]
   Q1 <- gam[, Q1_index]
   Q3 <- gam[, Q3_index]
-  Q1_psi <- sqrt(gradient(Q1, 1 / (M - 1)))
-  Q3_psi <- sqrt(gradient(Q3, 1 / (M - 1)))
+  Q1_psi <- sqrt(pmax(gradient(Q1, 1 / (M - 1)), 0))
+  Q3_psi <- sqrt(pmax(gradient(Q3, 1 / (M - 1)), 0))
 
   # identify phase quantiles
   dx_ordering <- sort(dx, index.return = TRUE)$ix
@@ -688,8 +688,8 @@ phbox_data <- function(warp_median, alpha = .05, kp = 1) {
   }
   Q1a <- gam[, Q1a_index]
   Q3a <- gam[, Q3a_index]
-  Q1a_psi <- sqrt(gradient(Q1a, 1 / (M - 1)))
-  Q3a_psi <- sqrt(gradient(Q3a, 1 / (M - 1)))
+  Q1a_psi <- sqrt(pmax(gradient(Q1a, 1 / (M - 1)), 0))
+  Q3a_psi <- sqrt(pmax(gradient(Q3a, 1 / (M - 1)), 0))
 
   # compute phase whiskers
   IQR <- dx[Q1_index] + dx[Q3_index]

@@ -68,7 +68,7 @@ predict.lpcr <- function(object, newdata=NULL, y=NULL, ...){
             psi <- matrix(0,TT,n)
             binsize <- mean(diff(time))
             for (i in 1:n){
-                psi[,i] <- sqrt(gradient(gam[,i],binsize))
+                psi[,i] <- sqrt(pmax(gradient(gam[,i],binsize), 0))
             }
 
             for (i in 1:n){
@@ -101,7 +101,7 @@ predict.lpcr <- function(object, newdata=NULL, y=NULL, ...){
             psi <- matrix(0,TT,n)
             binsize <- mean(diff(time))
             for (i in 1:n){
-                psi[,i] <- sqrt(gradient(gam[,i],binsize))
+                psi[,i] <- sqrt(pmax(gradient(gam[,i],binsize), 0))
             }
 
             for (i in 1:n){

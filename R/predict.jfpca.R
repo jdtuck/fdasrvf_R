@@ -53,7 +53,7 @@ predict.jfpca <- function(object, newdata = NULL, ...) {
   time = seq(0, 1, length.out=M)
   binsize <- mean(diff(time))
   for (i in 1:N) {
-    psi[, i] = sqrt(gradient(gam[, i], binsize))
+    psi[, i] = sqrt(pmax(gradient(gam[, i], binsize), 0))
     vec[, i] <- inv_exp_map(object$mu_psi, psi[, i])
   }
 
