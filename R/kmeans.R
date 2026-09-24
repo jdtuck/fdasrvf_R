@@ -198,6 +198,7 @@ kmeans_align <- function(f, time,
             out = find_rotation_seed_unique(templates.q[, , k], q[, , n],
                                             mode='O', rotation=rotation, scale=scale)
             gam_tmp = out$gambest
+            R_tmp = out$Rbest
 
           } else{
             gam_tmp <- optimum.reparam(
@@ -215,7 +216,9 @@ kmeans_align <- function(f, time,
           gam_tmp <- seq(0, 1, length.out = M)
 
         if (L > 1){
-          fw <- group_action_by_gamma_coord(f[, , n], gam_tmp)
+          if (!alignment)
+            R_tmp <- diag(L)
+          fw <- group_action_by_gamma_coord(R_tmp %*% f[, , n], gam_tmp)
           qw <- curve_to_q(fw, scale)$q
         } else {
           fw <- warp_f_gamma(f[1, , n], time, gam_tmp)
