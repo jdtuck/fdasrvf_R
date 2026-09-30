@@ -1,7 +1,7 @@
 # fdasrvf (development version)
 * `f_to_srvf` now differentiates the interpolating cubic spline (new `smooth`
   argument, default `FALSE`; `TRUE` uses a smoothing spline) and `srvf_to_f`
-  integrates the cubic spline of `q|q|` instead of using `cumtrapz`, so the
+  integrates `q|q|` with a spline-corrected trapezoid rule instead of plain `cumtrapz`, so the
   round trip `f -> q -> f` is now `O(h^4)` accurate (previously `O(h^2)` and
   poor for oscillatory functions)
 * the alignment, regression, PCA and boxplot code now computes SRVFs

@@ -24,7 +24,7 @@
 #'
 #' @return A numeric array of the same shape as the input `q` storing the
 #'   transformation of the SRVFs `q` back to the original functional space.
-#'   The integration uses the interpolating cubic spline of \eqn{q|q|}, which
+#'   The integration uses a trapezoid rule corrected with cubic-spline slopes of \eqn{q|q|}, which
 #'   is the inverse of `f_to_srvf(smooth = FALSE)`.
 #'
 #' @keywords srvf alignment

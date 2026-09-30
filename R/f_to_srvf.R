@@ -41,11 +41,14 @@ f_to_srvf <- function(f, time, smooth = FALSE) {
   if (is.null(dim(f))) {
     g <- spline_derivative(time, f, smooth)
   } else {
-    if (length(dim(f)) > 2) {
+    dims <- dim(f)
+    if (length(dims) > 2 && dims[1] > 1) {
       stop('wrong input dimensions of f')
     }
-    g <- apply(f, 2, function(x) spline_derivative(time, x, smooth))
-    if (is.null(dim(g))) g <- matrix(g, nrow = nrow(f))
+    # a 1 x M x N array is treated as an M x N matrix
+    fm <- if (length(dims) > 2) matrix(f, dims[2], dims[3]) else f
+    g <- apply(fm, 2, function(x) spline_derivative(time, x, smooth))
+    g <- array(g, dim = dims)
   }
 
   g / sqrt(abs(g) + eps)
@@ -61,16 +64,14 @@ spline_derivative <- function(time, y, smooth = FALSE) {
   as.numeric(stats::splinefun(time, y, method = "fmm")(time, deriv = 1))
 }
 
-# Integral from time[1] to each time point of the interpolating cubic spline
-# of `y`. Exact inverse of `spline_derivative()` up to the spline error.
+# Integral from time[1] to each time point of `y`, using the trapezoid rule
+# corrected with the slopes of the interpolating cubic spline of `y`
+# (Hermite/Euler-Maclaurin end correction). This is O(h^4) accurate and
+# inverts `spline_derivative()` more tightly than either the plain trapezoid
+# rule or integrating the spline itself.
 spline_cumintegral <- function(time, y) {
   M <- length(time)
-  sf <- stats::splinefun(time, y, method = "fmm")
   h <- diff(time)
-  idx <- 1:(M - 1)
-  b <- sf(time, deriv = 1)[idx]
-  c2 <- sf(time, deriv = 2)[idx] / 2
-  d <- sf(time, deriv = 3)[idx] / 6
-  seg <- h * (y[idx] + h * (b / 2 + h * (c2 / 3 + h * d / 4)))
-  c(0, cumsum(seg))
+  s <- stats::splinefun(time, y, method = "fmm")(time, deriv = 1)
+  c(0, cumsum(h * (y[-1] + y[-M]) / 2 + h^2 * (s[-M] - s[-1]) / 12))
 }
