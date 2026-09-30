@@ -4,6 +4,10 @@
   integrates the cubic spline of `q|q|` instead of using `cumtrapz`, so the
   round trip `f -> q -> f` is now `O(h^4)` accurate (previously `O(h^2)` and
   poor for oscillatory functions)
+* the alignment, regression, PCA and boxplot code now computes SRVFs
+  (`gradient.spline` with `smooth_data = FALSE`) and reconstructs functions
+  from SRVFs (`cumtrapzmid`, mean/median function, boxplot quantiles) with the
+  same cubic-spline derivative/integral, so the two directions are consistent
 * the macOS build now links the OpenMP runtime explicitly, fixing
   "symbol not found in flat namespace '___kmpc_for_static_fini'" when loading
   the package; a new `configure` script probes the toolchain and builds

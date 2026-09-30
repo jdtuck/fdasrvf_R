@@ -269,7 +269,7 @@ time_warping <- function(f,
       vbar <- rowSums(vtil) * sum(dtil) ^ (-1)
       mq[, r + 1] <- mq[, r] + stp * vbar
       mf[, r + 1] <- stats::median(f[1, , 1]) +
-        cumtrapz(time, mq[, r + 1] * abs(mq[, r + 1]))
+        spline_cumintegral(time, mq[, r + 1] * abs(mq[, r + 1]))
     }
 
     qun[r + 1] <- pvecnorm(mq[, r + 1] - mq[, r], 2) / pvecnorm(mq[, r], 2)
@@ -337,9 +337,9 @@ time_warping <- function(f,
   mqn <- mq[, r + 1]
 
   if (centroid_type == "mean")
-    fmean = mean(f0[1, ]) + as.numeric(cumtrapz(time, mqn * abs(mqn)))
+    fmean = mean(f0[1, ]) + spline_cumintegral(time, mqn * abs(mqn))
   else
-    fmean = stats::median(f0[1, ]) + as.numeric(cumtrapz(time, mqn * abs(mqn)))
+    fmean = stats::median(f0[1, ]) + spline_cumintegral(time, mqn * abs(mqn))
 
   outfor <- foreach::foreach(n = 1:N,
                              .combine = cbind,

@@ -180,7 +180,7 @@ jointFPCA <- function(warp_data,
         if (sum(vechat) == 0)
           gamhat <- seq(0, 1, length.out = M)
         if (id == 1)
-          fhat <- cumtrapz(time, qhat[1:M] * abs(qhat[1:M])) + sign(qhat[M +
+          fhat <- spline_cumintegral(time, qhat[1:M] * abs(qhat[1:M])) + sign(qhat[M +
                                                                           1]) * (qhat[M + 1] ^ 2)
         else
           fhat <- cumtrapzmid(time, qhat[1:M] * abs(qhat[1:M]), sign(qhat[M +
@@ -443,7 +443,7 @@ jointFPCAh <- function(warp_data,
 
       if (srvf) {
         if (id == 1)
-          fhat <- cumtrapz(time, qhat[1:M] * abs(qhat[1:M])) + sign(qhat[M +
+          fhat <- spline_cumintegral(time, qhat[1:M] * abs(qhat[1:M])) + sign(qhat[M +
                                                                            1]) * (qhat[M + 1] ^ 2)
         else
           fhat <- cumtrapzmid(time, qhat[1:M] * abs(qhat[1:M]), sign(qhat[M +
