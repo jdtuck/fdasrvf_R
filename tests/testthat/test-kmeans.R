@@ -22,5 +22,8 @@ test_that("`kmeans_align()` works", {
   expect_equal(length(out$distances_to_center), 21)
   expect_equal(out$lambda, 0)
   expect_equal(out$omethod, "DP")
+  # distances of curves lying on the template are round-off noise (~1e-16)
+  # that differs across platforms, so round them before snapshotting
+  out$distances_to_center <- round(out$distances_to_center, 8)
   expect_snapshot(out)
 })

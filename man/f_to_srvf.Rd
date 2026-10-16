@@ -4,7 +4,7 @@
 \alias{f_to_srvf}
 \title{Transformation to SRVF Space}
 \usage{
-f_to_srvf(f, time)
+f_to_srvf(f, time, smooth = FALSE)
 }
 \arguments{
 \item{f}{Either a numeric vector of a numeric matrix or a numeric array
@@ -21,6 +21,12 @@ of size \eqn{M}.
 
 \item{time}{A numeric vector of length \eqn{M} specifying the grid on which
 the functions are evaluated.}
+
+\item{smooth}{A boolean specifying whether to differentiate a smoothing
+spline of \code{f} instead of the interpolating cubic spline. Defaults to
+\code{FALSE}. With \code{FALSE}, \code{\link[=srvf_to_f]{srvf_to_f()}} inverts this transformation with
+\eqn{O(h^4)} accuracy for smooth \code{f}. With \code{TRUE}, high-frequency content
+is removed on purpose and is not recovered by \code{\link[=srvf_to_f]{srvf_to_f()}}.}
 }
 \value{
 A numeric array of the same shape as the input array \code{f} storing the

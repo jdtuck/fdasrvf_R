@@ -351,8 +351,8 @@ ampbox_data <- function(warp_median, alpha = 0.05, ka = 1) {
   v3 <- Q3_q - qmedian
   upper_q <- Q3_q + ka * IQR * v3 / sqrt(trapz(time, v3 * v3))
   lower_q <- Q1_q + ka * IQR * v1 / sqrt(trapz(time, v1 * v1))
-  upper <- cumtrapz(time, upper_q * abs(upper_q))
-  lower <- cumtrapz(time, lower_q * abs(lower_q))
+  upper <- spline_cumintegral(time, upper_q * abs(upper_q))
+  lower <- spline_cumintegral(time, lower_q * abs(lower_q))
 
   upper_dis <- sqrt(trapz(time, (upper_q - qmedian)^2))
   lower_dis <- sqrt(trapz(time, (lower_q - qmedian)^2))

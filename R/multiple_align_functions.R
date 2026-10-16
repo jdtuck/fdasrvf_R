@@ -157,7 +157,7 @@ multiple_align_functions <- function(f,
   mean_fn = rowMeans(fn)
   std_fn = apply(fn, 1, stats::sd)
   mqn = mq
-  fmean = mean(f0[1, ]) + cumtrapz(time, mqn * abs(mqn))
+  fmean = mean(f0[1, ]) + spline_cumintegral(time, mqn * abs(mqn))
   gam = t(gam)
   gamI = SqrtMeanInverse(gam)
 

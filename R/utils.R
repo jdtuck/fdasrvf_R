@@ -356,7 +356,14 @@ gradient.spline <- function(f, binsize, smooth_data = FALSE) {
       }
     }
   } else {
-    g <- gradient(f, binsize)
+    # derivative of the interpolating cubic spline, consistent with
+    # f_to_srvf() / srvf_to_f()
+    idx <- seq_len(NROW(f))
+    if (is.null(dim(f))) {
+      g <- spline_derivative(idx, f) / binsize
+    } else {
+      g <- apply(f, 2, function(x) spline_derivative(idx, x)) / binsize
+    }
     f.out <- f
   }
 
@@ -496,19 +503,9 @@ svd2 <- function (x,
 }
 
 cumtrapzmid <- function(x, y, c, mid) {
-  a = length(x)
-
-  # case < mid
-  fn = rep(0, a)
-  tmpx = x[seq(mid - 1, 1, -1)]
-  tmpy = y[seq(mid - 1, 1, -1)]
-  tmp = c + cumtrapz(tmpx, tmpy)
-  fn[1:(mid - 1)] = rev(tmp)
-
-  # case >= mid
-  fn[mid:a] = c + cumtrapz(x[mid:a], y[mid:a])
-
-  return(fn)
+  # integral of the cubic spline of y that equals c at x[mid]
+  F <- spline_cumintegral(x, y)
+  c + F - F[mid]
 }
 
 zero_crossing <- function(Y, q, bt, time, y_max, y_min, gmax, gmin) {

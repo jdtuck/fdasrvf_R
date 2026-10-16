@@ -64,7 +64,7 @@ vertFPCA <- function(warp_data, no=3, var_exp=NULL,
     for (k in NP){
         for (i in 1:Nstd){
             if (id == 1){
-              f_pca[,i,k] <- cumtrapz(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*
+              f_pca[,i,k] <- spline_cumintegral(time,q_pca[1:(dim(q_pca)[1]-1),i,k]*
                                       abs(q_pca[1:(dim(q_pca)[1]-1),i,k]))+(sign(q_pca[dim(q_pca)[1],i,k])*(q_pca[dim(q_pca)[1],i,k]^2))
 
             } else {

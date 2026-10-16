@@ -29,6 +29,33 @@ test_that("`srvf_to_f(f_to_srvf())` round-trips a 1-D function", {
   expect_equal(f_rec, f, tolerance = 1e-2)
 })
 
+test_that("`srvf_to_f(f_to_srvf())` is accurate for oscillatory matrices", {
+  t <- seq(0, 1, length.out = 401)
+  f <- cbind(sin(2 * pi * 10 * t), exp(-200 * (t - 0.5)^2))
+  q <- f_to_srvf(f, t)
+  expect_equal(dim(q), dim(f))
+  f_rec <- srvf_to_f(q, t, f[1, ])
+  err <- apply(abs(f_rec - f), 2, max) / apply(f, 2, function(x) diff(range(x)))
+  expect_true(all(err < 1e-3))
+})
+
+test_that("the `f -> q -> f` round trip error converges at high order", {
+  err <- sapply(c(100, 200), function(n) {
+    t <- seq(0, 1, length.out = n + 1)
+    f <- sin(2 * pi * 5 * t)
+    max(abs(as.numeric(srvf_to_f(f_to_srvf(f, t), t, f[1])) - f))
+  })
+  expect_gt(err[1] / err[2], 8)
+})
+
+test_that("`srvf_to_f()` starts at `f0`", {
+  t <- seq(0, 1, length.out = 101)
+  q <- cbind(rep(1, 101), rep(-1, 101))
+  f <- srvf_to_f(q, t, c(2, -3))
+  expect_equal(f[1, ], c(2, -3))
+  expect_equal(f[101, ], c(3, -4), tolerance = 1e-8)
+})
+
 test_that("`warp_curve()` under the identity warping is a no-op", {
   betafun <- discrete2curve(fdasrvf::beta[, , 1, 1])
   warped <- warp_curve(betafun, get_identity_warping())
