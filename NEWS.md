@@ -1,4 +1,9 @@
 # fdasrvf (development version)
+* `SqrtMeanInverse` now starts its Karcher-mean iteration from the `psi`
+  closest to the pointwise mean, which lies on the unit sphere, rather than
+  from the pointwise mean itself, matching the Python and MATLAB
+  implementations (results change only at the level of the `1e-8` stopping
+  tolerance)
 * `f_to_srvf` now differentiates the interpolating cubic spline (new `smooth`
   argument, default `FALSE`; `TRUE` uses a smoothing spline) and `srvf_to_f`
   integrates `q|q|` with a spline-corrected trapezoid rule instead of plain `cumtrapz`, so the
