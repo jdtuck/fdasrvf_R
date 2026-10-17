@@ -85,8 +85,8 @@ sample;
 the aligned sample;
 \item \code{phase_variance}: a numeric value storing the variance in phase of the
 aligned sample;
-\item \code{qun}: a numeric vector of maximum length \code{max_iter + 2} storing the values
-of the cost function after each iteration;
+\item \code{qun}: a numeric vector of maximum length \code{max_iter} storing the relative
+change of the template at each iteration;
 \item \code{lambda}: the input parameter \code{lambda} which specifies the elasticity;
 \item \code{centroid_type}: the input centroid type;
 \item \code{optim_method}: the input optimization method;

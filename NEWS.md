@@ -1,4 +1,14 @@
 # fdasrvf (development version)
+* `time_warping()` now finishes like MATLAB's `fdawarp.time_warping`: the
+  final matching step's warpings are centred and the original data are warped
+  once by them, so `fn` is exactly `f` composed with `warping_functions` (and
+  `mqn` is the mean of `qn` for the mean). Previously `fn`/`qn` kept the
+  previous iteration's alignment and `warping_functions` came from an extra
+  alignment pass, so they disagreed by a few percent. `qun` now holds one
+  relative template change per iteration. Results match MATLAB and Python
+  `fdasrsf` on `simu_data` to about 1e-8
+* the `simu_warp` and `simu_warp_median` datasets are regenerated with the
+  updated `time_warping()`
 * `SqrtMeanInverse` now starts its Karcher-mean iteration from the `psi`
   closest to the pointwise mean, which lies on the unit sphere, rather than
   from the pointwise mean itself, matching the Python and MATLAB
