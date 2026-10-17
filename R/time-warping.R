@@ -56,8 +56,8 @@
 #' the aligned sample;
 #' - `phase_variance`: a numeric value storing the variance in phase of the
 #' aligned sample;
-#' - `qun`: a numeric vector of maximum length `max_iter + 2` storing the values
-#' of the cost function after each iteration;
+#' - `qun`: a numeric vector of maximum length `max_iter` storing the relative
+#' change of the template at each iteration;
 #' - `lambda`: the input parameter `lambda` which specifies the elasticity;
 #' - `centroid_type`: the input centroid type;
 #' - `optim_method`: the input optimization method;
@@ -185,7 +185,6 @@ time_warping <- function(f,
   q <- tmp
 
   qun <- rep(0, max_iter + 2)
-  qun[1] <- pvecnorm(mq[, 1] - q[, min_ind, 1], 2) / pvecnorm(q[, min_ind, 1], 2)
   stp <- .3
 
   for (r in 1:max_iter) {
@@ -282,57 +281,58 @@ time_warping <- function(f,
       break
   }
 
-  # One last run, centering of gam
-  gamI <- SqrtMeanInverse(t(gam))
-  gamI_dev <- gradient(gamI, 1 / (M - 1))
+  # per-iteration relative changes of the template only, as in MATLAB's
+  # qun_o(1:r-1)
+  qun <- qun[2:(r + 1)]
+
+  # One last matching step against the final template
+  r <- r + 1
+  gam <- foreach::foreach(n = 1:N,
+                          .combine = cbind,
+                          .packages = "fdasrvf") %dopar% {
+                            optimum.reparam(
+                              Q1 = mq[, r],
+                              T1 = time,
+                              Q2 = q[, n, 1],
+                              T2 = time,
+                              lambda = lambda,
+                              pen = penalty_method,
+                              method = optim_method,
+                              f1o = mf[1, r],
+                              f2o = f[1, n, 1]
+                            )
+                          }
+  dim(gam) <- c(M, N)
+  gamI <- SqrtMeanInverse(gam)
 
   if (center_warpings) {
-    r <- r + 1
-    outfor <- foreach::foreach(n = 1:N,
-                               .combine = cbind,
-                               .packages = "fdasrvf") %dopar% {
-                                 gam <- optimum.reparam(
-                                   Q1 = mq[, r],
-                                   T1 = time,
-                                   Q2 = q[, n, 1],
-                                   T2 = time,
-                                   lambda = lambda,
-                                   pen = penalty_method,
-                                   method = optim_method,
-                                   f1o = mf[1, r],
-                                   f2o = f[1, n, 1]
-                                 )
-                                 gam_dev <- gradient(gam, 1 / (M - 1))
-                                 list(gam, gam_dev)
-                               }
-
-    gam <- unlist(outfor[1, ])
-    dim(gam) <- c(M, N)
-    gam <- t(gam)
-    gam_dev <- unlist(outfor[2, ])
-    dim(gam_dev) <- c(M, N)
-    gam_dev <- t(gam_dev)
-    gamI <- SqrtMeanInverse(t(gam))
-    gamI_dev <- gradient(gamI, 1 / (M - 1))
-
-    mq[, r + 1] <- stats::approx(time, mq[, r], xout = (time[M] - time[1]) * gamI + time[1])$y * sqrt(gamI_dev)
-
-    for (n in 1:N) {
-      q[, n, r + 1] <- stats::approx(time, q[, n, r], xout = (time[M] - time[1]) * gamI + time[1])$y * sqrt(gamI_dev)
-      f[, n, r + 1] <- stats::approx(time, f[, n, r], xout = (time[M] - time[1]) * gamI + time[1])$y
-      gam[n, ] <- stats::approx(time, gam[n, ], xout = (time[M] - time[1]) * gamI + time[1])$y
+    # center gam (and, for the median, the template) by gamI
+    time0 <- (time[M] - time[1]) * gamI + time[1]
+    for (n in 1:N)
+      gam[, n] <- stats::approx(time, gam[, n], xout = time0)$y
+    if (centroid_type == "median") {
+      gamI_dev <- gradient(gamI, 1 / (M - 1))
+      mq[, r + 1] <- stats::approx(time, mq[, r], xout = time0)$y *
+        sqrt(pmax(gamI_dev, 0))
     }
-
-    qun[r + 1] <- pvecnorm(mq[, r + 1] - mq[, r], 2) / pvecnorm(mq[, r], 2)
+  } else if (centroid_type == "median") {
+    mq[, r + 1] <- mq[, r]
   }
+
+  # warp the original data once by the final gam, so fn = f o gam holds
+  # exactly (previously fn/qn kept the previous iteration's alignment while
+  # gam came from a further matching step)
+  for (n in 1:N)
+    f[, n, r + 1] <- stats::approx(time, f[, n, 1], xout = (time[M] - time[1]) * gam[, n] + time[1])$y
+  q[, , r + 1] <- f_to_srvf(f[, , r + 1], time)
+  if (centroid_type == "mean")
+    mq[, r + 1] <- rowMeans(q[, , r + 1])
 
   # Aligned data & stats
   fn <- f[, , r + 1]
   qn <- q[, , r + 1]
   q0 <- q[, , 1]
-  mean_f0 <- rowMeans(f[, , 1])
   std_f0 <- apply(f[, , 1], 1, stats::sd)
-  mean_fn <- rowMeans(fn)
   std_fn <- apply(fn, 1, stats::sd)
   mqn <- mq[, r + 1]
 
@@ -341,31 +341,10 @@ time_warping <- function(f,
   else
     fmean = stats::median(f0[1, ]) + spline_cumintegral(time, mqn * abs(mqn))
 
-  outfor <- foreach::foreach(n = 1:N,
-                             .combine = cbind,
-                             .packages = "fdasrvf") %dopar% {
-                               gam <- optimum.reparam(
-                                 Q1 = mqn,
-                                 T1 = time,
-                                 Q2 = q[, n, 1],
-                                 T2 = time,
-                                 lambda = lambda,
-                                 pen = penalty_method,
-                                 method = optim_method,
-                                 f1o = mf[1, r+1],
-                                 f2o = f[1, n, 1]
-                               )
-                               gam_dev <- gradient(gam, 1 / (M - 1))
-                               list(gam, gam_dev)
-                             }
-
-  gam <- unlist(outfor[1, ])
-  dim(gam) <- c(M, N)
   fgam <- matrix(0, M, N)
 
   for (n in 1:N)
     fgam[, n] <- stats::approx(time, fmean, xout = (time[M] - time[1]) * gam[, n] + time[1])$y
-
   var_fgam <- apply(fgam, 1, stats::var)
   orig_var <- trapz(time, std_f0 ^ 2)
   amp_var <- trapz(time, std_fn ^ 2)
@@ -383,7 +362,7 @@ time_warping <- function(f,
     original_variance = orig_var,
     amplitude_variance = amp_var,
     phase_variance = phase_var,
-    qun = qun[1:(r + 1)],
+    qun = qun,
     inverse_average_warping_function = gamI,
     rsamps = FALSE,
     call = list(
