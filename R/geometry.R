@@ -102,7 +102,9 @@ SqrtMeanInverse <- function(gam){
   }
 
   # Find Direction
-  mu = rowMeans(psi)
+  mnpsi = rowMeans(psi)
+  dqq = sqrt(colSums((psi - mnpsi)^2))
+  mu = psi[, which.min(dqq)]
   stp <- .3
   maxiter = 501
   vec = matrix(0,TT,n)
