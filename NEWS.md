@@ -1,4 +1,7 @@
 # fdasrvf (development version)
+* `optimum.reparam(method = "DPo")` no longer upsamples the grid 5x
+  (`scl = 1` in `DP.cpp`), so it matches MATLAB `DP1` and Python `DP`
+  to machine precision. `DPo` warps change slightly (about one grid step)
 * `time_warping()` now finishes like MATLAB's `fdawarp.time_warping`: the
   final matching step's warpings are centred and the original data are warped
   once by them, so `fn` is exactly `f` composed with `warping_functions` (and
