@@ -114,8 +114,10 @@ test_that("the 's' image basis varies with its own frequency and axis", {
 
 test_that("time_warping keeps iterating until the template settles", {
   out <- time_warping(simu_data$f, simu_data$time)
+  # qun holds one entry per iteration; the last is below the 1% threshold
+  # unless the iteration cap was hit
   n <- length(out$qun)
-  expect_true(out$qun[n - 1] < 1e-2 || n == 20 + 2)
+  expect_true(out$qun[n] < 1e-2 || n == 20)
 })
 
 test_that("calc_j fills in the (2, 2) entry", {
