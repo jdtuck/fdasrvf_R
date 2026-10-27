@@ -1,4 +1,26 @@
 # fdasrvf (development version)
+* ported from MATLAB fdasrvf 3.7.X: `optimum.reparam(method = "DPo")`
+  (`DPQ`, also used for curves) resamples the SRVFs three times finer for its
+  cost (new `scl` argument, default `3`; `scl = 1` restores the original grid)
+  and interpolates `q2` linearly instead of rounding to the nearest grid point,
+  so warps are less jagged and fit better
+* `optimum.reparam(method = "DP")` (`DPQ2`) now integrates the SRVFs as linear
+  between samples (previously piecewise constant, last sample ignored) and
+  `nbhd_dim` defaults to `10` (was `7`), here and in the curve alignment code;
+  it now fits as well as `"DPo"`
+* both DP solvers skip path segments whose source already costs at least the
+  best candidate (the segment cost is nonnegative for `lambda >= 0`); results
+  are unchanged and the DP runs about 1.5-2.9x faster
+* less noisy warping maps and phase distances: `gam_to_psi` (and so
+  `gam_to_v`) rescales `psi` to unit norm so it stays on the Hilbert sphere;
+  `inv_exp_map` and `elastic.distance` compute the angle with `atan2` instead
+  of `acos`, which was only accurate to ~1e-8 near zero. `gam_to_psi`,
+  `gam_to_v` and `gam_to_h` now default to `smooth = FALSE`, and `gam_to_h`
+  clamps `gamdot` at `eps` before the `log`
+* amplitude and phase boxplots place each curve of the surface plot at its
+  distance from the median (summing pairwise distances overshot it by the
+  triangle inequality), and the amplitude boxplot swaps `Q1a`/`Q3a` when the
+  quantile points away from its quartile, as the phase boxplot already did
 * `optimum.reparam(method = "DPo")` no longer upsamples the grid 5x
   (`scl = 1` in `DP.cpp`), so it matches MATLAB `DP1` and Python `DP`
   to machine precision. `DPo` warps change slightly (about one grid step)

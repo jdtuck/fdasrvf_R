@@ -46,9 +46,9 @@ Rcpp::List DPQ2(Rcpp::NumericVector Q1,
     Rcpp::stop("m1 must be positive and n1, n2, n1v and n2v at least two.");
   if (T1.size() < n1 || T2.size() < n2 || tv1.size() < n1v || tv2.size() < n2v)
     Rcpp::stop("T1, T2, tv1 and tv2 are shorter than n1, n2, n1v and n2v.");
-  // dp_edge_weight() reads Q columns 0 .. n-2
-  if (Q1.size() < (R_xlen_t)m1 * (n1 - 1) || Q2.size() < (R_xlen_t)m1 * (n2 - 1))
-    Rcpp::stop("Q1 and Q2 must have at least m1*(n1-1) and m1*(n2-1) elements.");
+  // dp_edge_weight() interpolates Q linearly, reading columns 0 .. n-1
+  if (Q1.size() < (R_xlen_t)m1 * n1 || Q2.size() < (R_xlen_t)m1 * n2)
+    Rcpp::stop("Q1 and Q2 must have at least m1*n1 and m1*n2 elements.");
 
   // dp_build_gamma() needs room for max(n1v, n2v) points
   int Gsize = n1v > n2v ? n1v : n2v;
@@ -75,17 +75,21 @@ Rcpp::NumericVector DPQ(Rcpp::NumericVector Q1,
                         int N1,
                         double lam1,
                         int pen1,
-                        int Disp) {
+                        int Disp,
+                        int scl = 3) {
   // 0 = no penalty, 1 = roughness, 2 = l2gam, 3 = l2psi, 4 = geodesic
   if (pen1 < 0 || pen1 > 4)
     Rcpp::stop("pen1 must be one of 0, 1, 2, 3 or 4.");
+  // q1 and q2 are resampled scl times finer to evaluate the cost
+  if (scl < 1 || scl > 64)
+    Rcpp::stop("scl must be an integer between 1 and 64.");
   if (n1 < 1 || N1 < 2)
     Rcpp::stop("n1 must be positive and N1 at least two.");
   if (Q1.size() < (R_xlen_t)n1 * N1 || Q2.size() < (R_xlen_t)n1 * N1)
     Rcpp::stop("Q1 and Q2 must each have at least n1*N1 elements.");
 
   Rcpp::NumericVector out(N1);
-  if (DP(Q1.begin(), Q2.begin(), &n1, &N1, &lam1, &pen1, &Disp, out.begin()) != 0)
+  if (DP(Q1.begin(), Q2.begin(), &n1, &N1, &lam1, &pen1, &scl, &Disp, out.begin()) != 0)
     Rcpp::stop("DP: out of memory.");
   return(out);
 }

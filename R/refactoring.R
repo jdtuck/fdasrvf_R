@@ -527,7 +527,7 @@ get_shape_distance <- function(q1fun, q2fun,
     dim(Q2) <- M * L
 
     # Variables for DPQ2 algorithm
-    nbhd_dim <- 7L
+    nbhd_dim <- 10L
 
     ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, lambda, nbhd_dim)
 
@@ -689,7 +689,7 @@ get_distance_matrix <- function(qfuns,
       dim(Q2) <- M * L
 
       # Variables for DPQ2 algorithm
-      nbhd_dim <- 7L
+      nbhd_dim <- 10L
 
       ret <- DPQ2(Q1, grd, Q2, grd, L, M, M, grd, grd, M, M, lambda, nbhd_dim)
 

@@ -14,7 +14,8 @@ optimum.reparam(
   method = c("DP", "DPo", "SIMUL", "RBFGS"),
   f1o = 0,
   f2o = 0,
-  nbhd_dim = 7
+  nbhd_dim = 10,
+  scl = 3
 )
 }
 \arguments{
@@ -51,7 +52,13 @@ the 1st function at \eqn{t = t_{\min}}. Defaults to \code{rep(0, n_dimensions)}.
 \item{f2o}{A numeric vector of size \code{n_dimensions} specifying the value of
 the 2nd function at \eqn{t = t_{\min}}. Defaults to \code{rep(0, n_dimensions)}.}
 
-\item{nbhd_dim}{size of the grid (default = 7)}
+\item{nbhd_dim}{size of the grid for \code{"DP"} (default = 10, the 63 slopes
+\code{"DPo"} searches)}
+
+\item{scl}{for \code{"DPo"}, the SRVFs are resampled \code{scl} times finer to
+evaluate the alignment cost; the warp stays on the grid \code{T1} (default = 3,
+1 turns the resampling off). \code{"DP"} integrates the linearly interpolated
+SRVFs exactly, so it does not use \code{scl}.}
 }
 \value{
 A numeric vector of size \code{n_points} storing discrete evaluations of

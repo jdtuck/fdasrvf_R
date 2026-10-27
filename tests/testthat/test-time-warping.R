@@ -54,12 +54,15 @@ test_that("`time_warping()` returns fn = f o warping_functions, as MATLAB does",
 })
 
 test_that("`time_warping()` matches the MATLAB reference statistics", {
-  # MATLAB fdawarp(f, t).time_warping(0, method = 'DP') on simu_data gives
-  # amp_var 0.0200 and qun = [0.0551 0.0099]
+  # MATLAB fdawarp(f, t).time_warping(0, method = 'DP') on simu_data gave
+  # amp_var 0.0200 and qun = [0.0551 0.0099] with the piecewise-constant DP
+  # cost; with the cost integrating the SRVFs linearly and nbhd_dim = 10,
+  # R and Python fdasrsf (srsf_align) give amp_var 0.0200446 and
+  # qun = [0.0549 0.0091]
   out <- time_warping(simu_data$f, simu_data$time,
                       penalty_method = "l2psi")
-  expect_equal(out$amplitude_variance, 0.0200, tolerance = 1e-3)
-  expect_equal(out$qun, c(0.0551, 0.0099), tolerance = 1e-2)
+  expect_equal(out$amplitude_variance, 0.0200446, tolerance = 1e-5)
+  expect_equal(out$qun, c(0.0549, 0.0091), tolerance = 1e-2)
 })
 
 pens <- c("roughness", "l2gam", "l2psi", "geodesic", "none", "norm")
