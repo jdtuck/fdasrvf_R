@@ -247,8 +247,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // DPQ
-Rcpp::NumericVector DPQ(Rcpp::NumericVector Q1, Rcpp::NumericVector Q2, int n1, int N1, double lam1, int pen1, int Disp);
-RcppExport SEXP _fdasrvf_DPQ(SEXP Q1SEXP, SEXP Q2SEXP, SEXP n1SEXP, SEXP N1SEXP, SEXP lam1SEXP, SEXP pen1SEXP, SEXP DispSEXP) {
+Rcpp::NumericVector DPQ(Rcpp::NumericVector Q1, Rcpp::NumericVector Q2, int n1, int N1, double lam1, int pen1, int Disp, int scl);
+RcppExport SEXP _fdasrvf_DPQ(SEXP Q1SEXP, SEXP Q2SEXP, SEXP n1SEXP, SEXP N1SEXP, SEXP lam1SEXP, SEXP pen1SEXP, SEXP DispSEXP, SEXP sclSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -259,7 +259,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type lam1(lam1SEXP);
     Rcpp::traits::input_parameter< int >::type pen1(pen1SEXP);
     Rcpp::traits::input_parameter< int >::type Disp(DispSEXP);
-    rcpp_result_gen = Rcpp::wrap(DPQ(Q1, Q2, n1, N1, lam1, pen1, Disp));
+    Rcpp::traits::input_parameter< int >::type scl(sclSEXP);
+    rcpp_result_gen = Rcpp::wrap(DPQ(Q1, Q2, n1, N1, lam1, pen1, Disp, scl));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -294,7 +295,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_fdasrvf_find_phistar", (DL_FUNC) &_fdasrvf_find_phistar, 7},
     {"_fdasrvf_mlogit_warp_grad_wrap", (DL_FUNC) &_fdasrvf_mlogit_warp_grad_wrap, 12},
     {"_fdasrvf_DPQ2", (DL_FUNC) &_fdasrvf_DPQ2, 14},
-    {"_fdasrvf_DPQ", (DL_FUNC) &_fdasrvf_DPQ, 7},
+    {"_fdasrvf_DPQ", (DL_FUNC) &_fdasrvf_DPQ, 8},
     {"_fdasrvf_rlbfgs", (DL_FUNC) &_fdasrvf_rlbfgs, 6},
     {NULL, NULL, 0}
 };

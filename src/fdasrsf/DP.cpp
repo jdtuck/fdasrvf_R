@@ -49,15 +49,18 @@ int spline(double *D, const double *y, int n);
 void lookupspline(double *t, int *k, double dist, double len, int n);
 double evalspline(double t, const double D[2], const double y[2]);
 
-int DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *Disp, double *yy) {
+int DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *scl1, int *Disp, double *yy) {
 	int i, j, k, l, n, M, N, Eidx, Fidx, Ftmp, Fmin, Num, *Path, *xy, x, y, cnt, pen=1;
-	const int scl = 1;
+	// q1 and q2 are resampled scl times finer for the cost along each
+	// path segment; the path itself stays on the N x N grid
+	int scl;
 	double *q1L, *q2L, *D1, *D2, *tmp1, *tmp2, *E, Etmp, Emin, t, a, b, lam=0;
 
 	n = *n1;
 	N = *N1;
 	lam = *lam1;
 	pen = *pen1;
+	scl = *scl1;
 
 	M = scl*(N-1)+1;
 
@@ -125,7 +128,9 @@ int DP(double *q1, double *q2, int *n1, int *N1, double *lam1, int *pen1, int *D
 				k = i - Nbrs[Num][0];
 				l = j - Nbrs[Num][1];
 
-				if (k >= 0 && l >= 0) {
+				// the edge cost is >= 0 when lam >= 0, so a source that already
+				// costs at least Emin cannot win; skip computing its edge
+				if (k >= 0 && l >= 0 && (Num == 0 || lam < 0 || E[N*l + k] < Emin)) {
 					Etmp = E[N*l + k] + CostFn2(q1L,q2L,k,l,i,j,n,scl,lam,pen);
 					if (Num == 0 || Etmp < Emin) {
 						Emin = Etmp;
@@ -214,7 +219,7 @@ int xycompare(const void *x1, const void *x2) {
 
 double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j, int n, int scl, double lam, int pen) {
 	double m = (j-l)/(double)(i-k), sqrtm = sqrt(m), E = 0, y, tmp, tmp_pen = 0, ip, fp, q1dotq2;
-	int x, idx, d, iL=i*scl, kL=k*scl, lL=l*scl;
+	int x, idx, d, iL=i*scl, kL=k*scl, lL=l*scl, jL=j*scl;
 
 	// the penalty only depends on the slope m, so evaluate it once per call.
 	// pen == 0 leaves tmp_pen at 0, i.e. no penalty.
@@ -247,10 +252,20 @@ double CostFn2(const double *q1L, const double *q2L, int k, int l, int i, int j,
 	for (x = kL; x <= iL; ++x) {
 		y = (x-kL)*m + lL;
 		fp = modf(y, &ip);
-		idx = (int)(ip + (fp >= 0.5));
+		idx = (int)ip;
+		// y can land a rounding error past the segment end jL
+		if (idx >= jL) {
+			idx = jL;
+			fp = 0;
+		}
 
+		// interpolate q2 linearly between grid points; rounding to the
+		// nearest one made the cost, and so the warp, jump on the grid
 		for (d = 0; d < n; ++d) {
-			tmp = q1L[n*x + d] - sqrtm*q2L[n*idx + d];
+			tmp = q2L[n*idx + d];
+			if (fp > 0)
+				tmp += fp*(q2L[n*(idx+1) + d] - tmp);
+			tmp = q1L[n*x + d] - sqrtm*tmp;
 			E += (tmp*tmp + lam*tmp_pen);
 		}
 	}

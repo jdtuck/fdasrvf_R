@@ -53,8 +53,8 @@ DPQ2 <- function(Q1, T1, Q2, T2, m1, n1, n2, tv1, tv2, n1v, n2v, lam1, nbhd_dim,
     .Call(`_fdasrvf_DPQ2`, Q1, T1, Q2, T2, m1, n1, n2, tv1, tv2, n1v, n2v, lam1, nbhd_dim, pen)
 }
 
-DPQ <- function(Q1, Q2, n1, N1, lam1, pen1, Disp) {
-    .Call(`_fdasrvf_DPQ`, Q1, Q2, n1, N1, lam1, pen1, Disp)
+DPQ <- function(Q1, Q2, n1, N1, lam1, pen1, Disp, scl = 3L) {
+    .Call(`_fdasrvf_DPQ`, Q1, Q2, n1, N1, lam1, pen1, Disp, scl)
 }
 
 rlbfgs <- function(q1, q2, time, maxiter, lam, penalty) {

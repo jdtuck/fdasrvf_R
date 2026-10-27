@@ -14,8 +14,7 @@ amplitude_distance <- function(q1, q2, scale = FALSE, norm_ratio = 1) {
 phase_distance <- function(gam) {
   M <- length(gam)
   grd <- seq(0, 1, length.out = M)
-  binsize <- mean(diff(grd))
-  psi <- sqrt(pmax(gradient(gam, binsize), 0))
+  psi <- gam_to_psi(gam, smooth = FALSE)
   v <- inv_exp_map(rep(1, M), psi)
   sqrt(trapz(grd, v ^ 2))
 }

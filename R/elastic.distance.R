@@ -41,15 +41,10 @@ elastic.distance <- function(f1, f2, time, lambda = 0, pen="roughness"){
     Dy <- sqrt(trapz(time, (q1-qw)^2))
 
     time1 <- seq(0,1,length.out=length(time))
-    binsize <- mean(diff(time1))
-    psi <- sqrt(pmax(gradient(gam,binsize), 0))
-    q1dotq2 = trapz(time1, psi)
-    if (q1dotq2 > 1){
-      q1dotq2 = 1
-    } else if (q1dotq2 < - 1){
-      q1dotq2 = -1
-    }
-    Dx <- acos(q1dotq2)
+    psi <- gam_to_psi(gam, smooth = FALSE)
+    # atan2 form of acos(<psi,1>), accurate for small distances
+    ip <- trapz(time1, psi)
+    Dx <- atan2(sqrt(trapz(time1, (psi - ip)^2)), ip)
 
     return(list(Dy=Dy,Dx=Dx))
 }

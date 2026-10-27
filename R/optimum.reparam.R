@@ -27,7 +27,12 @@
 #'   the 1st function at \eqn{t = t_{\min}}. Defaults to `rep(0, n_dimensions)`.
 #' @param f2o A numeric vector of size `n_dimensions` specifying the value of
 #'   the 2nd function at \eqn{t = t_{\min}}. Defaults to `rep(0, n_dimensions)`.
-#' @param nbhd_dim size of the grid (default = 7)
+#' @param nbhd_dim size of the grid for `"DP"` (default = 10, the 63 slopes
+#'   `"DPo"` searches)
+#' @param scl for `"DPo"`, the SRVFs are resampled `scl` times finer to
+#'   evaluate the alignment cost; the warp stays on the grid `T1` (default = 3,
+#'   1 turns the resampling off). `"DP"` integrates the linearly interpolated
+#'   SRVFs exactly, so it does not use `scl`.
 #'
 #' @return A numeric vector of size `n_points` storing discrete evaluations of
 #'   the estimated boundary-preserving warping diffeomorphism on the initial
@@ -51,7 +56,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
                             method = c("DP", "DPo", "SIMUL", "RBFGS"),
                             f1o = 0.0,
                             f2o = 0.0,
-														nbhd_dim=7) {
+                            nbhd_dim = 10,
+                            scl = 3) {
   # The two solver families number the penalties differently: the DP code
   # (DPQ2, DPQ) takes 0 = none, 1 = roughness, 2 = l2gam, 3 = l2psi,
   # 4 = geodesic, while rlbfgs has no "none" and takes 0 = roughness,
@@ -96,7 +102,7 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
       gam0 <- stats::approx(Tf, G, xout = T2)$y
     },
     DPo = {
-      gam0 <- DPQ(Q2, Q1, L, M, lambda, pen_dp, 0)
+      gam0 <- DPQ(Q2, Q1, L, M, lambda, pen_dp, 0, scl)
     },
     SIMUL = {
       if (lambda > 0)

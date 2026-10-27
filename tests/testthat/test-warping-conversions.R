@@ -78,3 +78,37 @@ test_that("`invertGamma()` inverts a warping function", {
   gamid <- seq(0, 1, length.out = 101)
   expect_equal(invertGamma(gamid), gamid, tolerance = 1e-2)
 })
+
+test_that("`inv_exp_map()` is accurate for nearby points", {
+  # acos of the inner product would round the angle to zero or ~1e-8
+  M <- 101
+  s <- seq(0, 1, length.out = M)
+  psi <- rep(1, M)
+  v0 <- sin(2 * pi * s)
+  v <- v0 - trapz(s, v0 * psi) * psi
+  v <- 1e-7 * v / sqrt(trapz(s, v^2))
+  p2 <- cos(1e-7) * psi + sin(1e-7) * v / 1e-7
+  v2 <- inv_exp_map(psi, p2)
+  expect_equal(sqrt(trapz(s, v2^2)), 1e-7, tolerance = 1e-6)
+})
+
+test_that("`gam_to_psi()` lies on the Hilbert sphere", {
+  s <- seq(0, 1, length.out = 101)
+  gam <- cbind(s, (exp(3 * s) - 1) / (exp(3) - 1))
+  psi <- gam_to_psi(gam)
+  expect_equal(apply(psi, 2, function(p) sqrt(trapz(s, p^2))), c(1, 1),
+               tolerance = 1e-12)
+})
+
+test_that("`gam_to_h()` is finite for flat warp segments", {
+  s <- seq(0, 1, length.out = 101)
+  gam <- stats::approx(c(0, 0.3, 0.5, 1), c(0, 0.4, 0.4, 1), xout = s)$y
+  expect_true(all(is.finite(gam_to_h(gam))))
+})
+
+test_that("`elastic.distance()` of a function to itself is zero", {
+  t <- seq(0, 1, length.out = 101)
+  f <- sin(2 * pi * t) + t
+  out <- elastic.distance(f, f, t)
+  expect_lt(out$Dx, 1e-10)
+})

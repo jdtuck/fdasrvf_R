@@ -25,18 +25,18 @@ l2_curvenorm <- function(psi, time=seq(0,1,length.out=ncol(psi))){
 #' @keywords srvf alignment
 #' @export
 inv_exp_map<-function(Psi, psi){
+  # The angle is computed with atan2 of the tangent and normal components
+  # rather than acos of the inner product, which loses about half the
+  # significant digits for nearby points
   ip <- inner_product(Psi, psi)
-  if(ip < -1){
-    ip = -1
-  }else if(ip > 1){
-    ip = 1
-  }
-  theta <- acos(ip)
+  w <- psi - ip * Psi
+  wnorm <- l2_norm(w)
+  theta <- atan2(wnorm, ip)
 
   if (theta < 1e-10){
     exp_inv = rep(0,length(psi))
   } else {
-    exp_inv = theta / sin(theta) * (psi-cos(theta)*Psi)
+    exp_inv = theta / wnorm * w
   }
   return(exp_inv)
 }
@@ -182,54 +182,20 @@ findkarcherinv <- function(warps, times, round = F){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_v<-function(gam, smooth=TRUE){
+gam_to_v<-function(gam, smooth=FALSE){
+  psi <- gam_to_psi(gam, smooth)
   if (ndims(gam) == 0){
     TT = length(gam)
-    eps = .Machine$double.eps
-    time <- seq(0,1,length.out=TT)
-    binsize <- mean(diff(time))
-
-    psi = rep(0,TT)
-    if (smooth) {
-      tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
-      g <- stats::predict(tmp.spline, time, deriv = 1)$y
-      g[g<0] = 0
-      psi = sqrt(g)
-    } else {
-        psi = sqrt(pmax(gradient(gam,binsize), 0))
-    }
-
     mu = rep(1,TT)
     vec <- inv_exp_map(mu, psi)
-
   } else {
     TT = nrow(gam)
     n = ncol(gam)
-    eps = .Machine$double.eps
-    time <- seq(0,1,length.out=TT)
-    binsize <- mean(diff(time))
-
-    psi = matrix(0,TT,n)
-    if (smooth) {
-      g <- matrix(0, TT, n)
-      for (i in 1:n) {
-        tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
-        g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y
-        g[g[,i]<0, i] = 0
-        psi[,i] = sqrt(g[, i])
-      }
-    } else {
-      for (i in 1:n){
-        psi[,i] = sqrt(pmax(gradient(gam[,i],binsize), 0))
-      }
-    }
-
     mu = rep(1,TT)
     vec = matrix(0,TT,n)
     for (i in 1:n){
       vec[,i] <- inv_exp_map(mu, psi[,i])
     }
-
   }
 
   return(vec)
@@ -282,7 +248,7 @@ v_to_gam<-function(v){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_psi<-function(gam, smooth=TRUE){
+gam_to_psi<-function(gam, smooth=FALSE){
   if (ndims(gam) == 0){
     TT = length(gam)
     eps = .Machine$double.eps
@@ -321,6 +287,17 @@ gam_to_psi<-function(gam, smooth=TRUE){
       }
     }
 
+  }
+
+  # rescale psi to unit L2 norm so it lies on the Hilbert sphere (smoothing
+  # and clipping negative slopes otherwise move it off)
+  if (ndims(gam) == 0){
+    nrm <- l2_norm(psi, time)
+    if (nrm > 0) psi <- psi / nrm
+  } else {
+    nrm <- apply(psi, 2, l2_norm, time = time)
+    nrm[nrm == 0] <- 1
+    psi <- sweep(psi, 2, nrm, "/")
   }
 
   return(psi)
@@ -369,9 +346,10 @@ psi_to_gam<-function(psi){
 #'
 #' @keywords srvf alignment
 #' @export
-gam_to_h<-function(gam, smooth=TRUE){
+gam_to_h<-function(gam, smooth=FALSE){
   if (ndims(gam) == 0){
     TT = length(gam)
+    eps = .Machine$double.eps
     time <- seq(0,1,length.out=TT)
     binsize <- mean(diff(time))
 
@@ -379,17 +357,18 @@ gam_to_h<-function(gam, smooth=TRUE){
     if (smooth) {
       tmp.spline <- stats::smooth.spline(time, gam, lambda=1e-6)
       g <- stats::predict(tmp.spline, time, deriv = 1)$y
-      g[g<0] = 0
+      g[g<eps] = eps
       psi = log(g)
       h = psi - trapz(time, psi)
     } else {
-        psi = log(gradient(gam,binsize))
+        psi = log(pmax(gradient(gam,binsize), eps))
         h = psi - trapz(time, psi)
     }
 
   } else {
     TT = nrow(gam)
     n = ncol(gam)
+    eps = .Machine$double.eps
     time <- seq(0,1,length.out=TT)
     binsize <- mean(diff(time))
 
@@ -399,13 +378,13 @@ gam_to_h<-function(gam, smooth=TRUE){
       for (i in 1:n) {
         tmp.spline <- stats::smooth.spline(time, gam[,i], lambda=1e-6)
         g[, i] <- stats::predict(tmp.spline, time, deriv = 1)$y
-        g[g[,i]<0, i] = 0
+        g[g[,i]<eps, i] = eps
         psi = log(g[, i])
         h[, i] = psi - trapz(time, psi)
       }
     } else {
       for (i in 1:n){
-        psi = log(gradient(gam[,i],binsize))
+        psi = log(pmax(gradient(gam[,i],binsize), eps))
         h[, i] = psi - trapz(time, psi)
       }
     }

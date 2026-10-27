@@ -120,12 +120,15 @@ boxplot.ampbox <- function(x, ...) {
     Fs2[, 396 + j] <- (1 - s[j]) * Q3 + s[j] * Q3a
     Fs2[, 495 + j] <- (1 - s[j]) * Q3a + s[j] * maxx
   }
-  d1 <- sqrt(trapz(time, (x$qmedian - x$Q1_q) ^ 2))
-  d1a <- sqrt(trapz(time, (x$Q1_q - x$Q1a_q) ^ 2))
-  dl <- sqrt(trapz(time, (x$Q1a_q - x$min_q) ^ 2))
-  d3 <- sqrt(trapz(time, (x$qmedian - x$Q3_q) ^ 2))
-  d3a <- sqrt(trapz(time, (x$Q3_q - x$Q3a_q) ^ 2))
-  du <- sqrt(trapz(time, (x$Q3a_q - x$max_q) ^ 2))
+  # place each curve at its distance from the median; the increments
+  # between neighbouring curves then sum to that distance (pairwise
+  # distances like d(Q1,Q1a) would overshoot by the triangle inequality)
+  d1 <- x$dist[x$Q1_index]
+  d1a <- x$dist[x$Q1a_index] - d1
+  dl <- x$dist[x$min_index] - d1 - d1a
+  d3 <- x$dist[x$Q3_index]
+  d3a <- x$dist[x$Q3a_index] - d3
+  du <- x$dist[x$max_index] - d3 - d3a
   part1 <- seq(-d1 - d1a - dl, -d1 - d1a, length.out = 100)
   part2 <- seq(-d1 - d1a, -d1, length.out = 100)
   part3 <- seq(-d1, 0, length.out = 100)
@@ -340,6 +343,14 @@ ampbox_data <- function(warp_median, alpha = 0.05, ka = 1) {
 
   Q1a_index <- CR_alpha[maxloc[1, 1]]
   Q3a_index <- CR_alpha[maxloc[1, 2]]
+
+  # check quartile and quantile going same direction
+  tst <- trapz(time, (qn[, Q1a_index] - qmedian) * (qn[, Q1_index] - qmedian))
+  if (tst < 0) {
+    tmp_index <- Q1a_index
+    Q1a_index <- Q3a_index
+    Q3a_index <- tmp_index
+  }
   Q1a_q <- qn[, Q1a_index]
   Q3a_q <- qn[, Q3a_index]
   Q1a <- fn[, Q1a_index]
@@ -409,6 +420,8 @@ ampbox_data <- function(warp_median, alpha = 0.05, ka = 1) {
   out$Q1_index <- Q1_index
   out$Q3a_index <- Q3a_index
   out$Q3_index <- Q3_index
+  out$min_index <- min_index
+  out$max_index <- max_index
 
   class(out) <- 'ampbox'
 
@@ -454,12 +467,15 @@ boxplot.phbox <- function(x, ...) {
     Fs2[, 396 + j] <- (1 - s[j]) * (Q3 - time) + s[j] * (Q3a - time)
     Fs2[, 495 + j] <- (1 - s[j]) * (Q3a - time) + s[j] * (maxx - time)
   }
-  d1 <- acos(inner_product(x$psi_median, x$Q1_psi))
-  d1a <- acos(inner_product(x$Q1_psi, x$Q1a_psi))
-  dl <- acos(inner_product(x$Q1a_psi, x$min_psi))
-  d3 <- acos(inner_product(x$psi_median, x$Q3_psi))
-  d3a <- acos(inner_product(x$Q3_psi, x$Q3a_psi))
-  du <- acos(inner_product(x$Q3a_psi, x$max_psi))
+  # place each curve at its distance from the median; the increments
+  # between neighbouring curves then sum to that distance (pairwise
+  # distances like d(Q1,Q1a) would overshoot by the triangle inequality)
+  d1 <- x$dist[x$Q1_index]
+  d1a <- x$dist[x$Q1a_index] - d1
+  dl <- x$dist[x$min_index] - d1 - d1a
+  d3 <- x$dist[x$Q3_index]
+  d3a <- x$dist[x$Q3a_index] - d3
+  du <- x$dist[x$max_index] - d3 - d3a
   part1 <- seq(-d1 - d1a - dl, -d1 - d1a, length.out = 100)
   part2 <- seq(-d1 - d1a, -d1, length.out = 100)
   part3 <- seq(-d1, 0, length.out = 100)
@@ -754,6 +770,8 @@ phbox_data <- function(warp_median, alpha = .05, kp = 1) {
   out$Q1_index <- Q1_index
   out$Q3a_index <- Q3a_index
   out$Q3_index <- Q3_index
+  out$min_index <- min_index
+  out$max_index <- max_index
 
   class(out) <- 'phbox'
 

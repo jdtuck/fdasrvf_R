@@ -261,7 +261,7 @@ find_rotation_seed_unique <- function(q1, q2,
 
   # Variables for DPQ2 algorithm
   grd <- seq(0, 1, length.out = M)
-  nbhd_dim <- 7L
+  nbhd_dim <- 10L
 
   scl <- 4
   minE <- Inf
