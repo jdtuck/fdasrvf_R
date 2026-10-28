@@ -1,7 +1,4 @@
 # fdasrvf (development version)
-
-## New features
-
 * ported from MATLAB fdasrvf 3.7.X: new `classify()` for `ampbox` and `phbox`
   objects aligns new functions to the fitted template (new `align_new()` for
   `fdawarp` objects) and reports their distance to the median, boxplot region
@@ -11,9 +8,6 @@
 * `f_to_srvf()` gains a `smooth` argument (default `FALSE`; `TRUE` uses a
   smoothing spline) and `optimum.reparam()` gains a `scl` argument for
   `method = "DPo"` (see below)
-
-## Alignment and dynamic programming
-
 * ported from MATLAB fdasrvf 3.7.X: `optimum.reparam(method = "DPo")`
   (`DPQ`, also used for curves) resamples the SRVFs three times finer for its
   cost (new `scl` argument, default `3`; `scl = 1` uses the original grid and
@@ -42,9 +36,6 @@
   tolerance)
 * the `simu_warp` and `simu_warp_median` datasets are regenerated with the
   updated `time_warping()` and DP solvers
-
-## SRVFs and warping maps
-
 * `f_to_srvf` now differentiates the interpolating cubic spline and
   `srvf_to_f` integrates `q|q|` with a spline-corrected trapezoid rule instead
   of plain `cumtrapz`, so the round trip `f -> q -> f` is now `O(h^4)`
@@ -59,9 +50,6 @@
   of `acos`, which was only accurate to ~1e-8 near zero. `gam_to_psi`,
   `gam_to_v` and `gam_to_h` now default to `smooth = FALSE`, and `gam_to_h`
   clamps `gamdot` at `eps` before the `log`
-
-## Bug fixes
-
 * amplitude and phase boxplots place each curve of the surface plot at its
   distance from the median (summing pairwise distances overshot it by the
   triangle inequality), and the amplitude boxplot swaps `Q1a`/`Q3a` when the
@@ -80,9 +68,6 @@
   warping-function derivatives (e.g. in `SqrtMean` and the phase boxplot) are
   clamped at zero so small negative numerical derivatives no longer give
   `NaN`
-
-## Build
-
 * the macOS build now links the OpenMP runtime explicitly, fixing
   "symbol not found in flat namespace '___kmpc_for_static_fini'" when loading
   the package; a new `configure` script probes the toolchain and builds
