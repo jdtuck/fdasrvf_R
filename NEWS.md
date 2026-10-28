@@ -22,7 +22,7 @@
   best candidate (the segment cost is nonnegative for `lambda >= 0`); results
   are unchanged and the DP runs about 1.5-2.9x faster
 * `time_warping()` now finishes like MATLAB's `fdawarp.time_warping`: the
-  final matching step's warpings are centred and the original data are warped
+  final matching step's warpings are centered and the original data are warped
   once by them, so `fn` is exactly `f` composed with `warping_functions` (and
   `mqn` is the mean of `qn` for the mean). Previously `fn`/`qn` kept the
   previous iteration's alignment and `warping_functions` came from an extra
@@ -76,7 +76,7 @@
 * documentation regenerated with a newer roxygen2
 
 # fdasrvf 2.5.0
-* add `interparc` function for downsampling closed curves
+* add `interparc` function for down-sampling closed curves
 * fix penalties in rbfgs
 * `optimum.reparam` now applies the selected penalty (`"none"`, `"roughness"`,
   `"l2gam"`, `"l2psi"`, `"geodesic"`) for the `"DP"` method as well
