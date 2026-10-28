@@ -5,13 +5,14 @@ test_that("`boxplot()` works", {
 
   # Amplitude boxplot
   expect_equal(class(amp_data), "ampbox")
-  expect_equal(length(amp_data), 24)
+  expect_equal(length(amp_data), 30)
   expect_equal(names(amp_data), c("median_y", "Q1", "Q3", "Q1a", "Q3a", "minn",
                                  "maxx", "outlier_index", "fmedian", "time",
                                  "qmedian", "Q1_q", "Q1a_q", "Q3_q", "Q3a_q",
                                  "min_q", "max_q", "dist", "Q1a_index",
                                  "Q1_index", "Q3a_index", "Q3_index",
-                                 "min_index", "max_index"))
+                                 "min_index", "max_index", "alpha", "ka",
+                                 "r50", "ralpha", "whisker_dis", "template"))
   expect_equal(length(amp_data$median_y), 101)
   expect_equal(length(amp_data$Q1), 101)
   expect_equal(length(amp_data$Q3), 101)

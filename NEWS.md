@@ -1,4 +1,10 @@
 # fdasrvf (development version)
+* ported from MATLAB fdasrvf 3.7.X: new `classify()` for `ampbox` and `phbox`
+  objects aligns new functions to the fitted template (new `align_new()` for
+  `fdawarp` objects) and reports their distance to the median, boxplot region
+  (50%, `1 - alpha`, within whiskers, outlier) and quartile side. The boxplot
+  statistics now also store `alpha`, the whisker scale (`ka`/`kp`), the region
+  edges `r50`, `ralpha` and `whisker_dis`, and the alignment `template`
 * ported from MATLAB fdasrvf 3.7.X: `optimum.reparam(method = "DPo")`
   (`DPQ`, also used for curves) resamples the SRVFs three times finer for its
   cost (new `scl` argument, default `3`; `scl = 1` restores the original grid)

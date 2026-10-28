@@ -26,6 +26,11 @@ Returns an \code{ampbox} object containing:
 \item \code{maxx}: maximum extreme function
 \item \code{outlier_index}: indexes of outlier functions
 \item \code{fmedian}: median function
+\item \code{alpha}, \code{ka}: the quantile level and whisker scale used
+\item \code{r50}, \code{ralpha}: distances bounding the 50\% and \eqn{(1-\alpha)} central
+regions
+\item \code{whisker_dis}: whisker (outlier cutoff) distance
+\item \code{template}: what \code{\link[=classify]{classify()}} needs to align new functions to the template
 }
 }
 \description{
