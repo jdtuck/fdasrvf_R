@@ -258,6 +258,11 @@ boxplot.ampbox <- function(x, ...) {
 #' - `maxx`: maximum extreme function
 #' - `outlier_index`: indexes of outlier functions
 #' - `fmedian`: median function
+#' - `alpha`, `ka`: the quantile level and whisker scale used
+#' - `r50`, `ralpha`: distances bounding the 50% and \eqn{(1-\alpha)} central
+#'   regions
+#' - `whisker_dis`: whisker (outlier cutoff) distance
+#' - `template`: what [classify()] needs to align new functions to the template
 #'
 #' @keywords srvf alignment boxplot
 #'
@@ -294,6 +299,7 @@ ampbox_data <- function(warp_median, alpha = 0.05, ka = 1) {
   dy_ordering <- sort(dy, index.return = TRUE)$ix
   CR_50 <- dy_ordering[1:round(N / 2)]  # 50% central region
   m <- max(dy[CR_50])  # maximal amplitude distance with 50% central region
+  r50 <- m
 
   # identify amplitude quartiles
   angle <- matrix(0, nrow = length(CR_50), ncol = length(CR_50))
@@ -324,6 +330,7 @@ ampbox_data <- function(warp_median, alpha = 0.05, ka = 1) {
   dy_ordering <- sort(dy, index.return = TRUE)$ix
   CR_alpha <- dy_ordering[1:round(N * (1 - alpha))]  # (1-alpha)% central region
   m <- max(dy[CR_alpha])  # maximal amplitude distance with (1-alpha)% central region
+  ralpha <- m
   angle <- matrix(0, nrow = length(CR_alpha), ncol = length(CR_alpha))
   energy <- matrix(0, nrow = length(CR_alpha), ncol = length(CR_alpha))
 
@@ -422,6 +429,12 @@ ampbox_data <- function(warp_median, alpha = 0.05, ka = 1) {
   out$Q3_index <- Q3_index
   out$min_index <- min_index
   out$max_index <- max_index
+  out$alpha <- alpha
+  out$ka <- ka
+  out$r50 <- r50
+  out$ralpha <- ralpha
+  out$whisker_dis <- whisker_dis
+  out$template <- warp_template(warp_median)
 
   class(out) <- 'ampbox'
 
@@ -604,6 +617,11 @@ boxplot.phbox <- function(x, ...) {
 #' - `minn`: minimum extreme function
 #' - `maxx`: maximum extreme function
 #' - `outlier_index`: indexes of outlier functions
+#' - `alpha`, `kp`: the quantile level and whisker scale used
+#' - `r50`, `ralpha`: distances bounding the 50% and \eqn{(1-\alpha)} central
+#'   regions
+#' - `whisker_dis`: whisker (outlier cutoff) distance
+#' - `template`: what [classify()] needs to align new functions to the template
 #'
 #' @keywords srvf alignment boxplot
 #'
@@ -640,6 +658,7 @@ phbox_data <- function(warp_median, alpha = .05, kp = 1) {
   dx_ordering <- sort(dx, index.return = TRUE)$ix
   CR_50 <- dx_ordering[1:round(N / 2)]  # 50% central region
   m <- max(dx[CR_50])  # maximal phase distance with 50% central region
+  r50 <- m
 
   # identify phase quartiles
   angle <- matrix(0, length(CR_50), length(CR_50))
@@ -672,6 +691,7 @@ phbox_data <- function(warp_median, alpha = .05, kp = 1) {
   dx_ordering <- sort(dx, index.return = TRUE)$ix
   CR_alpha <- dx_ordering[1:round(N * (1 - alpha))]  # (1-alpha)% central region
   m <- max(dx[CR_alpha])  # maximal phase distance with (1-alpha)% central region
+  ralpha <- m
   angle <- matrix(0, length(CR_alpha), length(CR_alpha))
   energy <- matrix(0, length(CR_alpha), length(CR_alpha))
   for (i in 1:(length(CR_alpha) - 1)) {
@@ -772,6 +792,12 @@ phbox_data <- function(warp_median, alpha = .05, kp = 1) {
   out$Q3_index <- Q3_index
   out$min_index <- min_index
   out$max_index <- max_index
+  out$alpha <- alpha
+  out$kp <- kp
+  out$r50 <- r50
+  out$ralpha <- ralpha
+  out$whisker_dis <- whisker_dis
+  out$template <- warp_template(warp_median)
 
   class(out) <- 'phbox'
 
