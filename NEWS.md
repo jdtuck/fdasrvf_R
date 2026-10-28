@@ -1,15 +1,25 @@
 # fdasrvf (development version)
+
+## New features
+
 * ported from MATLAB fdasrvf 3.7.X: new `classify()` for `ampbox` and `phbox`
   objects aligns new functions to the fitted template (new `align_new()` for
   `fdawarp` objects) and reports their distance to the median, boxplot region
   (50%, `1 - alpha`, within whiskers, outlier) and quartile side. The boxplot
   statistics now also store `alpha`, the whisker scale (`ka`/`kp`), the region
   edges `r50`, `ralpha` and `whisker_dis`, and the alignment `template`
+* `f_to_srvf()` gains a `smooth` argument (default `FALSE`; `TRUE` uses a
+  smoothing spline) and `optimum.reparam()` gains a `scl` argument for
+  `method = "DPo"` (see below)
+
+## Alignment and dynamic programming
+
 * ported from MATLAB fdasrvf 3.7.X: `optimum.reparam(method = "DPo")`
   (`DPQ`, also used for curves) resamples the SRVFs three times finer for its
-  cost (new `scl` argument, default `3`; `scl = 1` restores the original grid)
-  and interpolates `q2` linearly instead of rounding to the nearest grid point,
-  so warps are less jagged and fit better
+  cost (new `scl` argument, default `3`; `scl = 1` uses the original grid and
+  matches MATLAB `DP1` and Python `DP` to machine precision) and interpolates
+  `q2` linearly instead of rounding to the nearest grid point, so warps are
+  less jagged and fit better. The previous hard-coded 5x upsampling is gone
 * `optimum.reparam(method = "DP")` (`DPQ2`) now integrates the SRVFs as linear
   between samples (previously piecewise constant, last sample ignored) and
   `nbhd_dim` defaults to `10` (was `7`), here and in the curve alignment code;
@@ -17,19 +27,6 @@
 * both DP solvers skip path segments whose source already costs at least the
   best candidate (the segment cost is nonnegative for `lambda >= 0`); results
   are unchanged and the DP runs about 1.5-2.9x faster
-* less noisy warping maps and phase distances: `gam_to_psi` (and so
-  `gam_to_v`) rescales `psi` to unit norm so it stays on the Hilbert sphere;
-  `inv_exp_map` and `elastic.distance` compute the angle with `atan2` instead
-  of `acos`, which was only accurate to ~1e-8 near zero. `gam_to_psi`,
-  `gam_to_v` and `gam_to_h` now default to `smooth = FALSE`, and `gam_to_h`
-  clamps `gamdot` at `eps` before the `log`
-* amplitude and phase boxplots place each curve of the surface plot at its
-  distance from the median (summing pairwise distances overshot it by the
-  triangle inequality), and the amplitude boxplot swaps `Q1a`/`Q3a` when the
-  quantile points away from its quartile, as the phase boxplot already did
-* `optimum.reparam(method = "DPo")` no longer upsamples the grid 5x
-  (`scl = 1` in `DP.cpp`), so it matches MATLAB `DP1` and Python `DP`
-  to machine precision. `DPo` warps change slightly (about one grid step)
 * `time_warping()` now finishes like MATLAB's `fdawarp.time_warping`: the
   final matching step's warpings are centred and the original data are warped
   once by them, so `fn` is exactly `f` composed with `warping_functions` (and
@@ -38,27 +35,37 @@
   alignment pass, so they disagreed by a few percent. `qun` now holds one
   relative template change per iteration. Results match MATLAB and Python
   `fdasrsf` on `simu_data` to about 1e-8
-* the `simu_warp` and `simu_warp_median` datasets are regenerated with the
-  updated `time_warping()`
 * `SqrtMeanInverse` now starts its Karcher-mean iteration from the `psi`
   closest to the pointwise mean, which lies on the unit sphere, rather than
   from the pointwise mean itself, matching the Python and MATLAB
   implementations (results change only at the level of the `1e-8` stopping
   tolerance)
-* `f_to_srvf` now differentiates the interpolating cubic spline (new `smooth`
-  argument, default `FALSE`; `TRUE` uses a smoothing spline) and `srvf_to_f`
-  integrates `q|q|` with a spline-corrected trapezoid rule instead of plain `cumtrapz`, so the
-  round trip `f -> q -> f` is now `O(h^4)` accurate (previously `O(h^2)` and
-  poor for oscillatory functions)
+* the `simu_warp` and `simu_warp_median` datasets are regenerated with the
+  updated `time_warping()` and DP solvers
+
+## SRVFs and warping maps
+
+* `f_to_srvf` now differentiates the interpolating cubic spline and
+  `srvf_to_f` integrates `q|q|` with a spline-corrected trapezoid rule instead
+  of plain `cumtrapz`, so the round trip `f -> q -> f` is now `O(h^4)`
+  accurate (previously `O(h^2)` and poor for oscillatory functions)
 * the alignment, regression, PCA and boxplot code now computes SRVFs
   (`gradient.spline` with `smooth_data = FALSE`) and reconstructs functions
   from SRVFs (`cumtrapzmid`, mean/median function, boxplot quantiles) with the
   same cubic-spline derivative/integral, so the two directions are consistent
-* the macOS build now links the OpenMP runtime explicitly, fixing
-  "symbol not found in flat namespace '___kmpc_for_static_fini'" when loading
-  the package; a new `configure` script probes the toolchain and builds
-  without OpenMP if no usable runtime is found (`src/Makevars` is now
-  generated from `src/Makevars.in`)
+* less noisy warping maps and phase distances: `gam_to_psi` (and so
+  `gam_to_v`) rescales `psi` to unit norm so it stays on the Hilbert sphere;
+  `inv_exp_map` and `elastic.distance` compute the angle with `atan2` instead
+  of `acos`, which was only accurate to ~1e-8 near zero. `gam_to_psi`,
+  `gam_to_v` and `gam_to_h` now default to `smooth = FALSE`, and `gam_to_h`
+  clamps `gamdot` at `eps` before the `log`
+
+## Bug fixes
+
+* amplitude and phase boxplots place each curve of the surface plot at its
+  distance from the median (summing pairwise distances overshot it by the
+  triangle inequality), and the amplitude boxplot swaps `Q1a`/`Q3a` when the
+  quantile points away from its quartile, as the phase boxplot already did
 * `kmeans_align(rotation = TRUE)` now applies the estimated rotation to the
   aligned curves instead of discarding it
 * `elastic.mlpcr.regression` now uses the standard softmax in its
@@ -73,6 +80,15 @@
   warping-function derivatives (e.g. in `SqrtMean` and the phase boxplot) are
   clamped at zero so small negative numerical derivatives no longer give
   `NaN`
+
+## Build
+
+* the macOS build now links the OpenMP runtime explicitly, fixing
+  "symbol not found in flat namespace '___kmpc_for_static_fini'" when loading
+  the package; a new `configure` script probes the toolchain and builds
+  without OpenMP if no usable runtime is found (`src/Makevars` is now
+  generated from `src/Makevars.in`)
+* documentation regenerated with a newer roxygen2
 
 # fdasrvf 2.5.0
 * add `interparc` function for downsampling closed curves
