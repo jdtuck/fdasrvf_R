@@ -57,7 +57,7 @@ DPQ <- function(Q1, Q2, n1, N1, lam1, pen1, Disp, scl = 3L) {
     .Call(`_fdasrvf_DPQ`, Q1, Q2, n1, N1, lam1, pen1, Disp, scl)
 }
 
-rlbfgs <- function(q1, q2, time, maxiter, lam, penalty) {
-    .Call(`_fdasrvf_rlbfgs`, q1, q2, time, maxiter, lam, penalty)
+rlbfgs <- function(q1, q2, time, maxiter, lam, penalty, gam0 = NULL) {
+    .Call(`_fdasrvf_rlbfgs`, q1, q2, time, maxiter, lam, penalty, gam0)
 }
 

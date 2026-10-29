@@ -265,8 +265,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // rlbfgs
-arma::vec rlbfgs(arma::vec q1, arma::vec q2, arma::vec time, int maxiter, double lam, int penalty);
-RcppExport SEXP _fdasrvf_rlbfgs(SEXP q1SEXP, SEXP q2SEXP, SEXP timeSEXP, SEXP maxiterSEXP, SEXP lamSEXP, SEXP penaltySEXP) {
+Rcpp::List rlbfgs(arma::vec q1, arma::vec q2, arma::vec time, int maxiter, double lam, int penalty, Rcpp::Nullable<Rcpp::NumericVector> gam0);
+RcppExport SEXP _fdasrvf_rlbfgs(SEXP q1SEXP, SEXP q2SEXP, SEXP timeSEXP, SEXP maxiterSEXP, SEXP lamSEXP, SEXP penaltySEXP, SEXP gam0SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -276,7 +276,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
     Rcpp::traits::input_parameter< double >::type lam(lamSEXP);
     Rcpp::traits::input_parameter< int >::type penalty(penaltySEXP);
-    rcpp_result_gen = Rcpp::wrap(rlbfgs(q1, q2, time, maxiter, lam, penalty));
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type gam0(gam0SEXP);
+    rcpp_result_gen = Rcpp::wrap(rlbfgs(q1, q2, time, maxiter, lam, penalty, gam0));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -296,7 +297,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_fdasrvf_mlogit_warp_grad_wrap", (DL_FUNC) &_fdasrvf_mlogit_warp_grad_wrap, 12},
     {"_fdasrvf_DPQ2", (DL_FUNC) &_fdasrvf_DPQ2, 14},
     {"_fdasrvf_DPQ", (DL_FUNC) &_fdasrvf_DPQ, 8},
-    {"_fdasrvf_rlbfgs", (DL_FUNC) &_fdasrvf_rlbfgs, 6},
+    {"_fdasrvf_rlbfgs", (DL_FUNC) &_fdasrvf_rlbfgs, 7},
     {NULL, NULL, 0}
 };
 

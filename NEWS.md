@@ -1,5 +1,24 @@
 # fdasrvf (development version)
 
+* ported from MATLAB fdasrvf 3.7.X: `optimum.reparam(method = "RBFGS")` is now
+  as accurate as `"DP"`: on random function pairs its median amplitude
+  distance is 0.94-0.99x `"DP"`'s and at most 1.05x (it stopped in local
+  minima, up to 3x), at about `"DP"`'s run time for 101 points and 3x and 9x
+  less for 201 and 401 points. It starts from a `"DP"` warp on a coarse grid
+  of at most 101 points and refines it on the SRVFs resampled `scl` times
+  finer (`scl` now applies to `"RBFGS"` as well as `"DPo"`); with
+  `lambda > 0` it also starts from the identity and keeps the lower cost, and
+  with `lambda = 0` it keeps the `"DP"` start when the refined warp fits worse
+  on the original grid. MATLAB's coarse grid of 51 points and keeping the
+  refined warp left the worst pairs at up to 1.2x `"DP"`'s distance. In the RBFGS solver the SRVFs
+  are scaled to unit L2 rather than Euclidean norm, so the gradient-norm
+  stopping test no longer loosens with the grid size (`lam` is rescaled so it
+  weighs the penalty as before), and `q2` is warped from the original by the
+  accumulated warping each step, so interpolation error no longer accumulates.
+  The internal `rlbfgs()` takes an optional starting warp `gam0` and returns
+  a list with the warp `gam` and `info` = (iterations, stop reason, cost,
+  gradient norm)
+
 # fdasrvf 2.5.1
 * ported from MATLAB fdasrvf 3.7.X: new `classify()` for `ampbox` and `phbox`
   objects aligns new functions to the fitted template (new `align_new()` for
