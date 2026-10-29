@@ -1,3 +1,5 @@
+# fdasrvf (development version)
+
 # fdasrvf 2.5.1
 * ported from MATLAB fdasrvf 3.7.X: new `classify()` for `ampbox` and `phbox`
   objects aligns new functions to the fitted template (new `align_new()` for
