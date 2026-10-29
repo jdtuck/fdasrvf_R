@@ -33,7 +33,7 @@
 #'   finer to evaluate the alignment cost; the warp stays on the grid `T1`
 #'   (default = 3, 1 turns the resampling off). `"DP"` integrates the linearly
 #'   interpolated SRVFs exactly, so it does not use `scl`. `"RBFGS"` starts
-#'   from a `"DP"` warp on a coarse grid of at most 51 points (using
+#'   from a `"DP"` warp on a coarse grid of at most 101 points (using
 #'   `nbhd_dim`) and refines it.
 #'
 #' @return A numeric vector of size `n_points` storing discrete evaluations of
@@ -120,9 +120,11 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
     RBFGS = {
       # RBFGS descends from where it starts, so start it from a DP warp on a
       # coarse grid and let it refine that warp on Q1 and Q2 resampled scl
-      # times finer, where its linearly interpolated cost is accurate
+      # times finer, where its linearly interpolated cost is accurate. The
+      # warps the worst pairs need are steep enough that a grid of fewer
+      # than 101 points misses them
       time1 <- seq(0, 1, length.out = M)
-      nc <- min(M, 51)
+      nc <- min(M, 101)
       tc <- seq(0, 1, length.out = nc)
       Q1c <- stats::spline(time1, c(Q1), xout = tc)$y
       Q2c <- stats::spline(time1, c(Q2), xout = tc)$y
@@ -151,6 +153,14 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
       }
       # every scl-th point of tf is a point of time1
       gam0 <- c(out$gam)[seq(1, length(tf), by = scl)]
+      # a warp that only pays off on the finer grid can fit worse on time1,
+      # so without a penalty keep the DP start when it fits better there
+      if (lamf == 0) {
+        gamd <- stats::approx(Tf, G, xout = time1)$y
+        fit <- function(gam) sum((c(Q1) - warp_q_gamma(c(Q2), time1, gam))^2)
+        if (fit(gamd) < fit(gam0))
+          gam0 <- gamd
+      }
     }
   )
 

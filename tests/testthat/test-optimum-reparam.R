@@ -129,10 +129,8 @@ test_that("`optimum.reparam()` RBFGS distances match DP", {
     amp_dist(f1, f2, "RBFGS") / amp_dist(f1, f2, "DP")
   })
   expect_lt(stats::median(r), 1.0)
-  # MATLAB bounds the max by 1.1 on its random pairs; on R's, a warp steeper
-  # than the 101 point grid resolves ties DP on the scl finer grid it is
-  # fitted on but measures up to 1.2x here
-  expect_lt(max(r), 1.25)
+  # a 51 point DP start and keeping the refined warp reached 1.2x
+  expect_lt(max(r), 1.1)
 })
 
 test_that("`rlbfgs()` starts from gam0 and reports its stop", {
