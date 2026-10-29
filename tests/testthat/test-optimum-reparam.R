@@ -96,3 +96,49 @@ test_that("`optimum.reparam()` passes scl to the DPo solver", {
     "scl"
   )
 })
+
+test_that("`optimum.reparam()` RBFGS fits as well as the true warp", {
+  # "RBFGS" refines a coarse "DP" warp on SRVFs resampled scl times finer;
+  # started from the identity it stopped half a grid cell off
+  gam <- optimum.reparam(kw_q1, kw_time, kw_q2, kw_time, method = "RBFGS")
+  expect_lt(max(abs(gam - kw_gam_inv)) * (length(kw_time) - 1), 0.5)
+  expect_lt(kw_error(gam), 1.1 * kw_error(kw_gam_inv))
+})
+
+test_that("`optimum.reparam()` RBFGS distances match DP", {
+  # on random pairs the identity start stopped in local minima, up to 3x the
+  # "DP" distance
+  bumps <- function(t) {
+    f <- rep(0, length(t))
+    for (j in 1:3)
+      f <- f + stats::rnorm(1) *
+        exp(-(t - stats::runif(1))^2 / (2 * (0.05 + 0.1 * stats::runif(1))^2))
+    f
+  }
+  amp_dist <- function(f1, f2, method) {
+    q1 <- f_to_srvf(f1, kw_time)
+    q2 <- f_to_srvf(f2, kw_time)
+    gam <- optimum.reparam(q1, kw_time, q2, kw_time, method = method)
+    qw <- warp_q_gamma(q2, kw_time, gam)
+    sqrt(trapz(kw_time, (q1 - qw)^2))
+  }
+  withr::local_seed(0)
+  r <- replicate(10, {
+    f1 <- bumps(kw_time)
+    f2 <- bumps(kw_time)
+    amp_dist(f1, f2, "RBFGS") / amp_dist(f1, f2, "DP")
+  })
+  expect_lt(stats::median(r), 1.0)
+  expect_lt(max(r), 1.1)
+})
+
+test_that("`rlbfgs()` starts from gam0 and reports its stop", {
+  q1n <- kw_q1 / sqrt(sum(kw_q1^2))
+  q2n <- kw_q2 / sqrt(sum(kw_q2^2))
+  out <- rlbfgs(q1n, q2n, kw_time, 30, 0, 0, kw_gam_inv)
+  expect_length(out$info, 4)
+  expect_true(out$info[2] %in% 1:3)
+  expect_true(all(diff(out$gam) >= 0))
+  expect_lt(max(abs(out$gam - kw_gam_inv)) * (length(kw_time) - 1), 0.5)
+  expect_error(rlbfgs(q1n, q2n, kw_time, 30, 0, 0, kw_gam_inv[-1]), "gam0")
+})

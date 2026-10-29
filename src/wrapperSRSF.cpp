@@ -94,9 +94,23 @@ Rcpp::NumericVector DPQ(Rcpp::NumericVector Q1,
   return(out);
 }
 
+// gam0, when not NULL, is the warping to start from instead of the identity.
+// info = [iterations, stop reason, cost, gradient norm]; the stop reason is
+// 1 for a vanishing step, 2 for the gradient norm and 3 for maxiter
 // [[Rcpp::export]]
-arma::vec rlbfgs(arma::vec q1, arma::vec q2, arma::vec time,
-                                int maxiter, double lam, int penalty) {
-  arma::vec gam = rlbfgs_optim(q1, q2, time, maxiter, lam, penalty);
-  return(gam);
+Rcpp::List rlbfgs(arma::vec q1, arma::vec q2, arma::vec time,
+                  int maxiter, double lam, int penalty,
+                  Rcpp::Nullable<Rcpp::NumericVector> gam0 = R_NilValue) {
+  if (q2.n_elem != q1.n_elem || time.n_elem != q1.n_elem)
+    Rcpp::stop("q1, q2 and time must have the same number of elements.");
+  arma::vec g0;
+  if (gam0.isNotNull()) {
+    g0 = Rcpp::as<arma::vec>(gam0.get());
+    if (!g0.is_empty() && g0.n_elem != time.n_elem)
+      Rcpp::stop("gam0 must have as many elements as time.");
+  }
+  arma::vec info;
+  arma::vec gam = rlbfgs_optim(q1, q2, time, maxiter, lam, penalty, g0, info);
+  return Rcpp::List::create(Rcpp::Named("gam") = gam,
+                            Rcpp::Named("info") = info);
 }
