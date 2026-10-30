@@ -32,12 +32,14 @@
   stops when the relative change of the cost stays below 1e-3 for more than
   5 iterations after at least 10 (new stop reason 4 in `rlbfgs()`'s `info`).
   `optimum.reparam(method = "RBFGS")` now refines the coarse `"DP"` warp on
-  SRVFs resampled linearly rather than by a spline. On `"DP"`'s own objective
-  its median cost is 0.96x `"DP"`'s on random function pairs (at most 1.03x)
-  and 0.86x on consecutive `growth_vel` pairs (at most 1.17x), at about
-  1.3x `"DP"`'s run time for 101 points and 0.4x for 201. R keeps its coarse
-  grid of 101 points: MATLAB's 51 points is 2-3x faster but reaches 1.4x
-  `"DP"`'s cost on random pairs
+  SRVFs resampled linearly rather than by a spline, starting, as MATLAB and
+  the paper do, from a `"DP"` warp on a coarse grid of at most 51 points
+  (was 101). On `"DP"`'s own objective its median cost is 0.98x `"DP"`'s on
+  random function pairs and 0.86x on consecutive `growth_vel` pairs, at about
+  0.5x `"DP"`'s run time for 101 points and 0.16x for 201. From the coarse
+  start it can land in a different minimum: up to 1.4x `"DP"`'s cost on
+  random three-bump pairs (a 101 point start kept that to 1.03x at 2.3x the
+  run time)
 
 # fdasrvf 2.5.1
 * ported from MATLAB fdasrvf 3.7.X: new `classify()` for `ampbox` and `phbox`
