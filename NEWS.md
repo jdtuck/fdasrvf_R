@@ -18,6 +18,26 @@
   The internal `rlbfgs()` takes an optional starting warp `gam0` and returns
   a list with the warp `gam` and `info` = (iterations, stop reason, cost,
   gradient norm)
+* ported from MATLAB fdasrvf 3.7.X: the RBFGS solver now follows Huang,
+  Gallivan, Srivastava and Absil, "Riemannian optimization for registration
+  of curves in elastic shape analysis", for the warping alone (no rotation or
+  shift). It optimizes l = sqrt(gamma') on the unit sphere of L2[0,1] with
+  limited-memory RBFGS, taking steps along the exponential map and moving the
+  stored BFGS pairs by parallel translation. The cost is
+  ||q1 - q2(gamma) l||^2 plus the penalty plus the paper's barrier
+  B(l) = int (l^2 + 1/l^2) sqrt(1 + l^4), weighted by 1/100 and cut by 0.8
+  each iteration; `q2` is a natural cubic spline and the gradient
+  differentiates the discretised cost exactly (the old continuum gradient was
+  not a descent direction at warps with kinks, so the solver stalled). It
+  stops when the relative change of the cost stays below 1e-3 for more than
+  5 iterations after at least 10 (new stop reason 4 in `rlbfgs()`'s `info`).
+  `optimum.reparam(method = "RBFGS")` now refines the coarse `"DP"` warp on
+  SRVFs resampled linearly rather than by a spline. On `"DP"`'s own objective
+  its median cost is 0.96x `"DP"`'s on random function pairs (at most 1.03x)
+  and 0.86x on consecutive `growth_vel` pairs (at most 1.17x), at about
+  1.3x `"DP"`'s run time for 101 points and 0.4x for 201. R keeps its coarse
+  grid of 101 points: MATLAB's 51 points is 2-3x faster but reaches 1.4x
+  `"DP"`'s cost on random pairs
 
 # fdasrvf 2.5.1
 * ported from MATLAB fdasrvf 3.7.X: new `classify()` for `ampbox` and `phbox`

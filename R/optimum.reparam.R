@@ -118,11 +118,15 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
       gam0 <- simul_gam(u, out$g1, out$g2, timet2, out$s1, out$s2, timet2)
     },
     RBFGS = {
-      # RBFGS descends from where it starts, so start it from a DP warp on a
-      # coarse grid and let it refine that warp on Q1 and Q2 resampled scl
-      # times finer, where its linearly interpolated cost is accurate. The
-      # warps the worst pairs need are steep enough that a grid of fewer
-      # than 101 points misses them
+      # As in Huang et al., "Riemannian optimization for registration of
+      # curves in elastic shape analysis": RBFGS descends from where it
+      # starts, so start it from a DP warp on a coarse grid and refine it on
+      # Q1 and Q2 resampled linearly scl times finer. On time1 itself the
+      # trapezoid rule samples Q2 only at the warped grid points, so where the
+      # warp is steep the solver could skip features of Q2 and lower its cost
+      # without aligning them. MATLAB's coarse grid has at most 51 points; the
+      # warps the worst pairs need are steep enough that it misses them
+      # (1.4x DP's cost on random pairs, against 1.03x from 101 points)
       time1 <- seq(0, 1, length.out = M)
       nc <- min(M, 101)
       tc <- seq(0, 1, length.out = nc)
@@ -139,8 +143,8 @@ optimum.reparam <- function(Q1,T1,Q2,T2,
       else
         stats::approx(Tf, G, xout = tf)$y
       # lambda is divided by scl to weigh the penalty as it would on time1
-      Q1f <- stats::spline(time1, c(Q1), xout = tf)$y
-      Q2f <- stats::spline(time1, c(Q2), xout = tf)$y
+      Q1f <- stats::approx(time1, c(Q1), xout = tf)$y
+      Q2f <- stats::approx(time1, c(Q2), xout = tf)$y
       lamf <- lambda_rbfgs / scl
       out <- rlbfgs(Q1f, Q2f, tf, 30, lamf, pen_rbfgs, gamc)
       # the DP warp is piecewise linear, which the penalty can make costly to

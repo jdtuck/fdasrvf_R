@@ -98,16 +98,31 @@ test_that("`optimum.reparam()` passes scl to the DPo solver", {
 })
 
 test_that("`optimum.reparam()` RBFGS fits as well as the true warp", {
-  # "RBFGS" refines a coarse "DP" warp on SRVFs resampled scl times finer;
-  # started from the identity it stopped half a grid cell off
+  # "RBFGS" refines the "DP" warp; started from the identity it stopped half
+  # a grid cell off
   gam <- optimum.reparam(kw_q1, kw_time, kw_q2, kw_time, method = "RBFGS")
   expect_lt(max(abs(gam - kw_gam_inv)) * (length(kw_time) - 1), 0.5)
   expect_lt(kw_error(gam), 1.1 * kw_error(kw_gam_inv))
 })
 
-test_that("`optimum.reparam()` RBFGS distances match DP", {
+# DP's objective at gam: the unit norm, linearly interpolated SRVFs, which
+# DPQ2 integrates exactly, here on a 20x finer grid
+dp_cost <- function(q1, q2, gam, t) {
+  M <- length(t)
+  t1 <- seq(0, 1, length.out = M)
+  tf <- seq(0, 1, length.out = (M - 1) * 20 + 1)
+  a <- stats::approx(t1, q1, xout = tf)$y
+  a <- a / sqrt(trapz(tf, a^2))
+  b <- stats::approx(t1, q2, xout = tf)$y
+  b <- b / sqrt(trapz(tf, b^2))
+  gamf <- stats::approx(t1, gam, xout = tf)$y
+  trapz(tf, (a - warp_q_gamma(b, tf, gamf))^2)
+}
+
+test_that("`optimum.reparam()` RBFGS cost matches DP", {
   # on random pairs the identity start stopped in local minima, up to 3x the
-  # "DP" distance
+  # "DP" distance. Scored on DP's own objective, RBFGS is below DP on most
+  # pairs; MATLAB's 51 point DP start reaches 1.4x
   bumps <- function(t) {
     f <- rep(0, length(t))
     for (j in 1:3)
@@ -115,22 +130,46 @@ test_that("`optimum.reparam()` RBFGS distances match DP", {
         exp(-(t - stats::runif(1))^2 / (2 * (0.05 + 0.1 * stats::runif(1))^2))
     f
   }
-  amp_dist <- function(f1, f2, method) {
-    q1 <- f_to_srvf(f1, kw_time)
-    q2 <- f_to_srvf(f2, kw_time)
-    gam <- optimum.reparam(q1, kw_time, q2, kw_time, method = method)
-    qw <- warp_q_gamma(q2, kw_time, gam)
-    sqrt(trapz(kw_time, (q1 - qw)^2))
-  }
   withr::local_seed(0)
   r <- replicate(10, {
-    f1 <- bumps(kw_time)
-    f2 <- bumps(kw_time)
-    amp_dist(f1, f2, "RBFGS") / amp_dist(f1, f2, "DP")
+    q1 <- f_to_srvf(bumps(kw_time), kw_time)
+    q2 <- f_to_srvf(bumps(kw_time), kw_time)
+    gr <- optimum.reparam(q1, kw_time, q2, kw_time, method = "RBFGS")
+    gd <- optimum.reparam(q1, kw_time, q2, kw_time, method = "DP")
+    dp_cost(q1, q2, gr, kw_time) / dp_cost(q1, q2, gd, kw_time)
   })
   expect_lt(stats::median(r), 1.0)
-  # a 51 point DP start and keeping the refined warp reached 1.2x
   expect_lt(max(r), 1.1)
+})
+
+test_that("`optimum.reparam()` RBFGS matches DP on the growth velocities", {
+  # their sharp spurts made the last solver 1.04x DP's cost in the median
+  # in MATLAB
+  t <- growth_vel$time
+  q <- f_to_srvf(growth_vel$f[, 1:31], t)
+  r <- sapply(1:(ncol(q) - 1), function(i) {
+    gd <- optimum.reparam(q[, i], t, q[, i + 1], t, method = "DP")
+    gr <- optimum.reparam(q[, i], t, q[, i + 1], t, method = "RBFGS")
+    dp_cost(q[, i], q[, i + 1], gr, t) / dp_cost(q[, i], q[, i + 1], gd, t)
+  })
+  expect_lt(stats::median(r), 1.0)
+  expect_lt(max(r), 1.25)
+})
+
+test_that("`rlbfgs()` starts at gam0 and descends from it", {
+  # the old solver started up to 2.9x above the cost of a DP warp and stalled
+  t <- growth_vel$time
+  q <- f_to_srvf(growth_vel$f[, 11:12], t)
+  q1 <- q[, 1] / sqrt(sum(q[, 1]^2))
+  q2 <- q[, 2] / sqrt(sum(q[, 2]^2))
+  gd <- optimum.reparam(q1, t, q2, t, method = "DP")
+  t1 <- seq(0, 1, length.out = length(t))
+  out1 <- rlbfgs(q1, q2, t1, 1, 0, 0, gd)
+  out30 <- rlbfgs(q1, q2, t1, 30, 0, 0, gd)
+  psi1 <- sqrt(pmax(gradient(c(out1$gam), 1 / (length(t1) - 1)), 0))
+  psid <- sqrt(pmax(gradient(gd, 1 / (length(t1) - 1)), 0))
+  expect_lt(acos(min(trapz(t1, psi1 * psid), 1)), 0.15)
+  expect_lt(out30$info[3], out1$info[3])
 })
 
 test_that("`rlbfgs()` starts from gam0 and reports its stop", {
@@ -138,7 +177,7 @@ test_that("`rlbfgs()` starts from gam0 and reports its stop", {
   q2n <- kw_q2 / sqrt(sum(kw_q2^2))
   out <- rlbfgs(q1n, q2n, kw_time, 30, 0, 0, kw_gam_inv)
   expect_length(out$info, 4)
-  expect_true(out$info[2] %in% 1:3)
+  expect_true(out$info[2] %in% 1:4)
   expect_true(all(diff(out$gam) >= 0))
   expect_lt(max(abs(out$gam - kw_gam_inv)) * (length(kw_time) - 1), 0.5)
   expect_error(rlbfgs(q1n, q2n, kw_time, 30, 0, 0, kw_gam_inv[-1]), "gam0")

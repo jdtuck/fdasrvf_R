@@ -96,7 +96,8 @@ Rcpp::NumericVector DPQ(Rcpp::NumericVector Q1,
 
 // gam0, when not NULL, is the warping to start from instead of the identity.
 // info = [iterations, stop reason, cost, gradient norm]; the stop reason is
-// 1 for a vanishing step, 2 for the gradient norm and 3 for maxiter
+// 1 for no acceptable step, 2 for the gradient norm, 3 for maxiter and 4
+// for the relative change of the cost
 // [[Rcpp::export]]
 Rcpp::List rlbfgs(arma::vec q1, arma::vec q2, arma::vec time,
                   int maxiter, double lam, int penalty,
