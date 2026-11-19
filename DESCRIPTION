@@ -32,6 +32,7 @@ Imports:
     mvtnorm,
     Rcpp,
     rlang,
+    splines,
     minpack.lm,
     tolerance,
     viridisLite
