@@ -146,7 +146,7 @@ time_warping_bayes_infHMC <- function(f,
   # initialization
   if (init == "dp") {
     tmp <- if (verbose)
-      time_warping(f0, t01, lambda = 0, max_iter = 10L)
+      time_warping(f0, t01, lambda = 0, max_iter = 1L)
     else
       suppressMessages(time_warping(f0, t01, lambda = 0, max_iter = 10L))
     c_curr <- bayes_gam_to_coef(tmp$warping_functions, Phi, rep)
