@@ -11,6 +11,23 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// bayes_warp_geom_c
+Rcpp::List bayes_warp_geom_c(const arma::mat& c, const arma::mat& Phi, int rep, const arma::mat& q1, const arma::mat& q2, double var1, bool do_grad);
+RcppExport SEXP _fdasrvf_bayes_warp_geom_c(SEXP cSEXP, SEXP PhiSEXP, SEXP repSEXP, SEXP q1SEXP, SEXP q2SEXP, SEXP var1SEXP, SEXP do_gradSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type c(cSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type Phi(PhiSEXP);
+    Rcpp::traits::input_parameter< int >::type rep(repSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type q1(q1SEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type q2(q2SEXP);
+    Rcpp::traits::input_parameter< double >::type var1(var1SEXP);
+    Rcpp::traits::input_parameter< bool >::type do_grad(do_gradSEXP);
+    rcpp_result_gen = Rcpp::wrap(bayes_warp_geom_c(c, Phi, rep, q1, q2, var1, do_grad));
+    return rcpp_result_gen;
+END_RCPP
+}
 // dpcode
 Rcpp::List dpcode(arma::vec q1, arma::vec q1L, arma::vec q2L, int times, int cut);
 RcppExport SEXP _fdasrvf_dpcode(SEXP q1SEXP, SEXP q1LSEXP, SEXP q2LSEXP, SEXP timesSEXP, SEXP cutSEXP) {
@@ -283,6 +300,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_fdasrvf_bayes_warp_geom_c", (DL_FUNC) &_fdasrvf_bayes_warp_geom_c, 7},
     {"_fdasrvf_dpcode", (DL_FUNC) &_fdasrvf_dpcode, 5},
     {"_fdasrvf_simucode", (DL_FUNC) &_fdasrvf_simucode, 17},
     {"_fdasrvf_itercode", (DL_FUNC) &_fdasrvf_itercode, 26},

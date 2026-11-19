@@ -1,5 +1,37 @@
 # fdasrvf (development version)
 
+* ported from MATLAB fdasrvf 3.7.X (PR #33): new `pair_align_functions_infHMC()`,
+  pairwise Bayesian alignment with infinite-dimensional Hamiltonian Monte Carlo
+  (Tucker, Shand and Chowdhary, 2021), which samples the warping coefficients
+  with the preconditioned HMC of Beskos et al. (2011) using an exact
+  likelihood gradient, draws the latent functions from Gaussian process
+  priors, and draws the SRVF model variance, the measurement error variances
+  and the Gaussian process variances and length scales. Warps use either the
+  shooting vector (`warp_rep = "shooting"`, `|v| < pi` enforced) or the
+  centered log-derivative (`warp_rep = "clr"`, the h-transform). The first
+  chain starts at the elastic (DP) alignment of the smoothed functions
+  (`init = "dp"`) and step sizes are adapted by dual averaging during burn-in
+  (Hoffman and Gelman, 2014). On `simu_data` it accepts about 0.7 of the warp
+  proposals and its posterior-mean warp is within 0.04 of DP's, in under a
+  second for 1000 iterations
+* ported from MATLAB fdasrvf 3.7.X (PR #33): new `time_warping_bayes_infHMC()`,
+  Bayesian group-wise alignment with per-curve infinite-dimensional HMC on the
+  warping coefficients (all curves updated in one batched step), conjugate
+  Gibbs draws of the B-spline template and the noise variance, initialization
+  from the elastic (DP) Karcher mean, and the centering constraint (Karcher
+  mean of warps = identity) imposed every `ncenter` iterations. It returns an
+  `fdawarp` object with an extra `mcmc` component. On `simu_data` its
+  posterior-mean warps are within 0.002 (mean absolute) of DP's
+* ported from MATLAB fdasrvf 3.7.X: new `time_warping_bayes()`, Bayesian
+  group-wise alignment with the Z-mixture pCN algorithm (Lu, Herbei and
+  Kurtek, 2017), the group counterpart of `pair_align_functions_expomap()`.
+  It returns an `fdawarp` object with an extra `mcmc` component
+* new internal helpers shared by the Bayesian HMC samplers: `bayes_warp_geom()`
+  (negative log-likelihood and exact gradient of a warp in SRVF space, with
+  the compiled kernel `bayes_warp_geom_c()`), `bayes_warp_basis()`,
+  `bayes_coef_to_gam()`, `bayes_gam_to_coef()`, `infhmc_step()`,
+  `infhmc_step_batch()`, `dual_avg_step()` and `create_basismatrix()`
+
 * ported from MATLAB fdasrvf 3.7.X: `optimum.reparam(method = "RBFGS")` is now
   as accurate as `"DP"`: on random function pairs its median amplitude
   distance is 0.94-0.99x `"DP"`'s and at most 1.05x (it stopped in local
