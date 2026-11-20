@@ -237,6 +237,7 @@ dpmeans_align <- function(f, time,
 dpmeans_align_to_template <- function(f, q, time, tf, tq, opts) {
   M <- nrow(f)
   N <- ncol(f)
+  n <- NULL # foreach iterator; silences R CMD check global-variable note
   res <- foreach::foreach(n = 1:N, .packages = "fdasrvf") %dopar% {
     if (opts$alignment) {
       g <- optimum.reparam(
