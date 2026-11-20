@@ -1,5 +1,17 @@
 # fdasrvf (development version)
 
+* ported from MATLAB fdasrvf 3.7.X: new elastic functional statistical
+  process control (Tucker, 2016). `fdaspc()` fits PCA-based monitoring models
+  to `time_warping()` output, one for amplitude (vertical fPCA) and one for
+  phase (horizontal fPCA on the shooting vectors), with the Hotelling T^2
+  limit (`t2limit = "standard"` or `"book"`) and the SPE limit of the Box
+  chi-square approximation (Ge and Song, 2013, Eqs. 2.3-2.8). By default the
+  limits are fit to the training functions re-aligned with `align_new()`, the
+  same path used for new data. `spc_monitor()` aligns new functions to the
+  template and returns their scores, T^2, SPE, alarms and per-time-point
+  contributions; `plot.fdaspc()` draws the control charts and
+  `plot_contrib()` the contributions of one monitored function
+
 * ported from MATLAB fdasrvf 3.7.X: new `dpmeans_align()`, elastic DP-means
   clustering and alignment of functions (Kulis and Jordan, 2012). A function
   farther than `lambda` from every template opens a new cluster that later
