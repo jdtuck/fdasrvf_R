@@ -1,5 +1,32 @@
 # fdasrvf (development version)
 
+* ported from MATLAB fdasrvf 3.7.X: new `dpmeans_align()`, elastic DP-means
+  clustering and alignment of functions (Kulis and Jordan, 2012). A function
+  farther than `lambda` from every template opens a new cluster that later
+  functions in the same pass can join, so the number of clusters is learned
+  from the data. Each pass normalizes the warps within each cluster and
+  updates the templates as Karcher means of the aligned SRVFs; empty clusters
+  are dropped. The objective is the sum of squared elastic distances plus
+  `lambda^2` times the number of clusters, with a relative stopping rule. The
+  alignment penalty (`lambda_align`) is separate from the cluster penalty,
+  and `lambda = NA` (the default) picks it from a k-means++ seeding
+* ported from MATLAB fdasrvf 3.7.X: new `plot_mcmc()` for the Bayesian
+  alignments (`time_warping_bayes()` and `time_warping_bayes_infHMC()`):
+  traces of sigma and the log-likelihood with the burn-in marked, the
+  posterior and autocorrelation (with effective sample size) of sigma, the
+  running acceptance rate, proposals and acceptance by pCN step (pCN) or the
+  HMC step size of each function (infHMC), traces of each function's warping
+  coefficient norm, the posterior template with a 95% credible band and the
+  posterior warping functions with 95% credible bands. `plot.fdawarp()` calls
+  it when the `mcmc` component is filled in; `mcmc` now also stores `burnin`
+  and `iter` (and for pCN `logl`, `extrainfo` and `zpcn`)
+* `kmeans_align()` (ported from MATLAB fdasrvf 3.7.X): smooths the data before
+  taking the initial templates, returns the inverse Karcher mean warp of each
+  cluster as `gamI`, and builds the univariate mean templates in function
+  space from the SRVF templates so the two stay consistent
+* `plot.fdakma()` now accepts the 1 x M x K template arrays returned by
+  `kmeans_align()` and `dpmeans_align()`
+
 * ported from MATLAB fdasrvf 3.7.X (PR #33): new `pair_align_functions_infHMC()`,
   pairwise Bayesian alignment with infinite-dimensional Hamiltonian Monte Carlo
   (Tucker, Shand and Chowdhary, 2021), which samples the warping coefficients

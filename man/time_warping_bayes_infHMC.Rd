@@ -91,6 +91,7 @@ the warping coefficients}
 \item{accept}{matrix (\eqn{N} x \code{iter - 1}) of HMC acceptance indicators}
 \item{epsilon}{matrix (\eqn{N} x \code{iter}) of step sizes}
 \item{logl}{log-likelihood trace}
+\item{burnin, iter}{number of burn-in and total iterations}
 \item{gamma_mat}{array (\eqn{M} x \code{nsamp} x \eqn{N}) of posterior gammas
 (if \code{extrainfo})}
 \item{gamma_stats}{array (\eqn{M} x 2 x \eqn{N}) of pointwise 95\% bands of

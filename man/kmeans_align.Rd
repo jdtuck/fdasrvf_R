@@ -110,6 +110,8 @@ than \code{f0} separated in clusters in a list;
 observed curve to its center;
 \item \code{gam}: the warping functions as matrices or a 3D arrays of the same shape
 than \code{f0} by clusters in a list;
+\item \code{gamI}: the inverse Karcher mean warping function of each cluster, in a
+list;
 \item \code{qun}: cost function value.
 }
 }

@@ -62,9 +62,13 @@ component containing
 \item{g_coef}{array (\code{iter} x \eqn{D} x \eqn{N}) of posterior draws of the
 warping coefficients}
 \item{sigma1}{posterior draws of the model standard deviation}
+\item{logl}{log-likelihood trace}
+\item{burnin, iter}{number of burn-in and total iterations}
+\item{extrainfo}{whether the extra information was stored}
 \item{accept}{acceptance of the template samples (if \code{extrainfo})}
 \item{betas_ind}{index of the \code{zpcn} mixture component used at each
 iteration (if \code{extrainfo})}
+\item{zpcn}{the \code{zpcn} mixture used (if \code{extrainfo})}
 \item{gamma_mat}{array (\eqn{M} x \code{nsamp} x \eqn{N}) of posterior gammas
 (if \code{extrainfo})}
 \item{gamma_stats}{pointwise 95\% credible bands of the gammas (if

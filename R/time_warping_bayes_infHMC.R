@@ -62,6 +62,7 @@
 #' \item{accept}{matrix (\eqn{N} x `iter - 1`) of HMC acceptance indicators}
 #' \item{epsilon}{matrix (\eqn{N} x `iter`) of step sizes}
 #' \item{logl}{log-likelihood trace}
+#' \item{burnin, iter}{number of burn-in and total iterations}
 #' \item{gamma_mat}{array (\eqn{M} x `nsamp` x \eqn{N}) of posterior gammas
 #'   (if `extrainfo`)}
 #' \item{gamma_stats}{array (\eqn{M} x 2 x \eqn{N}) of pointwise 95% bands of
@@ -279,7 +280,9 @@ time_warping_bayes_infHMC <- function(f,
     logl = logl_tr,
     accept = accept[, -1, drop = FALSE],
     epsilon = eps_tr,
-    warp_rep = warp_rep
+    warp_rep = warp_rep,
+    burnin = burnin,
+    iter = iter
   )
   if (extrainfo) {
     mcmc$gamma_mat <- gamma_mat

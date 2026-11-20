@@ -1,5 +1,13 @@
 #' @export
 plot.fdakma <- function(x, ...){
+  # kmeans_align() and dpmeans_align() store templates as 1 x M x K arrays
+  if (length(dim(x$templates)) == 3) {
+    if (dim(x$templates)[1] != 1)
+      stop("plot.fdakma() only supports univariate functions")
+    K <- dim(x$templates)[3]
+    x$templates <- matrix(x$templates[1, , ], ncol = K)
+    x$templates.q <- matrix(x$templates.q[1, , ], ncol = K)
+  }
   K <- dim(x$templates)[2]
   num.plot <- ceiling(K/6)
   colors <- grDevices::rainbow(K, s = 0.75)

@@ -134,9 +134,13 @@ f.updateq.group <- function(g.coef.curr, g.basis, var1.curr, q,
 #' \item{g_coef}{array (`iter` x \eqn{D} x \eqn{N}) of posterior draws of the
 #'   warping coefficients}
 #' \item{sigma1}{posterior draws of the model standard deviation}
+#' \item{logl}{log-likelihood trace}
+#' \item{burnin, iter}{number of burn-in and total iterations}
+#' \item{extrainfo}{whether the extra information was stored}
 #' \item{accept}{acceptance of the template samples (if `extrainfo`)}
 #' \item{betas_ind}{index of the `zpcn` mixture component used at each
 #'   iteration (if `extrainfo`)}
+#' \item{zpcn}{the `zpcn` mixture used (if `extrainfo`)}
 #' \item{gamma_mat}{array (\eqn{M} x `nsamp` x \eqn{N}) of posterior gammas
 #'   (if `extrainfo`)}
 #' \item{gamma_stats}{pointwise 95% credible bands of the gammas (if
@@ -395,7 +399,8 @@ time_warping_bayes <- function(f,
   for (ii in 1:N)
     fgam[, ii] <- warp_f_gamma(fmean, time, post.gamma[, ii])
 
-  mcmc <- list(g_coef = res.g.coef, sigma1 = res.sigma1)
+  mcmc <- list(g_coef = res.g.coef, sigma1 = res.sigma1, logl = res.logl,
+               burnin = burnin, iter = iter, extrainfo = extrainfo)
   if (extrainfo) {
     gamma_mat <- array(0, dim = c(M, nv, N))
     gamma_stats <- array(0, dim = c(M, 2, N))
@@ -410,6 +415,7 @@ time_warping_bayes <- function(f,
     }
     mcmc$accept <- res.accept[-1]
     mcmc$betas_ind <- res.accept.betas[-1]
+    mcmc$zpcn <- zpcn
     mcmc$gamma_mat <- gamma_mat
     mcmc$gamma_stats <- gamma_stats
     mcmc$q_star_mat <- t(res.q.star[valid_index, , drop = FALSE])

@@ -68,6 +68,8 @@
 #' observed curve to its center;
 #' - `gam`: the warping functions as matrices or a 3D arrays of the same shape
 #' than `f0` by clusters in a list;
+#' - `gamI`: the inverse Karcher mean warping function of each cluster, in a
+#' list;
 #' - `qun`: cost function value.
 #'
 #' @keywords srsf alignment clustering
@@ -153,18 +155,21 @@ kmeans_align <- function(f, time,
     template.ind <- sample(1:N, K)
   else
     template.ind <- seeds
-  templates <- array(0, dim = c(L, M, K))
-  for (k in 1:K)
-    templates[, , k] <- f[, , template.ind[k]]
-  cluster.id <- rep(0, N)
-  qun <- rep(0, max_iter)
 
-  # Convert to SRSF
+  # smooth before taking the initial templates so they match the data
   if (smooth_data) {
     for (l in 1:L)
       f[l, , ] <- smooth.data(f[l, , ], sparam = sparam)
   }
 
+  templates <- array(0, dim = c(L, M, K))
+  for (k in 1:K)
+    templates[, , k] <- f[, , template.ind[k]]
+  cluster.id <- rep(0, N)
+  qun <- rep(0, max_iter)
+  gamI_list <- vector("list", K)
+
+  # Convert to SRSF
   if (L > 1) {
     q <- array(dim = c(L, M, N))
     for (n in 1:N)
@@ -288,10 +293,15 @@ kmeans_align <- function(f, time,
     for (k in 1:K) {
       id <- which(cluster.id == k)
       N1 <- length(id)
-      if (N1 == 0) next()
+      if (N1 == 0) {
+        # empty cluster: nothing to normalize
+        gamI_list[[k]] <- seq(0, 1, length.out = M)
+        next()
+      }
       ftmp <- fn[[k]][, , id, drop = FALSE]
       gamtmp <- gam[[k]][, id, drop = FALSE]
       gamI <- SqrtMeanInverse(gamtmp)
+      gamI_list[[k]] <- gamI
 
       fw <- matrix(nrow = L, ncol = M)
       outfor <- foreach::foreach(n = 1:N1, .combine = cbind, .packages = "fdasrvf") %dopar% {
@@ -354,7 +364,9 @@ kmeans_align <- function(f, time,
         fn_k <- matrix(fn[[k]][1, , id], nrow = M)
         if (centroid_type == "mean") {
           templates.q[1, , k] <- rowMeans(qn_k)
-          templates[1, , k] <- rowMeans(fn_k)
+          # keep the f-template consistent with the SRVF template
+          templates[1, , k] <- srvf_to_f(templates.q[1, , k], time,
+                                         mean(fn_k[1, ]))
         } else if (centroid_type == "medoid") {
           idx <- which.min(Dy[k, id])
           templates.q[1, , k] <- qn_k[, idx]
@@ -394,6 +406,7 @@ kmeans_align <- function(f, time,
     fn = ftmp,
     qn = qtmp,
     gam = gamtmp,
+    gamI = gamI_list,
     labels = cluster.id,
     templates = templates,
     templates.q = templates.q,

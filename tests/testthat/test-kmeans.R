@@ -4,7 +4,7 @@ test_that("`kmeans_align()` works", {
   })
   expect_equal(
     names(out),
-    c("f0", "q0", "time", "fn", "qn", "gam", "labels", "templates",
+    c("f0", "q0", "time", "fn", "qn", "gam", "gamI", "labels", "templates",
       "templates.q", "distances_to_center", "lambda", "omethod", "qun")
   )
   expect_equal(dim(out$f0), c(101, 21))
