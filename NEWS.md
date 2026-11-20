@@ -1,4 +1,4 @@
-# fdasrvf (development version)
+# fdasrvf 2.6.0
 
 * ported from MATLAB fdasrvf 3.7.X: new elastic functional statistical
   process control (Tucker, 2016). `fdaspc()` fits PCA-based monitoring models
